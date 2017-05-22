@@ -1,0 +1,27 @@
+main {
+  margin-top: -1.05%;
+  font-family: 'Open Sans', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+svg path.st0 {
+  -webkit-transition: stroke 0.5s, stroke-width 0.5s;
+  -o-transition: stroke 0.5s, stroke-width 0.5s;
+  transition: stroke 0.5s, stroke-width 0.5s;
+}
+svg path.st0:hover, path.st0.active {
+  cursor: pointer;
+  stroke-width: 6;
+  stroke: #399528;
+}
+
+body {
+  background-color:white!important;
+}
+
+nav {
+  background-color: #399528;
+}
+
+.table-hover>tbody>tr:hover {
+  background-color: rgba(48, 159, 65, 0.22)!important;
+}

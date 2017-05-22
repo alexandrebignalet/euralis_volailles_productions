@@ -1,4 +1,0 @@
-[{"size":400,"type":"batiment","facilityCharges":{"warming":0.097,"chickPrice":0.328,"vetPrice":0.098,"contributions":0.12,"disinfection":0.018,"commodities":0.018,"litter":0.033,"catching":0.07,"insurances":0.034,"id":1},"id":1},
-{"size":60,"type":"cabane","facilityCharges":{"warming":0.097,"chickPrice":0.328,"vetPrice":0.098,"contributions":0.12,"disinfection":0.018,"commodities":0.018,"litter":0.033,"catching":0.07,"insurances":0.034,"id":1},"id":2},
-{"size":150,"type":"batiment","facilityCharges":{"warming":0.097,"chickPrice":0.328,"vetPrice":0.098,"contributions":0.12,"disinfection":0.018,"commodities":0.018,"litter":0.033,"catching":0.07,"insurances":0.034,"id":1},"id":3},
-{"size":400,"type":"batiment","facilityCharges":{"warming":0.097,"chickPrice":0.328,"vetPrice":0.098,"contributions":0.135,"disinfection":0.018,"commodities":0.018,"litter":0.033,"catching":0.07,"insurances":0.034,"id":2},"id":4}]

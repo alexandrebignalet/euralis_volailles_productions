@@ -39,8 +39,18 @@ const databaseSchema = [
 class DatabaseService {
     constructor() {
         this.dbName = config.db.name;
+        switch(process.env.NODE_ENV) {
+            case 'development':
+                this.db = new PouchDB(config.db.remoteUrl + this.dbName);
+                break;
+            case 'test':
+                this.db = new PouchDB(this.dbName, { skip_setup: true });
+                break;
+            default:
+                this.db = new PouchDB(this.dbName, { skip_setup: true });
+                break;
+        }
         this.remoteDb = new PouchDB(config.db.remoteUrl + this.dbName);
-        this.db = new PouchDB(this.dbName, { skip_setup: true });
         this.db.setSchema(databaseSchema);
     }
 

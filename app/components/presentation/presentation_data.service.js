@@ -1,28 +1,25 @@
-import angular from 'angular';
-import {Production} from './production';
-
 export class PresentationDataService {
-    constructor(AppDataService) {
+    constructor(ProductionDataService) {
         'ngInject';
-        this.dataService = AppDataService;
+        this.dataService = ProductionDataService;
     }
 
     getProduction(department, facilityType) {
 
-        const allProductions = this.dataService.getProductions();
+        return this.dataService.all()
+            .then((productions) => {
+                    let productionsChoosen = [];
 
-        let productions = [];
-
-        angular.forEach(allProductions, (production) => {
-
-            if ( (production.department === department || production.department === 'Others') &&
-                production.facility.type === facilityType)
-            {
-                productions.push(production);
-            }
-        });
-        return productions.map( (production) => {
-            return new Production(production);
-        });
+                    productions.forEach((production) => {
+                        if ( (production.department === department || production.department === 'Others') &&
+                            production.facility.type === facilityType)
+                        {
+                            productionsChoosen.push(production);
+                        }
+                    });
+                    
+                    return productionsChoosen;
+                }
+            );
     }
 }

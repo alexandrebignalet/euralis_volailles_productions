@@ -27,10 +27,10 @@ export const ProductionFormComponent = {
     },
     template,
     controller: class ProductionFormController {
-        constructor(AppDataService, $state){
+        constructor(ProductionDataService, $state){
             'ngInject';
 
-            this.dataService = AppDataService;
+            this.dataService = ProductionDataService;
             this.isSaving = false;
             this.currentState = $state.current.name;
             this.departments = ['Landes', 'Pyrenees', 'HautePyrenees', 'Gers', 'HauteGaronne', 'Tarn', 'LotGaronne', 'Gironde'];

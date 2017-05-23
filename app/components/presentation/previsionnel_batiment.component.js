@@ -8,15 +8,13 @@ import template from './previsionnel_batiment.html';
 
 export const PrevisionnelBatimentComponent = {
     bindings: {
-        departement: '<',
         facilityNb: '<',
-        facilityType: '@'
+        productions: '<'
     },
     template,
     controller: class PrevisionnelBatimentController {
-        constructor($scope, PresentationDataService){
+        constructor($scope){
             'ngInject';
-            this.dataService = PresentationDataService;
             this.scope = $scope;
 
             this.sliderOptions = {
@@ -36,8 +34,6 @@ export const PrevisionnelBatimentComponent = {
         }
 
         $onInit() {
-            this.productions = this.dataService.getProduction(this.departement, this.facilityType);
-
             this.scope.$watch('vm.facilityNb', () => {
                 this.update();
             });

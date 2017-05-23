@@ -1,16 +1,9 @@
 <div class="parallax"></div>
 
-<div class="container">
-    <h1 style="color:#309f41;">Batiments</h1><hr>
-    <previsionnel-batiment departement="vm.department" facility-type="batiment" facility-nb="2"></previsionnel-batiment>
+<div ng-repeat="productions in $ctrl.productions" ng-if="productions.length > 0">
+    <div class="container">
+        <h1 style="color:#309f41;" class="text-center">{{ productions[0].facility.type | uppercase }}</h1><hr>
+        <previsionnel-batiment productions="productions" facility-nb="2"></previsionnel-batiment>
+    </div>
+    <div class="parallax"></div>
 </div>
-
-<div class="parallax"></div>
-
-<div class="container">
-    <h1 style="color:#309f41;">Cabanes</h1><hr>
-
-    <previsionnel-batiment departement="vm.department" facility-type="cabane" facility-nb="8"></previsionnel-batiment>
-</div>
-
-<div class="parallax"></div>

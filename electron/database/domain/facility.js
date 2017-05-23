@@ -2,7 +2,7 @@ const FacilityCharges = require('./facility_charges');
 
 class Facility {
     /**
-     * @type int
+     * @type string
      * @param id
      *
      * @type int

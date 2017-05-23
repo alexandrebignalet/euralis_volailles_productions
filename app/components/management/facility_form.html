@@ -1,0 +1,38 @@
+<form name="facilityForm" ng-submit="vm.onSubmit()">
+    <div class="modal-header">
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('createFacility') != -1">Création d'un nouveau bâtiment.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('editFacility') != -1">Modification d'un bâtiment existant.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('removeFacility') != -1">Suppression d'un bâtiment.</h3>
+    </div>
+    <div class="modal-body" ng-if="vm.currentState.indexOf('removeFacility') == -1">
+        <div class="row">
+            <h2 class="text-center">Bâtiment</h2><hr>
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="facility_type" class="control-label">Type de bâtiment</label>
+                    <select class="form-control" id="facility_type" ng-model="vm.production.facility.type">
+                        <option ng-repeat="batimentType in vm.batimentTypes" ng-value="batimentType">{{batimentType | uppercase}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="facility_size" class="control-label">Taille des bâtiments</label>
+                    <input type="number" step="any" class="form-control" id="facility_size" name="facility_size" ng-model="vm.production.facility.size" min="0" required>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+    <div class="modal-body" ng-if="vm.currentState.indexOf('removeFacility') != -1">
+        Confirmer la suppression du {{facility.type | uppercase }} de {{facility.size}}m²
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="vm.modalInstance.close()">Annuler</button>
+        <button class="btn btn-primary" type="submit" ng-if="vm.currentState.indexOf('createFacility') != -1" ng-disabled="vm.isSaving">Créer</button>
+        <button class="btn btn-success" type="submit" ng-if="vm.currentState.indexOf('editFacility') != -1" ng-disabled="vm.isSaving">Modifier</button>
+        <button class="btn btn-danger" type="submit" ng-if="vm.currentState.indexOf('removeFacility') != -1" ng-disabled="vm.isSaving">Supprimer</button>
+    </div>
+</form>

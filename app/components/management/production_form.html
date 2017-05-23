@@ -15,20 +15,6 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="facility_type" class="control-label">Type de bâtiment</label>
-                    <select class="form-control" id="facility_type" ng-model="vm.production.facility.type">
-                        <option ng-repeat="batimentType in vm.batimentTypes" ng-value="batimentType">{{batimentType | uppercase}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="facility_size" class="control-label">Taille des bâtiments</label>
-                    <input type="number" step="any" class="form-control" id="facility_size" name="facility_size" ng-model="vm.production.facility.size" min="0" required>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
                     <label for="department" class="control-label">Département</label>
                     <select class="form-control" id="department" ng-model="vm.production.department">
                         <option ng-repeat="department in vm.departments" ng-value="department">{{department}}</option>
@@ -113,63 +99,6 @@
                 <div class="form-group">
                     <label for="chickPurchaseReduction" class="control-label">Pourcentage de réduction à l'achat de poussins</label>
                     <input type="number" step="any" class="form-control" id="chickPurchaseReduction" name="chickPurchaseReduction" ng-model="vm.production.chickPurchaseReduction" min="0" max="20" required>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <h2 class="text-center">Charges par poussin</h2><hr>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="charges_warming" class="control-label">Chauffage</label>
-                    <input type="number" step="any" class="form-control" id="charges_warming" name="charges_warming" ng-model="vm.production.facility.facilityCharges.warming" min="0" required>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="charges_chickPrice" class="control-label">Prix du poussin</label>
-                    <input type="number" step="any" class="form-control" id="charges_chickPrice" name="charges_chickPrice" ng-model="vm.production.facility.facilityCharges.chickPrice" min="0" required>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="charges_vetPrice" class="control-label">Prix des soins</label>
-                    <input type="number" step="any" class="form-control" id="charges_vetPrice" name="charges_vetPrice" ng-model="vm.production.facility.facilityCharges.vetPrice" min="0" required>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="charges_contributions" class="control-label">Cotisations</label>
-                    <input type="number" step="any" class="form-control" id="charges_contributions" name="charges_contributions" ng-model="vm.production.facility.facilityCharges.contributions" min="0" required>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="charges_disinfection" class="control-label">Désinfection</label>
-                    <input type="number" step="any" class="form-control" id="charges_disinfection" name="charges_disinfection" ng-model="vm.production.facility.facilityCharges.disinfection" min="0" required>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="charges_litter" class="control-label">Prix litière</label>
-                    <input type="number" step="any" class="form-control" id="charges_litter" name="charges_litter" ng-model="vm.production.facility.facilityCharges.litter" min="0" required>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="charges_commodities" class="control-label">Prix eau, électricité et divers</label>
-                    <input type="number" step="any" class="form-control" id="charges_commodities" name="charges_commodities" ng-model="vm.production.facility.facilityCharges.commodities" min="0" required>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="charges_catching" class="control-label">Prix de l'attrapage</label>
-                    <input type="number" step="any" class="form-control" id="charges_catching" name="charges_catching" ng-model="vm.production.facility.facilityCharges.catching" min="0" required>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="charges_insurances" class="control-label">Prix des assurances</label>
-                    <input type="number" step="any" class="form-control" id="charges_insurances" name="charges_insurances" ng-model="vm.production.facility.facilityCharges.insurances" min="0" required>
                 </div>
             </div>
         </div>

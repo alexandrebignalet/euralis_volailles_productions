@@ -60,7 +60,8 @@ gulp.task('webpack', ['clean'], (cb) => {
   });
 });
 
-gulp.task('serve', () => {
+gulp.task('serve', ['test'], () => {
+
   const config = require('./webpack.dev.config');
   config.entry.app = [
     // this modules required to make HRM working
@@ -91,7 +92,7 @@ gulp.task('serve', () => {
 });
 
 gulp.task('watch', () => {
-    gulp.watch(['./electron/database/**/*.js', './test/**/*.js'], ['test']);
+    gulp.watch(['./app/**/*.js','./electron/database/**/*.js', './test/**/*.js'], ['test', 'webpack']);
 });
 
 gulp.task('clean', (cb) => {
@@ -102,7 +103,7 @@ gulp.task('clean', (cb) => {
 });
 
 gulp.task('test', () => {
-    process.env.NODE_ENV = 'development';
+    process.env.NODE_ENV = 'test';
 
     return gulp.src(['test/**/*.js', '!test/repository.spec.js', '!test/storage.service.spec.js'], { read: false })
         .pipe(mocha({ reporter: 'spec' }))

@@ -67,7 +67,7 @@ describe('FacilityChargesRepositoryTest', () => {
 
         it('should delete a facility object in pouch', () => {
 
-            return repository.del(3)
+            return repository.del(1)
                 .then((data) => assert(data.deleted));
         });
     });

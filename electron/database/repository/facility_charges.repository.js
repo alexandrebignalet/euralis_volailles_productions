@@ -38,7 +38,8 @@ class FacilityChargesRepository extends DatabaseService {
     }
 
     del(id) {
-        return super.remove(this.entityName, id);
+        return super.find(this.entityName, id)
+            .then(({facilitiesCharges}) => super.remove(this.entityName, {id: facilitiesCharges[0].id, rev: facilitiesCharges[0].rev}));
     }
 }
 

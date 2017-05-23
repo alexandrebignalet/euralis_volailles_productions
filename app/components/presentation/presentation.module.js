@@ -20,9 +20,27 @@ export const PresentationModule = angular.module('PresentationModule', [rzModule
             .state('presentation', {
                 parent: 'components',
                 url: '/presentation/:department',
+                resolve: {
+                    productions: (FACILITIES_TYPES, PresentationDataService, $stateParams, $q) => {
+                        const deferred = $q.defer();
+
+                        let promises = [];
+                        FACILITIES_TYPES.forEach((facilityType) => {
+                            promises.push(PresentationDataService.getProduction($stateParams.department, facilityType));
+                        });
+
+                        Promise
+                            .all(promises)
+                            .then((productions) => {
+                                deferred.resolve(productions);
+                            });
+
+                        return deferred.promise;
+                    }
+                },
                 views: {
                     'content@': {
-                        template: '<presentation></presentation>',
+                        template: '<presentation productions="$resolve.productions"></presentation>',
                     }
                 }
             });

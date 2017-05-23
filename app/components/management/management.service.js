@@ -8,14 +8,12 @@ export class ManagementService {
         this.state = $state;
     }
 
-    open(component, production) {
+    open(component, resolve) {
         return this.modal.open({
             size: 'lg',
             animation: true,
             component: component,
-            resolve: {
-                production: production
-            }
+            resolve,
         }).result.then(
             () => this.state.go('^', null, {reload: true}),
             () => this.state.go('^')

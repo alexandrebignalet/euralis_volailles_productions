@@ -60,7 +60,8 @@ class ProductionRepository extends DatabaseService {
     }
 
     del(id) {
-        return super.remove(this.entityName, id);
+        return super.find(this.entityName, id)
+            .then(({productions}) => super.remove(this.entityName, {id: productions[0].id, rev: productions[0].rev}));
     }
 }
 

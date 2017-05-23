@@ -57,7 +57,8 @@ class FacilityRepository extends DatabaseService {
     }
 
     del(id) {
-        return super.remove(this.entityName, id);
+        return super.find(this.entityName, id)
+            .then(({facilities}) => super.remove(this.entityName, {id: facilities[0].id, rev: facilities[0].rev}));
     }
 }
 

@@ -76,8 +76,8 @@ class Production {
     }
 
     getTotalCosts() {
-        return this.getChicksPaid() * this.facility.charges.chickPrice +
-            this.facility.charges.getUnitPricesSum() * this.getChickNb() +
+        return this.getChicksPaid() * this.facility.facilityCharges.chickPrice +
+            this.facility.facilityCharges.getUnitPricesSum() * this.getChickNb() +
             this.getTotalFoodCost();
     }
 

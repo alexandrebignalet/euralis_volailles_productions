@@ -79,8 +79,8 @@
                     </tr>
                     <tr>
                         <th>Poussins</th>
-                        <td>{{ production.facility.charges.chickPrice }} €</td>
-                        <td>{{  production.getChicksPaid() * production.facility.charges.chickPrice | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.chickPrice }} €</td>
+                        <td>{{  production.getChicksPaid() * production.facility.facilityCharges.chickPrice | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Aliment</th>
@@ -89,46 +89,46 @@
                     </tr>
                     <tr>
                         <th>Côtisations</th>
-                        <td>{{ production.facility.charges.contributions }} €</td>
-                        <td>{{ production.facility.charges.contributions * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.contributions }} €</td>
+                        <td>{{ production.facility.facilityCharges.contributions * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <td colspan="3" rowspan="1"></td>
                     </tr>
                     <tr>
                         <th>Chauffage</th>
-                        <td>{{ production.facility.charges.warming }} €</td>
-                        <td>{{ production.facility.charges.warming * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.warming }} €</td>
+                        <td>{{ production.facility.facilityCharges.warming * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Frais vétérinaires</th>
-                        <td>{{ production.facility.charges.vetPrice }} €</td>
-                        <td>{{ production.facility.charges.vetPrice * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.vetPrice }} €</td>
+                        <td>{{ production.facility.facilityCharges.vetPrice * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Désinfection</th>
-                        <td>{{ production.facility.charges.disinfection }} €</td>
-                        <td>{{ production.facility.charges.disinfection * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.disinfection }} €</td>
+                        <td>{{ production.facility.facilityCharges.disinfection * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Eau - Electricité - Divers</th>
-                        <td>{{ production.facility.charges.commodities }} €</td>
-                        <td>{{ production.facility.charges.commodities * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.commodities }} €</td>
+                        <td>{{ production.facility.facilityCharges.commodities * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Litière</th>
-                        <td>{{ production.facility.charges.litter }} €</td>
-                        <td>{{ production.facility.charges.litter * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.litter }} €</td>
+                        <td>{{ production.facility.facilityCharges.litter * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Attrapages</th>
-                        <td>{{ production.facility.charges.catching }} €</td>
-                        <td>{{ production.facility.charges.catching * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.catching }} €</td>
+                        <td>{{ production.facility.facilityCharges.catching * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Assurances</th>
-                        <td>{{ production.facility.charges.insurances }} €</td>
-                        <td>{{ production.facility.charges.insurances * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.insurances }} €</td>
+                        <td>{{ production.facility.facilityCharges.insurances * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <td colspan="3" rowspan="1"></td>
@@ -164,44 +164,44 @@
                     </tr>
                     <tr>
                         <th>Revenu de vente moyen par tonne</th>
-                        <th>{{ production.getAvgWagesPerTon() | number:0 }}</th>
+                        <th>{{ production.getAvgWagesPerTon() | number:0 }}€</th>
                     </tr>
                     <tr>
                         <th>{{ "produit total par bande" | uppercase }}</th>
-                        <th>{{ production.getTotalWages() | number:0 }}</th>
+                        <th>{{ production.getTotalWages() | number:0 }}€</th>
                     </tr>
 
                     <tr>
                         <th>{{ "marge brute par bande" | uppercase }}</th>
-                        <th> {{ production.getBrutMargin() | number:0 }}</th>
+                        <th> {{ production.getBrutMargin() | number:0 }}€</th>
                     </tr>
                     <tr>
                         <th>par poulet MEP</th>
-                        <th>{{ production.getBrutMargin() / production.getChickNb() | number:2 }}</th>
+                        <th>{{ production.getBrutMargin() / production.getChickNb() | number:2 }}€</th>
                     </tr>
 
                     <tr>
                         <th>{{ "marge brute annuelle" | uppercase }} avec {{ production.breedingPerYear }} bandes par année</th>
-                        <th> {{ production.getAnnualBrutMargin() | number:0 }}</th>
+                        <th> {{ production.getAnnualBrutMargin() | number:0 }}€</th>
                     </tr>
                     <tr>
                         <th>Marge par m²</th>
-                        <th>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }}</th>
+                        <th>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }}€</th>
                     </tr>
                     <tr>
-                        <th>Annuité pour un investissement de {{ production.facility.getAnnuity().totalCost }}
+                        <th>Annuité pour un investissement de {{ production.facility.getAnnuity().totalCost }}€
                             sur {{ production.facility.getAnnuity().duration }} ans
                             à {{ production.facility.getAnnuity().interest }}%
                             (AREA et Aides EURALIS déduites)</th>
-                        <th>{{ production.facility.getAnnuity().value }}</th>
+                        <th>{{ production.facility.getAnnuity().value }}€</th>
                     </tr>
 
                     <tr>
                         <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>
-                        <th>{{ production.getAnnualNetMargin() | number:0 }}</th>
+                        <th>{{ production.getAnnualNetMargin() | number:0 }}€</th>
                     </tr>
                 </table>
-                <p>Temps travail: 2h/jour en moyenne</p>
+                <p>Temps travail: {{vm.facilityNb}}h/jour en moyenne</p>
             </div>
         </uib-tab>
     </uib-tabset>

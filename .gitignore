@@ -3,3 +3,4 @@ dist/
 .idea/
 euralis_volailles_db
 euralis_volailles_test_db
+electron/webapp/

@@ -1,7 +1,8 @@
 class FacilityCharges  {
-    constructor({id, warming, chickPrice, vetPrice, contributions, disinfection, commodities,
+    constructor({id, name, warming, chickPrice, vetPrice, contributions, disinfection, commodities,
                 litter, catching, insurances}) {
         this.id = id;
+        this.name = name;
         this.warming = warming;
         this.chickPrice = chickPrice;
         this.vetPrice = vetPrice;

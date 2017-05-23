@@ -42,7 +42,7 @@ describe('DatabaseServiceTest', () => {
 
     describe('crud operations test', () => {
         it('should save a facilityCharges Object', (done) => {
-            let facilityCharges = new FacilityCharges({id: 'uid9999', warming:1, chickPrice:1, vetPrice:1,
+            let facilityCharges = new FacilityCharges({id: 'uid9999', name:'toto', warming:1, chickPrice:1, vetPrice:1,
                 contributions:1, disinfection:1, commodities:1,
                 litter:1, catching:1, insurances:1});
 
@@ -61,7 +61,7 @@ describe('DatabaseServiceTest', () => {
         });
 
         it('should save a production object containing a facility Object which contains a facilityCharges object', (done) => {
-            let facilityCharges = new FacilityCharges({id: 'uid9843', warming:1, chickPrice:1, vetPrice:1,
+            let facilityCharges = new FacilityCharges({id: 'uid9843', name:'toto', warming:1, chickPrice:1, vetPrice:1,
                 contributions:1, disinfection:1, commodities:1,
                 litter:1, catching:1, insurances:1});
 

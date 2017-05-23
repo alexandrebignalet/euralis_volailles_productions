@@ -8,7 +8,7 @@ class FacilityRepository extends DatabaseService {
         this.entityName = 'facility';
     }
 
-    find(id) {
+    get(id) {
         let facilityEntity;
         return super.find(this.entityName, id)
             .then(({facilities, facilitiesCharges}) => {
@@ -18,13 +18,33 @@ class FacilityRepository extends DatabaseService {
             });
     }
 
+    getAll() {
+        let facilityEntity;
+        return super.find(this.entityName)
+            .then(({facilities, facilitiesCharges}) => {
+                return facilities.map((facility) => {
+
+                    facilityEntity = new Facility(facility);
+
+                    for( let i = 0; i  < facilitiesCharges.length ; i++) {
+                        if (facilitiesCharges[i].id === facility.facilityCharges) {
+                            facilityEntity.facilityCharges = new FacilityCharges(facilitiesCharges[i]);
+                            break;
+                        }
+                    }
+
+                    return facilityEntity;
+                });
+            });
+    }
+
     /**
      * @type Facility
      * @param facility
      * @return Promise
      */
     create(facility) {
-        return super.save(this.entityName, facility).then((facilitySaved) => this.find(facilitySaved.id));
+        return super.save(this.entityName, facility).then((facilitySaved) => this.get(facilitySaved.id));
     }
 
     update(facility) {

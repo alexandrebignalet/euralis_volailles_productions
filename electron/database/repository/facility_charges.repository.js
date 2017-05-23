@@ -7,8 +7,15 @@ class FacilityChargesRepository extends DatabaseService {
         this.entityName = 'facilityCharges';
     }
 
-    find(id) {
+    get(id) {
         return super.find(this.entityName, id).then(({facilitiesCharges}) => new FacilityCharges(facilitiesCharges[0]));
+    }
+
+    getAll() {
+        return super.find(this.entityName)
+            .then(({facilitiesCharges}) => facilitiesCharges
+                .map((facilityCharges) => new FacilityCharges(facilitiesCharges[0]))
+            );
     }
 
     /**
@@ -18,7 +25,7 @@ class FacilityChargesRepository extends DatabaseService {
      */
     create(facilityCharges) {
         return super.save(this.entityName, facilityCharges)
-            .then((facilityChargesSaved) => this.find(facilityChargesSaved.id));
+            .then((facilityChargesSaved) => this.get(facilityChargesSaved.id));
     }
 
     update(facilityCharges) {

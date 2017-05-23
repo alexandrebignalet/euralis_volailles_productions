@@ -9,7 +9,7 @@ class ProductionRepository extends DatabaseService {
         this.entityName = 'production';
     }
 
-    find(id) {
+    get(id) {
         let productionEntity;
         return super.find(this.entityName, id)
             .then(({productions, facilities, facilitiesCharges}) => {
@@ -20,13 +20,34 @@ class ProductionRepository extends DatabaseService {
             });
     }
 
+    getAll() {
+        let productionEntity;
+        return super.find(this.entityName)
+            .then(({productions, facilities, facilitiesCharges}) => {
+                return productions.map((production) => {
+                    productionEntity = new Production(production);
+                    for (let i = 0; i < facilities.length; i++) {
+                        if (production.facility === facilities[i].id) {
+                            productionEntity.facility = new Facility(facilities[i]);
+                            for (let y = 0; y < facilitiesCharges.length; y++) {
+                                if (productionEntity.facility.facilityCharges === facilitiesCharges[y].id) {
+                                    productionEntity.facility.facilityCharges = new FacilityCharges(facilitiesCharges[y]);
+                                }
+                            }
+                        }
+                    }
+                    return productionEntity;
+                });
+            });
+    }
+
     /**
      * @type Production
      * @param production
      * @return Promise
      */
     create(production) {
-        return super.save(this.entityName, production).then((productionSaved) => this.find(productionSaved.id));
+        return super.save(this.entityName, production).then((productionSaved) => this.get(productionSaved.id));
     }
 
     update(production) {

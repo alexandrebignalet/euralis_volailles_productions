@@ -21,7 +21,7 @@ describe('FacilityChargesRepositoryTest', () => {
 
     describe('crud test', () => {
         it('should save a facilityCharges object in pouch', () => {
-            let facilityCharges = new FacilityCharges({id: 1, warming:1, chickPrice:1, vetPrice:1,
+            let facilityCharges = new FacilityCharges({id: 1, name:'toto', warming:1, chickPrice:1, vetPrice:1,
                 contributions:1, disinfection:1, commodities:1,
                 litter:1, catching:1, insurances:1});
 
@@ -34,15 +34,25 @@ describe('FacilityChargesRepositoryTest', () => {
 
         it('should find a facilityCharges object in pouch', () => {
 
-            return repository.find(1)
+            return repository.get(1)
                 .then((data) => {
                     assert.instanceOf(data, FacilityCharges);
                 })
         });
 
+        it('should find all facilityCharges objects in pouch', () => {
+
+            return repository.getAll()
+                .then((data) => {
+                    data.forEach((item) => {
+                        assert.instanceOf(item, FacilityCharges);
+                    })
+                })
+        });
+
         it('should update a facilityCharges object in pouch', () => {
 
-            return repository.find(1)
+            return repository.get(1)
                 .then((facilityCharges) => {
                     facilityCharges.warming = 2000;
                     facilityCharges.chickPrice = 100;

@@ -21,8 +21,7 @@ class FacilityRepository extends DatabaseService {
     getAll() {
         let facilityEntity;
         return super.find(this.entityName)
-            .then(({facilities, facilitiesCharges}) => {
-                return facilities.map((facility) => {
+            .then(({facilities, facilitiesCharges}) => facilities.map((facility) => {
 
                     facilityEntity = new Facility(facility);
 
@@ -34,8 +33,8 @@ class FacilityRepository extends DatabaseService {
                     }
 
                     return facilityEntity;
-                });
-            });
+                })
+            );
     }
 
     /**

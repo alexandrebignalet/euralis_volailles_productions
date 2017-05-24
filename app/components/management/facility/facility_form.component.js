@@ -37,7 +37,8 @@ export const FacilityFormComponent = {
         }
 
         $onInit() {
-            this.facility = this.resolve.data;
+            this.facility = this.resolve.facility;
+            this.facilitiesCharges = this.resolve.facilitiesCharges;
         }
 
         onSubmit() {

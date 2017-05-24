@@ -14,7 +14,7 @@ class FacilityChargesRepository extends DatabaseService {
     getAll() {
         return super.find(this.entityName)
             .then(({facilitiesCharges}) => facilitiesCharges
-                .map((facilityCharges) => new FacilityCharges(facilitiesCharges[0]))
+                .map((facilityCharges) => new FacilityCharges(facilityCharges))
             );
     }
 

@@ -1,8 +1,8 @@
 import angular from 'angular';
 import {ManagementComponent} from './management.component';
-import {ProductionFormComponent} from './production_form.component';
-import {FacilityFormComponent} from './facility_form.component';
-import {FacilityChargesFormComponent} from './facility_charges_form.component';
+import {ProductionFormComponent} from './production/production_form.component';
+import {FacilityFormComponent} from './facility/facility_form.component';
+import {FacilityChargesFormComponent} from './facility_charges/facility_charges_form.component';
 import {ManagementService} from './management.service';
 import {FacilityDataService} from '../../service/facility.service';
 import {FacilityChargesDataService} from '../../service/facility_charges.service';
@@ -59,6 +59,7 @@ export const ManagementModule = angular
                 parent: 'management',
                 url: '/createFacility',
                 onEnter: ManagementService => ManagementService.open('facilityForm', {
+                    facility: {},
                     facilitiesCharges: FacilityChargesDataService => FacilityChargesDataService.all()
                 })
             })

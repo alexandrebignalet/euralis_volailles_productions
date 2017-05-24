@@ -48,7 +48,7 @@
         </thead>
         <tbody>
 
-            <tr ng-repeat-start="production in vm.productions">
+            <tr ng-repeat-start="production in $ctrl.productions">
                 <td>{{ production.name }}</td>
                 <td>{{ production.department }}</td>
                 <td>{{ production.facility.size }}m²</td>

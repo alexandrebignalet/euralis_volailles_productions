@@ -4,9 +4,5 @@ export const ManagementComponent = {
     bindings: {
         productions: '<'
     },
-    template,
-    controller: class ManagementController {
-        constructor(){};
-    },
-    controllerAs: 'vm'
+    template
 };

@@ -7,11 +7,16 @@
     <div class="modal-body" ng-if="vm.currentState.indexOf('removeFacility') == -1">
         <div class="row">
             <h2 class="text-center">Bâtiment</h2><hr>
-            <div class="col-md-3"></div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="facility_name" class="control-label">Appellation du bâtiment</label>
+                    <input type="text" minlength="0" class="form-control" name="facility_name" id="facility_name" ng-model="vm.facility.name">
+                </div>
+            </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="facility_type" class="control-label">Type de bâtiment</label>
-                    <select class="form-control" id="facility_type" ng-model="vm.production.facility.type">
+                    <select class="form-control" id="facility_type" ng-model="vm.facility.type">
                         <option ng-repeat="batimentType in vm.batimentTypes" ng-value="batimentType">{{batimentType | uppercase}}</option>
                     </select>
                 </div>
@@ -19,10 +24,17 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="facility_size" class="control-label">Taille des bâtiments</label>
-                    <input type="number" step="any" class="form-control" id="facility_size" name="facility_size" ng-model="vm.production.facility.size" min="0" required>
+                    <input type="number" step="any" class="form-control" id="facility_size" name="facility_size" ng-model="vm.facility.size" min="0" required>
                 </div>
             </div>
-            <div class="col-md-3"></div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="facility_charges" class="control-label">Grille de charges</label>
+                    <select class="form-control" id="facility_charges" ng-model="vm.facility.facilityCharges">
+                        <option ng-repeat="charges in vm.facilitiesCharges" ng-value="charges">{{charges.name | uppercase}}</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
     <div class="modal-body" ng-if="vm.currentState.indexOf('removeFacility') != -1">

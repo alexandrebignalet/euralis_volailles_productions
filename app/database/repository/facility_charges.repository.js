@@ -1,4 +1,4 @@
-const DatabaseService = require('../database.service');
+const DatabaseService = require('../database.service.js');
 const FacilityCharges = require('../domain/facility_charges');
 
 class FacilityChargesRepository extends DatabaseService {

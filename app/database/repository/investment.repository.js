@@ -1,4 +1,4 @@
-const DatabaseService = require('../database.service');
+const DatabaseService = require('../database.service.js');
 const Investment = require('../domain/investment');
 
 class InvestmentRepository extends DatabaseService {

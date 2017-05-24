@@ -1,22 +1,14 @@
 import angular from 'angular';
 import template from './previsionnel_batiment.html';
-// import img1 from '../../images/P1060933.jpg';
-// import img2 from '../../images/P1060937.jpg';
-// import img3 from '../../images/P1060971.jpg';
-// import img4 from '../../images/P1060993.jpg';
-// import img5 from '../../images/P1060999.jpg';
 
 export const PrevisionnelBatimentComponent = {
-    bindings: {
-        facilityNb: '<',
-        productions: '<'
-    },
+    bindings: { productions: '<' },
     template,
     controller: class PrevisionnelBatimentController {
         constructor($scope){
             'ngInject';
             this.scope = $scope;
-
+            this.facilityNb = 2;
             this.sliderOptions = {
                 floor: 1,
                 ceil: 20
@@ -34,6 +26,7 @@ export const PrevisionnelBatimentComponent = {
         }
 
         $onInit() {
+            if (this.productions[0].facility.type === 'cabane') { this.facilityNb = 8; }
             this.scope.$watch('vm.facilityNb', () => {
                 this.update();
             });

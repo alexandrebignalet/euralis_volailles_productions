@@ -1,4 +1,4 @@
-const DatabaseService = require('../database.service');
+const DatabaseService = require('../database.service.js');
 const Facility = require('../domain/facility');
 const Investment = require('../domain/investment');
 const FacilityCharges = require('../domain/facility_charges');
@@ -15,6 +15,9 @@ class FacilityRepository extends DatabaseService {
             .then(({facilities, facilitiesCharges, investments}) => {
                 facilityEntity = new Facility(facilities[0]);
                 facilityEntity.facilityCharges = new FacilityCharges(facilitiesCharges[0]);
+
+                if (!investments) return facilityEntity;
+
                 facilityEntity.investments = [];
                 investments.forEach((investment) => {
                     facilityEntity.investments.push(new Investment(investment))
@@ -37,6 +40,8 @@ class FacilityRepository extends DatabaseService {
                         }
                     }
 
+                    if (!investments) return facilityEntity;
+
                     facilityEntity.investments = [];
                     for( let y = 0; y < investments.length ; y++) {
                         if (facility.investments.indexOf(investments[y].id) !== -1) {
@@ -44,6 +49,7 @@ class FacilityRepository extends DatabaseService {
                             break;
                         }
                     }
+
 
                     return facilityEntity;
                 })

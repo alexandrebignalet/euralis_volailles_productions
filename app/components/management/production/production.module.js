@@ -2,6 +2,7 @@ import angular from 'angular';
 import {ProductionFormComponent} from './production_form.component';
 import {ProductionComponent} from './production.component';
 import {ProductionDataService} from './production.service';
+import './production.scss';
 
 export const ProductionModule = angular
     .module('Production', [])
@@ -24,7 +25,7 @@ export const ProductionModule = angular
             .state('production.create', {
                 parent: 'production',
                 url: '/create',
-                onEnter: ManagementService => ManagementService.open('productionForm', {
+                onEnter: ModalService => ModalService.open('productionForm', {
                     production: {},
                     facilities: FacilityDataService => FacilityDataService.all()
                 })
@@ -32,19 +33,20 @@ export const ProductionModule = angular
             .state('production.edit', {
                 parent: 'production',
                 url: '/:id/edit',
-                onEnter: (ManagementService, ProductionDataService, $stateParams) => {
+                onEnter: (ModalService, ProductionDataService, $stateParams) => {
                     'ngInject';
-                    ManagementService.open('productionForm', {
-                        production: ProductionDataService.get($stateParams.id)
+                    ModalService.open('productionForm', {
+                        production: ProductionDataService.get($stateParams.id),
+                        facilities: FacilityDataService => FacilityDataService.all()
                     });
                 }
             })
             .state('management.production.remove', {
                 parent: 'production',
                 url: '/:id/remove',
-                onEnter: (ManagementService, ProductionDataService, $stateParams) => {
+                onEnter: (ModalService, ProductionDataService, $stateParams) => {
                     'ngInject';
-                    ManagementService.open('productionForm', {
+                    ModalService.open('productionForm', {
                         production: ProductionDataService.get($stateParams.id)
                     });
                 }

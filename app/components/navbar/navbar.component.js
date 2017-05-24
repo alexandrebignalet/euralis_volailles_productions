@@ -7,11 +7,17 @@ export const NavbarComponent = {
     template,
     restrict: 'E',
     controller: class NavbarController {
-        constructor(StateHandler){
+        constructor(StateHandler, SidebarService){
             'ngInject';
             this.stateHandler = StateHandler;
             this.logo = logo;
+            this.sidebar = SidebarService;
         }
+
+        openSidebar() {
+            this.sidebar.toggle();
+        }
+
     },
     controllerAs: 'vm'
 };

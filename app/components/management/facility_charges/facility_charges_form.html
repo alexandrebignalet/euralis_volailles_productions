@@ -1,10 +1,10 @@
-<form name="facilityForm" ng-submit="vm.onSubmit()">
+<form name="facilityChargesForm" ng-submit="vm.onSubmit()">
     <div class="modal-header">
-        <h3 class="modal-title" ng-if="vm.currentState.indexOf('createFacilityCharges') != -1">Création d'une nouvelle grille de Charges Bâtiment.</h3>
-        <h3 class="modal-title" ng-if="vm.currentState.indexOf('editFacilityCharges') != -1">Modification d'une grille de Charges Bâtiment existante.</h3>
-        <h3 class="modal-title" ng-if="vm.currentState.indexOf('removeFacilityCharges') != -1">Suppression d'une grille de Charges Bâtiment.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('create') != -1">Création d'une nouvelle grille de Charges Bâtiment.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('edit') != -1">Modification d'une grille de Charges Bâtiment existante.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('remove') != -1">Suppression d'une grille de Charges Bâtiment.</h3>
     </div>
-    <div class="modal-body" ng-if="vm.currentState.indexOf('removeFacilityCharges') == -1">
+    <div class="modal-body" ng-if="vm.currentState.indexOf('remove') == -1">
         <div class="row">
             <h2 class="text-center">Charges par poussin</h2><hr>
 
@@ -74,14 +74,14 @@
             </div>
         </div>
     </div>
-    <div class="modal-body" ng-if="vm.currentState.indexOf('removeFacilityCharges') != -1">
+    <div class="modal-body" ng-if="vm.currentState.indexOf('remove') != -1">
         Confirmer la suppression du {{vm.facilityCharges.type | uppercase }} de {{vm.facilityCharges.size}}m²
     </div>
 
     <div class="modal-footer">
         <button class="btn btn-default" type="button" ng-click="vm.modalInstance.close()">Annuler</button>
-        <button class="btn btn-primary" type="submit" ng-if="vm.currentState.indexOf('createFacilityCharges') != -1" ng-disabled="vm.isSaving">Créer</button>
-        <button class="btn btn-success" type="submit" ng-if="vm.currentState.indexOf('editFacilityCharges') != -1" ng-disabled="vm.isSaving">Modifier</button>
-        <button class="btn btn-danger" type="submit" ng-if="vm.currentState.indexOf('removeFacilityCharges') != -1" ng-disabled="vm.isSaving">Supprimer</button>
+        <button class="btn btn-primary" type="submit" ng-if="vm.currentState.indexOf('create') != -1" ng-disabled="vm.isSaving || facilityChargesForm.$invalid">Créer</button>
+        <button class="btn btn-success" type="submit" ng-if="vm.currentState.indexOf('edit') != -1" ng-disabled="vm.isSaving || facilityChargesForm.$invalid">Modifier</button>
+        <button class="btn btn-danger" type="submit" ng-if="vm.currentState.indexOf('remove') != -1" ng-disabled="vm.isSaving || facilityChargesForm.$invalid">Supprimer</button>
     </div>
 </form>

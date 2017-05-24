@@ -1,44 +1,20 @@
-const FacilityCharges = require('./facility_charges');
+class Investment {
 
-class Facility {
-    /**
-     * @type string
-     * @param id
-     *
-     * @type int
-     * @param size
-     *
-     * @type string
-     * @param type
-     *
-     * @type FacilityCharges
-     * @param facilityCharges
-     */
-    constructor({id, size, type, facilityCharges}) {
+    constructor({id, masonry, facilityMoutingDeliveryPrice, equipmentMountingDeliveryPrice, diverseOptions, subsidies, helpEuralis}) {
         this.id = id;
-        this.size = size;
-        this.type = type;
-        this.facilityCharges = facilityCharges;
+        this.masonry = masonry;
+        this.facilityMoutingDeliveryPrice = facilityMoutingDeliveryPrice;
+        this.equipmentMountingDeliveryPrice = equipmentMountingDeliveryPrice;
+        this.diverseOptions = diverseOptions;
+        this.subsidies = subsidies;
+        this.helpEuralis = helpEuralis;
         this.images = [];
     }
 
-    getAnnuity() {
-        if (this.type === 'cabane') {
-            return {
-                totalCost: 63856,
-                duration: 12,
-                interest: 2.5,
-                value: 6225
-            };
-        } else {
-            return {
-                totalCost: 114401,
-                duration: 15,
-                interest: 2.5,
-                value: 9239
-            };
-        }
+    getTotal() {
+        return this.masonry + this.facilityMoutingDeliveryPrice + this.equipmentMountingDeliveryPrice -
+                this.subsidies - this.helpEuralis + this.diverseOptions;
     }
 }
 
-module.exports = Facility;
+module.exports = Investment;

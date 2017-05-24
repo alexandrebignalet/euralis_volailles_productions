@@ -1,5 +1,6 @@
 const DatabaseService = require('../database.service');
 const Facility = require('../domain/facility');
+const Investment = require('../domain/investment');
 const FacilityCharges = require('../domain/facility_charges');
 
 class FacilityRepository extends DatabaseService {
@@ -11,9 +12,14 @@ class FacilityRepository extends DatabaseService {
     get(id) {
         let facilityEntity;
         return super.find(this.entityName, id)
-            .then(({facilities, facilitiesCharges}) => {
+            .then(({facilities, facilitiesCharges, investments}) => {
                 facilityEntity = new Facility(facilities[0]);
                 facilityEntity.facilityCharges = new FacilityCharges(facilitiesCharges[0]);
+                facilityEntity.investments = [];
+                investments.forEach((investment) => {
+                    facilityEntity.investments.push(new Investment(investment))
+                });
+
                 return facilityEntity;
             });
     }
@@ -21,13 +27,20 @@ class FacilityRepository extends DatabaseService {
     getAll() {
         let facilityEntity;
         return super.find(this.entityName)
-            .then(({facilities, facilitiesCharges}) => facilities.map((facility) => {
-
+            .then(({facilities, facilitiesCharges, investments}) => facilities.map((facility) => {
                     facilityEntity = new Facility(facility);
 
                     for( let i = 0; i  < facilitiesCharges.length ; i++) {
                         if (facilitiesCharges[i].id === facility.facilityCharges) {
                             facilityEntity.facilityCharges = new FacilityCharges(facilitiesCharges[i]);
+                            break;
+                        }
+                    }
+
+                    facilityEntity.investments = [];
+                    for( let y = 0; y < investments.length ; y++) {
+                        if (facility.investments.indexOf(investments[y].id) !== -1) {
+                            facilityEntity.investments.push(new Investment(investments[y]));
                             break;
                         }
                     }
@@ -43,7 +56,7 @@ class FacilityRepository extends DatabaseService {
      * @return Promise
      */
     create(facility) {
-        return super.save(this.entityName, facility).then((facilitySaved) => this.get(facilitySaved.id));
+        return super.save(this.entityName, facility).then((facilitySaved) => this.get(facilitySaved.facilities[0].id));
     }
 
     update(facility) {

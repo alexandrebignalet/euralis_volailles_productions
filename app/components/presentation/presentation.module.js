@@ -7,14 +7,8 @@ import {PresentationComponent} from './presentation.component';
 import {PrevisionnelBatimentComponent} from './previsionnel_batiment.component';
 
 export const PresentationModule = angular.module('PresentationModule', [rzModule])
-    .config(($locationProvider, $stateProvider) => {
+    .config(($stateProvider) => {
         'ngInject';
-
-        $locationProvider.html5Mode({
-            enabled: true,
-            requireBase: false
-        });
-
 
         $stateProvider
             .state('presentation', {

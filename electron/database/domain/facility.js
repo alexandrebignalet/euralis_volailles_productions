@@ -13,12 +13,16 @@ class Facility {
      *
      * @type FacilityCharges
      * @param facilityCharges
+     *
+     * @type Array[Investments]
+     * @param investments
      */
-    constructor({id, size, type, facilityCharges}) {
+    constructor({id, size, type, facilityCharges, investments}) {
         this.id = id;
         this.size = size;
         this.type = type;
         this.facilityCharges = facilityCharges;
+        this.investments = investments;
         this.images = [];
     }
 

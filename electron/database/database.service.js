@@ -15,19 +15,24 @@ const databaseSchema = [
         singular: 'production',
         plural: 'productions',
         relations: {
-            facility: {belongsTo: 'facility'}
+            'facility': { belongsTo: 'facility' }
         }
     },
     {
         singular: 'facility',
         plural: 'facilities',
         relations: {
-            facilityCharges: {belongsTo: 'facilityCharges'}
+            'facilityCharges': { belongsTo: 'facilityCharges'},
+            'investments': { hasMany: 'investment' }
         }
     },
     {
         singular: 'facilityCharges',
         plural: 'facilitiesCharges'
+    },
+    {
+        singular: 'investment',
+        plural: 'investments'
     }
 ];
 
@@ -63,7 +68,7 @@ class DatabaseService {
     save(entityName, object) {
         return this.db.rel.save(entityName, object);
     }
-    
+
     find(entityName, id) {
         return this.db.rel.find(entityName, id);
     }
@@ -72,22 +77,9 @@ class DatabaseService {
         return this.db.rel.del(entityName, id);
     }
 
+    // it will empty the db, because we are using WebSql adapter
     destroy() {
         return this.db.destroy();
-    }
-
-    recreate() {
-        if (this.db.info) {
-            this.db.info()
-                .then(() => {
-                    console.log(`Database ${this.db.name} already exists.`);
-                })
-                .catch((err) => {
-                    console.log('created');
-                    this.db = new PouchDB(this.dbName, { skip_setup: true });
-                    this.db.setSchema(databaseSchema);
-                })
-        }
     }
 
     sync() {

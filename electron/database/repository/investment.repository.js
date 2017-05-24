@@ -1,63 +1,43 @@
 const DatabaseService = require('../database.service');
-const Facility = require('../domain/facility');
-const FacilityCharges = require('../domain/facility_charges');
+const Investment = require('../domain/investment');
 
-class FacilityRepository extends DatabaseService {
+class InvestmentRepository extends DatabaseService {
     constructor() {
         super();
-        this.entityName = 'facility';
+        this.entityName = 'investment';
     }
 
     get(id) {
-        let facilityEntity;
-        return super.find(this.entityName, id)
-            .then(({facilities, facilitiesCharges}) => {
-                facilityEntity = new Facility(facilities[0]);
-                facilityEntity.facilityCharges = new FacilityCharges(facilitiesCharges[0]);
-                return facilityEntity;
-            });
+        return this.db.rel.find(this.entityName, id).then(({investments}) => new Investment(investments[0]));
     }
 
     getAll() {
-        let facilityEntity;
-        return super.find(this.entityName)
-            .then(({facilities, facilitiesCharges}) => facilities.map((facility) => {
-                    facilityEntity = new Facility(facility);
-
-                    for( let i = 0; i  < facilitiesCharges.length ; i++) {
-                        if (facilitiesCharges[i].id === facility.facilityCharges) {
-                            facilityEntity.facilityCharges = new FacilityCharges(facilitiesCharges[i]);
-                            break;
-                        }
-                    }
-
-                    return facilityEntity;
-                })
-            );
+        return this.db.rel.find(this.entityName)
+            .then(({investments}) => investments.map( investment => new Investment(investment)));
     }
 
     /**
-     * @type Facility
-     * @param facility
+     * @type Investment
+     * @param investment
      * @return Promise
      */
-    create(facility) {
-        return super.save(this.entityName, facility).then((facilitySaved) => this.get(facilitySaved.id));
+    create(investment) {
+        return this.db.rel.save(this.entityName, investment).then((investmentSaved) => this.get(investmentSaved.id));
     }
 
-    update(facility) {
-        return super.find(this.entityName, facility.id)
-            .then((facilityFound) => {
-                facility.rev = facilityFound.facilities[0].rev;
-                return facility;
+    update(investment) {
+        return this.db.rel.find(this.entityName, investment.id)
+            .then((investmentFound) => {
+                investment.rev = investmentFound.investments[0].rev;
+                return investment;
             })
-            .then((facilityToUpdate) => this.create(facilityToUpdate))
+            .then((investmentToUpdate) => this.create(investmentToUpdate))
     }
 
     del(id) {
-        return super.find(this.entityName, id)
-            .then(({facilities}) => super.remove(this.entityName, {id: facilities[0].id, rev: facilities[0].rev}));
+        return this.db.rel.find(this.entityName, id)
+            .then(({investments}) => super.remove(this.entityName, {id: investments[0].id, rev: investments[0].rev}));
     }
 }
 
-module.exports = FacilityRepository;
+module.exports = InvestmentRepository;

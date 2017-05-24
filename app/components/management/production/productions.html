@@ -42,7 +42,10 @@
 
         <tr ng-repeat="production in $ctrl.productions">
             <td>{{ production.name }}</td>
-            <td>{{ production.department }}</td>
+            <td>
+                <span ng-if="production.department != 'Others'">{{ production.department }}</span>
+                <span ng-if="production.department == 'Others'">Tous</span>
+            </td>
             <td>{{ production.facility.size }}m²</td>
             <td>{{ production.facility.type | uppercase }}</td>
             <td class="aligntd">{{ production.chickNb }}</td>

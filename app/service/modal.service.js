@@ -1,7 +1,7 @@
 /**
  * Created by alexandre on 5/19/17.
  */
-export class ManagementService {
+export class ModalService {
     constructor($uibModal, $state){
         'ngInject';
         this.modal = $uibModal;

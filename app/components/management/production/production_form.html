@@ -15,10 +15,28 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
+                    <label for="facility" class="control-label">Bâtiment type</label>
+                    <select class="form-control" id="facility" ng-model="vm.production.facility">
+                        <option ng-repeat="facility in vm.facilities" ng-value="facility.id"
+                                ng-selected="vm.production.facility.id == facility.id">
+                            {{facility.type | uppercase}} {{facility.size}}m² {{facility.facilityCharges.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
                     <label for="department" class="control-label">Département</label>
                     <select class="form-control" id="department" ng-model="vm.production.department">
                         <option ng-repeat="department in vm.departments" ng-value="department">{{department}}</option>
+                        <option ng-value="'Others'">Tous</option>
                     </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="chickPurchaseReduction" class="control-label">Réduction achat de poussins</label>
+                    <input type="number" step="any" class="form-control" id="chickPurchaseReduction" name="chickPurchaseReduction" ng-model="vm.production.chickPurchaseReduction" min="0" max="20" required>
                 </div>
             </div>
         </div>
@@ -95,12 +113,6 @@
                     <input type="number" step="any" class="form-control" id="restraintPercent" name="restraintPercent" ng-model="vm.production.restraintPercent" min="0" max="20" required>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="chickPurchaseReduction" class="control-label">Pourcentage de réduction à l'achat de poussins</label>
-                    <input type="number" step="any" class="form-control" id="chickPurchaseReduction" name="chickPurchaseReduction" ng-model="vm.production.chickPurchaseReduction" min="0" max="20" required>
-                </div>
-            </div>
         </div>
     </div>
     <div class="modal-body" ng-if="vm.currentState.indexOf('remove') != -1">
@@ -109,8 +121,8 @@
 
     <div class="modal-footer">
         <button class="btn btn-default" type="button" ng-click="vm.modalInstance.close()">Annuler</button>
-        <button class="btn btn-primary" type="submit" ng-if="vm.currentState.indexOf('create') != -1" ng-disabled="vm.isSaving">Créer</button>
-        <button class="btn btn-success" type="submit" ng-if="vm.currentState.indexOf('edit') != -1" ng-disabled="vm.isSaving">Modifier</button>
-        <button class="btn btn-danger" type="submit" ng-if="vm.currentState.indexOf('remove') != -1" ng-disabled="vm.isSaving">Supprimer</button>
+        <button class="btn btn-primary" type="submit" ng-if="vm.currentState.indexOf('create') != -1" ng-disabled="vm.isSaving || productionForm.$invalid">Créer</button>
+        <button class="btn btn-success" type="submit" ng-if="vm.currentState.indexOf('edit') != -1" ng-disabled="vm.isSaving || productionForm.$invalid">Modifier</button>
+        <button class="btn btn-danger" type="submit" ng-if="vm.currentState.indexOf('remove') != -1" ng-disabled="vm.isSaving || productionForm.$invalid">Supprimer</button>
     </div>
 </form>

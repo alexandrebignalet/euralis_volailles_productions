@@ -27,37 +27,39 @@ export const FacilityFormComponent = {
     },
     template,
     controller: class FacilityFormController {
-        constructor(FacilityDataService, $state){
+        constructor(FacilityDataService, $state, FACILITIES_TYPES){
             'ngInject';
 
             this.dataService = FacilityDataService;
             this.isSaving = false;
             this.currentState = $state.current.name;
-            this.batimentTypes = ['batiment', 'cabane'];
+            this.batimentTypes = FACILITIES_TYPES;
         }
 
         $onInit() {
-            this.facility = this.resolve.data;
+            this.facility = this.resolve.facility;
+            this.facilitiesCharges = this.resolve.facilitiesCharges;
         }
 
         onSubmit() {
             this.isSaving = true;
-            switch(this.currentState.replace("management.", "")) {
-                case 'editFacility':
+            console.log(this.currentState);
+            switch(this.currentState.replace("facility.", "")) {
+                case 'edit':
                     this.dataService.update(this.facility).then(() => {
-                        toastr.success('a été mise à jour.', this.facility.name);
+                        toastr.success('a été mis à jour.', `${this.facility.type.toUpperCase()} ${this.facility.size}m²`);
                         this.modalInstance.close()
                     });
                     break;
-                case 'removeFacility':
+                case 'remove':
                     this.dataService.remove(this.facility).then(() => {
-                        toastr.warning('a été supprimée.', this.facility.name);
+                        toastr.warning('a été supprimé.', `${this.facility.type.toUpperCase()} ${this.facility.size}m²`);
                         this.modalInstance.close()
                     });
                     break;
-                case 'createFacility':
+                case 'create':
                     this.dataService.create(this.facility).then(() => {
-                        toastr.info('a été créée.', this.facility.name);
+                        toastr.info('a été créé.', `${this.facility.type.toUpperCase()} ${this.facility.size}m²`);
                         this.modalInstance.close()
                     });
                     break;

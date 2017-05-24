@@ -23,8 +23,7 @@ class ProductionRepository extends DatabaseService {
     getAll() {
         let productionEntity;
         return super.find(this.entityName)
-            .then(({productions, facilities, facilitiesCharges}) => {
-                return productions.map((production) => {
+            .then(({productions, facilities, facilitiesCharges}) => productions.map((production) => {
                     productionEntity = new Production(production);
                     for (let i = 0; i < facilities.length; i++) {
                         if (production.facility === facilities[i].id) {
@@ -37,8 +36,8 @@ class ProductionRepository extends DatabaseService {
                         }
                     }
                     return productionEntity;
-                });
-            });
+                })
+            );
     }
 
     /**

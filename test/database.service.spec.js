@@ -14,29 +14,25 @@ describe('DatabaseServiceTest', () => {
         databaseService = new DatabaseService();
     });
 
+    after(() => {
+        databaseService.destroy();
+    });
+
     describe('constructor test', () => {
         it('should be created with new', () => {
             assert.isNotNull(databaseService);
         });
 
-        it('should create the db if not exists yet', (done) => {
-            databaseService.db.info()
+        it('should create the db if not exists yet', () => {
+            return databaseService.db.info()
                 .then(() => assert(true))
                 .then(() => databaseService.destroy())
-                .then(() => {
-                    let newDataBaseService = new DatabaseService();
-                    return newDataBaseService.db.info()
-                })
+                .then(() => new DatabaseService().db.info())
                 .then(() => {
                     // database exists
                     assert(true);
-                    return done();
                 })
-                .catch(function (err) {
-                    console.log(err);
-                    assert(false);
-                    done();
-                });
+                .catch(() => assert(false));
         });
     });
 
@@ -164,38 +160,20 @@ describe('DatabaseServiceTest', () => {
         });
     });
 
-    describe('database destroy / create', () => {
-        it('should destroy the database', () => {
+    describe('database empty', () => {
+        it('should empty the database', () => {
             return databaseService.find('facility')
                 .then((data) => {
                     assert(data.facilities.length > 0)
                 })
                 .then(() => databaseService.destroy())
                 .then((response) => assert(response.ok))
-                .catch((err) => {
-                    console.log(err);
-                    assert(false);
-                });
-        });
-
-        it('should recreate the database', (done) => {
-            return databaseService.db.info()
-                .then(() => {
-                    assert(false);
-                })
-                .catch(() => {
-                    assert(true);
-                })
-                .then(() => databaseService.recreate())
                 .then(() => databaseService.db.info())
                 .then(() => {
-                    assert(true);
-                    done();
+                    // database is destroyed
+                    assert(false)
                 })
-                .catch(() => {
-                    assert(false);
-                    done();
-                });
+                .catch(() => assert(true));
         });
     });
 

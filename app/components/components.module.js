@@ -4,19 +4,33 @@ import {HomeModule} from './home/home.module';
 import {NavbarModule} from './navbar/navbar.module';
 import {PresentationModule} from './presentation/presentation.module';
 import {ManagementModule} from './management/management.module';
+import {ModalService} from '../service/modal.service';
+import {SidebarModule} from './sidebar/sidebar.module';
 
 export const ComponentsModule = angular.module('ComponentsModule', [
     HomeModule,
     PresentationModule,
     NavbarModule,
-    ManagementModule
+    ManagementModule,
+    SidebarModule
 ])
-    .config(($stateProvider) => {
+    .config(($stateProvider, $locationProvider) => {
         'ngInject';
+
+        $locationProvider.html5Mode({
+            enabled: true,
+            requireBase: false
+        });
+
         $stateProvider
             .state('components', {
                 parent: 'app',
-                abstract: true
+                abstract: true,
+                views: {
+                    'sidebar@': {
+                        template:'<sidebar></sidebar>'
+                    }
+                }
             });
     })
     .run(($rootScope) => {
@@ -42,4 +56,5 @@ export const ComponentsModule = angular.module('ComponentsModule', [
         //   console.log(unfoundState, fromState, fromParams);
         // });
     })
+    .service('ModalService', ModalService)
     .name;

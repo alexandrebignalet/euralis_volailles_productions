@@ -41,20 +41,20 @@ export const FacilityChargesFormComponent = {
 
         onSubmit() {
             this.isSaving = true;
-            switch(this.currentState.replace("management.", "")) {
-                case 'editFacilityCharges':
+            switch(this.currentState.replace("facility_charges.", "")) {
+                case 'edit':
                     this.dataService.update(this.facilityCharges).then(() => {
                         toastr.success('a été mise à jour.', this.facilityCharges.name);
                         this.modalInstance.close()
                     });
                     break;
-                case 'removeFacilityCharges':
+                case 'remove':
                     this.dataService.remove(this.facilityCharges).then(() => {
                         toastr.warning('a été supprimée.', this.facilityCharges.name);
                         this.modalInstance.close()
                     });
                     break;
-                case 'createFacilityCharges':
+                case 'create':
                     this.dataService.create(this.facilityCharges).then(() => {
                         toastr.info('a été créée.', this.facilityCharges.name);
                         this.modalInstance.close()

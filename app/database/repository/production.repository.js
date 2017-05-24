@@ -1,4 +1,4 @@
-const DatabaseService = require('../database.service');
+const DatabaseService = require('../database.service.js');
 const Facility = require('../domain/facility');
 const FacilityCharges = require('../domain/facility_charges');
 const Production = require('../domain/production');

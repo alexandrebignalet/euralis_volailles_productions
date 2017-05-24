@@ -1,8 +1,8 @@
 const assert = require('chai').assert;
-const Facility = require('../electron/database/domain/facility');
-const Investment = require('../electron/database/domain/investment');
-const FacilityCharges = require('../electron/database/domain/facility_charges');
-const FacilityRepository = require('../electron/database/repository/facility.repository');
+const Facility = require('../app/database/domain/facility');
+const Investment = require('../app/database/domain/investment');
+const FacilityCharges = require('../app/database/domain/facility_charges');
+const FacilityRepository = require('../app/database/repository/facility.repository');
 
 describe('FacilityRepositoryTest', () => {
     let repository;

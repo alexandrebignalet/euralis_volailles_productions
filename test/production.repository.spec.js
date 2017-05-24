@@ -1,8 +1,8 @@
 const assert = require('chai').assert;
-const FacilityCharges = require('../electron/database/domain/facility_charges');
-const Facility = require('../electron/database/domain/facility');
-const Production = require('../electron/database/domain/production');
-const ProductionRepository = require('../electron/database/repository/production.repository');
+const FacilityCharges = require('../app/database/domain/facility_charges');
+const Facility = require('../app/database/domain/facility');
+const Production = require('../app/database/domain/production');
+const ProductionRepository = require('../app/database/repository/production.repository');
 
 describe('ProductionRepositoryTest', () => {
     let repository;

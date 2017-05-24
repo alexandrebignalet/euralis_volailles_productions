@@ -3,6 +3,6 @@ import {AppModule} from './app.module';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min';
-import '../electron/renderer';
+import './renderer';
 
 angular.module('eurvolpre', [AppModule]);

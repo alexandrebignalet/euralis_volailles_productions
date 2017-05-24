@@ -7,36 +7,13 @@ export class FacilityDataService {
         }
     }
 
-    get(id) {
+    get(id) { return this.repositories.facility.get(id).then((data) => data); }
 
-        return this.repositories.facility.get(id)
-            .then((data) => data);
-    }
+    all() { return this.repositories.facility.getAll().then((data) => data); }
 
-    all() {
+    update(facility) { return this.repositories.facility.update(facility).then((data) => data); }
 
-        return this.repositories.facility.getAll()
-            .then((data) => data);
-    }
+    remove(facility) { return this.repositories.facility.del(facility.id).then((data) => data ); }
 
-    update(facility) {
-        return this.repositories
-            .facility
-            .update(facility)
-            .then((data) => data);
-    }
-
-    remove(facility) {
-        return this.repositories
-            .facility
-            .del(facility.id)
-            .then((data) => data );
-    }
-
-    create(facility) {
-        return this.repositories
-            .facility
-            .create(facility)
-            .then((data) => data);
-    }
+    create(facility) { return this.repositories.facility.create(facility).then((data) => data); }
 }

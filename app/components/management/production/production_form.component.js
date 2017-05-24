@@ -39,6 +39,7 @@ export const ProductionFormComponent = {
 
         $onInit() {
             this.production = this.resolve.production;
+            this.facilities = this.resolve.facilities;
         }
 
         onSubmit() {

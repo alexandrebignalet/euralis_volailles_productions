@@ -1,58 +1,26 @@
 import angular from 'angular';
 import {ManagementComponent} from './management.component';
-import {ProductionFormComponent} from './production/production_form.component';
 import {FacilityFormComponent} from './facility/facility_form.component';
 import {FacilityChargesFormComponent} from './facility_charges/facility_charges_form.component';
 import {ManagementService} from './management.service';
 import {FacilityDataService} from '../../service/facility.service';
 import {FacilityChargesDataService} from '../../service/facility_charges.service';
-import {ProductionDataService} from '../../service/production.service';
+import {ProductionModule} from './production/production.module';
 import './management.scss';
 
 export const ManagementModule = angular
-    .module('Management', [])
+    .module('Management', [ProductionModule])
     .config(($locationProvider, $stateProvider) => {
         'ngInject';
 
         $stateProvider
             .state('management', {
                 parent: 'components',
-                url: '/productions',
-                resolve: {
-                    productions: ProductionDataService => ProductionDataService.all()
-                },
+                url: '/management',
                 views: {
                     'content@': {
-                        template: '<management productions="$resolve.productions"></management>',
+                        template: '<management></management>',
                     }
-                }
-            })
-            .state('management.create', {
-                parent: 'management',
-                url: '/create',
-                onEnter: ManagementService => ManagementService.open('productionForm', {
-                    production: {},
-                    facilities: FacilityDataService => FacilityDataService.all()
-                })
-            })
-            .state('management.edit', {
-                parent: 'management',
-                url: '/:id/edit',
-                onEnter: (ManagementService, ProductionDataService, $stateParams) => {
-                    'ngInject';
-                    ManagementService.open('productionForm', {
-                        production: ProductionDataService.get($stateParams.id)
-                    });
-                }
-            })
-            .state('management.remove', {
-                parent: 'management',
-                url: '/:id/remove',
-                onEnter: (ManagementService, ProductionDataService, $stateParams) => {
-                    'ngInject';
-                    ManagementService.open('productionForm', {
-                        production: ProductionDataService.get($stateParams.id)
-                    });
                 }
             })
             .state('management.createFacility', {
@@ -70,12 +38,10 @@ export const ManagementModule = angular
             });
     })
     .component('management', ManagementComponent)
-    .component('productionForm', ProductionFormComponent)
     .component('facilityForm', FacilityFormComponent)
     .component('facilityChargesForm', FacilityChargesFormComponent)
     .service('ManagementService', ManagementService)
     .service('FacilityDataService', FacilityDataService)
     .service('FacilityChargesDataService', FacilityChargesDataService)
-    .service('ProductionDataService', ProductionDataService)
     .constant('FACILITIES_TYPES', ['batiment', 'cabane'])
     .name;

@@ -8,11 +8,11 @@ class InvestmentRepository extends DatabaseService {
     }
 
     get(id) {
-        return this.db.rel.find(this.entityName, id).then(({investments}) => new Investment(investments[0]));
+        return super.find(this.entityName, id).then(({investments}) => new Investment(investments[0]));
     }
 
     getAll() {
-        return this.db.rel.find(this.entityName)
+        return super.find(this.entityName)
             .then(({investments}) => investments.map( investment => new Investment(investment)));
     }
 
@@ -22,7 +22,7 @@ class InvestmentRepository extends DatabaseService {
      * @return Promise
      */
     create(investment) {
-        return this.db.rel.save(this.entityName, investment).then((investmentSaved) => this.get(investmentSaved.id));
+        return super.save(this.entityName, investment).then((investmentSaved) => this.get(investmentSaved.id));
     }
 
     update(investment) {
@@ -35,7 +35,7 @@ class InvestmentRepository extends DatabaseService {
     }
 
     del(id) {
-        return this.db.rel.find(this.entityName, id)
+        return super.find(this.entityName, id)
             .then(({investments}) => super.remove(this.entityName, {id: investments[0].id, rev: investments[0].rev}));
     }
 }

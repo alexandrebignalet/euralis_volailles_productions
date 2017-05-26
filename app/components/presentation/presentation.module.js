@@ -5,6 +5,7 @@ import 'angularjs-slider/dist/rzslider.css';
 import {PresentationDataService} from './presentation_data.service';
 import {PresentationComponent} from './presentation.component';
 import {PrevisionnelBatimentComponent} from './previsionnel_batiment.component';
+import {FileInputDirective} from '../../service/file_input.directive';
 
 export const PresentationModule = angular.module('PresentationModule', [rzModule])
     .config(($stateProvider) => {
@@ -41,5 +42,6 @@ export const PresentationModule = angular.module('PresentationModule', [rzModule
     })
     .component('presentation', PresentationComponent)
     .service('PresentationDataService', PresentationDataService)
+    .directive('fileInput', FileInputDirective)
     .component('previsionnelBatiment', PrevisionnelBatimentComponent)
     .name;

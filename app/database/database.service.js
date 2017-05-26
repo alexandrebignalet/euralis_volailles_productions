@@ -76,6 +76,19 @@ class DatabaseService {
     remove(entityName, id) {
         return this.db.rel.del(entityName, id);
     }
+    
+    addAttachments(entityName, obj, files) {
+
+        if (files.length === 0 || !files.reduce((acc, item) =>  typeof item.name == 'string', true) ) return obj;
+
+        return files.reduce((p, file) => {
+            return p.then(() => this.db.rel.putAttachment(entityName, obj, file.name, file, file.type));
+        }, Promise.resolve());
+    }
+
+    removeAttachment(entityName, obj, name) {
+        return db.rel.removeAttachment(entityName, obj, name);
+    }
 
     // it will empty the db, because we are using WebSql adapter
     destroy() {

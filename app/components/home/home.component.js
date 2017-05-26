@@ -26,6 +26,7 @@ export const HomeComponent = {
             for(let i = 0; i < 5 ; i++) {
                 this.carousel.push({id:i, image: this.images[i]})
             }
+            this.toto = [];
 
             this.selectedDepartment = '';
 
@@ -33,6 +34,7 @@ export const HomeComponent = {
                 $state.go('presentation', {department: data});
             });
         }
+
     },
     controllerAs: 'vm'
 };

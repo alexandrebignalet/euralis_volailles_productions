@@ -77,6 +77,8 @@ describe('FacilityRepositoryTest', () => {
                 .then((data) => {
                     assert.instanceOf(data, Facility);
                     assert.instanceOf(data.facilityCharges, FacilityCharges);
+                    assert.instanceOf(data.investments[0], Investment);
+                    assert(data.investments[0].masonry !== undefined);
                 })
         });
 

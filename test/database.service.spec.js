@@ -56,7 +56,7 @@ describe('DatabaseServiceTest', () => {
                 });
         });
 
-        it('should save a production object containing a facility Object which contains a facilityCharges object', (done) => {
+        it('should save a production object containing a facility Object which contains a facilityCharges object', () => {
             let facilityCharges = new FacilityCharges({id: 'uid9843', name:'toto', warming:1, chickPrice:1, vetPrice:1,
                 contributions:1, disinfection:1, commodities:1,
                 litter:1, catching:1, insurances:1});
@@ -67,7 +67,7 @@ describe('DatabaseServiceTest', () => {
                 vaccinesPrice:1, foodPrice:1, classedPrice:1, declassedPrice:1, breedingDeclassedPercent:1, restraintPercent:1,
                 chickPurchaseReduction:1, facility:3});
 
-            databaseService.save('facilityCharges', facilityCharges)
+            return databaseService.save('facilityCharges', facilityCharges)
                 .then((data) => {
                     assert(data.facilitiesCharges[0].warming === 1);
                     assert(data.facilitiesCharges[0].chickPrice === 1);
@@ -97,12 +97,10 @@ describe('DatabaseServiceTest', () => {
                 .then((data) => databaseService.find('facility', data.productions[0].facility))
                 .then((data) => {
                     assert(data.facilities[0].facilityCharges === facilityCharges.id);
-                    done();
                 })
                 .catch((err) => {
                     console.log(err);
                     assert(false);
-                    done();
                 });
         });
 

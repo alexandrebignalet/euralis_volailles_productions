@@ -26,7 +26,8 @@ export const FacilityModule = angular
                 url: '/create',
                 onEnter: ModalService => ModalService.open('facilityForm', {
                     facility: {},
-                    facilitiesCharges: FacilityChargesDataService => FacilityChargesDataService.all()
+                    facilitiesCharges: FacilityChargesDataService => FacilityChargesDataService.all(),
+                    investments: InvestmentDataService => InvestmentDataService.all()
                 })
             })
             .state('facility.edit', {
@@ -36,7 +37,8 @@ export const FacilityModule = angular
                     'ngInject';
                     ModalService.open('facilityForm', {
                         facility: FacilityDataService.get($stateParams.id),
-                        facilitiesCharges: FacilityChargesDataService => FacilityChargesDataService.all()
+                        facilitiesCharges: FacilityChargesDataService => FacilityChargesDataService.all(),
+                        investments: InvestmentDataService => InvestmentDataService.all()
                     });
                 }
             })

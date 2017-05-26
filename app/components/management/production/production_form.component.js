@@ -1,24 +1,4 @@
 import template from './production_form.html';
-import toastr from 'toastr';
-import 'toastr/toastr.scss';
-
-toastr.options = {
-    "closeButton": false,
-    "debug": false,
-    "newestOnTop": false,
-    "progressBar": true,
-    "positionClass": "toast-top-left",
-    "preventDuplicates": false,
-    "onclick": null,
-    "showDuration": "300",
-    "hideDuration": "1000",
-    "timeOut": "5000",
-    "extendedTimeOut": "1000",
-    "showEasing": "swing",
-    "hideEasing": "linear",
-    "showMethod": "fadeIn",
-    "hideMethod": "fadeOut"
-};
 
 export const ProductionFormComponent = {
     bindings: {
@@ -27,40 +7,39 @@ export const ProductionFormComponent = {
     },
     template,
     controller: class ProductionFormController {
-        constructor(ProductionDataService, $state, DEPARTMENTS){
+        constructor(ProductionDataService, $state, DEPARTMENTS, toastr){
             'ngInject';
 
             this.dataService = ProductionDataService;
             this.isSaving = false;
             this.currentState = $state.current.name;
             this.departments = DEPARTMENTS;
+            this.toastr = toastr;
         }
 
         $onInit() {
             this.production = this.resolve.production;
             this.facilities = this.resolve.facilities;
-            console.log(this.facilities);
-            console.log(this.production);
         }
 
         onSubmit() {
             this.isSaving = true;
-            switch(this.currentState.replace("management.", "")) {
+            switch(this.currentState.replace("production.", "")) {
                 case 'edit':
                     this.dataService.update(this.production).then(() => {
-                        toastr.success('a été mise à jour.', this.production.name);
+                        this.toastr.success('a été mise à jour.', this.production.name);
                         this.modalInstance.close()
                     });
                     break;
                 case 'remove':
                     this.dataService.remove(this.production).then(() => {
-                        toastr.warning('a été supprimée.', this.production.name);
+                        this.toastr.warning('a été supprimée.', this.production.name);
                         this.modalInstance.close()
                     });
                     break;
                 case 'create':
                     this.dataService.create(this.production).then(() => {
-                        toastr.info('a été créée.', this.production.name);
+                        this.toastr.info('a été créée.', this.production.name);
                         this.modalInstance.close()
                     });
                     break;
@@ -68,7 +47,6 @@ export const ProductionFormComponent = {
                     break;
             }
             this.isSaving = false;
-
         }
 
     },

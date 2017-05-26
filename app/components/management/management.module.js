@@ -2,11 +2,14 @@ import angular from 'angular';
 import {ProductionModule} from './production/production.module';
 import {FacilityChargesModule} from './facility_charges/facility_charges.module';
 import {FacilityModule} from './facility/facility.module';
+import {MultiselectDirective} from '../../service/multiselect.directive';
 
 export const ManagementModule = angular
     .module('Management', [ProductionModule, FacilityModule, FacilityChargesModule])
-    .config(($locationProvider, $stateProvider) => {
+    .config(($locationProvider, $stateProvider, $compileProvider) => {
         'ngInject';
+
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|blob):/);
 
         $stateProvider
             .state('management', {
@@ -14,5 +17,6 @@ export const ManagementModule = angular
                 abstract: true
             });
     })
+    .directive('multiselect', MultiselectDirective)
     .constant('DEPARTMENTS', ['Landes', 'Pyrenees', 'HautePyrenees', 'Gers', 'HauteGaronne', 'Tarn', 'LotGaronne', 'Gironde'])
     .name;

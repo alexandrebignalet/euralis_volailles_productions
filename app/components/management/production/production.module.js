@@ -41,7 +41,7 @@ export const ProductionModule = angular
                     });
                 }
             })
-            .state('management.production.remove', {
+            .state('production.remove', {
                 parent: 'production',
                 url: '/:id/remove',
                 onEnter: (ModalService, ProductionDataService, $stateParams) => {

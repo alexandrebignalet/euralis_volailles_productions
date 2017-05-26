@@ -24,33 +24,30 @@ export const FacilityModule = angular
             .state('facility.create', {
                 parent: 'facility',
                 url: '/create',
-                onEnter: ModalService => ModalService.open('facilityForm', {
-                    facility: {},
-                    facilitiesCharges: FacilityChargesDataService => FacilityChargesDataService.all(),
-                    investments: InvestmentDataService => InvestmentDataService.all()
-                })
+                onEnter: (FacilityChargesDataService, InvestmentDataService, ModalService) => ModalService
+                    .open('facilityForm', {
+                        facility: {},
+                        facilitiesCharges: FacilityChargesDataService.all(),
+                        investments: InvestmentDataService.all()
+                    })
             })
             .state('facility.edit', {
                 parent: 'facility',
                 url: '/:id/edit',
-                onEnter: (ModalService, FacilityDataService, $stateParams) => {
-                    'ngInject';
-                    ModalService.open('facilityForm', {
+                onEnter: (ModalService, FacilityDataService,
+                          FacilityChargesDataService, InvestmentDataService, $stateParams) => ModalService
+                    .open('facilityForm', {
                         facility: FacilityDataService.get($stateParams.id),
-                        facilitiesCharges: FacilityChargesDataService => FacilityChargesDataService.all(),
-                        investments: InvestmentDataService => InvestmentDataService.all()
-                    });
-                }
+                        facilitiesCharges: FacilityChargesDataService.all(),
+                        investments: InvestmentDataService.all()
+                    })
             })
             .state('facility.remove', {
                 parent: 'facility',
                 url: '/:id/remove',
-                onEnter: (ModalService, FacilityDataService, $stateParams) => {
-                    'ngInject';
-                    ModalService.open('facilityForm', {
+                onEnter: (ModalService, FacilityDataService, $stateParams) => ModalService.open('facilityForm', {
                         facility: FacilityDataService.get($stateParams.id)
-                    });
-                }
+                    })
             });
     })
     .component('facilityForm', FacilityFormComponent)

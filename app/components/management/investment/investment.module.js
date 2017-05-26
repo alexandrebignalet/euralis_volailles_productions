@@ -29,15 +29,15 @@ export const InvestmentModule = angular.module('InvestmentModule', [])
                 parent: 'investment',
                 url: '/:id/edit',
                 onEnter: (ModalService, InvestmentDataService, $stateParams) => ModalService.open('investmentForm', {
-                    investment: InvestmentDataService => InvestmentDataService.get($stateParams.id)
-                })
+                        investment: InvestmentDataService.get($stateParams.id)
+                    })
             })
             .state('investment.remove', {
                 parent: 'investment',
                 url: '/:id/remove',
                 onEnter: (ModalService, InvestmentDataService, $stateParams) => ModalService.open('investmentForm', {
-                    investment: InvestmentDataService => InvestmentDataService.get($stateParams.id)
-                })
+                        investment: InvestmentDataService.get($stateParams.id)
+                    })
             });
     })
     .service('InvestmentDataService', InvestmentDataService)

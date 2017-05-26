@@ -25,31 +25,26 @@ export const ProductionModule = angular
             .state('production.create', {
                 parent: 'production',
                 url: '/create',
-                onEnter: ModalService => ModalService.open('productionForm', {
+                onEnter: (ModalService, FacilityDataService) => ModalService.open('productionForm', {
                     production: {},
-                    facilities: FacilityDataService => FacilityDataService.all()
+                    facilities: FacilityDataService.all()
                 })
             })
             .state('production.edit', {
                 parent: 'production',
                 url: '/:id/edit',
-                onEnter: (ModalService, ProductionDataService, $stateParams) => {
-                    'ngInject';
-                    ModalService.open('productionForm', {
+                onEnter: (ModalService, ProductionDataService, FacilityDataService, $stateParams) => ModalService
+                    .open('productionForm', {
                         production: ProductionDataService.get($stateParams.id),
-                        facilities: FacilityDataService => FacilityDataService.all()
-                    });
-                }
+                        facilities: FacilityDataService.all()
+                    })
             })
             .state('production.remove', {
                 parent: 'production',
                 url: '/:id/remove',
-                onEnter: (ModalService, ProductionDataService, $stateParams) => {
-                    'ngInject';
-                    ModalService.open('productionForm', {
+                onEnter: (ModalService, ProductionDataService, $stateParams) => ModalService.open('productionForm', {
                         production: ProductionDataService.get($stateParams.id)
-                    });
-                }
+                    })
             });
     })
     .component('productionForm', ProductionFormComponent)

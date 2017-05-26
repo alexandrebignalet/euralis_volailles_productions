@@ -31,22 +31,18 @@ export const FacilityChargesModule = angular
             .state('facility_charges.edit', {
                 parent: 'facility_charges',
                 url: '/:id/edit',
-                onEnter: (ModalService, FacilityChargesDataService, $stateParams) => {
-                    'ngInject';
-                    ModalService.open('facilityChargesForm', {
+                onEnter: (ModalService, FacilityChargesDataService, $stateParams) => ModalService
+                    .open('facilityChargesForm', {
                         facilityCharges: FacilityChargesDataService.get($stateParams.id)
-                    });
-                }
+                    })
             })
             .state('facility_charges.remove', {
                 parent: 'facility_charges',
                 url: '/:id/remove',
-                onEnter: (ModalService, FacilityDataService, $stateParams) => {
-                    'ngInject';
-                    ModalService.open('facilityChargesForm', {
+                onEnter: (ModalService, FacilityChargesDataService, $stateParams) => ModalService
+                    .open('facilityChargesForm', {
                         facilityCharges: FacilityChargesDataService.get($stateParams.id)
-                    });
-                }
+                    })
             });
     })
     .component('facilityChargesForm', FacilityChargesFormComponent)

@@ -22,10 +22,10 @@ function initStorageFile() {
 
 function createWindow () {
 
-    if (!fs.existsSync(userDataPath)){
-        fs.mkdirSync(userDataPath);
-        initStorageFile();
-    }
+    // if (!fs.existsSync(userDataPath)){
+    //     fs.mkdirSync(userDataPath);
+    //     initStorageFile();
+    // }
     // Create the browser window.
     win = new BrowserWindow({width: 800, height: 600});
 

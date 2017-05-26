@@ -5,7 +5,9 @@ export const FileUploaderComponent = {
     bindings: { model: '=' },
     template,
     controller: class FileUploaderController {
-        constructor(FileUploader, $scope) {
+        constructor(FileUploader) {
+            'ngInject';
+
             this.uploader = new FileUploader();
             // FILTERS
 
@@ -20,6 +22,7 @@ export const FileUploaderComponent = {
         }
 
         $onInit() {
+            if (!this.model) this.model = [];
             let that = this;
             this.uploader.uploadItem = myUpload;
             // custom upload function in order to use it our way (we don't need webrequest)
@@ -77,10 +80,7 @@ export const FileUploaderComponent = {
             this.uploader.onCompleteItem = function(fileItem, response, status, headers) {
                 that.addToModel(fileItem);
             };
-            this.uploader.onCompleteAll = function() {
-
-            };
-
+            this.uploader.onCompleteAll = function() {};
         }
 
         addToModel(item) {

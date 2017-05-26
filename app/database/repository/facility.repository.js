@@ -14,15 +14,17 @@ class FacilityRepository extends DatabaseService {
         return super.find(this.entityName, id)
             .then(({facilities, facilitiesCharges, investments}) => {
                 facilityEntity = new Facility(facilities[0]);
+                
                 facilityEntity.facilityCharges = new FacilityCharges(facilitiesCharges[0]);
 
+                facilityEntity.investments = [];
+                
                 if (!investments) return facilityEntity;
 
-                facilityEntity.investments = [];
                 investments.forEach((investment) => {
                     facilityEntity.investments.push(new Investment(investment))
                 });
-
+// console.log(facilityEntity);
                 return facilityEntity;
             });
     }
@@ -40,9 +42,10 @@ class FacilityRepository extends DatabaseService {
                         }
                     }
 
+                    facilityEntity.investments = [];
+
                     if (!investments) return facilityEntity;
 
-                    facilityEntity.investments = [];
                     for( let y = 0; y < investments.length ; y++) {
                         if (facility.investments.indexOf(investments[y].id) !== -1) {
                             facilityEntity.investments.push(new Investment(investments[y]));

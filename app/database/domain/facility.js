@@ -43,6 +43,15 @@ class Facility {
             };
         }
     }
+
+    // get facilityCharges() {
+    //     return this._facilityCharges;
+    // }
+    //
+    //
+    // set facilityCharges(facilityCharges) {
+    //     this._facilityCharges = facilityCharges;
+    // }
 }
 
 module.exports = Facility;

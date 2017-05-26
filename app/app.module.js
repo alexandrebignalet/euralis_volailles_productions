@@ -1,5 +1,5 @@
 import angular from 'angular';
-import localeFr from 'angular-i18n/angular-locale_fr-fr';
+import 'angular-i18n/angular-locale_fr-fr';
 import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
 

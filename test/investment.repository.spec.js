@@ -21,7 +21,8 @@ describe('InvestmentRepositoryTest', () => {
 
     describe('crud test', () => {
         it('should save a investment object in pouch', () => {
-            let investment = new Investment({id:1, masonry:1, facilityMoutingDeliveryPrice:1,
+            let investment = new Investment({id:1, name:"toto", designation:"tata", description:"zozo", papers:10,
+                masonry:1, facilityMoutingDeliveryPrice:1,
                 equipmentMountingDeliveryPrice:1, diverseOptions:1, subsidies:1, helpEuralis:1});
 
             return repository.create(investment)

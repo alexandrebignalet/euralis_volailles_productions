@@ -7,7 +7,7 @@
     <div class="modal-body" ng-if="vm.currentState.indexOf('remove') == -1">
         <div class="row">
             <h2 class="text-center">Bâtiment</h2><hr>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="facility_type" class="control-label">Type de bâtiment</label>
                     <select class="form-control" id="facility_type" ng-model="vm.facility.type" required>
@@ -15,17 +15,25 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="facility_size" class="control-label">Taille des bâtiments</label>
                     <input type="number" step="any" class="form-control" id="facility_size" name="facility_size" ng-model="vm.facility.size" min="0" required>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="facility_charges" class="control-label">Grille de charges</label>
-                    <select class="form-control" id="facility_charges" ng-model="vm.facility.facilityCharges" required>
-                        <option ng-repeat="charges in vm.facilitiesCharges" ng-value="charges.id">{{charges.name | uppercase}}</option>
+                    <select class="form-control" id="facility_charges" ng-model="vm.facility.facilityCharges" required
+                            ng-options="charges as charges.name | uppercase for charges in vm.facilitiesCharges track by charges.id">
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="facility_investments" class="control-label">Investissements</label><br>
+                    <select class="form-control" id="facility_investments" ng-model="vm.facility.investments" required multiple multiselect
+                            ng-options="investment as investment.name | uppercase for investment in vm.investments track by investment.id">
                     </select>
                 </div>
             </div>

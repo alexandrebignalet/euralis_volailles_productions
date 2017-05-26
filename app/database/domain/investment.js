@@ -1,7 +1,12 @@
 class Investment {
 
-    constructor({id, masonry, facilityMoutingDeliveryPrice, equipmentMountingDeliveryPrice, diverseOptions, subsidies, helpEuralis}) {
+    constructor({id, name, designation, description, masonry, papers, facilityMoutingDeliveryPrice,
+                    equipmentMountingDeliveryPrice, diverseOptions, subsidies, helpEuralis}) {
         this.id = id;
+        this.name = name;
+        this.designation = designation;
+        this.description = description;
+        this.papers = papers;
         this.masonry = masonry;
         this.facilityMoutingDeliveryPrice = facilityMoutingDeliveryPrice;
         this.equipmentMountingDeliveryPrice = equipmentMountingDeliveryPrice;
@@ -12,8 +17,11 @@ class Investment {
     }
 
     getTotal() {
-        return this.masonry + this.facilityMoutingDeliveryPrice + this.equipmentMountingDeliveryPrice -
-                this.subsidies - this.helpEuralis + this.diverseOptions;
+        return this.getTotalBeforeSubsidies() - this.subsidies - this.helpEuralis + this.diverseOptions;
+    }
+
+    getTotalBeforeSubsidies() {
+        return this.masonry + this.facilityMoutingDeliveryPrice + this.equipmentMountingDeliveryPrice + this.papers;
     }
 }
 

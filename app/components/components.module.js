@@ -1,4 +1,6 @@
 import angular from 'angular';
+import toastr from 'toastr';
+import 'toastr/toastr.scss';
 
 import {HomeModule} from './home/home.module';
 import {NavbarModule} from './navbar/navbar.module';
@@ -6,13 +8,35 @@ import {PresentationModule} from './presentation/presentation.module';
 import {ManagementModule} from './management/management.module';
 import {ModalService} from '../service/modal.service';
 import {SidebarModule} from './sidebar/sidebar.module';
+import {InvestmentModule} from './management/investment/investment.module';
+
+
+
+toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-left",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+};
 
 export const ComponentsModule = angular.module('ComponentsModule', [
     HomeModule,
     PresentationModule,
     NavbarModule,
     ManagementModule,
-    SidebarModule
+    SidebarModule,
+    InvestmentModule
 ])
     .config(($stateProvider, $locationProvider) => {
         'ngInject';
@@ -57,4 +81,5 @@ export const ComponentsModule = angular.module('ComponentsModule', [
         // });
     })
     .service('ModalService', ModalService)
+    .constant('toastr', toastr)
     .name;

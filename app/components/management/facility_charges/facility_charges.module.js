@@ -4,7 +4,7 @@ import {FacilityChargesComponent} from './facility_charges.component';
 import {FacilityChargesDataService} from './facility_charges.service';
 
 export const FacilityChargesModule = angular
-    .module('FacilityCharges', [])
+    .module('FacilityChargesModule', [])
     .config(($locationProvider, $stateProvider) => {
         'ngInject';
 

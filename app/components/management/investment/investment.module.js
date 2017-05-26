@@ -2,7 +2,7 @@ import {InvestmentDataService} from './investment.service';
 import {InvestmentComponent} from './investment.component';
 import {InvestmentFormComponent} from './investment_form.component';
 
-export const InvestmentModule = angular.module('Investment', [])
+export const InvestmentModule = angular.module('InvestmentModule', [])
     .config(($stateProvider) => {
         'ngInject';
         $stateProvider

@@ -38,6 +38,10 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-2" ng-repeat="img in vm.facility.images track by img.name" thumb-images="{ file: img, height: 100 }"></div>
+        </div>
+        <file-uploader model="vm.facility.images"></file-uploader>
     </div>
     <div class="modal-body" ng-if="vm.currentState.indexOf('remove') != -1">
         Confirmer la suppression du {{vm.facility.type | uppercase }} de {{vm.facility.size}}m²

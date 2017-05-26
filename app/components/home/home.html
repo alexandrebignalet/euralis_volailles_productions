@@ -3,6 +3,11 @@
 
 <div class="bandeau">
     <div class="container">
+        <br>
+            <file-uploader model="vm.toto"></file-uploader>
+            <p ng-repeat="file in vm.toto">{{file.name}}</p>
+        <p>{{vm.toto.length}}</p>
+        <br>
 
         <div class="row" id="map">
 

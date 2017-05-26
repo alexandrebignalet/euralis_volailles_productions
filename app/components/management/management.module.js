@@ -6,8 +6,10 @@ import {MultiselectDirective} from '../../service/multiselect.directive';
 
 export const ManagementModule = angular
     .module('Management', [ProductionModule, FacilityModule, FacilityChargesModule])
-    .config(($locationProvider, $stateProvider) => {
+    .config(($locationProvider, $stateProvider, $compileProvider) => {
         'ngInject';
+
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|blob):/);
 
         $stateProvider
             .state('management', {

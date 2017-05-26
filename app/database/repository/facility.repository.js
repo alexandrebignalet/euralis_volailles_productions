@@ -13,18 +13,42 @@ class FacilityRepository extends DatabaseService {
         let facilityEntity;
         return super.find(this.entityName, id)
             .then(({facilities, facilitiesCharges, investments}) => {
+                let images = [];
+
+                if (facilities[0].attachments) {
+                    let findAttachmentsPromises = [];
+
+                    Object.keys(facilities[0].attachments).forEach((key) => {
+                        findAttachmentsPromises.push(this.db.rel.getAttachment(this.entityName, facilities[0].id, key));
+                    });
+
+                    return Promise.all(findAttachmentsPromises)
+                        .then((images) => {
+                            images.forEach((img, index) => {
+                                img.name = Object.keys(facilities[0].attachments)[index];
+                            });
+                            return {facilities, facilitiesCharges, investments, images};
+                        });
+                }
+
+                return {facilities, facilitiesCharges, investments, images}
+            })
+            .then(({facilities, facilitiesCharges, investments, images}) => {
+
                 facilityEntity = new Facility(facilities[0]);
-                
+
+                facilityEntity.images = images;
+
                 facilityEntity.facilityCharges = new FacilityCharges(facilitiesCharges[0]);
 
                 facilityEntity.investments = [];
-                
+
                 if (!investments) return facilityEntity;
 
                 investments.forEach((investment) => {
                     facilityEntity.investments.push(new Investment(investment))
                 });
-// console.log(facilityEntity);
+
                 return facilityEntity;
             });
     }
@@ -65,7 +89,16 @@ class FacilityRepository extends DatabaseService {
      * @return Promise
      */
     create(facility) {
-        return super.save(this.entityName, facility).then((facilitySaved) => this.get(facilitySaved.facilities[0].id));
+        return super.save(this.entityName, facility)
+            .then((facilitySaved) => {
+
+                    return super.addAttachments(this.entityName, {
+                            id: facilitySaved.facilities[0].id,
+                            rev: facilitySaved.facilities[0].rev
+                        }, facility.images)
+                }
+            )
+            .then((obj) => this.get(obj.id));
     }
 
     update(facility) {

@@ -25,6 +25,11 @@ export const FacilityFormComponent = {
             this.facilitiesCharges = this.resolve.facilitiesCharges;
             this.investments = this.resolve.investments;
         }
+        
+        // openImage(img) {
+        //     let imgUrl = URL.createObjectURL(img);
+        //     window.open(imgUrl);
+        // }
 
         onSubmit() {
             this.isSaving = true;

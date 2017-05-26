@@ -9,6 +9,7 @@ import {ManagementModule} from './management/management.module';
 import {ModalService} from '../service/modal.service';
 import {SidebarModule} from './sidebar/sidebar.module';
 import {InvestmentModule} from './management/investment/investment.module';
+import {FileUploaderModule} from './file_uploader/file_uploader.module';
 
 
 
@@ -36,7 +37,8 @@ export const ComponentsModule = angular.module('ComponentsModule', [
     NavbarModule,
     ManagementModule,
     SidebarModule,
-    InvestmentModule
+    InvestmentModule,
+    FileUploaderModule
 ])
     .config(($stateProvider, $locationProvider) => {
         'ngInject';

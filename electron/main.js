@@ -1,7 +1,8 @@
 const {app, BrowserWindow} = require('electron');
 const path = require('path');
 const url = require('url');
-const fs = require('fs');
+// const fs = require('fs');
+
 const electron = require('electron');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -11,14 +12,14 @@ let win;
 const storageDir = __dirname + '/database/data-files';
 const userDataPath = (electron.app || electron.remote.app).getPath('userData') + '/data-files';
 
-function initStorageFile() {
-
-    const template = path.join(storageDir, 'productions.json');
-    const userDataProductionsFilePath = path.join(userDataPath, 'productions.json');
-
-    fs.createReadStream(template)
-        .pipe(fs.createWriteStream(userDataProductionsFilePath));
-}
+// function initStorageFile() {
+//
+//     const template = path.join(storageDir, 'productions.json');
+//     const userDataProductionsFilePath = path.join(userDataPath, 'productions.json');
+//
+//     fs.createReadStream(template)
+//         .pipe(fs.createWriteStream(userDataProductionsFilePath));
+// }
 
 function createWindow () {
 
@@ -53,6 +54,10 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
+
+app.on('toto', (event,data) => {
+    console.log(event, data);
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

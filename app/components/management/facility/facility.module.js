@@ -27,8 +27,8 @@ export const FacilityModule = angular
                 onEnter: (FacilityChargesDataService, InvestmentDataService, ModalService) => ModalService
                     .open('facilityForm', {
                         facility: {},
-                        facilitiesCharges: FacilityChargesDataService.all(),
-                        investments: InvestmentDataService.all()
+                        facilitiesCharges: FacilityChargesDataService => FacilityChargesDataService.all(),
+                        investments: InvestmentDataService => InvestmentDataService.all()
                     })
             })
             .state('facility.edit', {
@@ -37,9 +37,9 @@ export const FacilityModule = angular
                 onEnter: (ModalService, FacilityDataService,
                           FacilityChargesDataService, InvestmentDataService, $stateParams) => ModalService
                     .open('facilityForm', {
-                        facility: FacilityDataService.get($stateParams.id),
-                        facilitiesCharges: FacilityChargesDataService.all(),
-                        investments: InvestmentDataService.all()
+                        facility: FacilityChargesDataService => FacilityDataService.get($stateParams.id),
+                        facilitiesCharges: FacilityChargesDataService => FacilityChargesDataService.all(),
+                        investments: InvestmentDataService => InvestmentDataService.all()
                     })
             })
             .state('facility.remove', {

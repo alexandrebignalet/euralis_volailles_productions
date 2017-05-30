@@ -24,6 +24,7 @@ class FacilityRepository extends DatabaseService {
 
                     return Promise.all(findAttachmentsPromises)
                         .then((images) => {
+                            console.log(images);
                             images.forEach((img, index) => {
                                 img.name = Object.keys(facilities[0].attachments)[index];
                             });

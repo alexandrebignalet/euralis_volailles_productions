@@ -42,6 +42,7 @@ let paths = {
 
 // use webpack.config.js to build modules
 gulp.task('webpack', ['clean'], (cb) => {
+  process.env.NODE_ENV = 'production';
   const config = require('./webpack.dist.config');
   config.entry.app = paths.entry;
 

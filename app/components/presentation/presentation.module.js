@@ -1,13 +1,14 @@
 import angular from 'angular';
 import rzModule from 'angularjs-slider';
 import 'angularjs-slider/dist/rzslider.css';
+import {ImageLoaderModule} from '../image-loader/image_loader.module';
 
 import {PresentationDataService} from './presentation_data.service';
 import {PresentationComponent} from './presentation.component';
 import {PrevisionnelBatimentComponent} from './previsionnel_batiment.component';
 import {FileInputDirective} from '../../service/file_input.directive';
 
-export const PresentationModule = angular.module('PresentationModule', [rzModule])
+export const PresentationModule = angular.module('PresentationModule', [rzModule, ImageLoaderModule])
     .config(($stateProvider) => {
         'ngInject';
 

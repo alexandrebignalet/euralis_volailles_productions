@@ -17,19 +17,25 @@ export const PrevisionnelBatimentComponent = {
             $scope.myInterval = 5000;
             $scope.noWrapSlides = false;
             $scope.active = 0;
-            this.images = ['./images/P1060933.jpg', './images/P1060937.jpg', './images/P1060971.jpg', './images/P1060993.jpg', './images/P1060999.jpg'];
+            this.images = ['./images/P1060933.jpg', './images/P1060999.jpg','./images/P1060937.jpg', './images/P1060971.jpg'];
             this.carousel = [];
-            const imgNb = 5;
-            for(let i = 0; i < 5 ; i++) {
+            this.imgNb = this.images.length;
+            for(let i = 0; i < this.images.length ; i++) {
                 this.carousel.push({id:i, image: this.images[i]})
             }
         }
 
         $onInit() {
             if (this.productions[0].facility.type === 'cabane') { this.facilityNb = 8; }
+            console.log(this.productions);
             this.scope.$watch('vm.facilityNb', () => {
                 this.update();
             });
+        }
+
+        add() {
+            this.imgNb++;
+            this.carousel.push({id:this.imgNb, image: './images/P1060993.jpg'});
         }
 
         update() {

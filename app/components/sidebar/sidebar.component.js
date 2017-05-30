@@ -8,11 +8,18 @@ export const SidebarComponent = {
     bindings: {},
     template,
     controller: class SidebarController {
-        constructor(){
+        constructor(ProductionDataService){
+            'ngInject';
+
+            this.dataService = ProductionDataService;
             this.productionLogo = productionLogo;
             this.facilityChargesLogo = facilityChargesLogo;
             this.facilityLogo = facilityLogo;
             this.investmentLogo = investmentLogo;
+        }
+
+        destroy() {
+            this.dataService.destroy();
         }
     },
     controllerAs: 'vm'

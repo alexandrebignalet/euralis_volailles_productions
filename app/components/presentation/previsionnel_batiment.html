@@ -1,13 +1,14 @@
 <div class="row" id="sliderBatiment">
     <rzslider rz-slider-model="vm.facilityNb" rz-slider-options="vm.sliderOptions"></rzslider>
-<br><br>
-    <uib-tabset active="active_production" justified="true" type="pills" class="tab-animation">
-        <uib-tab index="$index" ng-repeat="production in vm.productions"
-                 heading="{{production.name | uppercase}} ({{production.facility.size}}m²)">
-            <br><br>
-                <div class="col-lg-6 col-md-6 col-xs-12">
+</div>
+<uib-tabset active="active_production" justified="true" type="pills" class="tab-animation">
+    <uib-tab index="$index" ng-repeat="production in vm.productions"
+             heading="{{production.name | uppercase}} ({{production.facility.size}}m²)">
+        <br><br>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-xs-12">
                     <table class="table table-condensed table-hover table-responsive">
-                        <tr>
+                        <tr highlighter="production.getChickNb()">
                             <th>Nombre de poussins</th>
                             <td>{{ production.getChickNb() }}</td>
                         </tr>
@@ -59,191 +60,190 @@
                 </div>
             <div class="col-lg-6 col-md-6 col-xs-12">
                 <image-loader model="production.facility" entity-name="facility"></image-loader>
-                <image-loader model="production.facility" entity-name="investment"></image-loader>
             </div>
             <div class="col-lg-12 col-md-12 col-xs-12">
-                <h3>Charges par bande</h3>
-                <table class="table table-condensed table-hover table-responsive">
-                    <tr>
-                        <th></th>
-                        <th>Prix par poussin</th>
-                        <th>Total</th>
-                    </tr>
-                    <tr>
-                        <th>Poussins</th>
-                        <td>{{ production.facility.facilityCharges.chickPrice }} €</td>
-                        <td>{{  production.getChicksPaid() * production.facility.facilityCharges.chickPrice | number:0 }} €</td>
-                    </tr>
-                    <tr>
-                        <th>Aliment</th>
-                        <td>{{ production.foodPrice }} €</td>
-                        <td>{{ production.foodPrice * production.getChickNb() | number:0 }} €</td>
-                    </tr>
-                    <tr>
-                        <th>Côtisations</th>
-                        <td>{{ production.facility.facilityCharges.contributions }} €</td>
-                        <td>{{ production.facility.facilityCharges.contributions * production.getChickNb() | number:0 }} €</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" rowspan="1"></td>
-                    </tr>
-                    <tr>
-                        <th>Chauffage</th>
-                        <td>{{ production.facility.facilityCharges.warming }} €</td>
-                        <td>{{ production.facility.facilityCharges.warming * production.getChickNb() | number:0 }} €</td>
-                    </tr>
-                    <tr>
-                        <th>Frais vétérinaires</th>
-                        <td>{{ production.facility.facilityCharges.vetPrice }} €</td>
-                        <td>{{ production.facility.facilityCharges.vetPrice * production.getChickNb() | number:0 }} €</td>
-                    </tr>
-                    <tr>
-                        <th>Désinfection</th>
-                        <td>{{ production.facility.facilityCharges.disinfection }} €</td>
-                        <td>{{ production.facility.facilityCharges.disinfection * production.getChickNb() | number:0 }} €</td>
-                    </tr>
-                    <tr>
-                        <th>Eau - Electricité - Divers</th>
-                        <td>{{ production.facility.facilityCharges.commodities }} €</td>
-                        <td>{{ production.facility.facilityCharges.commodities * production.getChickNb() | number:0 }} €</td>
-                    </tr>
-                    <tr>
-                        <th>Litière</th>
-                        <td>{{ production.facility.facilityCharges.litter }} €</td>
-                        <td>{{ production.facility.facilityCharges.litter * production.getChickNb() | number:0 }} €</td>
-                    </tr>
-                    <tr>
-                        <th>Attrapages</th>
-                        <td>{{ production.facility.facilityCharges.catching }} €</td>
-                        <td>{{ production.facility.facilityCharges.catching * production.getChickNb() | number:0 }} €</td>
-                    </tr>
-                    <tr>
-                        <th>Assurances</th>
-                        <td>{{ production.facility.facilityCharges.insurances }} €</td>
-                        <td>{{ production.facility.facilityCharges.insurances * production.getChickNb() | number:0 }} €</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" rowspan="1"></td>
-                    </tr>
-                    <tr>
-                        <th>Charges / tête</th>
-                        <td> 0.37 €</td>
-                        <td> </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" rowspan="1"></td>
-                    </tr>
-                    <tr>
-                        <th>Total par bandes</th>
-                        <td></td>
-                        <td> {{ production.getTotalCosts() | number:0 }} €</td>
-                    </tr>
-                </table>
+            <h3>Charges par bande</h3>
+            <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
+                <tr>
+                    <th></th>
+                    <th>Prix par poussin</th>
+                    <th>Total</th>
+                </tr>
+                <tr>
+                    <th>Poussins</th>
+                    <td>{{ production.facility.facilityCharges.chickPrice }} €</td>
+                    <td>{{  production.getChicksPaid() * production.facility.facilityCharges.chickPrice | number:0 }} €</td>
+                </tr>
+                <tr>
+                    <th>Aliment</th>
+                    <td>{{ production.foodPrice }} €</td>
+                    <td>{{ production.foodPrice * production.getChickNb() | number:0 }} €</td>
+                </tr>
+                <tr>
+                    <th>Côtisations</th>
+                    <td>{{ production.facility.facilityCharges.contributions }} €</td>
+                    <td>{{ production.facility.facilityCharges.contributions * production.getChickNb() | number:0 }} €</td>
+                </tr>
+                <tr>
+                    <td colspan="3" rowspan="1"></td>
+                </tr>
+                <tr>
+                    <th>Chauffage</th>
+                    <td>{{ production.facility.facilityCharges.warming }} €</td>
+                    <td>{{ production.facility.facilityCharges.warming * production.getChickNb() | number:0 }} €</td>
+                </tr>
+                <tr>
+                    <th>Frais vétérinaires</th>
+                    <td>{{ production.facility.facilityCharges.vetPrice }} €</td>
+                    <td>{{ production.facility.facilityCharges.vetPrice * production.getChickNb() | number:0 }} €</td>
+                </tr>
+                <tr>
+                    <th>Désinfection</th>
+                    <td>{{ production.facility.facilityCharges.disinfection }} €</td>
+                    <td>{{ production.facility.facilityCharges.disinfection * production.getChickNb() | number:0 }} €</td>
+                </tr>
+                <tr>
+                    <th>Eau - Electricité - Divers</th>
+                    <td>{{ production.facility.facilityCharges.commodities }} €</td>
+                    <td>{{ production.facility.facilityCharges.commodities * production.getChickNb() | number:0 }} €</td>
+                </tr>
+                <tr>
+                    <th>Litière</th>
+                    <td>{{ production.facility.facilityCharges.litter }} €</td>
+                    <td>{{ production.facility.facilityCharges.litter * production.getChickNb() | number:0 }} €</td>
+                </tr>
+                <tr>
+                    <th>Attrapages</th>
+                    <td>{{ production.facility.facilityCharges.catching }} €</td>
+                    <td>{{ production.facility.facilityCharges.catching * production.getChickNb() | number:0 }} €</td>
+                </tr>
+                <tr>
+                    <th>Assurances</th>
+                    <td>{{ production.facility.facilityCharges.insurances }} €</td>
+                    <td>{{ production.facility.facilityCharges.insurances * production.getChickNb() | number:0 }} €</td>
+                </tr>
+                <tr>
+                    <td colspan="3" rowspan="1"></td>
+                </tr>
+                <tr>
+                    <th>Charges / tête</th>
+                    <td> 0.37 €</td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td colspan="3" rowspan="1"></td>
+                </tr>
+                <tr>
+                    <th>Total par bandes</th>
+                    <td></td>
+                    <td> {{ production.getTotalCosts() | number:0 }} €</td>
+                </tr>
+            </table>
 
-                <h3>Produit par bande</h3>
-                <table class="table table-condensed table-hover table-responsive">
-                    <tr>
-                        <th></th>
-                        <th>€</th>
-                    </tr>
-                    <tr>
-                        <th>Nombre de poulets livrés</th>
-                        <th>{{ production.getDeliveredChicks() | number:0 }}</th>
-                    </tr>
-                    <tr>
-                        <th>Nombre de poulets vendus</th>
-                        <th>{{ production.getSoldChicks() | number:0 }}</th>
-                    </tr>
-                    <tr>
-                        <th>Revenu de vente moyen par tonne</th>
-                        <th>{{ production.getAvgWagesPerTon() | number:0 }}€</th>
-                    </tr>
-                    <tr>
-                        <th>{{ "produit total par bande" | uppercase }}</th>
-                        <th>{{ production.getTotalWages() | number:0 }}€</th>
-                    </tr>
+            <h3>Produit par bande</h3>
+            <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
+                <tr>
+                    <th></th>
+                    <th>€</th>
+                </tr>
+                <tr>
+                    <th>Nombre de poulets livrés</th>
+                    <th>{{ production.getDeliveredChicks() | number:0 }}</th>
+                </tr>
+                <tr>
+                    <th>Nombre de poulets vendus</th>
+                    <th>{{ production.getSoldChicks() | number:0 }}</th>
+                </tr>
+                <tr>
+                    <th>Revenu de vente moyen par tonne</th>
+                    <th>{{ production.getAvgWagesPerTon() | number:0 }}€</th>
+                </tr>
+                <tr>
+                    <th>{{ "produit total par bande" | uppercase }}</th>
+                    <th>{{ production.getTotalWages() | number:0 }}€</th>
+                </tr>
 
-                    <tr>
-                        <th>{{ "marge brute par bande" | uppercase }}</th>
-                        <th> {{ production.getBrutMargin() | number:0 }}€</th>
-                    </tr>
-                    <tr>
-                        <th>par poulet MEP</th>
-                        <th>{{ production.getBrutMargin() / production.getChickNb() | number:2 }}€</th>
-                    </tr>
+                <tr>
+                    <th>{{ "marge brute par bande" | uppercase }}</th>
+                    <th> {{ production.getBrutMargin() | number:0 }}€</th>
+                </tr>
+                <tr>
+                    <th>par poulet MEP</th>
+                    <th>{{ production.getBrutMargin() / production.getChickNb() | number:2 }}€</th>
+                </tr>
 
-                    <tr>
-                        <th>{{ "marge brute annuelle" | uppercase }} avec {{ production.breedingPerYear }} bandes par année</th>
-                        <th> {{ production.getAnnualBrutMargin() | number:0 }}€</th>
-                    </tr>
-                    <tr>
-                        <th>Marge par m²</th>
-                        <th>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }}€</th>
-                    </tr>
-                    <tr>
-                        <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>
-                        <th>{{ production.getAnnualNetMargin() | number:0 }}€</th>
-                    </tr>
-                </table>
-                <p>Temps travail: {{vm.facilityNb}}h/jour en moyenne</p>
+                <tr>
+                    <th>{{ "marge brute annuelle" | uppercase }} avec {{ production.breedingPerYear }} bandes par année</th>
+                    <th> {{ production.getAnnualBrutMargin() | number:0 }}€</th>
+                </tr>
+                <tr>
+                    <th>Marge par m²</th>
+                    <th>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }}€</th>
+                </tr>
+                <tr>
+                    <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>
+                    <th>{{ production.getAnnualNetMargin() | number:0 }}€</th>
+                </tr>
+            </table>
+            <p>Temps travail: {{vm.facilityNb}}h/jour en moyenne</p>
 
-                <h3>Investissement</h3>
-                <table class="table table-condensed table-hover table-responsive">
-                    <tr>
-                        <th></th>
-                        <th colspan="2">{{ production.facility.investments[0].name | uppercase }}</th>
-                    </tr>
-                    <tr>
-                        <th>Désignation</th>
-                        <td ng-repeat="investment in production.facility.investments">
-                            {{ investment.designation }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Description</th>
-                        <td ng-repeat="investment in production.facility.investments">
-                            {{ investment.description }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Documents</th>
-                        <td ng-repeat="investment in production.facility.investments">
-                            {{ investment.papers }}€
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Gros oeuvre</th>
-                        <td ng-repeat="investment in production.facility.investments">
-                            {{ investment.masonry }}€
-                        </td>
-                    </tr>
+            <h3>Investissement</h3>
+            <table class="table table-condensed table-hover table-responsive">
+                <tr>
+                    <th></th>
+                    <th colspan="2">{{ production.facility.investments[0].name | uppercase }}</th>
+                </tr>
+                <tr>
+                    <th>Désignation</th>
+                    <td ng-repeat="investment in production.facility.investments">
+                        {{ investment.designation }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td ng-repeat="investment in production.facility.investments">
+                        {{ investment.description }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Documents</th>
+                    <td ng-repeat="investment in production.facility.investments">
+                        {{ investment.papers }}€
+                    </td>
+                </tr>
+                <tr>
+                    <th>Gros oeuvre</th>
+                    <td ng-repeat="investment in production.facility.investments">
+                        {{ investment.masonry }}€
+                    </td>
+                </tr>
 
-                    <tr>
-                        <th>Livraison et montage bâtiment</th>
-                        <td ng-repeat="investment in production.facility.investments">
-                            {{ investment.facilityMoutingDeliveryPrice }}€
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Subventions AREA PCAE</th>
-                        <td ng-repeat="investment in production.facility.investments">
-                            {{ investment.subsidies }}€
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Aides EURALIS Vollailes</th>
-                        <td ng-repeat="investment in production.facility.investments">
-                            {{ investment.helpEuralis }}€
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Totaux</th>
-                        <th ng-repeat="investment in production.facility.investments">
-                            {{ investment.getTotal() }}€
-                        </th>
-                    </tr>
-                </table>
-            </div>
-        </uib-tab>
-    </uib-tabset>
-</div>
+                <tr>
+                    <th>Livraison et montage bâtiment</th>
+                    <td ng-repeat="investment in production.facility.investments">
+                        {{ investment.facilityMoutingDeliveryPrice }}€
+                    </td>
+                </tr>
+                <tr>
+                    <th>Subventions AREA PCAE</th>
+                    <td ng-repeat="investment in production.facility.investments">
+                        {{ investment.subsidies }}€
+                    </td>
+                </tr>
+                <tr>
+                    <th>Aides EURALIS Vollailes</th>
+                    <td ng-repeat="investment in production.facility.investments">
+                        {{ investment.helpEuralis }}€
+                    </td>
+                </tr>
+                <tr>
+                    <th>Totaux</th>
+                    <th ng-repeat="investment in production.facility.investments">
+                        {{ investment.getTotal() }}€
+                    </th>
+                </tr>
+            </table>
+        </div>
+        </div>
+    </uib-tab>
+</uib-tabset>

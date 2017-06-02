@@ -50,3 +50,46 @@
   margin-top: 2%;
 
 }
+
+.highlight {
+  -moz-transition: all .2s ease-in;
+  -o-transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  transition: all .2s ease-in;
+  color: #a8cf3e;
+  padding: 20px;
+}
+
+.highlighted {
+  -moz-transition: all .2s ease-in;
+  -o-transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  transition: all .2s ease-in;
+}
+
+.tab-animation > .tab-content {
+  position: relative;
+}
+
+/* set animate effect */
+.tab-animation > .tab-content > .tab-pane{
+  transition: 0.4s linear opacity;
+}
+
+/* overwrite display: none and remove from document flow */
+.tab-animation > .tab-content > .tab-pane.active-remove {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: block;
+}
+
+/* opacity=0 when removing "active" class */
+.tab-animation > .tab-content > .tab-pane.active-remove-active {
+  opacity: 0;
+}
+
+/* opacity=0 when adding "active" class */
+.tab-animation > .tab-content > .tab-pane.active-add {
+  opacity: 0;
+}

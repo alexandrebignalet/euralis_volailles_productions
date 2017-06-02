@@ -11,6 +11,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import colorsSupported      from 'supports-color';
 import historyApiFallback   from 'connect-history-api-fallback';
+import karma from 'karma';
 
 let root = './';
 
@@ -61,7 +62,7 @@ gulp.task('webpack', ['clean'], (cb) => {
   });
 });
 
-gulp.task('serve', ['test'], () => {
+gulp.task('serve', () => {
 
   const config = require('./webpack.dev.config');
   config.entry.app = [
@@ -90,6 +91,8 @@ gulp.task('serve', ['test'], () => {
       webpackHotMiddleware(compiler)
     ]
   });
+
+    gulp.watch(['./app/**/*.spec.js'], ['karma', 'test']);
 });
 
 gulp.task('watch', () => {
@@ -103,10 +106,20 @@ gulp.task('clean', (cb) => {
   })
 });
 
-gulp.task('test', () => {
+const Server = karma.Server;
+
+gulp.task('karma', (done) => {
+    new Server({
+        configFile: __dirname + '/karma.conf.js'
+    },  () => {
+        done();
+    }).start();
+});
+
+gulp.task('test', ['karma'], () => {
     process.env.NODE_ENV = 'test';
 
-    return gulp.src(['test/**/*.js', '!test/repository.spec.js', '!test/storage.service.spec.js'], { read: false })
+    return gulp.src(['test/database/**/*.js'], { read: false })
         .pipe(mocha({ reporter: 'spec' }))
         .on('error', gutil.log);
 });

@@ -4,8 +4,8 @@ export class ImageLoaderService {
         this.repository = $window.repositories.production;
     }
 
-    getAttachments(entityName, model) {
-        return this.repository.getAttachments(entityName, model.id)
+    getAttachments(entityName, id) {
+        return this.repository.getAttachments(entityName, id)
             .then((data) =>  {
                 return data;
             });

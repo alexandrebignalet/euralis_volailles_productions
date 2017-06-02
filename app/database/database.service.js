@@ -133,7 +133,9 @@ class DatabaseService {
     }
 
     sync() {
-        return this.db.sync(this.remoteDb);
+        return this.remoteDb.info()
+            .then((data) => this.db.sync(this.remoteDb))
+            .catch(() => { return {ok: false}; });
     }
 }
 

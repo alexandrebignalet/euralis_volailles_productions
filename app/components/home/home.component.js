@@ -8,7 +8,6 @@ import img4 from '../../images/P1060993.jpg';
 import img5 from '../../images/P1060999.jpg';
 
 export const HomeComponent = {
-    restrict: 'E',
     bindings: {},
     template,
     controller: class HomeController {

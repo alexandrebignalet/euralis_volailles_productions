@@ -5,10 +5,10 @@ module.exports = function (config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai', 'sinon'],
+    frameworks: ['jasmine', 'mocha', 'chai', 'sinon'],
 
     // list of files/patterns to load in the browser
-    files: [{ pattern: 'spec.bundle.js', watched: false }],
+    files: ['app/**/*.spec.js'],
 
     // files to exclude
     exclude: [],
@@ -18,6 +18,7 @@ module.exports = function (config) {
       require("karma-sinon"),
       require("karma-chrome-launcher"),
       require("karma-mocha"),
+      require("karma-jasmine"),
       require("karma-mocha-reporter"),
       require("karma-sourcemap-loader"),
       require("karma-webpack")
@@ -25,16 +26,19 @@ module.exports = function (config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: { 'spec.bundle.js': ['webpack', 'sourcemap'] },
+    preprocessors: { 'app/**/*.spec.js': ['webpack'] },
 
     webpack: {
       devtool: 'inline-source-map',
       module: {
         loaders: [
-          { test: /\.js/, exclude: [/app\/lib/, /node_modules/], loader: 'babel' },
-          { test: /\.html$/, loader: 'raw' },
-          { test: /\.(scss|sass)$/, loader: 'style!css!sass' },
-          { test: /\.css$/, loader: 'style!css' }
+            { test: /\.js$/, exclude: [/node_modules/], loader: 'ng-annotate!babel'},
+            { test: /\.html$/, loader: 'raw' },
+            { test: /.(woff(2)?|eot|ttf)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=100000' },
+            { test: /\.(scss|sass)$/, loader: 'style!css!sass' },
+            { test: /\.(png|jpg|JPG|svg)/, loader: 'url-loader?limit=100000&name=images/[name].[ext]'  },
+            { test: /\.css$/, loader: 'style!css' },
+            { test: /\.json$/, loader: 'json-loader' }
         ]
       }
     },

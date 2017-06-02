@@ -21,8 +21,8 @@ export const ThumbImagesDirective = ($window) => {
             if (!helper.isFile(params.file)) return;
 
             let canvas = element.find('canvas');
-            let reader = new FileReader();
 
+            let reader = new FileReader();
             reader.onload = onLoadFile;
             reader.readAsDataURL(params.file);
 

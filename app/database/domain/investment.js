@@ -14,6 +14,31 @@ class Investment {
         this.subsidies = subsidies;
         this.helpEuralis = helpEuralis;
         this.images = [];
+        this._facilityNb = 1;
+    }
+
+    set facilityNb(nb) {
+        this._facilityNb = nb;
+    }
+
+    getMasonry() {
+        return this._facilityNb * this.masonry;
+    }
+
+    getFacilityMoutingDeliveryPrice() {
+        return this._facilityNb * this.facilityMoutingDeliveryPrice;
+    }
+
+    getEquipmentMountingDeliveryPrice() {
+        return this._facilityNb * this.equipmentMountingDeliveryPrice;
+    }
+
+    getSubsidies() {
+        return this._facilityNb * this.subsidies;
+    }
+
+    getHelpEuralis() {
+        return this._facilityNb * this.helpEuralis;
     }
 
     getTotal() {

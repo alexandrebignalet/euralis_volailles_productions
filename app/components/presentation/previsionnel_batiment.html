@@ -58,16 +58,8 @@
                     </table>
                 </div>
             <div class="col-lg-6 col-md-6 col-xs-12">
-                <div style="height: 305px">
-                    <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
-                      <div uib-slide ng-repeat="slide in vm.carousel track by slide.id" index="slide.id">
-                        <img ng-src="{{slide.image}}" style="width:100%;">
-                        <div class="carousel-caption">
-                          <h4>Slide {{slide.id}}</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <image-loader model="production.facility" entity-name="facility"></image-loader>
+                <image-loader model="production.facility" entity-name="investment"></image-loader>
             </div>
             <div class="col-lg-12 col-md-12 col-xs-12">
                 <h3>Charges par bande</h3>
@@ -189,19 +181,68 @@
                         <th>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }}€</th>
                     </tr>
                     <tr>
-                        <th>Annuité pour un investissement de {{ production.facility.getAnnuity().totalCost }}€
-                            sur {{ production.facility.getAnnuity().duration }} ans
-                            à {{ production.facility.getAnnuity().interest }}%
-                            (AREA et Aides EURALIS déduites)</th>
-                        <th>{{ production.facility.getAnnuity().value }}€</th>
-                    </tr>
-
-                    <tr>
                         <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>
                         <th>{{ production.getAnnualNetMargin() | number:0 }}€</th>
                     </tr>
                 </table>
                 <p>Temps travail: {{vm.facilityNb}}h/jour en moyenne</p>
+
+                <h3>Investissement</h3>
+                <table class="table table-condensed table-hover table-responsive">
+                    <tr>
+                        <th></th>
+                        <th colspan="2">{{ production.facility.investments[0].name | uppercase }}</th>
+                    </tr>
+                    <tr>
+                        <th>Désignation</th>
+                        <td ng-repeat="investment in production.facility.investments">
+                            {{ investment.designation }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td ng-repeat="investment in production.facility.investments">
+                            {{ investment.description }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Documents</th>
+                        <td ng-repeat="investment in production.facility.investments">
+                            {{ investment.papers }}€
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Gros oeuvre</th>
+                        <td ng-repeat="investment in production.facility.investments">
+                            {{ investment.masonry }}€
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Livraison et montage bâtiment</th>
+                        <td ng-repeat="investment in production.facility.investments">
+                            {{ investment.facilityMoutingDeliveryPrice }}€
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Subventions AREA PCAE</th>
+                        <td ng-repeat="investment in production.facility.investments">
+                            {{ investment.subsidies }}€
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Aides EURALIS Vollailes</th>
+                        <td ng-repeat="investment in production.facility.investments">
+                            {{ investment.helpEuralis }}€
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Totaux</th>
+                        <th ng-repeat="investment in production.facility.investments">
+                            {{ investment.getTotal() }}€
+                        </th>
+                    </tr>
+                </table>
             </div>
         </uib-tab>
     </uib-tabset>

@@ -22,6 +22,7 @@ class InvestmentRepository extends DatabaseService {
      * @return Promise
      */
     create(investment) {
+        console.log(investment);
         return super.save(this.entityName, investment).then((investmentSaved) => this.get(investmentSaved.id));
     }
 

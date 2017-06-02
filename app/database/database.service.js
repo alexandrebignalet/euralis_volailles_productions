@@ -5,7 +5,7 @@ if (typeof btoa === 'undefined') {
     };
 }
 
-const config = require('../electron.config');
+const config = require('./electron.config.js');
 const PouchDB = require('pouchdb-browser');
 PouchDB.plugin(require('pouchdb-adapter-node-websql'));
 PouchDB.plugin(require('relational-pouch'));
@@ -43,20 +43,30 @@ const databaseSchema = [
  */
 class DatabaseService {
     constructor() {
-        this.dbName = config.db.name;
+        this.db = null;
+        this.remoteDb = null;
+        let obj = DatabaseService.init();
+        this.db = obj.db;
+        this.remoteDb = obj.remoteDb;
+    }
+
+    static init() {
+        let db, remoteDb;
         switch(process.env.NODE_ENV) {
             case 'development':
-                this.db = new PouchDB(config.db.remoteUrl + this.dbName);
+                db = new PouchDB(config.db.remoteUrl + config.db.name);
                 break;
             case 'test':
-                this.db = new PouchDB(this.dbName, { skip_setup: true });
+                db = new PouchDB(config.db.name, { skip_setup: true });
                 break;
             default:
-                this.db = new PouchDB(this.dbName, { skip_setup: true });
+                db = new PouchDB(config.db.name, { skip_setup: true });
                 break;
         }
-        this.remoteDb = new PouchDB(config.db.remoteUrl + this.dbName);
-        this.db.setSchema(databaseSchema);
+        remoteDb = new PouchDB(config.db.remoteUrl + config.db.name);
+        db.setSchema(databaseSchema);
+
+        return {db, remoteDb};
     }
 
     /**
@@ -84,6 +94,31 @@ class DatabaseService {
         return files.reduce((p, file) => {
             return p.then(() => this.db.rel.putAttachment(entityName, obj, file.name, file, file.type));
         }, Promise.resolve());
+    }
+
+    getAttachments(entityName, id) {
+        return this.find(entityName, id)
+            .then((data) => {
+                const keys = Object.keys(data);
+                const entity = data[keys[0]][0];
+
+                if (!entity.attachments) return [];
+
+                let findAttachmentsPromises = [];
+                const attachmentsKeys = Object.keys(entity.attachments);
+
+                attachmentsKeys.forEach((key) => {
+                    findAttachmentsPromises.push(this.db.rel.getAttachment(entityName, entity.id, key));
+                });
+
+                return Promise.all(findAttachmentsPromises)
+                    .then((images) => {
+                        images.forEach((img, index) => {
+                            img.name = attachmentsKeys[index];
+                        });
+                        return images;
+                    });
+            })
     }
 
     removeAttachment(entityName, obj, name) {

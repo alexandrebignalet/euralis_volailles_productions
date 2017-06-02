@@ -7,6 +7,7 @@ import {ComponentsModule} from './components/components.module';
 import {StateHandler} from './service/state.handler';
 
 import {AppComponent} from './app.component';
+import './renderer';
 
 export const AppModule = angular.module('AppModule', [
     uiRouter,

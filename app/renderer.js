@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = 'production';
 
 const FacilityChargesRepository = require('./database/repository/facility_charges.repository');
 const FacilityRepository = require('./database/repository/facility.repository');

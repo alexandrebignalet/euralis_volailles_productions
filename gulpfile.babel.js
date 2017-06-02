@@ -5,7 +5,7 @@ import webpack  from 'webpack';
 import path     from 'path';
 import gutil    from 'gulp-util';
 import mocha    from 'gulp-mocha';
-import serve    from 'browser-sync';
+import browserSync from 'browser-sync';
 import del      from 'del';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
@@ -42,6 +42,7 @@ let paths = {
 
 // use webpack.config.js to build modules
 gulp.task('webpack', ['clean'], (cb) => {
+  process.env.NODE_ENV = 'production';
   const config = require('./webpack.dist.config');
   config.entry.app = paths.entry;
 
@@ -72,7 +73,7 @@ gulp.task('serve', ['test'], () => {
 
   var compiler = webpack(config);
 
-  serve({
+  browserSync({
     port: process.env.PORT || 3000,
     open: false,
     server: {baseDir: root},

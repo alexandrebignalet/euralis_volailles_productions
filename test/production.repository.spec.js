@@ -1,6 +1,7 @@
 const assert = require('chai').assert;
 const FacilityCharges = require('../app/database/domain/facility_charges');
 const Facility = require('../app/database/domain/facility');
+const Investment = require('../app/database/domain/investment');
 const Production = require('../app/database/domain/production');
 const ProductionRepository = require('../app/database/repository/production.repository');
 
@@ -26,14 +27,18 @@ describe('ProductionRepositoryTest', () => {
             let facilityCharges = new FacilityCharges({id: 1, name:'toto', warming:1, chickPrice:1, vetPrice:1,
                 contributions:1, disinfection:1, commodities:1,
                 litter:1, catching:1, insurances:1});
+            let investment = new Investment({id:1, name:"toto", designation:"tata", description:"zozo", papers:10,
+                masonry:1, facilityMoutingDeliveryPrice:1,
+                equipmentMountingDeliveryPrice:1, diverseOptions:1, subsidies:1, helpEuralis:1});
 
-            let facility = new Facility({id:1, size:1000, type:`jean`, facilityCharges: 1});
+            let facility = new Facility({id:1, size:1000, type:`jean`, facilityCharges: 1, investments:[investment]});
             let production = new Production({id:1, department:`gironde`, name:`toto`, chickNb:1, avgWeight:1, age:1,
                 breedingPerYear:1, consumptionIndex:1, mortalityPercent:1, vaccinesPrice:1, foodPrice:1, classedPrice:1,
                 declassedPrice:1, breedingDeclassedPercent:1, restraintPercent:1,
                 chickPurchaseReduction:1, facility:1});
 
             return repository.save('facilityCharges', facilityCharges)
+                .then(() => repository.save('investment', investment))
                 .then(() => repository.save('facility', facility))
                 .then(() => repository.create(production))
                 .then((data) => {

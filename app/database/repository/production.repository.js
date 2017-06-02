@@ -1,6 +1,7 @@
 const DatabaseService = require('../database.service.js');
 const Facility = require('../domain/facility');
 const FacilityCharges = require('../domain/facility_charges');
+const Investment = require('../domain/investment');
 const Production = require('../domain/production');
 
 class ProductionRepository extends DatabaseService {
@@ -23,7 +24,7 @@ class ProductionRepository extends DatabaseService {
     getAll() {
         let productionEntity;
         return super.find(this.entityName)
-            .then(({productions, facilities, facilitiesCharges}) => productions.map((production) => {
+            .then(({productions, facilities, facilitiesCharges, investments}) => productions.map((production) => {
                     productionEntity = new Production(production);
                     for (let i = 0; i < facilities.length; i++) {
                         if (production.facility === facilities[i].id) {
@@ -32,6 +33,11 @@ class ProductionRepository extends DatabaseService {
                                 if (productionEntity.facility.facilityCharges === facilitiesCharges[y].id) {
                                     productionEntity.facility.facilityCharges = new FacilityCharges(facilitiesCharges[y]);
                                 }
+                            }
+                            productionEntity.facility.investments = [];
+                            for ( let j= 0; j < investments.length; j++) {
+                                let index = facilities[i].investments.indexOf(investments[j].id);
+                                if (index !== -1) productionEntity.facility.investments.push(new Investment(investments[index]));
                             }
                         }
                     }

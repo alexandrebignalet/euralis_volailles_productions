@@ -127,7 +127,9 @@ class DatabaseService {
 
     // it will empty the db, because we are using WebSql adapter
     destroy() {
-        return this.db.destroy();
+        return this.db.info()
+            .then((data) => this.db.destroy())
+            .catch(() => { return {ok: true}; });
     }
 
     sync() {

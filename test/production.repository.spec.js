@@ -63,6 +63,9 @@ describe('ProductionRepositoryTest', () => {
                 .then((data) => {
                     data.forEach((item) => {
                         assert.instanceOf(item, Production);
+                        assert.instanceOf(item.facility, Facility);
+                        assert.instanceOf(item.facility.facilityCharges, FacilityCharges);
+                        assert.instanceOf(item.facility.investments[0], Investment);
                     })
                 })
         });

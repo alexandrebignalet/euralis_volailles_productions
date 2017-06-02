@@ -27,7 +27,6 @@ export const PrevisionnelBatimentComponent = {
 
         $onInit() {
             if (this.productions[0].facility.type === 'cabane') { this.facilityNb = 8; }
-            console.log(this.productions);
             this.scope.$watch('vm.facilityNb', () => {
                 this.update();
             });

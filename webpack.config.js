@@ -7,7 +7,7 @@ module.exports = {
   entry: {},
   module: {
     loaders: [
-        { test: /\.js$/, exclude: [/app\/lib/, /node_modules/], loader: 'ng-annotate!transform-loader?brfs!babel'},
+        { test: /\.js$/, exclude: [/node_modules/], loader: 'ng-annotate!babel'},
         { test: /\.html$/, loader: 'raw' },
         { test: /.(woff(2)?|eot|ttf)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=100000' },
         { test: /\.(scss|sass)$/, loader: 'style!css!sass' },
@@ -23,7 +23,8 @@ module.exports = {
     }
   },
   externals: [
-      // 'leveldown'  // <- Add here
+      'leveldown',
+      'sqlite3'// <- Add here
   ],
   plugins: [
     new webpack.ProvidePlugin({

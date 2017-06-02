@@ -1,7 +1,6 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
 const url = require('url');
-// const fs = require('fs');
 
 const electron = require('electron');
 
@@ -12,14 +11,12 @@ let win;
 const storageDir = __dirname + '/database/data-files';
 const userDataPath = (electron.app || electron.remote.app).getPath('userData') + '/data-files';
 
-// function initStorageFile() {
-//
-//     const template = path.join(storageDir, 'productions.json');
-//     const userDataProductionsFilePath = path.join(userDataPath, 'productions.json');
-//
-//     fs.createReadStream(template)
-//         .pipe(fs.createWriteStream(userDataProductionsFilePath));
-// }
+ipcMain.on('async', (event, arg) => {
+    // Print 1
+    console.log(arg);
+    // Reply on async message from renderer process
+    event.sender.send('async-reply', 2);
+});
 
 function createWindow () {
 
@@ -28,11 +25,11 @@ function createWindow () {
     //     initStorageFile();
     // }
     // Create the browser window.
-    win = new BrowserWindow({width: 800, height: 600});
+    win = new BrowserWindow({width: 800, height: 600, webPreferences: { nodeIntegration: true }});
 
     // and load the index.html of the app.
     win.loadURL(url.format({
-        pathname: path.join(__dirname, 'webapp/index.html'),
+        pathname: path.resolve(__dirname, 'index.html'),
         protocol: 'file:',
         slashes: true
     }));

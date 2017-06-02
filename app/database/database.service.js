@@ -5,7 +5,7 @@ if (typeof btoa === 'undefined') {
     };
 }
 
-const config = require('../electron.config');
+const config = require('./electron.config.js');
 const PouchDB = require('pouchdb-browser');
 PouchDB.plugin(require('pouchdb-adapter-node-websql'));
 PouchDB.plugin(require('relational-pouch'));

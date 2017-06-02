@@ -7,8 +7,7 @@ export class ImageLoaderService {
     getAttachments(entityName, model) {
         return this.repository.getAttachments(entityName, model.id)
             .then((data) =>  {
-            console.log(data);
-            return data;
+                return data;
             });
     }
 }

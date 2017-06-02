@@ -88,6 +88,7 @@ export const FileUploaderComponent = {
             for (let i = 0 ; i < this.model.length ; i++) {
                 if ( this.model[i].name === item._file.name ) exists = true;
             }
+
             if (!exists) this.model.push(item._file);
         }
     },

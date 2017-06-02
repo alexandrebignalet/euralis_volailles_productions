@@ -1,6 +1,6 @@
 
 export class ProductionDataService {
-    constructor($window, $location, init, $state) {
+    constructor($window, $location, $state) {
         'ngInject';
         if ($window.repositories) {
             this.repositories = $window.repositories;
@@ -8,7 +8,7 @@ export class ProductionDataService {
         this.location = $location;
         this.window = $window;
         this.state = $state;
-        this.init = init;
+        // this.init = init;
     }
 
     get(id) { return this.repositories.production.get(id).then((data) => data); }
@@ -24,7 +24,7 @@ export class ProductionDataService {
     destroy() {
         this.repositories.production.db.destroy()
             .then(() => {
-                this.init();
+                // this.init();
             });
     }
 }

@@ -4,6 +4,7 @@ import facilityChargesLogo from '../../images/facility_charges_logo.png';
 import facilityLogo from '../../images/facility_logo.png';
 import investmentLogo from '../../images/investment_logo.png';
 
+
 export const SidebarComponent = {
     bindings: {},
     template,
@@ -16,10 +17,16 @@ export const SidebarComponent = {
             this.facilityChargesLogo = facilityChargesLogo;
             this.facilityLogo = facilityLogo;
             this.investmentLogo = investmentLogo;
+            this.password = '';
+            this.destroyAsk = false;
         }
 
         destroy() {
             this.dataService.destroy();
+        }
+
+        sync() {
+            this.dataService.sync();
         }
     },
     controllerAs: 'vm'

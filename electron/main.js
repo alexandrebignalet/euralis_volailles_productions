@@ -8,22 +8,8 @@ const electron = require('electron');
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
-const storageDir = __dirname + '/database/data-files';
-const userDataPath = (electron.app || electron.remote.app).getPath('userData') + '/data-files';
-
-ipcMain.on('async', (event, arg) => {
-    // Print 1
-    console.log(arg);
-    // Reply on async message from renderer process
-    event.sender.send('async-reply', 2);
-});
-
 function createWindow () {
 
-    // if (!fs.existsSync(userDataPath)){
-    //     fs.mkdirSync(userDataPath);
-    //     initStorageFile();
-    // }
     // Create the browser window.
     win = new BrowserWindow({width: 800, height: 600, webPreferences: { nodeIntegration: true }});
 
@@ -51,10 +37,6 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
-
-app.on('toto', (event,data) => {
-    console.log(event, data);
-});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

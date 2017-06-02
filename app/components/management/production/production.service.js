@@ -8,7 +8,6 @@ export class ProductionDataService {
         this.location = $location;
         this.window = $window;
         this.state = $state;
-        // this.init = init;
     }
 
     get(id) { return this.repositories.production.get(id).then((data) => data); }
@@ -22,9 +21,18 @@ export class ProductionDataService {
     create(production) { return this.repositories.production.create(production).then((data) => data); }
 
     destroy() {
-        this.repositories.production.db.destroy()
-            .then(() => {
-                // this.init();
+        this.repositories.production.destroy()
+            .then((data) => {
+                if (data.ok) alert('\nDatabase destroyed, you can reload the app.\n');
+            })
+            .catch(() => console.log('fail'));
+    }
+
+    sync() {
+        return this.repositories.production.sync()
+            .then((data) => {
+                if (data.ok && data.ok === false) return alert('\nVous devez être connecté à l\'internet pour synchroniser votre appli.\n');
+                this.state.go('home', null, {reload:true});
             });
     }
 }

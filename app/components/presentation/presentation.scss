@@ -93,3 +93,7 @@
 .tab-animation > .tab-content > .tab-pane.active-add {
   opacity: 0;
 }
+
+.table-hover>tbody>tr.no-hover-invest:hover {
+  background-color: white!important;
+}

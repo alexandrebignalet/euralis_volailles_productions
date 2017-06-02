@@ -14,9 +14,31 @@ class ProductionRepository extends DatabaseService {
         let productionEntity;
         return super.find(this.entityName, id)
             .then(({productions, facilities, facilitiesCharges}) => {
+                let images = [];
+
+                if (productions[0].attachments) {
+                    let findAttachmentsPromises = [];
+
+                    Object.keys(productions[0].attachments).forEach((key) => {
+                        findAttachmentsPromises.push(this.db.rel.getAttachment(this.entityName, productions[0].id, key));
+                    });
+
+                    return Promise.all(findAttachmentsPromises)
+                        .then((images) => {
+                            images.forEach((img, index) => {
+                                img.name = Object.keys(productions[0].attachments)[index];
+                            });
+                            return {productions, facilities, facilitiesCharges, images};
+                        });
+                }
+
+                return {productions, facilities, facilitiesCharges, images}
+            })
+            .then(({productions, facilities, facilitiesCharges, images}) => {
                 productionEntity = new Production(productions[0]);
                 productionEntity.facility = new Facility(facilities[0]);
                 productionEntity.facility.facilityCharges = new FacilityCharges(facilitiesCharges[0]);
+                productionEntity.images = images;
                 return productionEntity;
             });
     }
@@ -52,7 +74,16 @@ class ProductionRepository extends DatabaseService {
      * @return Promise
      */
     create(production) {
-        return super.save(this.entityName, production).then((productionSaved) => this.get(productionSaved.id));
+        return super.save(this.entityName, production)
+            .then((productionSaved) => {
+
+                    return super.addAttachments(this.entityName, {
+                        id: productionSaved.productions[0].id,
+                        rev: productionSaved.productions[0].rev
+                    }, production.images)
+                }
+            )
+            .then((obj) => this.get(obj.id));
     }
 
     update(production) {

@@ -20,8 +20,7 @@
             <th class="col-md-2 text-center">Taille</th>
             <th class="col-md-2 text-center">Type</th>
             <th class="col-md-2 text-center">Grille de charges</th>
-
-            <th class="col-md-3 text-center">Détails</th>
+            <th class="col-md-2 text-center">Investissements</th>
             <th class="col-md-3 text-center">Modifier/Supprimer</th>
         </tr>
         </thead>
@@ -31,14 +30,18 @@
             <td class="col-md-2 text-center">{{ facility.size }}m²</td>
             <td class="col-md-2 text-center">{{ facility.type | uppercase }}</td>
             <td class="col-md-2 text-center">
-                <a ui-sref="facilityCharges">
+                <a ui-sref="facility_charges">
                 {{ facility.facilityCharges.name | uppercase }}
                 </a>
             </td>
-            <td class="col-md-3 text-center">
-                <div class="dropdown">
-                    <button class="btn btn-info" type="button">Détails</button>
-                </div>
+            <td class="col-md-2 text-center">
+                <ul class="list-unstyled">
+                    <li ng-repeat="investment in facility.investments">
+                        <a ui-sref="investment">
+                            {{ investment.designation | uppercase }}
+                        </a>
+                    </li>
+                </ul>
             </td>
             <td class="col-md-3 text-center">
                 <button class="btn btn-success" ui-sref="facility.edit({id: facility.id})"><span class="glyphicon glyphicon-pencil"></span></button>

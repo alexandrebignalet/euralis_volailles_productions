@@ -28,7 +28,6 @@
             <th >Attrapages</th>
             <th >Assurances</th>
 
-            <th >Détails</th>
             <th >Modifier/Supprimer</th>
         </tr>
         </thead>
@@ -45,11 +44,6 @@
             <td >{{ facilityCharges.litter  }}</td>
             <td >{{ facilityCharges.catching  }}</td>
             <td >{{ facilityCharges.insurances  }}</td>
-            <td >
-                <div class="dropdown">
-                    <button class="btn btn-info" type="button">Détails</button>
-                </div>
-            </td>
             <td >
                 <button class="btn btn-success" ui-sref="facility_charges.edit({id: facilityCharges.id})">
                     <span class="glyphicon glyphicon-pencil"></span>

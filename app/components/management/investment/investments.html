@@ -30,7 +30,6 @@
             <th class="text-center">Divers options</th>
             <th class="text-center">Total</th>
 
-            <th class="col-md-3 text-center">Détails</th>
             <th class="col-md-3 text-center">Modifier/Supprimer</th>
         </tr>
         </thead>
@@ -49,11 +48,6 @@
             <td class="col-md-2 text-center">{{ investment.helpEuralis}}€</td>
             <td class="col-md-2 text-center">{{ investment.diverseOptions}}€</td>
             <td class="col-md-2 text-center">{{ investment.getTotal()}}€</td>
-            <td class="col-md-3 text-center">
-                <div class="dropdown">
-                    <button class="btn btn-info" type="button">Détails</button>
-                </div>
-            </td>
             <td class="col-md-3 text-center">
                 <button class="btn btn-success" ui-sref="investment.edit({id: investment.id})"><span class="glyphicon glyphicon-pencil"></span></button>
                 <button class="btn btn-danger" ui-sref="investment.remove({id: investment.id})"><span class="glyphicon glyphicon-remove"></span></button>

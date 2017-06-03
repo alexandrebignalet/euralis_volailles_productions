@@ -24,7 +24,6 @@ class FacilityRepository extends DatabaseService {
 
                     return Promise.all(findAttachmentsPromises)
                         .then((images) => {
-                            console.log(images);
                             images.forEach((img, index) => {
                                 img.name = Object.keys(facilities[0].attachments)[index];
                             });
@@ -58,23 +57,22 @@ class FacilityRepository extends DatabaseService {
         let facilityEntity;
         return super.find(this.entityName)
             .then(({facilities, facilitiesCharges, investments}) => facilities.map((facility) => {
-                    facilityEntity = new Facility(facility);
+                facilityEntity = new Facility(facility);
 
-                    for( let i = 0; i  < facilitiesCharges.length ; i++) {
-                        if (facilitiesCharges[i].id === facility.facilityCharges) {
-                            facilityEntity.facilityCharges = new FacilityCharges(facilitiesCharges[i]);
-                            break;
-                        }
+                for( let i = 0; i  < facilitiesCharges.length ; i++) {
+                    if (facilitiesCharges[i].id === facility.facilityCharges) {
+                        facilityEntity.facilityCharges = new FacilityCharges(facilitiesCharges[i]);
+                        break;
                     }
+                }
 
-                    facilityEntity.investments = [];
+                facilityEntity.investments = [];
 
-                    if (!investments) return facilityEntity;
+                if (!investments) return facilityEntity;
 
-                    for( let y = 0; y < investments.length ; y++) {
+                for( let y = 0; y < investments.length ; y++) {
                         if (facility.investments.indexOf(investments[y].id) !== -1) {
                             facilityEntity.investments.push(new Investment(investments[y]));
-                            break;
                         }
                     }
 

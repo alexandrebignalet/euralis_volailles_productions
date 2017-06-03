@@ -1,10 +1,14 @@
-.banner {
-  margin-top: -282px;
+div#menu.row{
+  width: 50%;
+  float: right;
+  margin-top: -15%;
+  margin-right: 5%;
 }
 
-.bandeau{
-  display: inline-block;
-  margin-top: -5%;
-  background-color: #ffffff;
-  width: 100%;
+.btn.btn-raised {
+  background-color: #399528!important;
+}
+
+.btn.btn-raised:hover {
+  background-color: #a6ce39!important;
 }

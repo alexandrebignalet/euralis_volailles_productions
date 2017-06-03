@@ -1,31 +1,13 @@
 
-<img src="{{vm.banner}}" class="banner" alt="jeanmic">
+<div class="row">
+    <img src="{{vm.banner}}" class="banner" alt="jeanmic">
+</div>
 
-<div class="bandeau">
-    <div class="container">
-        <div class="row" id="map">
-            <h1>
-                <i class="glyphicon glyphicon-grain" style="color:rgba(219, 226, 13, 0.88)"></i>
-                <span style="color: #309f41;">Nos zones </span>
-                <span style="color: #a6ce39;">de productions</span>
-            </h1>
-
-            <hr>
-            <div aquitaine-map class="col-lg-3 col-md-3 col-xs-3"></div>
-            <div class="col-lg-3 col-md-3 col-xs-3">
-            </div>
-            <div class="col-lg-6 col-md-6 col-xs-6">
-                <div style="height: 305px">
-                <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
-                  <div uib-slide ng-repeat="slide in vm.carousel track by slide.id" index="slide.id">
-                    <img ng-src="{{slide.image}}" style="width:100%;">
-                    <div class="carousel-caption">
-                      <h4>Slide {{slide.id}}</h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-        </div>
+<div id="menu" class="row">
+    <div class="col-md-3" ng-repeat="department in vm.departments">
+        <button class="btn btn-block btn-success btn-raised" ui-sref="presentation({department:department})">
+            <b>{{department | uppercase }}</b>
+        </button>
+        <br>
     </div>
 </div>

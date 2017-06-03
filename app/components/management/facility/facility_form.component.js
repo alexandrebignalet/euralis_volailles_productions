@@ -25,15 +25,9 @@ export const FacilityFormComponent = {
             this.facilitiesCharges = this.resolve.facilitiesCharges;
             this.investments = this.resolve.investments;
         }
-        
-        // openImage(img) {
-        //     let imgUrl = URL.createObjectURL(img);
-        //     window.open(imgUrl);
-        // }
 
         onSubmit() {
             this.isSaving = true;
-            console.log(this.currentState);
             switch(this.currentState.replace("facility.", "")) {
                 case 'edit':
                     this.dataService.update(this.facility).then(() => {

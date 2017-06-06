@@ -134,7 +134,12 @@ class DatabaseService {
 
     sync() {
         return this.remoteDb.info()
-            .then((data) => this.db.sync(this.remoteDb))
+            .then((data) => this.db.sync(this.remoteDb).on('complete', () => {
+                return {ok: true};
+            }).on('error', function (err) {
+                console.log(err, err.result);
+                return {ok: false};
+            }))
             .catch(() => { return {ok: false}; });
     }
 }

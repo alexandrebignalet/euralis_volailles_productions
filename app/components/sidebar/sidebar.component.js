@@ -19,6 +19,7 @@ export const SidebarComponent = {
             this.investmentLogo = investmentLogo;
             this.password = '';
             this.destroyAsk = false;
+            this.isSyncing = false;
         }
 
         destroy() {
@@ -26,7 +27,10 @@ export const SidebarComponent = {
         }
 
         sync() {
-            this.dataService.sync();
+            this.isSyncing = true;
+            this.dataService.sync()
+                .then(() => { this.isSyncing = false; })
+                .catch(() => { this.isSyncing = false; });
         }
     },
     controllerAs: 'vm'

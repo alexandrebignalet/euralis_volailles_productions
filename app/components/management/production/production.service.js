@@ -23,7 +23,7 @@ export class ProductionDataService {
     destroy() {
         this.repositories.production.destroy()
             .then((data) => {
-                if (data.ok) alert('\nDatabase destroyed, you can reload the app.\n');
+                if (data && data.ok) alert('\nDatabase destroyed, you can reload the app.\n');
             })
             .catch(() => console.log('fail'));
     }
@@ -31,8 +31,10 @@ export class ProductionDataService {
     sync() {
         return this.repositories.production.sync()
             .then((data) => {
+                if (!data) return alert('Problème de synchronisation.');
                 if (data.ok && data.ok === false) return alert('\nVous devez être connecté à l\'internet pour synchroniser votre appli.\n');
                 this.state.go('home', null, {reload:true});
-            });
+            })
+            .catch((err) => console.log(err));
     }
 }

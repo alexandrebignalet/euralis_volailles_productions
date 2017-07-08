@@ -2,11 +2,10 @@
 <div class="row">
     <img src="{{vm.banner}}" class="banner" alt="jeanmic">
 </div>
-
 <div id="menu" class="row">
-    <div class="col-md-3" ng-repeat="department in vm.departments">
-        <button class="btn btn-block btn-success btn-raised" ui-sref="presentation({department:department})">
-            <b>{{department | uppercase }}</b>
+    <div class="col-md-3" ng-repeat="item in vm.departments">
+        <button class="btn btn-block btn-success btn-raised" ui-sref="presentation({department:item.key})">
+            <b>{{item.value | uppercase }}</b>
         </button>
         <br>
     </div>

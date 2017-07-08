@@ -25,7 +25,7 @@
                 <div class="form-group">
                     <label for="department" class="control-label">Département</label>
                     <select class="form-control" id="department" ng-model="vm.production.department" required>
-                        <option ng-selected="vm.production.department === department" ng-repeat="department in vm.departments" value="{{department}}">{{department}}</option>
+                        <option ng-selected="vm.production.department === department.key" ng-repeat="department in vm.departments" value="{{department.key}}">{{department.value}}</option>
                         <option ng-selected="vm.departments.indexOf(vm.production.department) === -1" value="Others">Tous</option>
                     </select>
                 </div>

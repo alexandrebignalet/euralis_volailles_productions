@@ -6,14 +6,10 @@ export const HomeComponent = {
     bindings: {},
     template,
     controller: class HomeController {
-        constructor($scope, $state, DEPARTMENTS){
+        constructor(DEPARTMENTS){
             'ngInject';
-
             this.banner = banner;
             this.departments = DEPARTMENTS;
-            $scope.$on('department', (event, data) => {
-                $state.go('presentation', {department: data});
-            });
         }
 
     },

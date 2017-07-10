@@ -7,7 +7,7 @@ import {MultiselectDirective} from '../../service/multiselect.directive';
 const departmentNames = [];
 departmentNames.push({key: 'Landes', value:'Landes'});
 departmentNames.push({key: 'Pyrenees', value:'Pyrénées'});
-departmentNames.push({key: 'HautePyrenees', value:'Haute-Pyrénées'});
+departmentNames.push({key: 'HautePyrenees', value:'Hautes-Pyrénées'});
 departmentNames.push({key: 'Gers', value:'Gers'});
 departmentNames.push({key: 'HauteGaronne', value:'Haute-Garonne'});
 departmentNames.push({key: 'Tarn', value:'Tarn'});

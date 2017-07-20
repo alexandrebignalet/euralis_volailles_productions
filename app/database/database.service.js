@@ -36,6 +36,8 @@ const databaseSchema = [
     }
 ];
 
+let database = null;
+
 /**
  * This class is used to create the local database if it does not exist yet.
  * And the schema of THIS app.
@@ -43,18 +45,22 @@ const databaseSchema = [
  */
 class DatabaseService {
     constructor() {
-        this.db = null;
-        this.remoteDb = null;
-        let obj = DatabaseService.init();
-        this.db = obj.db;
-        this.remoteDb = obj.remoteDb;
+        if(database && database.db._destroyed === false) {
+            this.db = database.db;
+            this.remoteDb = database.remoteDb;
+        } else {
+            database = DatabaseService.init();
+
+            this.db = database.db;
+            this.remoteDb = database.remoteDb;
+        }
     }
 
     static init() {
         let db, remoteDb;
         switch(process.env.NODE_ENV) {
             case 'development':
-                db = new PouchDB(config.db.remoteUrl + config.db.name);
+                db = new PouchDB(config.db.name + config.db.name);
                 break;
             case 'test':
                 db = new PouchDB(config.db.name, { skip_setup: true });
@@ -134,13 +140,27 @@ class DatabaseService {
 
     sync() {
         return this.remoteDb.info()
-            .then((data) => this.db.sync(this.remoteDb).on('complete', () => {
-                return {ok: true};
-            }).on('error', function (err) {
-                console.log(err, err.result);
-                return {ok: false};
-            }))
-            .catch(() => { return {ok: false}; });
+                .then(() => new Promise((resolve, reject) => {
+                        this.db.sync(this.remoteDb)
+                            .on('complete', () => {
+                                console.log("COMPLETE !");
+                                resolve({ok: true});
+                            })
+                            .on('change', function (change) {
+                                console.log("change ", change);
+                            })
+                            .on('paused', function (info) {
+                                console.log("paused ", info);
+                            })
+                            .on('active', function (info) {
+                                console.log("active ", info);
+                            })
+                            .on('error', function (err) {
+                                console.log(err, err.result);
+                                reject({ok: false});
+                            });
+                    }))
+                .catch(() => { return {ok: false}; });
     }
 }
 

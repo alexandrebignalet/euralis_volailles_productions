@@ -19,15 +19,16 @@ window.repositories = {
 
 const service = window.repositories.production;
 
-if (service.db.info) {
-    service.db.info()
-        .then((response) => {
-            if (response.doc_count === 0) {
-                return service.remoteDb.info()
-                    .then(() => {
-                        return service.sync();
-                    })
-                    .catch((err) => alert('You are not connected to the internet.'))
-            }
-        })
-}
+// if (service.db.info) {
+//     service.db.info()
+//         .then((response) => {
+//
+//             if (response.doc_count === 0) {
+//                 return service.remoteDb.info()
+//                     .then(() => {
+//                         return service.sync();
+//                     })
+//                     .catch((err) => alert('You are not connected to the internet.'))
+//             }
+//         })
+// }

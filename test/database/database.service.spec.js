@@ -4,6 +4,10 @@ const Production = require('../../app/database/domain/production');
 const Facility = require('../../app/database/domain/facility');
 const DatabaseService = require('../../app/database/database.service.js');
 
+global.navigator = {
+    userAgent: 'node.js'
+};
+
 describe('DatabaseServiceTest', () => {
     let databaseService;
     const facilitiesChargesCreated = [];
@@ -157,6 +161,8 @@ describe('DatabaseServiceTest', () => {
                 });
         });
     });
+
+
 
     describe('database empty', () => {
         it('should empty the database', () => {

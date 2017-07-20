@@ -74,6 +74,8 @@ gulp.task('serve', () => {
 
   var compiler = webpack(config);
 
+  process.env.NODE_ENV = 'test';
+
   browserSync({
     port: process.env.PORT || 3000,
     open: false,

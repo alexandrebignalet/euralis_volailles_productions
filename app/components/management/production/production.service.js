@@ -19,22 +19,4 @@ export class ProductionDataService {
     remove(production) { return this.repositories.production.del(production.id).then((data) => data ); }
 
     create(production) { return this.repositories.production.create(production).then((data) => data); }
-
-    destroy() {
-        this.repositories.production.destroy()
-            .then((data) => {
-                if (data && data.ok) alert('\nDatabase destroyed, you can reload the app.\n');
-            })
-            .catch(() => console.log('fail'));
-    }
-
-    sync() {
-        return this.repositories.production.sync()
-            .then((data) => {
-                if (!data) return alert('Problème de synchronisation.');
-                if (data.ok && data.ok === false) return alert('\nVous devez être connecté à l\'internet pour synchroniser votre appli.\n');
-                this.state.go('home', null, {reload:true});
-            })
-            .catch((err) => console.log(err));
-    }
 }

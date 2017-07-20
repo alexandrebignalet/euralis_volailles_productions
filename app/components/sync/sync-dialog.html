@@ -1,0 +1,13 @@
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-3">
+            <button ng-click="vm.sync()" class="btn btn-primary" ng-disabled="vm.isSyncing">Synchroniser</button><br>
+            <img class="" ng-src="{{vm.loader}}" alt="loader" ng-if="vm.isSyncing"/>
+        </div>
+        <div class="col-md-9">
+            <pre style="margin-left:10px;">
+        <p ng-repeat="log in vm.logs track by $index">{{log}}</p>
+    </pre>
+        </div>
+    </div>
+</div>

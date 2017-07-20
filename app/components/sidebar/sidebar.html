@@ -14,19 +14,8 @@
         <img src="{{vm.investmentLogo}}" alt="investmentLogo">
     </a>
 
-    <!--<hr>-->
-    <button ng-click="vm.sync()" class="btn btn-block btn-success" ng-disabled="vm.isSyncing">
+    <hr>
+    <button ng-click="vm.openSyncDialog()" class="btn btn-block btn-success">
         <i class="glyphicon glyphicon-refresh big"></i>
     </button>
-
-    <!--<button ng-if="vm.password != 'eurvolpre'" class="btn btn-default btn-block" ng-click="vm.destroyAsk = true">-->
-        <!--<i class="glyphicon glyphicon-trash big"></i>-->
-    <!--</button>-->
-
-    <!--<button ng-if="vm.password == 'eurvolpre'" ng-click="vm.destroy()"-->
-            <!--tooltip-placement="top" uib-tooltip="Destruction des données" class="btn btn-block btn-danger">-->
-        <!--<i class="glyphicon glyphicon-trash big"></i>-->
-    <!--</button>-->
-
-    <!--<input ng-if="vm.destroyAsk" type="text" ng-model="vm.password" class="form-control">-->
 </div>

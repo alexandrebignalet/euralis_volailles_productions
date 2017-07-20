@@ -143,19 +143,19 @@ class DatabaseService {
                 .then(() => new Promise((resolve, reject) => {
                         this.db.sync(this.remoteDb)
                             .on('complete', () => {
-                                console.log("COMPLETE !");
+                                console.log("complete ");
                                 resolve({ok: true});
                             })
-                            .on('change', function (change) {
+                            .on('change', (change) => {
                                 console.log("change ", change);
                             })
-                            .on('paused', function (info) {
+                            .on('paused', (info) => {
                                 console.log("paused ", info);
                             })
-                            .on('active', function (info) {
+                            .on('active', (info) => {
                                 console.log("active ", info);
                             })
-                            .on('error', function (err) {
+                            .on('error', (err) => {
                                 console.log(err, err.result);
                                 reject({ok: false});
                             });

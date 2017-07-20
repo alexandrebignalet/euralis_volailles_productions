@@ -4,33 +4,25 @@ import facilityChargesLogo from '../../images/facility_charges_logo.png';
 import facilityLogo from '../../images/facility_logo.png';
 import investmentLogo from '../../images/investment_logo.png';
 
-
 export const SidebarComponent = {
-    bindings: {},
     template,
     controller: class SidebarController {
-        constructor(ProductionDataService){
+        constructor($uibModal) {
             'ngInject';
-
-            this.dataService = ProductionDataService;
             this.productionLogo = productionLogo;
             this.facilityChargesLogo = facilityChargesLogo;
             this.facilityLogo = facilityLogo;
             this.investmentLogo = investmentLogo;
-            this.password = '';
-            this.destroyAsk = false;
-            this.isSyncing = false;
+            this.modal = $uibModal;
         }
 
-        destroy() {
-            this.dataService.destroy();
-        }
-
-        sync() {
-            this.isSyncing = true;
-            this.dataService.sync()
-                .then(() => { this.isSyncing = false; })
-                .catch(() => { this.isSyncing = false; });
+        openSyncDialog() {
+            this.modal.open({
+                size: 'lg',
+                animation: true,
+                backdrop: 'static',
+                component: 'syncDialog'
+            });
         }
     },
     controllerAs: 'vm'

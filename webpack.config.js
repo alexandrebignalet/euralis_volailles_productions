@@ -11,7 +11,7 @@ module.exports = {
         { test: /\.html$/, loader: 'raw' },
         { test: /.(woff(2)?|eot|ttf)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=100000' },
         { test: /\.(scss|sass)$/, loader: 'style!css!sass' },
-        { test: /\.(png|jpg|JPG|svg|mp4)/, loader: 'url-loader?limit=100000&name=images/[name].[ext]'  },
+        { test: /\.(png|jpg|JPG|svg|mp4|gif)/, loader: 'url-loader?limit=100000&name=images/[name].[ext]'  },
         { test: /\.css$/, loader: 'style!css' },
         { test: /\.json$/, loader: 'json-loader' }
     ]

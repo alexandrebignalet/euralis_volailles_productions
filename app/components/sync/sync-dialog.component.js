@@ -33,20 +33,24 @@ export const SyncDialogComponent = {
                         .on('change', (change) => {
                             this.logs.push("Changements effectués: ");
                             this.logs.push(change);
+                            console.log('change ', change);
                             this.scope.$apply();
                         })
                         .on('paused', (info) => {
                             this.logs.push('Traitement en cours...');
                             this.scope.$apply();
+                            console.log('info ', info);
                         })
                         .on('active', (info) => {
                             this.logs.push('Traitement en cours...');
                             this.scope.$apply();
+                            console.log('active  ', info);
                         })
                         .on('error', (err) => {
                             this.logs.push(err.result);
                             this.isSyncing = false;
                             this.scope.$apply();
+                            console.log('error ', err);
                         }))
                 .catch(() => {
                     this.logs.push('Vous devez être connecté à internet pour synchroniser votre application.');

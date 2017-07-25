@@ -71,7 +71,7 @@
         </div>
         <div class="row text-center">
             <div class="col-lg-6 col-md-6 col-xs-6">
-                <h1>Critères par bande</h1>
+                <h1>Critères économiques</h1>
                 <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
                     <tr>
                         <th></th>
@@ -134,7 +134,7 @@
                         <td> </td>
                     </tr>
                     <tr>
-                        <th>Total par bandes</th>
+                        <th>Total par bande</th>
                         <td></td>
                         <td> {{ production.getTotalCosts() | number:0 }} €</td>
                     </tr>
@@ -252,8 +252,27 @@
                     <td><i>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }}€</i></td>
                 </tr>
                 <tr>
-                    <th>Annuité</th>
-                    <th>{{ production.facility.getAnnuity() | number:0 }}€</th>
+                    <th>
+                        <form class="form-inline">
+                            <div class="col-md-1">Annuité</div>
+                            <div class="col-md-4">
+                                <select class="form-control" id="annuity" ng-model="investmentChoosen" required>
+                                    <option ng-repeat="investment in production.facility.investments" ng-value="investment">{{investment.name | uppercase}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 input-group">
+                                <span class="input-group-addon">/</span>
+                                <input class="form-control" ng-model="vm.annuityDuration" type="number" min="0"/>
+                                <span class="input-group-addon">ans</span>
+                            </div>
+                            <div class="col-md-3 input-group">
+                                <span class="input-group-addon">à</span>
+                                <input class="form-control" ng-model="vm.interest" type="number" min="0"/>
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </form>
+                    </th>
+                    <th>{{ investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest) | number:0 }}€</th>
                 </tr>
                 <tr>
                     <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>

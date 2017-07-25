@@ -21,6 +21,11 @@ class Investment {
         this._facilityNb = nb;
     }
 
+    getAnnuity(duration, interest) {
+        return this.getTotal() * (interest/100) / (1 - Math.pow(1 + (interest/100), -duration));
+    }
+
+
     getMasonry() {
         return this._facilityNb * this.masonry;
     }

@@ -9,6 +9,9 @@ export const PrevisionnelBatimentComponent = {
             'ngInject';
             this.scope = $scope;
             this.facilityNb = 2;
+            this.investmentChoosen = null;
+            this.annuityDuration = 15;
+            this.interest = 2.5;
             this.sliderOptions = {
                 floor: 1,
                 ceil: 20
@@ -25,6 +28,8 @@ export const PrevisionnelBatimentComponent = {
         update() {
             angular.forEach(this.productions, (production) => {
                 production.setFacilitiesNb(this.facilityNb);
+
+                this.investmentChoosen = production.facility.investments[0];
 
                 angular.forEach(production.facility.investments, (investment) => {
                     investment.facilityNb = this.facilityNb;

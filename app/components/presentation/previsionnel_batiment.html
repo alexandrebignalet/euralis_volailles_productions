@@ -40,19 +40,19 @@
                             <td>{{ production.mortalityPercent * 100 }} %</td>
                         </tr>
                         <tr>
-                            <th>Poussins vaccinées Mareck et B.I</th>
-                            <td>{{ production.vaccinesPrice }} €</td>
+                            <th>Poussins vaccinées Mareck et B.I (/ 1000 poussins)</th>
+                            <td>{{ production.getVaccinesPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Revenu aliment producteur (farine, < 12.5t) en euros</th>
-                            <td>{{ production.foodPrice }} €</td>
+                            <th>Prix aliment producteur (farine, < 12.5t) en euros/t</th>
+                            <td>{{ production.getFoodPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Revenu reprise classé en euros bonif 54 euros/t incluse</th>
-                            <td>{{ production.classedPrice }} €</td>
+                            <th>Prix reprise classé en euros/t (bonif 54 euros/t incluse)</th>
+                            <td>{{ production.getClassedPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Revenu reprise déclassé en euros</th>
+                            <th>Prix reprise déclassé en euros</th>
                             <td>{{ production.declassedPrice }} €</td>
                         </tr>
                         <tr>
@@ -75,22 +75,17 @@
                 <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
                     <tr>
                         <th></th>
-                        <th>Prix par poussin</th>
+                        <th>Prix (/1000)</th>
                         <th>Total</th>
                     </tr>
                     <tr>
                         <th>Poussins</th>
-                        <td>{{ production.facility.facilityCharges.chickPrice }} €</td>
+                        <td>{{ production.facility.facilityCharges.chickPrice * 1000 }} €</td>
                         <td>{{  production.getChicksPaid() * production.facility.facilityCharges.chickPrice | number:0 }} €</td>
                     </tr>
                     <tr>
-                        <th>Aliment</th>
-                        <td>{{ production.foodPrice }} €</td>
-                        <td>{{ production.foodPrice * production.getChickNb() | number:0 }} €</td>
-                    </tr>
-                    <tr>
-                        <th>Côtisations</th>
-                        <td>{{ production.facility.facilityCharges.contributions }} €</td>
+                        <th>Cotisations</th>
+                        <td>{{ production.facility.facilityCharges.contributions * 1000 }} €</td>
                         <td>{{ production.facility.facilityCharges.contributions * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
@@ -98,38 +93,43 @@
                     </tr>
                     <tr>
                         <th>Chauffage</th>
-                        <td>{{ production.facility.facilityCharges.warming }} €</td>
+                        <td>{{ production.facility.facilityCharges.warming * 1000 }} €</td>
                         <td>{{ production.facility.facilityCharges.warming * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Frais vétérinaires</th>
-                        <td>{{ production.facility.facilityCharges.vetPrice }} €</td>
+                        <td>{{ production.facility.facilityCharges.vetPrice * 1000 }} €</td>
                         <td>{{ production.facility.facilityCharges.vetPrice * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Désinfection</th>
-                        <td>{{ production.facility.facilityCharges.disinfection }} €</td>
+                        <td>{{ production.facility.facilityCharges.disinfection * 1000 }} €</td>
                         <td>{{ production.facility.facilityCharges.disinfection * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Eau - Electricité - Divers</th>
-                        <td>{{ production.facility.facilityCharges.commodities }} €</td>
+                        <td>{{ production.facility.facilityCharges.commodities * 1000 }} €</td>
                         <td>{{ production.facility.facilityCharges.commodities * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Litière</th>
-                        <td>{{ production.facility.facilityCharges.litter }} €</td>
+                        <td>{{ production.facility.facilityCharges.litter * 1000 }} €</td>
                         <td>{{ production.facility.facilityCharges.litter * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
-                        <th>Attrapages</th>
-                        <td>{{ production.facility.facilityCharges.catching }} €</td>
+                        <th>Attrapage</th>
+                        <td>{{ production.facility.facilityCharges.catching * 1000 }} €</td>
                         <td>{{ production.facility.facilityCharges.catching * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
-                        <th>Assurances</th>
-                        <td>{{ production.facility.facilityCharges.insurances }} €</td>
+                        <th>Assurance</th>
+                        <td>{{ production.facility.facilityCharges.insurances * 1000 }} €</td>
                         <td>{{ production.facility.facilityCharges.insurances * production.getChickNb() | number:0 }} €</td>
+                    </tr>
+                    <tr>
+                        <th>Aliment (€/t)</th>
+                        <td>{{ production.foodPrice * 1000 }} €/t</td>
+                        <td>{{ production.foodPrice * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <td colspan="3" rowspan="1"></td>

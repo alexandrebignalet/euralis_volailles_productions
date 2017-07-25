@@ -25,7 +25,7 @@ class Investment {
         return this._facilityNb * this.masonry;
     }
 
-    getFacilityMoutingDeliveryPrice() {
+    getFacilityMountingDeliveryPrice() {
         return this._facilityNb * this.facilityMoutingDeliveryPrice;
     }
 
@@ -33,20 +33,12 @@ class Investment {
         return this._facilityNb * this.equipmentMountingDeliveryPrice;
     }
 
-    getSubsidies() {
-        return this._facilityNb * this.subsidies;
-    }
-
-    getHelpEuralis() {
-        return this._facilityNb * this.helpEuralis;
-    }
-
     getTotal() {
         return this.getTotalBeforeSubsidies() - this.subsidies - this.helpEuralis + this.diverseOptions;
     }
 
     getTotalBeforeSubsidies() {
-        return this.masonry + this.facilityMoutingDeliveryPrice + this.equipmentMountingDeliveryPrice + this.papers;
+        return this.getMasonry() + this.getFacilityMountingDeliveryPrice() + this.getEquipmentMountingDeliveryPrice() + this.papers;
     }
 }
 

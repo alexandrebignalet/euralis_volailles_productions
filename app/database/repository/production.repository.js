@@ -23,7 +23,8 @@ class ProductionRepository extends DatabaseService {
                         findAttachmentsPromises.push(this.db.rel.getAttachment(this.entityName, productions[0].id, key));
                     });
 
-                    return Promise.all(findAttachmentsPromises)
+                    return Promise
+                        .all(findAttachmentsPromises)
                         .then((images) => {
                             images.forEach((img, index) => {
                                 img.name = Object.keys(productions[0].attachments)[index];
@@ -32,6 +33,7 @@ class ProductionRepository extends DatabaseService {
                         });
                 }
 
+                console.log("toto", productions, facilities, facilitiesCharges, images);
                 return {productions, facilities, facilitiesCharges, images}
             })
             .then(({productions, facilities, facilitiesCharges, images}) => {
@@ -39,6 +41,7 @@ class ProductionRepository extends DatabaseService {
                 productionEntity.facility = new Facility(facilities[0]);
                 productionEntity.facility.facilityCharges = new FacilityCharges(facilitiesCharges[0]);
                 productionEntity.images = images;
+                
                 return productionEntity;
             });
     }
@@ -46,26 +49,35 @@ class ProductionRepository extends DatabaseService {
     getAll() {
         let productionEntity;
         return super.find(this.entityName)
-            .then(({productions, facilities, facilitiesCharges, investments}) => productions.map((production) => {
-                    productionEntity = new Production(production);
-                    for (let i = 0; i < facilities.length; i++) {
-                        if (production.facility === facilities[i].id) {
-                            productionEntity.facility = new Facility(facilities[i]);
-                            for (let y = 0; y < facilitiesCharges.length; y++) {
-                                if (productionEntity.facility.facilityCharges === facilitiesCharges[y].id) {
-                                    productionEntity.facility.facilityCharges = new FacilityCharges(facilitiesCharges[y]);
+            .then(({productions, facilities, facilitiesCharges, investments}) => {
+
+                return productions.map((production) => {
+                        productionEntity = new Production(production);
+                        for (let i = 0; i < facilities.length; i++) {
+                            if (production.facility === facilities[i].id) {
+                                productionEntity.facility = new Facility(facilities[i]);
+                                for (let y = 0; y < facilitiesCharges.length; y++) {
+                                    if (productionEntity.facility.facilityCharges === facilitiesCharges[y].id) {
+                                        productionEntity.facility.facilityCharges = new FacilityCharges(facilitiesCharges[y]);
+                                        break;
+                                    }
                                 }
-                            }
-                            productionEntity.facility.investments = [];
-                            for ( let j= 0; j < investments.length; j++) {
-                                let index = facilities[i].investments.indexOf(investments[j].id);
-                                if (index !== -1) productionEntity.facility.investments.push(new Investment(investments[index]));
+
+                                productionEntity.facility.investments = [];
+                                for (let j = 0; j < investments.length; j++) {
+                                    let index = facilities[i].investments.indexOf(investments[j].id);
+                                    if (index !== -1) {
+                                        productionEntity.facility.investments.push(new Investment(investments[j]));
+                                    }
+                                }
+                                break;
                             }
                         }
+                        return productionEntity;
                     }
-                    return productionEntity;
-                })
-            );
+                );
+
+            });
     }
 
     /**

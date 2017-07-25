@@ -33,6 +33,18 @@ class Production {
         })
     }
 
+    getVaccinesPrice() {
+        return this.vaccinesPrice * 1000;
+    }
+
+    getFoodPrice() {
+        return this.foodPrice * 1000;
+    }
+
+    getClassedPrice() {
+        return this.classedPrice * 1000;
+    }
+
     getChickNb() {
         return this.chickNb * this.facilitiesNb;
     }

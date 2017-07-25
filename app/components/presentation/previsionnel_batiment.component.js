@@ -25,6 +25,10 @@ export const PrevisionnelBatimentComponent = {
         update() {
             angular.forEach(this.productions, (production) => {
                 production.setFacilitiesNb(this.facilityNb);
+
+                angular.forEach(production.facility.investments, (investment) => {
+                    investment.facilityNb = this.facilityNb;
+                })
             });
         }
     },

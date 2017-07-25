@@ -16,12 +16,12 @@
             <div class="col-lg-6 col-md-6 col-xs-12">
                     <table class="table table-condensed table-hover table-responsive">
                         <tr highlighter="production.getChickNb()">
-                            <th>Nombre de poussins</th>
+                            <th>Poussins mis en places</th>
                             <td>{{ production.getChickNb() }}</td>
                         </tr>
                         <tr>
-                            <th>Poids moyen</th>
-                            <td>{{ production.avgWeight }} kg</td>
+                            <th>Mortalité</th>
+                            <td>{{ production.mortalityPercent * 100 }} %</td>
                         </tr>
                         <tr>
                             <th>Age</th>
@@ -36,8 +36,8 @@
                             <td>{{ production.consumptionIndex }}</td>
                         </tr>
                         <tr>
-                            <th>Mortalité</th>
-                            <td>{{ production.mortalityPercent * 100 }} %</td>
+                            <th>Poids moyen</th>
+                            <td>{{ production.avgWeight }} kg</td>
                         </tr>
                         <tr>
                             <th>Prix poussins vaccinés</th>
@@ -119,7 +119,7 @@
                         <td>{{ production.facility.facilityCharges.catching * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
-                        <th>Assurance</th>
+                        <th>Assurances</th>
                         <td>{{ production.facility.facilityCharges.insurances * 1000 }} €</td>
                         <td>{{ production.facility.facilityCharges.insurances * production.getChickNb() | number:0 }} €</td>
                     </tr>
@@ -129,8 +129,8 @@
                         <td>{{ production.foodPrice * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
-                        <th>Charges / tête</th>
-                        <td> 0.37 €</td>
+                        <td><i>Charges / tête</i></td>
+                        <td> <i>0.37 €</i> </td>
                         <td> </td>
                     </tr>
                     <tr>
@@ -142,7 +142,6 @@
             </div>
             <div class="col-lg-6 col-md-6 col-xs-6">
                 <h1>Investissement</h1>
-                <h4>{{ production.facility.investments[0].name | uppercase }}</h4>
                 <table class="table table-condensed table-hover table-responsive text-center">
                     <tr>
                         <th class="col-md-2">Désignation</th>
@@ -165,26 +164,38 @@
                     <tr>
                         <th class="col-md-2">Gros oeuvre</th>
                         <td ng-repeat="investment in production.facility.investments">
-                            {{ investment.masonry }}€
+                            {{ investment.getMasonry() }}€
                         </td>
                     </tr>
 
                     <tr>
                         <th class="col-md-2">Livraison et montage bâtiment</th>
                         <td ng-repeat="investment in production.facility.investments">
-                            {{ investment.facilityMoutingDeliveryPrice }}€
+                            {{ investment.getFacilityMountingDeliveryPrice() }}€
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="col-md-2">Livraison et montage du matériel</th>
+                        <td ng-repeat="investment in production.facility.investments">
+                            {{ investment.getEquipmentMountingDeliveryPrice() }}€
                         </td>
                     </tr>
                     <tr>
                         <th class="col-md-2">Subventions AREA PCAE</th>
                         <td ng-repeat="investment in production.facility.investments">
-                            {{ investment.subsidies }}€
+                            <div class="input-group">
+                                <input type="number" class="form-control" ng-model="investment.subsidies" />
+                                <span class="input-group-addon">€</span>
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <th class="col-md-2">Aides EURALIS Vollailes</th>
                         <td ng-repeat="investment in production.facility.investments">
-                            {{ investment.helpEuralis }}€
+                            <div class="input-group text-center">
+                                <input type="number" class="form-control" ng-model="investment.helpEuralis" />
+                                <span class="input-group-addon">€</span>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -237,8 +248,12 @@
                     <th> {{ production.getAnnualBrutMargin() | number:0 }}€</th>
                 </tr>
                 <tr>
-                    <th>Marge par m²</th>
-                    <th>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }}€</th>
+                    <td><i>Marge par m²</i></td>
+                    <td><i>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }}€</i></td>
+                </tr>
+                <tr>
+                    <th>Annuité</th>
+                    <th>{{ production.facility.getAnnuity() | number:0 }}€</th>
                 </tr>
                 <tr>
                     <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>

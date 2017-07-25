@@ -21,7 +21,7 @@ class Production {
         this.declassedPrice = declassedPrice;
         this.breedingDeclassedPercent = breedingDeclassedPercent;
         this.restraintPercent = restraintPercent;
-        this.chickPurchaseReduction = chickPurchaseReduction;
+        this.chickPurchaseReduction = 0.02;
         this.facility = facility;
         this.images = [];
     }

@@ -40,7 +40,7 @@
                             <td>{{ production.mortalityPercent * 100 }} %</td>
                         </tr>
                         <tr>
-                            <th>Poussins vaccinées Mareck et B.I (/ 1000 poussins)</th>
+                            <th>Prix poussins vaccinés</th>
                             <td>{{ production.getVaccinesPrice() }} €</td>
                         </tr>
                         <tr>
@@ -71,7 +71,7 @@
         </div>
         <div class="row text-center">
             <div class="col-lg-6 col-md-6 col-xs-6">
-                <h1>Charges par bande</h1><hr>
+                <h1>Critères par bande</h1><hr>
                 <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
                     <tr>
                         <th></th>
@@ -228,7 +228,7 @@
                     <th>{{ production.getSoldChicks() | number:0 }}</th>
                 </tr>
                 <tr>
-                    <th>Revenu de vente moyen par tonne</th>
+                    <th>Prix de vente moyen par tonne</th>
                     <th>{{ production.getAvgWagesPerTon() | number:0 }}€</th>
                 </tr>
                 <tr>

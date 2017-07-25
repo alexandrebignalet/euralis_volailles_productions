@@ -1,16 +1,16 @@
 <form name="facilityChargesForm" ng-submit="vm.onSubmit()">
     <div class="modal-header">
-        <h3 class="modal-title" ng-if="vm.currentState.indexOf('create') != -1">Création d'une nouvelle grille de Charges Bâtiment.</h3>
-        <h3 class="modal-title" ng-if="vm.currentState.indexOf('edit') != -1">Modification d'une grille de Charges Bâtiment existante.</h3>
-        <h3 class="modal-title" ng-if="vm.currentState.indexOf('remove') != -1">Suppression d'une grille de Charges Bâtiment.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('create') != -1">Création d'une nouvelle grille de critères.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('edit') != -1">Modification d'une grille de critères existante.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('remove') != -1">Suppression d'une grille de critères.</h3>
     </div>
     <div class="modal-body" ng-if="vm.currentState.indexOf('remove') == -1">
         <div class="row">
-            <h2 class="text-center">Charges par poussin</h2><hr>
+            <h2 class="text-center">Critères</h2><hr>
 
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="charges_name" class="control-label">Appelation de la grille de charges</label>
+                    <label for="charges_name" class="control-label">Appelation de la grille de critères</label>
                     <input type="text" class="form-control" id="charges_name" name="charges_chickPrice" ng-model="vm.facilityCharges.name" minlength="0" required>
                 </div>
             </div>

@@ -71,7 +71,7 @@
         </div>
         <div class="row text-center">
             <div class="col-lg-6 col-md-6 col-xs-6">
-                <h1>Critères par bande</h1><hr>
+                <h1>Critères par bande</h1>
                 <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
                     <tr>
                         <th></th>
@@ -87,9 +87,6 @@
                         <th>Cotisations</th>
                         <td>{{ production.facility.facilityCharges.contributions * 1000 }} €</td>
                         <td>{{ production.facility.facilityCharges.contributions * production.getChickNb() | number:0 }} €</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" rowspan="1"></td>
                     </tr>
                     <tr>
                         <th>Chauffage</th>
@@ -132,15 +129,9 @@
                         <td>{{ production.foodPrice * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
-                        <td colspan="3" rowspan="1"></td>
-                    </tr>
-                    <tr>
                         <th>Charges / tête</th>
                         <td> 0.37 €</td>
                         <td> </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" rowspan="1"></td>
                     </tr>
                     <tr>
                         <th>Total par bandes</th>
@@ -150,7 +141,7 @@
                 </table>
             </div>
             <div class="col-lg-6 col-md-6 col-xs-6">
-                <h1>Investissement</h1><hr>
+                <h1>Investissement</h1>
                 <h4>{{ production.facility.investments[0].name | uppercase }}</h4>
                 <table class="table table-condensed table-hover table-responsive text-center">
                     <tr>
@@ -213,12 +204,8 @@
             </div>
         </div>
         <div class="row text-center">
-            <h1>Produit par bande</h1><hr>
+            <h1>Produit par bande</h1>
             <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
-                <tr>
-                    <th></th>
-                    <th>€</th>
-                </tr>
                 <tr>
                     <th>Nombre de poulets livrés</th>
                     <th>{{ production.getDeliveredChicks() | number:0 }}</th>

@@ -181,6 +181,12 @@
                         </td>
                     </tr>
                     <tr>
+                        <th class="col-md-2">Investissement total</th>
+                        <td ng-repeat="investment in production.facility.investments">
+                            <strong>{{ investment.getTotalBeforeSubsidies() }}€</strong>
+                        </td>
+                    </tr>
+                    <tr>
                         <th class="col-md-2">Subventions AREA PCAE</th>
                         <td ng-repeat="investment in production.facility.investments">
                             <div class="input-group">
@@ -199,7 +205,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="col-md-2">Totaux</th>
+                        <th class="col-md-2">Emprunt bancaire</th>
                         <td ng-repeat="investment in production.facility.investments">
                             <strong>{{ investment.getTotal() }}€</strong>
                         </td>

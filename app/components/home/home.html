@@ -1,7 +1,7 @@
 
-<div class="row">
-    <img src="{{vm.banner}}" class="banner" alt="jeanmic">
-</div>
+
+<img src="{{vm.banner}}" class="banner" alt="jeanmic">
+
 <div id="menu" class="row">
     <div class="col-md-3" ng-repeat="item in vm.departments">
         <button class="btn btn-block btn-success btn-raised" ui-sref="presentation({department:item.key})">
@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<div class="row text-center">
+<div class="container text-center">
     <h1><i class="glyphicon glyphicon-alert"></i> Présentation vidéo:</h1>
     <div class="col-md-6 col-md-offset-3">
         <video width="100%" controls>

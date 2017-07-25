@@ -53,5 +53,5 @@ export const FacilityModule = angular
     .component('facilityForm', FacilityFormComponent)
     .component('facilities', FacilityComponent)
     .service('FacilityDataService', FacilityDataService)
-    .constant('FACILITIES_TYPES', ['batiment', 'cabane'])
+    .constant('FACILITIES_TYPES', [{key: 'fixed', value:'Fixes'}, {key: 'movable', value:'Déplaçables'}])
     .name;

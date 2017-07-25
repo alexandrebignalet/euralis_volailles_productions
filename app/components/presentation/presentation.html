@@ -1,9 +1,14 @@
 <div class="parallax"></div>
 
-<div ng-repeat="productions in $ctrl.productions" ng-if="productions.length > 0">
-    <div class="container">
-        <h1 style="color:#309f41;" class="text-center">{{ productions[0].facility.type | uppercase }}</h1><hr>
-        <previsionnel-batiment productions="productions"></previsionnel-batiment>
-    </div>
-    <div class="parallax"></div>
+<br><br>
+<div class="container">
+    <uib-tabset active="activeJustified" justified="true" type="pills" class="tab-animation">
+        <uib-tab ng-repeat="productions in $ctrl.productions track by $index" index="$index"
+                 ng-if="productions.length > 0"
+                 heading="{{ productions[0].facility.type.value | uppercase }}">
+            <previsionnel-batiment productions="productions"></previsionnel-batiment>
+        </uib-tab>
+    </uib-tabset>
 </div>
+
+<div class="parallax"></div>

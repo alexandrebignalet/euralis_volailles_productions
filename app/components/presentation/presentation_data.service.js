@@ -12,7 +12,7 @@ export class PresentationDataService {
 
                     productions.forEach((production) => {
                         if ( (production.department === department || production.department === 'Others') &&
-                            production.facility.type === facilityType)
+                            production.facility.type.key === facilityType.key)
                         {
                             productionsChoosen.push(production);
                         }

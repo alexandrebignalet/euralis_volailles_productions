@@ -47,7 +47,7 @@
                 <span ng-if="production.department == 'Others'">Tous</span>
             </td>
             <td>{{ production.facility.size }}m²</td>
-            <td>{{ production.facility.type | uppercase }}</td>
+            <td>{{ production.facility.type.value | uppercase }}</td>
             <td class="aligntd">{{ production.chickNb }}</td>
             <td class="aligntd">{{ production.avgWeight }}</td>
             <td class="aligntd">{{ production.age }} j.</td>

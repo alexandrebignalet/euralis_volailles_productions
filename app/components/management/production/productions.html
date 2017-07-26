@@ -33,7 +33,6 @@
             <th>Prix du déclassé</th>
             <th>Taux de déclassé</th>
             <th>Taux de saisie</th>
-            <th>Réduction à l'achat</th>
 
             <th>Modifier/Supprimer</th>
         </tr>
@@ -60,8 +59,6 @@
             <td class="aligntd">{{ production.declassedPrice | number: 2}}€</td>
             <td class="aligntd">{{ production.breedingDeclassedPercent * 100}}%</td>
             <td class="aligntd">{{ production.restraintPercent * 100}}%</td>
-            <td class="aligntd">{{ production.chickPurchaseReduction * 100}}%</td>
-
             <td class="aligntd">
                 <button class="btn btn-success" ui-sref="production.edit({id: production.id})"><span class="glyphicon glyphicon-pencil"></span></button>
                 <button class="btn btn-danger" ui-sref="production.remove({id: production.id})"><span class="glyphicon glyphicon-remove"></span></button>

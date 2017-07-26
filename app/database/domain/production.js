@@ -2,8 +2,7 @@ const Facility = require('./facility');
 
 class Production {
     constructor({id, department, name, chickNb, avgWeight, age, breedingPerYear, consumptionIndex, mortalityPercent,
-                vaccinesPrice, foodPrice, classedPrice, declassedPrice, breedingDeclassedPercent, restraintPercent,
-                chickPurchaseReduction, facility}) {
+                vaccinesPrice, foodPrice, classedPrice, declassedPrice, breedingDeclassedPercent, restraintPercent, facility}) {
         this.facilitiesNb = 1;
 
         this.id = id;

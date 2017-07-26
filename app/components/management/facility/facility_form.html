@@ -11,7 +11,9 @@
                 <div class="form-group">
                     <label for="facility_type" class="control-label">Type de bâtiment</label>
                     <select class="form-control" id="facility_type" ng-model="vm.facility.type" required>
-                        <option ng-repeat="batimentType in vm.batimentTypes" ng-value="batimentType">{{batimentType | uppercase}}</option>
+                        <option ng-selected="vm.facility.type === batimentType.key"
+                                ng-repeat="batimentType in vm.batimentTypes"
+                                ng-value="batimentType">{{batimentType.value | uppercase}}</option>
                     </select>
                 </div>
             </div>

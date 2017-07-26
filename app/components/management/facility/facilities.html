@@ -28,7 +28,7 @@
 
         <tr ng-repeat="facility in $ctrl.facilities">
             <td class="col-md-2 text-center">{{ facility.size }}m²</td>
-            <td class="col-md-2 text-center">{{ facility.type | uppercase }}</td>
+            <td class="col-md-2 text-center">{{ facility.type.value | uppercase }}</td>
             <td class="col-md-2 text-center">
                 <a ui-sref="facility_charges">
                 {{ facility.facilityCharges.name | uppercase }}

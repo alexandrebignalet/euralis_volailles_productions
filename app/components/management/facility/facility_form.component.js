@@ -31,19 +31,19 @@ export const FacilityFormComponent = {
             switch(this.currentState.replace("facility.", "")) {
                 case 'edit':
                     this.dataService.update(this.facility).then(() => {
-                        this.toastr.success('a été mis à jour.', `${this.facility.type.toUpperCase()} ${this.facility.size}m²`);
+                        this.toastr.success('a été mis à jour.', `${this.facility.type.value.toUpperCase()} ${this.facility.size}m²`);
                         this.modalInstance.close()
                     });
                     break;
                 case 'remove':
                     this.dataService.remove(this.facility).then(() => {
-                        this.toastr.warning('a été supprimé.', `${this.facility.type.toUpperCase()} ${this.facility.size}m²`);
+                        this.toastr.warning('a été supprimé.', `${this.facility.type.value.toUpperCase()} ${this.facility.size}m²`);
                         this.modalInstance.close()
                     });
                     break;
                 case 'create':
                     this.dataService.create(this.facility).then(() => {
-                        this.toastr.info('a été créé.', `${this.facility.type.toUpperCase()} ${this.facility.size}m²`);
+                        this.toastr.info('a été créé.', `${this.facility.type.value.toUpperCase()} ${this.facility.size}m²`);
                         this.modalInstance.close()
                     });
                     break;

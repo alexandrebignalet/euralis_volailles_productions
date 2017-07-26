@@ -5,9 +5,10 @@ export const PrevisionnelBatimentComponent = {
     bindings: { productions: '<' },
     template,
     controller: class PrevisionnelBatimentController {
-        constructor($scope){
+        constructor($scope, $timeout){
             'ngInject';
             this.scope = $scope;
+            this.timeout = $timeout;
             this.facilityNb = 2;
             this.investmentChoosen = null;
             this.annuityDuration = 15;

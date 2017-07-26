@@ -10,13 +10,13 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="name" class="control-label">Appellation</label>
-                    <input type="text" class="form-control" id="name" name="name" ng-model="vm.production.name" required>
+                    <input type="text" class="form-control {{ productionForm.name.$invalid ? 'wrong' : 'valid'}}_input" id="name" name="name" ng-model="vm.production.name" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="facility" class="control-label">Type de bâtiment</label>
-                    <select class="form-control" id="facility" ng-model="vm.production.facility" required
+                    <select class="form-control {{ productionForm.facility.$invalid ? 'wrong' : 'valid'}}_input" id="facility" name="facility" ng-model="vm.production.facility" required
                             ng-options="facility as facility.type.toUpperCase() +' '+facility.size+'m² '+facility.facilityCharges.name for facility in vm.facilities track by facility.id">
                     </select>
                 </div>
@@ -24,7 +24,7 @@
             <div class="col-md-2">
                 <div class="form-group">
                     <label for="department" class="control-label">Département</label>
-                    <select class="form-control" id="department" ng-model="vm.production.department" required>
+                    <select class="form-control {{ productionForm.department.$invalid ? 'wrong' : 'valid'}}_input" id="department" name="department" ng-model="vm.production.department" required>
                         <option ng-selected="vm.production.department === department.key" ng-repeat="department in vm.departments" value="{{department.key}}">{{department.value}}</option>
                         <option ng-selected="vm.departments.indexOf(vm.production.department) === -1" value="Others">Tous</option>
                     </select>
@@ -35,73 +35,73 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="chickNb" class="control-label">Nombre de poussins / bâtiment</label>
-                    <input type="number" step="any" class="form-control" id="chickNb" name="chickNb" ng-model="vm.production.chickNb" min="0" required>
+                    <input type="number" step="any" class="form-control {{ productionForm.chickNb.$invalid ? 'wrong' : 'valid'}}_input" id="chickNb" name="chickNb" ng-model="vm.production.chickNb" min="0" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="avgWeight" class="control-label">Poids moyen (kg)</label>
-                    <input type="number" step="any" class="form-control" id="avgWeight" name="avgWeight" ng-model="vm.production.avgWeight" min="0" required>
+                    <input type="number" step="any" class="form-control {{ productionForm.avgWeight.$invalid ? 'wrong' : 'valid'}}_input" id="avgWeight" name="avgWeight" ng-model="vm.production.avgWeight" min="0" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="age" class="control-label">Age (j)</label>
-                    <input type="number" step="any" class="form-control" id="age" name="age" ng-model="vm.production.age" min="0" required>
+                    <input type="number" step="any" class="form-control {{ productionForm.age.$invalid ? 'wrong' : 'valid'}}_input" id="age" name="age" ng-model="vm.production.age" min="0" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="breedingPerYear" class="control-label">Nombre de bandes par an</label>
-                    <input type="number" step="any" class="form-control" id="breedingPerYear" name="breedingPerYear" ng-model="vm.production.breedingPerYear" min="0" required>
+                    <input type="number" step="any" class="form-control {{ productionForm.breedingPerYear.$invalid ? 'wrong' : 'valid'}}_input" id="breedingPerYear" name="breedingPerYear" ng-model="vm.production.breedingPerYear" min="0" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="consumptionIndex" class="control-label">Indice de consommation</label>
-                    <input type="number" step="any" class="form-control" id="consumptionIndex" name="consumptionIndex" ng-model="vm.production.consumptionIndex" min="0" required>
+                    <input type="number" step="any" class="form-control {{ productionForm.consumptionIndex.$invalid ? 'wrong' : 'valid'}}_input" id="consumptionIndex" name="consumptionIndex" ng-model="vm.production.consumptionIndex" min="0" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="mortalityPercent" class="control-label">Taux de mortalité (%)</label>
-                    <input type="number" step="any" class="form-control" id="mortalityPercent" name="mortalityPercent" ng-model="vm.production.mortalityPercent" min="0" max="20" required>
+                    <input type="number" step="any" class="form-control {{ productionForm.mortalityPercent.$invalid ? 'wrong' : 'valid'}}_input" id="mortalityPercent" name="mortalityPercent" ng-model="vm.production.mortalityPercent" min="0" max="20" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="vaccinesPrice" class="control-label">Prix des vaccins (€/1000)</label>
-                    <input type="number" step="any" class="form-control" id="vaccinesPrice" name="vaccinesPrice" ng-model="vm.production.vaccinesPrice" min="0" required>
+                    <input type="number" step="any" class="form-control {{ productionForm.vaccinesPrice.$invalid ? 'wrong' : 'valid'}}_input" id="vaccinesPrice" name="vaccinesPrice" ng-model="vm.production.vaccinesPrice" min="0" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="foodPrice" class="control-label">Prix de l'aliment (€/t)</label>
-                    <input type="number" step="any" class="form-control" id="foodPrice" name="foodPrice" ng-model="vm.production.foodPrice" min="0" required>
+                    <input type="number" step="any" class="form-control {{ productionForm.foodPrice.$invalid ? 'wrong' : 'valid'}}_input" id="foodPrice" name="foodPrice" ng-model="vm.production.foodPrice" min="0" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="classedPrice" class="control-label">Prix du classé (€/1000)</label>
-                    <input type="number" step="any" class="form-control" id="classedPrice" name="classedPrice" ng-model="vm.production.classedPrice" min="0" required>
+                    <input type="number" step="any" class="form-control {{ productionForm.classedPrice.$invalid ? 'wrong' : 'valid'}}_input" id="classedPrice" name="classedPrice" ng-model="vm.production.classedPrice" min="0" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="declassedPrice" class="control-label">Prix du déclassé (€/1000)</label>
-                    <input type="number" step="any" class="form-control" id="declassedPrice" name="declassedPrice" ng-model="vm.production.declassedPrice" min="0" required>
+                    <input type="number" step="any" class="form-control {{ productionForm.declassedPrice.$invalid ? 'wrong' : 'valid'}}_input" id="declassedPrice" name="declassedPrice" ng-model="vm.production.declassedPrice" min="0" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="breedingDeclassedPercent" class="control-label">Taux de déclassé (%)</label>
-                    <input type="number" step="any" class="form-control" id="breedingDeclassedPercent" name="breedingDeclassedPercent" ng-model="vm.production.breedingDeclassedPercent" min="0" max="20" required>
+                    <input type="number" step="any" class="form-control {{ productionForm.breedingDeclassedPercent.$invalid ? 'wrong' : 'valid'}}_input" id="breedingDeclassedPercent" name="breedingDeclassedPercent" ng-model="vm.production.breedingDeclassedPercent" min="0" max="20" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="restraintPercent" class="control-label">Taux de saisie (%)</label>
-                    <input type="number" step="any" class="form-control" id="restraintPercent" name="restraintPercent" ng-model="vm.production.restraintPercent" min="0" max="20" required>
+                    <input type="number" step="any" class="form-control {{ productionForm.restraintPercent.$invalid ? 'wrong' : 'valid'}}_input" id="restraintPercent" name="restraintPercent" ng-model="vm.production.restraintPercent" min="0" max="20" required>
                 </div>
             </div>
         </div>

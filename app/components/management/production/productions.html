@@ -53,10 +53,10 @@
             <td class="aligntd">{{ production.breedingPerYear }}</td>
             <td class="aligntd">{{ production.consumptionIndex }}</td>
             <td class="aligntd">{{ production.mortalityPercent * 100}}%</td>
-            <td class="aligntd">{{ production.vaccinesPrice | number: 2}}€</td>
-            <td class="aligntd">{{ production.foodPrice | number: 2}}€</td>
-            <td class="aligntd">{{ production.classedPrice | number: 2}}€</td>
-            <td class="aligntd">{{ production.declassedPrice | number: 2}}€</td>
+            <td class="aligntd">{{ production.vaccinesPrice* 1000 | number: 0}}€</td>
+            <td class="aligntd">{{ production.foodPrice * 1000 | number: 0}}€</td>
+            <td class="aligntd">{{ production.classedPrice * 1000 | number: 0}}€</td>
+            <td class="aligntd">{{ production.declassedPrice * 1000 | number: 0}}€</td>
             <td class="aligntd">{{ production.breedingDeclassedPercent * 100}}%</td>
             <td class="aligntd">{{ production.restraintPercent * 100}}%</td>
             <td class="aligntd">

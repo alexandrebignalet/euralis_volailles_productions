@@ -26,6 +26,7 @@
     "bootstrap-multiselect": "^0.9.13-1",
     "jquery": "^1.12.4",
     "level-js": "^2.2.4",
+    "ngstorage": "^0.3.11",
     "pouchdb-adapter-node-websql": "^6.2.0",
     "pouchdb-browser": "^6.2.0",
     "relational-pouch": "^1.4.5",

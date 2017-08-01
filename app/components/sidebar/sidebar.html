@@ -1,6 +1,13 @@
 <div id="mySidenav" class="sidenav">
     <h2 class="text-center" style="color:green">Gestions</h2>
 
+    <h4 class="text-center" style="color:green" ng-if="vm.userService.isAuthenticated()">Bonjour {{vm.userService.getUser()}}</h4>
+    <p ng-if="!vm.userService.isAuthenticated()">
+        <label for="username">Entrez votre nom</label>
+        <input id="username" type="text" ng-model="username" class="form-control"/>
+        <button type="button" ng-click="vm.userService.storeCurrentUser(username)">Save</button>
+    </p>
+
     <a ui-sref="production" tooltip-placement="top" uib-tooltip="Productions">
         <img src="{{vm.productionLogo}}" alt="productionLogo">
     </a>

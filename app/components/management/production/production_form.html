@@ -30,30 +30,51 @@
                     </select>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="fieldSpace" class="control-label">Taille du parcours</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.fieldSpace.$invalid ? 'wrong' : 'valid'}}_input" id="fieldSpace" name="fieldSpace" ng-model="vm.production.fieldSpace" min="0" required>
+                        <span class="input-group-addon">m²</span>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="chickNb" class="control-label">Nombre de poussins / bâtiment</label>
-                    <input type="number" step="any" class="form-control {{ productionForm.chickNb.$invalid ? 'wrong' : 'valid'}}_input" id="chickNb" name="chickNb" ng-model="vm.production.chickNb" min="0" required>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.chickNb.$invalid ? 'wrong' : 'valid'}}_input" id="chickNb" name="chickNb" ng-model="vm.production.chickNb" min="0" required>
+                        <span class="input-group-addon">poussins/bâtiment</span>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="avgWeight" class="control-label">Poids moyen (kg)</label>
-                    <input type="number" step="any" class="form-control {{ productionForm.avgWeight.$invalid ? 'wrong' : 'valid'}}_input" id="avgWeight" name="avgWeight" ng-model="vm.production.avgWeight" min="0" required>
+                    <label for="avgWeight" class="control-label">Poids moyen</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.avgWeight.$invalid ? 'wrong' : 'valid'}}_input" id="avgWeight" name="avgWeight" ng-model="vm.production.avgWeight" min="0" required>
+                        <span class="input-group-addon">kg</span>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="age" class="control-label">Age (j)</label>
-                    <input type="number" step="any" class="form-control {{ productionForm.age.$invalid ? 'wrong' : 'valid'}}_input" id="age" name="age" ng-model="vm.production.age" min="0" required>
+                    <label for="age" class="control-label">Age</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.age.$invalid ? 'wrong' : 'valid'}}_input" id="age" name="age" ng-model="vm.production.age" min="0" required>
+                        <span class="input-group-addon">j</span>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="breedingPerYear" class="control-label">Nombre de bandes par an</label>
-                    <input type="number" step="any" class="form-control {{ productionForm.breedingPerYear.$invalid ? 'wrong' : 'valid'}}_input" id="breedingPerYear" name="breedingPerYear" ng-model="vm.production.breedingPerYear" min="0" required>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.breedingPerYear.$invalid ? 'wrong' : 'valid'}}_input" id="breedingPerYear" name="breedingPerYear" ng-model="vm.production.breedingPerYear" min="0" required>
+                        <span class="input-group-addon">bandes/an</span>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
@@ -65,43 +86,64 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="mortalityPercent" class="control-label">Taux de mortalité (%)</label>
-                    <input type="number" step="any" class="form-control {{ productionForm.mortalityPercent.$invalid ? 'wrong' : 'valid'}}_input" id="mortalityPercent" name="mortalityPercent" ng-model="vm.production.mortalityPercent" min="0" max="20" required>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.mortalityPercent.$invalid ? 'wrong' : 'valid'}}_input" id="mortalityPercent" name="mortalityPercent" ng-model="vm.production.mortalityPercent" min="0" max="20" required>
+                        <span class="input-group-addon">%</span>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="vaccinesPrice" class="control-label">Prix des vaccins (€/1000)</label>
-                    <input type="number" step="any" class="form-control {{ productionForm.vaccinesPrice.$invalid ? 'wrong' : 'valid'}}_input" id="vaccinesPrice" name="vaccinesPrice" ng-model="vm.production.vaccinesPrice" min="0" required>
+                    <label for="vaccinesPrice" class="control-label">Prix des vaccins</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.vaccinesPrice.$invalid ? 'wrong' : 'valid'}}_input" id="vaccinesPrice" name="vaccinesPrice" ng-model="vm.production.vaccinesPrice" min="0" required>
+                        <span class="input-group-addon">€/1000</span>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="foodPrice" class="control-label">Prix de l'aliment (€/t)</label>
-                    <input type="number" step="any" class="form-control {{ productionForm.foodPrice.$invalid ? 'wrong' : 'valid'}}_input" id="foodPrice" name="foodPrice" ng-model="vm.production.foodPrice" min="0" required>
+                    <label for="foodPrice" class="control-label">Prix de l'aliment</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.foodPrice.$invalid ? 'wrong' : 'valid'}}_input" id="foodPrice" name="foodPrice" ng-model="vm.production.foodPrice" min="0" required>
+                        <span class="input-group-addon">€/t</span>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="classedPrice" class="control-label">Prix du classé (€/1000)</label>
-                    <input type="number" step="any" class="form-control {{ productionForm.classedPrice.$invalid ? 'wrong' : 'valid'}}_input" id="classedPrice" name="classedPrice" ng-model="vm.production.classedPrice" min="0" required>
+                    <label for="classedPrice" class="control-label">Prix du classé</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.classedPrice.$invalid ? 'wrong' : 'valid'}}_input" id="classedPrice" name="classedPrice" ng-model="vm.production.classedPrice" min="0" required>
+                        <span class="input-group-addon">€/1000</span>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="declassedPrice" class="control-label">Prix du déclassé (€/1000)</label>
-                    <input type="number" step="any" class="form-control {{ productionForm.declassedPrice.$invalid ? 'wrong' : 'valid'}}_input" id="declassedPrice" name="declassedPrice" ng-model="vm.production.declassedPrice" min="0" required>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.declassedPrice.$invalid ? 'wrong' : 'valid'}}_input" id="declassedPrice" name="declassedPrice" ng-model="vm.production.declassedPrice" min="0" required>
+                        <span class="input-group-addon">€/1000</span>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="breedingDeclassedPercent" class="control-label">Taux de déclassé (%)</label>
-                    <input type="number" step="any" class="form-control {{ productionForm.breedingDeclassedPercent.$invalid ? 'wrong' : 'valid'}}_input" id="breedingDeclassedPercent" name="breedingDeclassedPercent" ng-model="vm.production.breedingDeclassedPercent" min="0" max="20" required>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.breedingDeclassedPercent.$invalid ? 'wrong' : 'valid'}}_input" id="breedingDeclassedPercent" name="breedingDeclassedPercent" ng-model="vm.production.breedingDeclassedPercent" min="0" max="20" required>
+                        <span class="input-group-addon">%</span>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="restraintPercent" class="control-label">Taux de saisie (%)</label>
-                    <input type="number" step="any" class="form-control {{ productionForm.restraintPercent.$invalid ? 'wrong' : 'valid'}}_input" id="restraintPercent" name="restraintPercent" ng-model="vm.production.restraintPercent" min="0" max="20" required>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.restraintPercent.$invalid ? 'wrong' : 'valid'}}_input" id="restraintPercent" name="restraintPercent" ng-model="vm.production.restraintPercent" min="0" max="20" required>
+                        <span class="input-group-addon">%</span>
+                    </div>
                 </div>
             </div>
         </div>

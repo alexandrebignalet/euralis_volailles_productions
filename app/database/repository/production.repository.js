@@ -33,7 +33,6 @@ class ProductionRepository extends DatabaseService {
                         });
                 }
 
-                console.log("toto", productions, facilities, facilitiesCharges, images);
                 return {productions, facilities, facilitiesCharges, images}
             })
             .then(({productions, facilities, facilitiesCharges, images}) => {

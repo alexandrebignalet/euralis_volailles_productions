@@ -31,11 +31,11 @@ toastr.options = {
 };
 
 export const ComponentsModule = angular.module('ComponentsModule', [
+    SidebarModule,
     HomeModule,
     PresentationModule,
     NavbarModule,
     ManagementModule,
-    SidebarModule,
     InvestmentModule,
     FileUploaderModule
 ])

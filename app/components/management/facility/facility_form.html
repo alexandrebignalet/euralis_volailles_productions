@@ -10,10 +10,8 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="facility_type" class="control-label">Type de bâtiment</label>
-                    <select class="form-control {{ facilityForm.facility_type.$invalid ? 'wrong' : 'valid'}}_input" id="facility_type" name="facility_type" ng-model="vm.facility.type" required>
-                        <option ng-selected="vm.facility.type.key === batimentType.key"
-                                ng-repeat="batimentType in vm.batimentTypes"
-                                ng-value="batimentType">{{batimentType.value | uppercase}}</option>
+                    <select class="form-control {{ facilityForm.facility_type.$invalid ? 'wrong' : 'valid'}}_input" id="facility_type" name="facility_type" ng-model="vm.facility.type" required
+                            ng-options="batimentType as batimentType.value | uppercase for batimentType in vm.batimentTypes track by batimentType.key">
                     </select>
                 </div>
             </div>
@@ -38,7 +36,7 @@
                 <div class="form-group">
                     <label for="facility_work_hours" class="control-label">Travail horaire</label>
                     <div class="input-group">
-                        <input type="number" min="0" required ng-model="vm.facility.workHours" class="form-control {{ facilityForm.facility_work_hours.$invalid ? 'wrong' : 'valid'}}_input" id="facility_work_hours" name="facility_work_hours">
+                        <input type="number" min="0" step="any" required ng-model="vm.facility.workHours" class="form-control {{ facilityForm.facility_work_hours.$invalid ? 'wrong' : 'valid'}}_input" id="facility_work_hours" name="facility_work_hours">
                         <span class="input-group-addon">h</span>
                     </div>
                 </div>

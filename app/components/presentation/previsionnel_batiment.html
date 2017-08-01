@@ -285,7 +285,7 @@
                     <th>{{ production.getAnnualNetMargin() | number:0 }}€</th>
                 </tr>
             </table>
-            <p>Temps travail: {{vm.facilityNb}}h/jour en moyenne</p>
+            <p>Temps travail: {{vm.facilityNb * production.facility.workHours  | number:0 }}h/jour en moyenne</p>
         </div>
     </uib-tab>
 </uib-tabset>

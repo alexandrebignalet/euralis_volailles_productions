@@ -19,7 +19,8 @@ export const FacilityChargesModule = angular
                     'content@': {
                         template: '<facilities-charges facilities-charges="$resolve.facilitiesCharges"></facilities-charges>',
                     }
-                }
+                },
+                onEnter: (SidebarService) => SidebarService.closeNav()
             })
             .state('facility_charges.create', {
                 parent: 'facility_charges',

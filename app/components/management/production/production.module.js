@@ -20,7 +20,8 @@ export const ProductionModule = angular
                     'content@': {
                         template: '<productions productions="$resolve.productions"></productions>',
                     }
-                }
+                },
+                onEnter: (SidebarService) => SidebarService.closeNav()
             })
             .state('production.create', {
                 parent: 'production',

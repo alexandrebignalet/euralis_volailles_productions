@@ -16,7 +16,8 @@ export const InvestmentModule = angular.module('InvestmentModule', [])
                 },
                 resolve: {
                     investments: InvestmentDataService => InvestmentDataService.all()
-                }
+                },
+                onEnter: (SidebarService) => SidebarService.closeNav()
             })
             .state('investment.create', {
                 parent: 'investment',

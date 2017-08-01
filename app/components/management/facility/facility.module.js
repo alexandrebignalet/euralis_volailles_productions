@@ -19,7 +19,8 @@ export const FacilityModule = angular
                     'content@': {
                         template: '<facilities facilities="$resolve.facilities"></facilities>',
                     }
-                }
+                },
+                onEnter: (SidebarService) => SidebarService.closeNav()
             })
             .state('facility.create', {
                 parent: 'facility',

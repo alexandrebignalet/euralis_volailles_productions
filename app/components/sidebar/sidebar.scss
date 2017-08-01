@@ -2,13 +2,13 @@
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 1;
+  z-index: 9000;
   top: 0;
   right: 0;
   background-color: white;
   overflow-x: hidden;
   transition: 0.5s;
-  border-left: 1px solid rgba(166, 206, 56, 0.33);
+  box-shadow: 0 0.125rem 0.3125rem rgba(0,0,0,.26);
 }
 
 .sidenav a {

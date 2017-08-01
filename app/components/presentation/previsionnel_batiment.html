@@ -1,5 +1,12 @@
 <div class="row" id="sliderBatiment">
-    <div class="col-md-11">
+    <div class="col-md-2" style="padding-top: 23px;">
+        <button type="button" class="btn btn-block btn-default" ng-click="vm.openPicker()"
+                uib-datepicker-popup="{{vm.format}}" ng-model="date" is-open="vm.pickerIsOpen" datepicker-options="vm.dateOptions" ng-required="true"
+                close-text="Close" style="border-color:#309f41; color:#309f41;">
+            <span class="glyphicon glyphicon-calendar" style="color:#309f41;"></span>&nbsp;&nbsp;{{date | date }}
+        </button>
+    </div>
+    <div class="col-md-9">
         <rzslider rz-slider-model="vm.facilityNb" rz-slider-options="vm.sliderOptions"></rzslider>
     </div>
     <div class="col-md-1 vertical-align">

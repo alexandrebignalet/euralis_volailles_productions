@@ -13,7 +13,9 @@ export class SidebarService {
     }
 
     closeNav() {
-        document.getElementById("mySidenav").style.width = "0";
-        this.isOpen = false;
+        if(this.isOpen) {
+            document.getElementById("mySidenav").style.width = "0";
+            this.isOpen = false;
+        }
     }
 }

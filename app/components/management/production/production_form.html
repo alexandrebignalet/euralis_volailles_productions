@@ -7,6 +7,17 @@
     <div class="modal-body" ng-if="vm.currentState.indexOf('remove') == -1">
         <div class="row">
             <h2 class="text-center">Production</h2><hr>
+            <div class="col-md-12">
+                    <label>Date de mise à jour de la production</label>
+                    <p class="input-group">
+                        <button type="button" class="btn btn-block btn-default" ng-click="vm.openPicker()"
+                                uib-datepicker-popup="{{vm.format}}" ng-model="vm.production.updateDate" is-open="vm.pickerIsOpen" datepicker-options="vm.dateOptions" ng-required="true"
+                                close-text="Close">
+                            <span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;{{vm.production.updateDate | date }}
+                        </button>
+                    </p>
+            </div>
+
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="name" class="control-label">Appellation</label>

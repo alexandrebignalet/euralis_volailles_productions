@@ -17,6 +17,8 @@
     <table class="table table-responsive table-hover management-table">
         <thead>
         <tr>
+            <th>Date de màj</th>
+            <th>Taille du parcours</th>
             <th>Nom de production</th>
             <th>Département</th>
             <th>Taille</th>
@@ -40,6 +42,8 @@
         <tbody>
 
         <tr ng-repeat="production in $ctrl.productions">
+            <td>{{ production.updateDate | date }}</td>
+            <td>{{ production.fieldSpace }}</td>
             <td>{{ production.name }}</td>
             <td>
                 <span ng-if="production.department != 'Others'">{{ production.department }}</span>

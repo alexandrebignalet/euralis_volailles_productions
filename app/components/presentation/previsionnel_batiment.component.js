@@ -17,6 +17,13 @@ export const PrevisionnelBatimentComponent = {
                 floor: 1,
                 ceil: 20
             };
+
+            this.pickerIsOpen = false;
+            this.format = 'dd/MM/yyyy';
+            this.dateOptions = {
+                minDate: new Date(),
+                showWeeks: true
+            };
         }
 
         $onInit() {
@@ -24,6 +31,10 @@ export const PrevisionnelBatimentComponent = {
             this.scope.$watch('vm.facilityNb', () => {
                 this.update();
             });
+        }
+
+        openPicker() {
+            this.pickerIsOpen = true;
         }
 
         update() {

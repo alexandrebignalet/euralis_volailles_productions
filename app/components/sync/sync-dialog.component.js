@@ -62,7 +62,7 @@ export const SyncDialogComponent = {
         close() {
             this.timeout(() => {
                 this.modalInstance.close();
-            }, 2000);
+            }, 1000);
         }
     },
     controllerAs: 'vm'

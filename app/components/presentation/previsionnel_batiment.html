@@ -1,5 +1,13 @@
 <div class="row" id="sliderBatiment">
-    <rzslider rz-slider-model="vm.facilityNb" rz-slider-options="vm.sliderOptions"></rzslider>
+    <div class="col-md-11">
+        <rzslider rz-slider-model="vm.facilityNb" rz-slider-options="vm.sliderOptions"></rzslider>
+    </div>
+    <div class="col-md-1 vertical-align">
+            <a href style="color:#309f41;" ng-click="vm.facilityNb = vm.facilityNb + 1">
+                <span class="glyphicon glyphicon-plus" style="padding-top: 27px;"></span>
+            </a>
+        </div>
+    </div>
 </div>
 <br><br>
 <uib-tabset active="active_production" justified="true" type="pills" class="tab-animation">

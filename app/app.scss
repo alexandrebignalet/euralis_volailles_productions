@@ -1,6 +1,5 @@
 main {
-  margin-top: -1.05%;
-  font-family: 'Open Sans', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  padding-top: 78px; // due to navbar fixed top
 }
 
 svg path.st0 {
@@ -16,10 +15,6 @@ svg path.st0:hover, path.st0.active {
 
 body {
   background-color:white!important;
-}
-
-nav {
-  background-color: #399528;
 }
 
 .table-hover>tbody>tr:hover {

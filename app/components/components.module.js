@@ -12,7 +12,6 @@ import {InvestmentModule} from './management/investment/investment.module';
 import {FileUploaderModule} from './file_uploader/file_uploader.module';
 import {SyncDialogComponent} from './sync/sync-dialog.component';
 
-
 toastr.options = {
     "closeButton": false,
     "debug": false,

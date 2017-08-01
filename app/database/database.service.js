@@ -12,6 +12,10 @@ PouchDB.plugin(require('relational-pouch'));
 
 const databaseSchema = [
     {
+        singular: 'video',
+        plural: 'videos'
+    },
+    {
         singular: 'production',
         plural: 'productions',
         relations: {

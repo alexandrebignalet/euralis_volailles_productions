@@ -7,21 +7,26 @@ export const VideoFormComponent = {
     },
     template,
     controller: class VideoFormController {
-        constructor(VideoDataService, $state, toastr){
+        constructor(VideoDataService, $state, toastr, $timeout){
             'ngInject';
 
             this.dataService = VideoDataService;
             this.isSaving = false;
             this.currentState = $state.current.name;
             this.toastr = toastr;
-            this.videoToSee = null;
+            this.$timeout = $timeout;
         }
 
         $onInit() {
             this.video = this.resolve.video;
 
             if(this.currentState.replace("video.", "") === 'edit') {
-                this.videoToSee = URL.createObjectURL(this.video.file[0]);
+                this.$timeout(() => {
+                    let myVideo = document.getElementById('modal-viewer');
+                    myVideo.src = URL.createObjectURL(this.video.file[0]);
+                    myVideo.load();
+                    myVideo.play();
+                });
             }
         }
 

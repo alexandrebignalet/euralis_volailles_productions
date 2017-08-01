@@ -5,10 +5,9 @@ export const PrevisionnelBatimentComponent = {
     bindings: { productions: '<' },
     template,
     controller: class PrevisionnelBatimentController {
-        constructor($scope, $timeout){
+        constructor($scope){
             'ngInject';
             this.scope = $scope;
-            this.timeout = $timeout;
             this.facilityNb = 2;
             this.investmentChoosen = null;
             this.annuityDuration = 15;
@@ -28,6 +27,7 @@ export const PrevisionnelBatimentComponent = {
 
         update() {
             angular.forEach(this.productions, (production) => {
+
                 production.setFacilitiesNb(this.facilityNb);
 
                 this.investmentChoosen = production.facility.investments[0];

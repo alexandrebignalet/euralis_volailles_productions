@@ -20,7 +20,6 @@ export const FacilityFormComponent = {
         }
 
         $onInit() {
-
             this.facility = this.resolve.facility;
             this.facilitiesCharges = this.resolve.facilitiesCharges;
             this.investments = this.resolve.investments;
@@ -28,6 +27,7 @@ export const FacilityFormComponent = {
 
         onSubmit() {
             this.isSaving = true;
+
             switch(this.currentState.replace("facility.", "")) {
                 case 'edit':
                     this.dataService.update(this.facility).then(() => {

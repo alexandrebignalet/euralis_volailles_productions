@@ -19,6 +19,7 @@
         <tr>
             <th class="col-md-2 text-center">Taille</th>
             <th class="col-md-2 text-center">Type</th>
+            <th class="col-md-2 text-center">Travail horaire</th>
             <th class="col-md-2 text-center">Grille de critères</th>
             <th class="col-md-2 text-center">Investissements</th>
             <th class="col-md-3 text-center">Modifier/Supprimer</th>
@@ -29,6 +30,7 @@
         <tr ng-repeat="facility in $ctrl.facilities">
             <td class="col-md-2 text-center">{{ facility.size }}m²</td>
             <td class="col-md-2 text-center">{{ facility.type.value | uppercase }}</td>
+            <td class="col-md-2 text-center">{{ facility.workHours }}</td>
             <td class="col-md-2 text-center">
                 <a ui-sref="facility_charges">
                 {{ facility.facilityCharges.name | uppercase }}

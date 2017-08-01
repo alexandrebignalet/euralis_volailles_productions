@@ -1,33 +1,17 @@
-const FacilityCharges = require('./facility_charges');
-
 class Facility {
-    /**
-     * @type string
-     * @param id
-     *
-     * @type int
-     * @param size
-     *
-     * @type string
-     * @param type
-     *
-     * @type FacilityCharges
-     * @param facilityCharges
-     *
-     * @type Array[Investments]
-     * @param investments
-     */
-    constructor({id, size, type, facilityCharges, investments}) {
+
+    constructor({id, size, type, facilityCharges, workHours, investments}) {
         this.id = id;
         this.size = size;
         this.type = type;
         this.facilityCharges = facilityCharges;
+        this.workHours = workHours;
         this.investments = investments;
         this.images = [];
     }
 
     getAnnuity() {
-        if (this.type === 'cabane') {
+        if (this.type === 'movable') {
             return {
                 totalCost: 63856,
                 duration: 12,
@@ -43,15 +27,6 @@ class Facility {
             };
         }
     }
-
-    // get facilityCharges() {
-    //     return this._facilityCharges;
-    // }
-    //
-    //
-    // set facilityCharges(facilityCharges) {
-    //     this._facilityCharges = facilityCharges;
-    // }
 }
 
 module.exports = Facility;

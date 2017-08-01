@@ -33,7 +33,6 @@
             <th>Prix du déclassé</th>
             <th>Taux de déclassé</th>
             <th>Taux de saisie</th>
-            <th>Réduction à l'achat</th>
 
             <th>Modifier/Supprimer</th>
         </tr>
@@ -47,21 +46,19 @@
                 <span ng-if="production.department == 'Others'">Tous</span>
             </td>
             <td>{{ production.facility.size }}m²</td>
-            <td>{{ production.facility.type | uppercase }}</td>
+            <td>{{ production.facility.type.value | uppercase }}</td>
             <td class="aligntd">{{ production.chickNb }}</td>
             <td class="aligntd">{{ production.avgWeight }}</td>
             <td class="aligntd">{{ production.age }} j.</td>
             <td class="aligntd">{{ production.breedingPerYear }}</td>
             <td class="aligntd">{{ production.consumptionIndex }}</td>
             <td class="aligntd">{{ production.mortalityPercent * 100}}%</td>
-            <td class="aligntd">{{ production.vaccinesPrice | number: 2}}€</td>
-            <td class="aligntd">{{ production.foodPrice | number: 2}}€</td>
-            <td class="aligntd">{{ production.classedPrice | number: 2}}€</td>
-            <td class="aligntd">{{ production.declassedPrice | number: 2}}€</td>
+            <td class="aligntd">{{ production.vaccinesPrice* 1000 | number: 0}}€</td>
+            <td class="aligntd">{{ production.foodPrice * 1000 | number: 0}}€</td>
+            <td class="aligntd">{{ production.classedPrice * 1000 | number: 0}}€</td>
+            <td class="aligntd">{{ production.declassedPrice * 1000 | number: 0}}€</td>
             <td class="aligntd">{{ production.breedingDeclassedPercent * 100}}%</td>
             <td class="aligntd">{{ production.restraintPercent * 100}}%</td>
-            <td class="aligntd">{{ production.chickPurchaseReduction * 100}}%</td>
-
             <td class="aligntd">
                 <button class="btn btn-success" ui-sref="production.edit({id: production.id})"><span class="glyphicon glyphicon-pencil"></span></button>
                 <button class="btn btn-danger" ui-sref="production.remove({id: production.id})"><span class="glyphicon glyphicon-remove"></span></button>

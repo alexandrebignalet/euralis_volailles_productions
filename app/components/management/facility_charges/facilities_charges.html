@@ -18,9 +18,10 @@
         <thead>
         <tr>
             <th >Appellation</th>
+            <th><i>€/1000</i></th>
             <th >Chauffage</th>
             <th >Prix poussins</th>
-            <th >Prix vétérinaire</th>
+            <th >Prix soins</th>
             <th >Cotisations</th>
             <th >Prix désinfection</th>
             <th >Eau, électricité, divers</th>
@@ -35,15 +36,16 @@
 
         <tr ng-repeat="facilityCharges in $ctrl.facilitiesCharges">
             <td >{{ facilityCharges.name }}</td>
-            <td >{{ facilityCharges.warming  }}</td>
-            <td >{{ facilityCharges.chickPrice  }}</td>
-            <td >{{ facilityCharges.vetPrice  }}</td>
-            <td >{{ facilityCharges.contributions  }}</td>
-            <td >{{ facilityCharges.disinfection  }}</td>
-            <td >{{ facilityCharges.commodities  }}</td>
-            <td >{{ facilityCharges.litter  }}</td>
-            <td >{{ facilityCharges.catching  }}</td>
-            <td >{{ facilityCharges.insurances  }}</td>
+            <td></td>
+            <td >{{ facilityCharges.warming * 1000  }}</td>
+            <td >{{ facilityCharges.chickPrice * 1000 }}</td>
+            <td >{{ facilityCharges.vetPrice * 1000 }}</td>
+            <td >{{ facilityCharges.contributions * 1000 }}</td>
+            <td >{{ facilityCharges.disinfection * 1000 }}</td>
+            <td >{{ facilityCharges.commodities * 1000 }}</td>
+            <td >{{ facilityCharges.litter * 1000 }}</td>
+            <td >{{ facilityCharges.catching * 1000 }}</td>
+            <td >{{ facilityCharges.insurances * 1000 }}</td>
             <td >
                 <button class="btn btn-success" ui-sref="facility_charges.edit({id: facilityCharges.id})">
                     <span class="glyphicon glyphicon-pencil"></span>

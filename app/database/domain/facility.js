@@ -1,5 +1,23 @@
 class Facility {
-
+    /**
+     * @type string
+     * @param id
+     *
+     * @type int
+     * @param size
+     *
+     * @type string
+     * @param type
+     *
+     * @type FacilityCharges
+     * @param facilityCharges
+     *
+     * @type integer
+     * @param workHours
+     *
+     * @type Array[Investments]
+     * @param investments
+     */
     constructor({id, size, type, facilityCharges, workHours, investments}) {
         this.id = id;
         this.size = size;
@@ -28,5 +46,6 @@ class Facility {
         }
     }
 }
+
 
 module.exports = Facility;

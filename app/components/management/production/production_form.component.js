@@ -15,11 +15,22 @@ export const ProductionFormComponent = {
             this.currentState = $state.current.name;
             this.departments = DEPARTMENTS;
             this.toastr = toastr;
+
+            this.pickerIsOpen = false;
+            this.format = 'dd/MM/yyyy';
+            this.dateOptions = {
+                minDate: new Date(),
+                showWeeks: true
+            };
         }
 
         $onInit() {
             this.production = this.convertToShow(this.resolve.production);
             this.facilities = this.resolve.facilities;
+        }
+
+        openPicker() {
+            this.pickerIsOpen = true;
         }
 
         convertToShow(production) {

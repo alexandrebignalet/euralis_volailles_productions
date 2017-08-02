@@ -16,31 +16,3 @@ div#menu.row{
 .banner {
   width:100%;
 }
-
-.eva1 {
-  color: #399528;
-  font-weight:bold;
-  font-size: large;
-}
-
-.eva2 {
-  color: #a6ce39;
-  font-weight:bold;
-  font-size: large;
-}
-
-.custom-bullet li {
-  display: block;
-  padding-top: 5px;
-}
-
-.custom-bullet li:before
-{
-  /*Using a Bootstrap glyphicon as the bullet point*/
-  content: "\e080";
-  font-family: 'Glyphicons Halflings';
-  font-size: 9px;
-  float: left;
-  margin-top: 4px;
-  margin-left: -17px;
-}

@@ -14,33 +14,16 @@
 <div class="container">
     <div class="row">
         <h1>
-            <i class="glyphicon glyphicon-grain" style="color:rgba(219, 226, 13, 0.88)"></i>
-            <span style="color: #309f41;">Euralis</span>
-            <span style="color: #a6ce39;">vous accompagne</span>
-        </h1><hr>
-
-        <div class="col-md-4">
-            <img class="slide" src="{{vm.accompagne}}" />
-        </div>
-        <div class="col-md-8">
-            <ul class="custom-bullet">
-                <li class="eva1">Auprès de votre banque</li>
-                <li class="eva2">Permis de construire</li>
-                <li class="eva1">Déclaration de l'élevage ICPE</li>
-                <li class="eva2">Dossier de subventions</li>
-                <li class="eva1">Mise en relation, devis fournisseurs (bâtiment, matériel)</li>
-                <li class="eva2">Supervise et coordonne les travaux</li>
-                <li class="eva1">Suivi technique renforcé la 1ère année</li>
-                <li class="eva2">Possibilité de mise en place de volailles festives (marges supérieures)</li>
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <h1>
             <i class="glyphicon glyphicon-facetime-video" style="color:rgba(219, 226, 13, 0.88)"></i>
             <span style="color: #309f41;">Présentation vidéos</span>
             <span style="color: #a6ce39;">des élevages</span>
         </h1><hr>
+        <div class="col-md-9">
+            <video width="100%" controls>
+                <source src type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+        </div>
         <div class="col-md-3 text-center">
             <ul class="nav nav-pills nav-stacked">
                 <li ng-repeat="video in vm.videos" ng-class="{'active': vm.videoPlayed == video.id}">
@@ -48,13 +31,13 @@
                 </li>
             </ul>
         </div>
-        <div class="col-md-9">
-            <video width="100%" controls>
-                <source src type="video/mp4">
-                Your browser does not support HTML5 video.
-            </video>
-        </div>
     </div>
     <br>
-
+    <div class="row">
+        <h1>
+            <i class="glyphicon glyphicon-grain" style="color:rgba(219, 226, 13, 0.88)"></i>
+            <span style="color: #309f41;">Euralis</span>
+            <span style="color: #a6ce39;">vous accompagne</span>
+        </h1><hr>
+    </div>
 </div>

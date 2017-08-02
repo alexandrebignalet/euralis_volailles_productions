@@ -1,10 +1,10 @@
 import angular from 'angular';
-
+import angularInview from 'angular-inview';
 import {HomeComponent} from './home.component';
 import {aquitaineMap} from './home.directive';
 import {department} from './home.directive';
 
-export const HomeModule = angular.module('HomeModule', [])
+export const HomeModule = angular.module('HomeModule', [angularInview.name])
 
     .config(($locationProvider, $stateProvider, $urlRouterProvider) => {
         'ngInject';

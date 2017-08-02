@@ -18,8 +18,6 @@ footer {
 }
 
 body {
-  font-family: Calibri;
-  color: #666666!important;
   background-color:white!important;
 }
 
@@ -39,24 +37,4 @@ body {
   outline: 0!important;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 77, 93, 0.6) !important;
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 77, 93, 0.6) !important;
-}
-
-.slide {
-  position: absolute;
-  left: -100px;
-  background: blue;
-  -webkit-animation: slide 0.5s forwards;
-  -webkit-animation-delay: 1s;
-  animation: slide 0.5s forwards;
-  animation-delay: 1s;
-  box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 1);
-  width:100%;
-}
-
-@-webkit-keyframes slide {
-  100% { left: 0; }
-}
-
-@keyframes slide {
-  100% { left: 0; }
 }

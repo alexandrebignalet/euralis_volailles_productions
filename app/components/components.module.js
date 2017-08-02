@@ -6,10 +6,12 @@ import {HomeModule} from './home/home.module';
 import {NavbarModule} from './navbar/navbar.module';
 import {PresentationModule} from './presentation/presentation.module';
 import {ManagementModule} from './management/management.module';
-import {ModalService} from '../service/modal.service';
-import {SidebarModule} from './sidebar/sidebar.module';
 import {InvestmentModule} from './management/investment/investment.module';
+import {SidebarModule} from './sidebar/sidebar.module';
 import {FileUploaderModule} from './file_uploader/file_uploader.module';
+import {RotationModule} from './rotation/rotation.module';
+
+import {ModalService} from '../service/modal.service';
 import {SyncDialogComponent} from './sync/sync-dialog.component';
 
 toastr.options = {
@@ -37,7 +39,8 @@ export const ComponentsModule = angular.module('ComponentsModule', [
     NavbarModule,
     ManagementModule,
     InvestmentModule,
-    FileUploaderModule
+    FileUploaderModule,
+    RotationModule
 ])
     .config(($stateProvider, $locationProvider) => {
         'ngInject';

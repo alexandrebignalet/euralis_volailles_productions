@@ -37,7 +37,7 @@
     </div>
     <div class="row">
         <h1>
-            <i class="glyphicon glyphicon-grain" style="color:rgba(219, 226, 13, 0.88)"></i>
+            <i class="glyphicon glyphicon-home" style="color:rgba(219, 226, 13, 0.88)"></i>
             <span style="color: #309f41;">Filière poulet</span>
             <span style="color: #a6ce39;">LABEL EURALIS</span>
         </h1><hr>
@@ -91,7 +91,7 @@
             <div class="col-md-1">
                 <span class="arrow arrow-right vmid"></span>
             </div>
-            <div class="col-md-4" in-view="avigersVisible = $inview" ng-class="{ 'fade-in': avigersVisible }">
+            <div class="col-md-4" ng-class="{ 'fade-in': groupProdVisible }">
                 <h3>
                     <strong>Groupement qualité</strong>
                 </h3>
@@ -103,7 +103,7 @@
             <div class="col-md-1">
                 <span class="arrow arrow-left vmid"></span>
             </div>
-            <div class="col-md-3" in-view="qualisudVisible = $inview" ng-class="{ 'slide-left': qualisudVisible }">
+            <div class="col-md-3" ng-class="{ 'slide-left': groupProdVisible }">
                 <figure>
                     <img src="{{vm.imagesFiliere['qualisud']}}" />
                 </figure>

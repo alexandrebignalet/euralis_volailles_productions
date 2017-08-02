@@ -30,7 +30,7 @@ class Production {
     setFacilitiesNb(nb) {
         this.facilitiesNb = nb;
         this.facility.investments.forEach((entity) => {
-            entity.valuesForFacilityNb = nb;
+            entity.facilityNb = nb;
         })
     }
 

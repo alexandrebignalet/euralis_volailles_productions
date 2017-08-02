@@ -1,6 +1,7 @@
 import template from './home.html';
 import './home.scss';
 import banner from '../../images/fd_good.jpg';
+import accompagne from '../../images/accompagne.jpg';
 
 export const HomeComponent = {
     bindings: {
@@ -10,7 +11,10 @@ export const HomeComponent = {
     controller: class HomeController {
         constructor(DEPARTMENTS, VideoDataService) {
             'ngInject';
+            //imgs
             this.banner = banner;
+            this.accompagne = accompagne;
+
             this.departments = DEPARTMENTS;
             this.VideoDataService = VideoDataService;
             this.videoPlayed = null;

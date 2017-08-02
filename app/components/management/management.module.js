@@ -2,6 +2,7 @@ import angular from 'angular';
 import {ProductionModule} from './production/production.module';
 import {FacilityChargesModule} from './facility_charges/facility_charges.module';
 import {FacilityModule} from './facility/facility.module';
+import {VideoModule} from './video/video.module';
 import {MultiselectDirective} from '../../service/multiselect.directive';
 
 const departmentNames = [];
@@ -16,7 +17,7 @@ departmentNames.push({key: 'Gironde', value:'Gironde'});
 
 
 export const ManagementModule = angular
-    .module('Management', [ProductionModule, FacilityModule, FacilityChargesModule])
+    .module('Management', [ProductionModule, FacilityModule, FacilityChargesModule, VideoModule])
     .config(($locationProvider, $stateProvider, $compileProvider) => {
         'ngInject';
 

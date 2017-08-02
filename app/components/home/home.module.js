@@ -13,9 +13,12 @@ export const HomeModule = angular.module('HomeModule', [])
             .state('home', {
                 parent: 'components',
                 url: '/home',
+                resolve: {
+                  videos: (VideoDataService) => VideoDataService.all()
+                },
                 views: {
                     'content@': {
-                        template: '<home></home>',
+                        template: '<home videos="$resolve.videos"></home>',
                     }
                 }
             });

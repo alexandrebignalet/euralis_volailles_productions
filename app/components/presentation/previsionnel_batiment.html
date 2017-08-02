@@ -297,7 +297,7 @@
                 </tr>
                 <tr>
                     <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>
-                    <th>{{ production.getAnnualNetMargin() | number:0 }}€</th>
+                    <th>{{ production.getAnnualNetMargin(investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest)) | number:0 }}€</th>
                 </tr>
             </table>
             <p>Temps travail: {{vm.facilityNb}}h/jour en moyenne</p>

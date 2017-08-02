@@ -1,0 +1,47 @@
+
+<div class="container">
+    <h1>
+        <i class="glyphicon glyphicon-facetime-video" style="color:rgba(219, 226, 13, 0.88)"></i>
+        <span style="color: #309f41;">Gestion</span>
+        <span style="color: #a6ce39;">des vidéos</span>
+    </h1><hr>
+
+    <div class="row">
+        <div class="col-md-9">
+            <video width="100%" controls>
+                <source src type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+        </div>
+
+        <div class="col-md-3">
+            <a href ui-sref="video.create">
+                <span class="glyphicon glyphicon-plus"></span>
+                Ajouter une vidéo
+            </a>
+            <table class="table table-hovered">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th colspan="2">Taille (Mo)</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="video in vm.videos" ng-click="vm.loadVideo(video.id)" style="cursor: pointer;">
+                    <td>{{video.name}}</td>
+                    <td colspan="2">{{video.size / 1000000 | number:1}}</td>
+                    <td>
+                        <a href ui-sref="video.edit({id: video.id})">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        <a href ui-sref="video.remove({id: video.id})">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

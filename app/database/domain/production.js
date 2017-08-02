@@ -109,8 +109,8 @@ class Production {
         return this.getAnnualBrutMargin() / this.facility.size;
     }
 
-    getAnnualNetMargin(){
-        return this.getBrutMargin() * this.breedingPerYear - this.facility.getAnnuity().value;
+    getAnnualNetMargin(annuity){
+        return this.getBrutMargin() * this.breedingPerYear - annuity;
     }
 }
 

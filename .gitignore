@@ -6,3 +6,5 @@ euralis_volailles_test_db
 electron/webapp/
 app/images/videos
 docker/lib/
+!docker/lib/.gitkeep
+!docker/lib/.gitkeep

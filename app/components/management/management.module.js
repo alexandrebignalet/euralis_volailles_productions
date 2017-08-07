@@ -4,6 +4,7 @@ import {FacilityChargesModule} from './facility_charges/facility_charges.module'
 import {FacilityModule} from './facility/facility.module';
 import {VideoModule} from './video/video.module';
 import {MultiselectDirective} from '../../service/multiselect.directive';
+import {CustomOnChangeDirective} from '../../service/on-change.directive';
 
 const departmentNames = [];
 departmentNames.push({key: 'Landes', value:'Landes'});
@@ -30,5 +31,6 @@ export const ManagementModule = angular
             });
     })
     .directive('multiselect', MultiselectDirective)
+    .directive('customOnChange', CustomOnChangeDirective)
     .constant('DEPARTMENTS', departmentNames)
     .name;

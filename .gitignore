@@ -7,4 +7,3 @@ electron/webapp/
 app/images/videos
 docker/lib/
 !docker/lib/.gitkeep
-!docker/lib/.gitkeep

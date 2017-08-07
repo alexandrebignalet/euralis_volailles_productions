@@ -8,7 +8,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <div ng-if="vm.currentState.indexOf('edit') != -1">
+                    <div ng-if="vm.currentState.indexOf('remove') == -1">
                         <label>Vidéo actuelle: </label>
                         <div class="form-group">
                             <video width="100%" id="modal-viewer" controls>
@@ -20,8 +20,9 @@
                     <div class="form-group">
                         <label for="load-file" ng-if="vm.currentState.indexOf('edit') != -1">Changer la vidéo:</label>
                         <label for="load-file" ng-if="vm.currentState.indexOf('create') != -1">Choisir une vidéo:</label>
-                        <input type="file" id="load-file">
+                        <input type="file" id="load-file"  onchange="angular.element(this).scope().fileNameChanged(this)">
                     </div>
+                    <!--custom-on-change="vm.fileChanged"-->
                     <div class="form-group">
                         <label for="video_name">Nom de la vidéo</label>
                         <input type="text" id="video_name" ng-model="vm.video.name" required class="form-control" />

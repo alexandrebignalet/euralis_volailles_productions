@@ -35,7 +35,7 @@ class VideoRepository extends DatabaseService {
 
                 videoEntity = new Video(videos[0]);
 
-                videoEntity.file = images;
+                videoEntity.file = images[0];
 
                 return videoEntity;
             });

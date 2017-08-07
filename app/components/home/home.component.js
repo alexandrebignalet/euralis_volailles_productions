@@ -66,7 +66,7 @@ export const HomeComponent = {
                 .then((data) => {
                     let myVideo = document.getElementsByTagName('video')[0];
                     this.videoPlayed = video.id;
-                    myVideo.src = URL.createObjectURL(data.file[0]);
+                    myVideo.src = URL.createObjectURL(data.file);
                     myVideo.load();
                     myVideo.play();
                 });

@@ -1,0 +1,19 @@
+version: '2'
+services:
+    euralisvolaillesproductions-couchdb:
+        restart: always
+        image: couchdb:1.6.1
+        volumes:
+            - /home/alexandre/WebstormProjects/EuralisVolaillesProductions/docker/config/prod:/usr/local/etc/couchdb/local.d
+            - /home/alexandre/WebstormProjects/EuralisVolaillesProductions/docker/lib:/usr/local/var/lib/couchdb
+        ports:
+            - 5984:5984
+
+    euralisvolaillesproductions-couchdb-dev:
+          restart: always
+          image: couchdb:1.6.1
+          volumes:
+              - /home/alexandre/WebstormProjects/EuralisVolaillesProductions/docker/config/prod:/usr/local/etc/couchdb/local.d
+              - /home/alexandre/WebstormProjects/EuralisVolaillesProductions/docker/lib:/usr/local/var/lib/couchdb
+          ports:
+              - 10000:5984

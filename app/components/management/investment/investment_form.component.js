@@ -17,6 +17,11 @@ export const InvestmentFormComponent = {
             this.investment = this.resolve.investment;
         }
 
+        removeImage(img) {
+            let index = this.investment.images.indexOf(img);
+            this.investment.images.splice(index, 1);
+        }
+
         onSubmit() {
             this.isSaving = true;
             switch(this.currentState.replace("investment.", "")) {

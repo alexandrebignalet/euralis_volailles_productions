@@ -19,7 +19,6 @@ export const ProductionFormComponent = {
             this.pickerIsOpen = false;
             this.format = 'dd/MM/yyyy';
             this.dateOptions = {
-                minDate: new Date(),
                 showWeeks: true
             };
         }
@@ -41,6 +40,7 @@ export const ProductionFormComponent = {
             production.breedingDeclassedPercent *= 100;
             production.mortalityPercent *= 100;
             production.restraintPercent *= 100;
+            production.updateDate = new Date(production.updateDate);
             return production;
         }
 
@@ -53,6 +53,11 @@ export const ProductionFormComponent = {
             production.mortalityPercent /= 100;
             production.restraintPercent /= 100;
             return production;
+        }
+
+        removeImage(img) {
+            let index = this.production.images.indexOf(img);
+            this.production.images.splice(index, 1);
         }
 
         onSubmit() {

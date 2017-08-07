@@ -34,9 +34,9 @@ class FacilityRepository extends DatabaseService {
                 return {facilities, facilitiesCharges, investments, images}
             })
             .then(({facilities, facilitiesCharges, investments, images}) => {
-console.log(facilities[0]);
+
                 facilityEntity = new Facility(facilities[0]);
-console.log(facilityEntity);
+
                 facilityEntity.images = images;
 
                 facilityEntity.facilityCharges = new FacilityCharges(facilitiesCharges[0]);

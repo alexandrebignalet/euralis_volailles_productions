@@ -10,8 +10,8 @@
             <div class="col-md-12">
                     <label>Date de mise à jour de la production</label>
                     <p class="input-group">
-                        <button type="button" class="btn btn-block btn-default" ng-click="vm.openPicker()"
-                                uib-datepicker-popup="{{vm.format}}" ng-model="vm.production.updateDate" is-open="vm.pickerIsOpen" datepicker-options="vm.dateOptions" ng-required="true"
+                        <button type="button" class="btn btn-block btn-default {{ !vm.production.updateDate ? 'wrong' : 'valid'}}_input" ng-click="vm.openPicker()"
+                                uib-datepicker-popup="{{vm.format}}" ng-model="vm.production.updateDate" is-open="vm.pickerIsOpen" datepicker-options="vm.dateOptions"
                                 close-text="Close">
                             <span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;{{vm.production.updateDate | date }}
                         </button>
@@ -159,7 +159,10 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-2" ng-repeat="img in vm.production.images track by img.name" thumb-images="{ file: img, height: 100 }"></div>
+            <div class="col-md-3" ng-repeat="img in vm.production.images track by img.name">
+                <button type="button" class="btn btn-default btn-block" ng-click="vm.removeImage(img)"><span class="glyphicon glyphicon-remove"></span> </button>
+                <p thumb-images="{ file: img, height: 100 }"></p>
+            </div>
         </div>
         <file-uploader model="vm.production.images"></file-uploader>
     </div>

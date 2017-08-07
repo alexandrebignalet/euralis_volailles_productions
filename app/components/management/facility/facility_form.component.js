@@ -12,7 +12,7 @@ export const FacilityFormComponent = {
             this.dataService = FacilityDataService;
             this.isSaving = false;
             this.currentState = $state.current.name;
-            this.batimentTypes = FACILITIES_TYPES;
+            this.facilityTypes = FACILITIES_TYPES;
             this.toastr = toastr;
             this.facility = null;
             this.facilitiesCharges = null;
@@ -21,14 +21,18 @@ export const FacilityFormComponent = {
 
         $onInit() {
             this.facility = this.resolve.facility;
-            console.log(this.facility);
             this.facilitiesCharges = this.resolve.facilitiesCharges;
             this.investments = this.resolve.investments;
         }
 
+        removeImage(img) {
+            let index = this.facility.images.indexOf(img);
+            this.facility.images.splice(index, 1);
+        }
+
         onSubmit() {
             this.isSaving = true;
-console.log(this.facility);
+
             switch(this.currentState.replace("facility.", "")) {
                 case 'edit':
                     this.dataService.update(this.facility).then(() => {

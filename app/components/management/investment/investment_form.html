@@ -90,7 +90,10 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-2" ng-repeat="img in vm.investment.images track by img.name" thumb-images="{ file: img, height: 100 }"></div>
+            <div class="col-md-3" ng-repeat="img in vm.investment.images track by img.name">
+                <button type="button" class="btn btn-default btn-block" ng-click="vm.removeImage(img)"><span class="glyphicon glyphicon-remove"></span> </button>
+                <p thumb-images="{ file: img, height: 100 }"></p>
+            </div>
         </div>
         <file-uploader model="vm.investment.images"></file-uploader>
     </div>

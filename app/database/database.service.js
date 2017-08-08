@@ -132,7 +132,7 @@ class DatabaseService {
     }
 
     removeAttachment(entityName, obj, name) {
-        return db.rel.removeAttachment(entityName, obj, name);
+        return this.db.rel.removeAttachment(entityName, obj, name);
     }
 
     // it will empty the db, because we are using WebSql adapter
@@ -140,6 +140,15 @@ class DatabaseService {
         return this.db.info()
             .then((data) => this.db.destroy())
             .catch(() => { return {ok: true}; });
+    }
+
+    compact() {
+        return this.db.compact()
+            .then((info) => {
+                return info;
+            }).catch((err) => {
+                return err;
+            });
     }
 
     sync() {

@@ -4,15 +4,15 @@ const FacilityCharges = require('../domain/facility_charges');
 const Investment = require('../domain/investment');
 const Production = require('../domain/production');
 
-class ProductionRepository extends DatabaseService {
+class ProductionRepository {
     constructor() {
-        super();
+        this.dbService = DatabaseService;
         this.entityName = 'production';
     }
 
     get(id) {
         let productionEntity;
-        return super.find(this.entityName, id)
+        return this.dbService.find(this.entityName, id)
             .then(({productions, facilities, facilitiesCharges}) => {
                 let images = [];
 
@@ -20,7 +20,7 @@ class ProductionRepository extends DatabaseService {
                     let findAttachmentsPromises = [];
 
                     Object.keys(productions[0].attachments).forEach((key) => {
-                        findAttachmentsPromises.push(this.db.rel.getAttachment(this.entityName, productions[0].id, key));
+                        findAttachmentsPromises.push(this.dbService.db.rel.getAttachment(this.entityName, productions[0].id, key));
                     });
 
                     return Promise
@@ -47,7 +47,7 @@ class ProductionRepository extends DatabaseService {
 
     getAll() {
         let productionEntity;
-        return super.find(this.entityName)
+        return this.dbService.find(this.entityName)
             .then(({productions, facilities, facilitiesCharges, investments}) => {
 
                 return productions.map((production) => {
@@ -85,10 +85,10 @@ class ProductionRepository extends DatabaseService {
      * @return Promise
      */
     create(production) {
-        return super.save(this.entityName, production)
+        return this.dbService.save(this.entityName, production)
             .then((productionSaved) => {
 
-                    return super.addAttachments(this.entityName, {
+                    return this.dbService.addAttachments(this.entityName, {
                         id: productionSaved.productions[0].id,
                         rev: productionSaved.productions[0].rev
                     }, production.images)
@@ -98,7 +98,7 @@ class ProductionRepository extends DatabaseService {
     }
 
     update(production) {
-        return super.find(this.entityName, production.id)
+        return this.dbService.find(this.entityName, production.id)
             .then((productionFound) => {
                 production.rev = productionFound.productions[0].rev;
                 return production;
@@ -107,8 +107,8 @@ class ProductionRepository extends DatabaseService {
     }
 
     del(id) {
-        return super.find(this.entityName, id)
-            .then(({productions}) => super.remove(this.entityName, {id: productions[0].id, rev: productions[0].rev}));
+        return this.dbService.find(this.entityName, id)
+            .then(({productions}) => this.dbService.remove(this.entityName, {id: productions[0].id, rev: productions[0].rev}));
     }
 }
 

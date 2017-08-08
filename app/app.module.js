@@ -9,7 +9,6 @@ import {StateHandler} from './service/state.handler';
 import {UserService} from './service/user.service';
 
 import {AppComponent} from './app.component';
-import './renderer';
 
 export const AppModule = angular.module('AppModule', [
     'ngStorage',

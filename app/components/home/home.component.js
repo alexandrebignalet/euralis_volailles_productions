@@ -40,22 +40,6 @@ export const HomeComponent = {
 
         $onInit() {
             this.selectVideo(this.videos[0]);
-
-            $('.count').each(function () {
-                $(this).prop('Counter',0).animate({
-                    Counter: $(this).text()
-                }, {
-                    duration: 4000,
-                    easing: 'swing',
-                    step: (now) => {
-                        $(this).text(Math.ceil(now));
-                    }
-                });
-            });
-
-            let scrollElement = '#groupProd';
-            this.scope.$watch(() => { return angular.element(scrollElement).is(':visible') },
-                (d) => { console.log(d);})
         }
 
         selectVideo(video) {

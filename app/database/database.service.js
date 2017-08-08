@@ -40,43 +40,17 @@ const databaseSchema = [
     }
 ];
 
-let database = null;
-
 /**
  * This class is used to create the local database if it does not exist yet.
  * And the schema of THIS app.
  * Also provide an API in order to manipulate data.
  */
 class DatabaseService {
-    constructor() {
-        if(database && database.db._destroyed === false) {
-            this.db = database.db;
-            this.remoteDb = database.remoteDb;
-        } else {
-            database = DatabaseService.init();
-
-            this.db = database.db;
-            this.remoteDb = database.remoteDb;
-        }
-    }
-
-    static init() {
-        let db, remoteDb;
-        switch(process.env.NODE_ENV) {
-            case 'development':
-                db = new PouchDB(config.db.name + config.db.name);
-                break;
-            case 'test':
-                db = new PouchDB(config.db.name, { skip_setup: true });
-                break;
-            default:
-                db = new PouchDB(config.db.name, { skip_setup: true });
-                break;
-        }
-        remoteDb = new PouchDB(config.db.remoteUrl + config.db.name);
-        db.setSchema(databaseSchema);
-
-        return {db, remoteDb};
+    constructor(env) {
+        this.env = env;
+        this.db = new PouchDB(config.db.name);
+        this.remoteDb = new PouchDB(config.db[this.env].remoteUrl + config.db.name);
+        this.db.setSchema(databaseSchema);
     }
 
     /**
@@ -177,4 +151,4 @@ class DatabaseService {
     }
 }
 
-module.exports = DatabaseService;
+module.exports = new DatabaseService(process.env.NODE_ENV);

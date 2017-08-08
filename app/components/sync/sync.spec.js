@@ -1,5 +1,5 @@
 // load the backendito
-import './renderer';
+import '../../renderer';
 const FacilityCharges = require('./database/domain/facility_charges');
 const Production = require('./database/domain/production');
 const Facility = require('./database/domain/facility');

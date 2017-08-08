@@ -1,15 +1,15 @@
 const DatabaseService = require('../database.service.js');
 const Investment = require('../domain/investment');
 
-class InvestmentRepository extends DatabaseService {
+class InvestmentRepository {
     constructor() {
-        super();
+        this.dbService = DatabaseService;
         this.entityName = 'investment';
     }
 
     get(id) {
         let investmentEntity;
-        return super.find(this.entityName, id)
+        return this.dbService.find(this.entityName, id)
             .then(({investments}) => {
                 let images = [];
 
@@ -17,7 +17,7 @@ class InvestmentRepository extends DatabaseService {
                     let findAttachmentsPromises = [];
 
                     Object.keys(investments[0].attachments).forEach((key) => {
-                        findAttachmentsPromises.push(this.db.rel.getAttachment(this.entityName, investments[0].id, key));
+                        findAttachmentsPromises.push(this.dbService.db.rel.getAttachment(this.entityName, investments[0].id, key));
                     });
 
                     return Promise.all(findAttachmentsPromises)
@@ -39,7 +39,7 @@ class InvestmentRepository extends DatabaseService {
     }
 
     getAll() {
-        return super.find(this.entityName)
+        return this.dbService.find(this.entityName)
             .then(({investments}) => investments.map( investment => new Investment(investment)));
     }
 
@@ -49,10 +49,10 @@ class InvestmentRepository extends DatabaseService {
      * @return Promise
      */
     create(investment) {
-        return super.save(this.entityName, investment)
+        return this.dbService.save(this.entityName, investment)
             .then((investmentSaved) => {
 
-                    return super.addAttachments(this.entityName, {
+                    return this.dbService.addAttachments(this.entityName, {
                         id: investmentSaved.investments[0].id,
                         rev: investmentSaved.investments[0].rev
                     }, investment.images)
@@ -62,7 +62,7 @@ class InvestmentRepository extends DatabaseService {
     }
 
     update(investment) {
-        return this.db.rel.find(this.entityName, investment.id)
+        return this.dbService.find(this.entityName, investment.id)
             .then((investmentFound) => {
                 investment.rev = investmentFound.investments[0].rev;
                 return investment;
@@ -71,8 +71,8 @@ class InvestmentRepository extends DatabaseService {
     }
 
     del(id) {
-        return super.find(this.entityName, id)
-            .then(({investments}) => super.remove(this.entityName, {id: investments[0].id, rev: investments[0].rev}));
+        return this.dbService.find(this.entityName, id)
+            .then(({investments}) => this.dbService.remove(this.entityName, {id: investments[0].id, rev: investments[0].rev}));
     }
 }
 

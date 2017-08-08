@@ -3,15 +3,15 @@ const Facility = require('../domain/facility');
 const Investment = require('../domain/investment');
 const FacilityCharges = require('../domain/facility_charges');
 
-class FacilityRepository extends DatabaseService {
+class FacilityRepository {
     constructor() {
-        super();
+        this.dbService = DatabaseService;
         this.entityName = 'facility';
     }
 
     get(id) {
         let facilityEntity;
-        return super.find(this.entityName, id)
+        return this.dbService.find(this.entityName, id)
             .then(({facilities, facilitiesCharges, investments}) => {
                 let images = [];
 
@@ -19,7 +19,7 @@ class FacilityRepository extends DatabaseService {
                     let findAttachmentsPromises = [];
 
                     Object.keys(facilities[0].attachments).forEach((key) => {
-                        findAttachmentsPromises.push(this.db.rel.getAttachment(this.entityName, facilities[0].id, key));
+                        findAttachmentsPromises.push(this.dbService.db.rel.getAttachment(this.entityName, facilities[0].id, key));
                     });
 
                     return Promise.all(findAttachmentsPromises)
@@ -55,7 +55,7 @@ class FacilityRepository extends DatabaseService {
 
     getAll() {
         let facilityEntity;
-        return super.find(this.entityName)
+        return this.dbService.find(this.entityName)
             .then(({facilities, facilitiesCharges, investments}) => facilities.map((facility) => {
                 facilityEntity = new Facility(facility);
 
@@ -88,10 +88,10 @@ class FacilityRepository extends DatabaseService {
      * @return Promise
      */
     create(facility) {
-        return super.save(this.entityName, facility)
+        return this.dbService.save(this.entityName, facility)
             .then((facilitySaved) => {
 
-                    return super.addAttachments(this.entityName, {
+                    return this.dbService.addAttachments(this.entityName, {
                             id: facilitySaved.facilities[0].id,
                             rev: facilitySaved.facilities[0].rev
                         }, facility.images)
@@ -101,7 +101,7 @@ class FacilityRepository extends DatabaseService {
     }
 
     update(facility) {
-        return super.find(this.entityName, facility.id)
+        return this.dbService.find(this.entityName, facility.id)
             .then((facilityFound) => {
                 facility.rev = facilityFound.facilities[0].rev;
                 return facility;
@@ -110,8 +110,8 @@ class FacilityRepository extends DatabaseService {
     }
 
     del(id) {
-        return super.find(this.entityName, id)
-            .then(({facilities}) => super.remove(this.entityName, {id: facilities[0].id, rev: facilities[0].rev}));
+        return this.dbService.find(this.entityName, id)
+            .then(({facilities}) => this.dbService.remove(this.entityName, {id: facilities[0].id, rev: facilities[0].rev}));
     }
 }
 

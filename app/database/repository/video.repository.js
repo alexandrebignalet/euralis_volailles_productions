@@ -1,15 +1,15 @@
 const DatabaseService = require('../database.service.js');
 const Video = require('../domain/video');
 
-class VideoRepository extends DatabaseService {
+class VideoRepository {
     constructor() {
-        super();
+        this.dbService = DatabaseService;
         this.entityName = 'video';
     }
 
     get(id) {
         let videoEntity;
-        return super.find(this.entityName, id)
+        return this.dbService.find(this.entityName, id)
             .then(({videos}) => {
                 let images = [];
 
@@ -17,7 +17,7 @@ class VideoRepository extends DatabaseService {
                     let findAttachmentsPromises = [];
 
                     Object.keys(videos[0].attachments).forEach((key) => {
-                        findAttachmentsPromises.push(this.db.rel.getAttachment(this.entityName, videos[0].id, key));
+                        findAttachmentsPromises.push(this.dbService.db.rel.getAttachment(this.entityName, videos[0].id, key));
                     });
 
                     return Promise.all(findAttachmentsPromises)
@@ -42,7 +42,7 @@ class VideoRepository extends DatabaseService {
     }
 
     getAll() {
-        return super.find(this.entityName).then(({videos}) => videos.map((video) => new Video(video)));
+        return this.dbService.find(this.entityName).then(({videos}) => videos.map((video) => new Video(video)));
     }
 
     /**
@@ -51,10 +51,10 @@ class VideoRepository extends DatabaseService {
      * @return Promise
      */
     create(video) {
-        return super.save(this.entityName, video)
+        return this.dbService.save(this.entityName, video)
             .then((videoSaved) => {
 
-                    return super.addAttachments(this.entityName, {
+                    return this.dbService.addAttachments(this.entityName, {
                             id: videoSaved.videos[0].id,
                             rev: videoSaved.videos[0].rev
                         }, [video.file])
@@ -64,7 +64,7 @@ class VideoRepository extends DatabaseService {
     }
 
     update(video) {
-        return super.find(this.entityName, video.id)
+        return this.dbService.find(this.entityName, video.id)
             .then((videoFound) => {
                 video.rev = videoFound.videos[0].rev;
                 return video;
@@ -73,8 +73,8 @@ class VideoRepository extends DatabaseService {
     }
 
     del(id) {
-        return super.find(this.entityName, id)
-            .then(({videos}) => super.remove(this.entityName, {id: videos[0].id, rev: videos[0].rev}));
+        return this.dbService.find(this.entityName, id)
+            .then(({videos}) => this.dbService.remove(this.entityName, {id: videos[0].id, rev: videos[0].rev}));
     }
 }
 

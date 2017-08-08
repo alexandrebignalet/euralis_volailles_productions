@@ -25,6 +25,8 @@
     "angularjs-slider": "^6.1.2",
     "bootstrap": "^3.3.7",
     "bootstrap-multiselect": "^0.9.13-1",
+    "gulp-ng-constant": "^2.0.0-2",
+    "gulp-rename": "^1.2.2",
     "jquery": "^1.12.4",
     "level-js": "^2.2.4",
     "ngstorage": "^0.3.11",

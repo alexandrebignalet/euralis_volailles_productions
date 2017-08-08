@@ -1,18 +1,18 @@
 const DatabaseService = require('../database.service.js');
 const FacilityCharges = require('../domain/facility_charges');
 
-class FacilityChargesRepository extends DatabaseService {
+class FacilityChargesRepository {
     constructor() {
-        super();
+        this.dbService = DatabaseService;
         this.entityName = 'facilityCharges';
     }
 
     get(id) {
-        return super.find(this.entityName, id).then(({facilitiesCharges}) => new FacilityCharges(facilitiesCharges[0]));
+        return this.dbService.find(this.entityName, id).then(({facilitiesCharges}) => new FacilityCharges(facilitiesCharges[0]));
     }
 
     getAll() {
-        return super.find(this.entityName)
+        return this.dbService.find(this.entityName)
             .then(({facilitiesCharges}) => facilitiesCharges
                 .map((facilityCharges) => new FacilityCharges(facilityCharges))
             );
@@ -24,12 +24,12 @@ class FacilityChargesRepository extends DatabaseService {
      * @return Promise
      */
     create(facilityCharges) {
-        return super.save(this.entityName, facilityCharges)
+        return this.dbService.save(this.entityName, facilityCharges)
             .then((facilityChargesSaved) => this.get(facilityChargesSaved.id));
     }
 
     update(facilityCharges) {
-        return super.find(this.entityName, facilityCharges.id)
+        return this.dbService.find(this.entityName, facilityCharges.id)
             .then((facilityChargesFound) => {
                 facilityCharges.rev = facilityChargesFound.facilitiesCharges[0].rev;
                 return facilityCharges;
@@ -38,8 +38,8 @@ class FacilityChargesRepository extends DatabaseService {
     }
 
     del(id) {
-        return super.find(this.entityName, id)
-            .then(({facilitiesCharges}) => super.remove(this.entityName, {id: facilitiesCharges[0].id, rev: facilitiesCharges[0].rev}));
+        return this.dbService.find(this.entityName, id)
+            .then(({facilitiesCharges}) => this.dbService.remove(this.entityName, {id: facilitiesCharges[0].id, rev: facilitiesCharges[0].rev}));
     }
 }
 

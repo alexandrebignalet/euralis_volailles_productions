@@ -8,12 +8,3 @@ services:
             - /home/euralis_volailles_productions_couch_db/docker/lib:/usr/local/var/lib/couchdb
         ports:
             - 5984:5984
-
-    euralisvolaillesproductions-couchdb-dev:
-          restart: always
-          image: couchdb:1.6.1
-          volumes:
-              - /home/euralis_volailles_productions_couch_db/docker/config/dev:/usr/local/etc/couchdb/local.d
-              - /home/euralis_volailles_productions_couch_db/docker/lib:/usr/local/var/lib/couchdb
-          ports:
-              - 10000:5984

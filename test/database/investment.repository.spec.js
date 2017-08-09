@@ -10,7 +10,9 @@ describe('InvestmentRepositoryTest', () => {
     });
 
     after(() => {
-        repository.db.destroy();
+        return repository.dbService.destroy()
+            .then(() => repository.dbService.init())
+            .catch(() => repository.dbService.init());
     });
 
     describe('constructor test', () => {

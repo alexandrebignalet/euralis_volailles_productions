@@ -15,7 +15,9 @@ describe('FacilityRepositoryTest', () => {
      * return statement is really important here, because it will tell mocha to resolve the promise before going on.
      */
     after(() => {
-        return repository.db.destroy();
+        return repository.dbService.destroy()
+            .then(() => repository.dbService.init())
+            .catch(() => repository.dbService.init());
     });
 
     describe('constructor test', () => {
@@ -46,11 +48,11 @@ describe('FacilityRepositoryTest', () => {
             let facility2 = new Facility({id: 53, size: 3222, type: 'cabane', facilityCharges: facilityCharges2.id, investments: [investment2.id]});
 
 
-             return repository.save('investment', investment)
-                .then(() => repository.save('investment', investment2))
-                .then(() => repository.save('facilityCharges', facilityCharges))
-                .then(() => repository.save('facilityCharges', facilityCharges1))
-                .then(() => repository.save('facilityCharges', facilityCharges2))
+             return repository.dbService.save('investment', investment)
+                .then(() => repository.dbService.save('investment', investment2))
+                .then(() => repository.dbService.save('facilityCharges', facilityCharges))
+                .then(() => repository.dbService.save('facilityCharges', facilityCharges1))
+                .then(() => repository.dbService.save('facilityCharges', facilityCharges2))
                 .then(() => repository.create(facility))
                 .then((data) => {
                     assert.instanceOf(data, Facility);

@@ -13,7 +13,9 @@ describe('ProductionRepositoryTest', () => {
     });
 
     after(() => {
-        repository.db.destroy();
+        return repository.dbService.destroy()
+            .then(() => repository.dbService.init())
+            .catch(() => repository.dbService.init());
     });
 
     describe('constructor test', () => {
@@ -37,9 +39,9 @@ describe('ProductionRepositoryTest', () => {
                 declassedPrice:1, breedingDeclassedPercent:1, restraintPercent:1,
                 chickPurchaseReduction:1, facility:1});
 
-            return repository.save('facilityCharges', facilityCharges)
-                .then(() => repository.save('investment', investment))
-                .then(() => repository.save('facility', facility))
+            return repository.dbService.save('facilityCharges', facilityCharges)
+                .then(() => repository.dbService.save('investment', investment))
+                .then(() => repository.dbService.save('facility', facility))
                 .then(() => repository.create(production))
                 .then((data) => {
                     assert.instanceOf(data, Production);

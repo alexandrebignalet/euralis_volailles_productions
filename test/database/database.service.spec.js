@@ -15,28 +15,25 @@ describe('DatabaseServiceTest', () => {
     const productionsCreated = [];
 
     beforeEach(()  => {
-        databaseService = new DatabaseService();
+        databaseService = DatabaseService;
     });
 
     after(() => {
-        databaseService.destroy();
+        return databaseService.destroy()
+            .then(() => databaseService.init())
+            .catch(() => databaseService.init());
     });
 
     describe('constructor test', () => {
-        it('should be created with new', () => {
+        it('should be a singleton', () => {
             assert.isNotNull(databaseService);
         });
 
         it('should create the db if not exists yet', () => {
             return databaseService.db.info()
-                .then(() => assert(true))
-                .then(() => databaseService.destroy())
-                .then(() => new DatabaseService().db.info())
-                .then(() => {
-                    // database exists
-                    assert(true);
-                })
-                .catch(() => assert(false));
+                .then((data) => {
+                    assert(data.db_name === 'euralis_volailles_db-test')
+                });
         });
     });
 

@@ -49,6 +49,19 @@ gulp.task('ngconstant:dev',  () => {
         .pipe(gulp.dest(config.app));
 });
 
+gulp.task('ngconstant:test',  () => {
+    return ngConstant({
+        name: 'EnvModule',
+        constants: {
+            ENV: 'test'
+        },
+        template: config.constantTemplate,
+        stream: true
+    })
+        .pipe(rename('app.constants.js'))
+        .pipe(gulp.dest(config.app));
+});
+
 gulp.task('ngconstant:prod', () => {
     return ngConstant({
         name: 'EnvModule',
@@ -124,7 +137,7 @@ gulp.task('clean', (cb) => {
 
 const Server = karma.Server;
 
-gulp.task('karma', (done) => {
+gulp.task('karma', ['ngconstant:test'],(done) => {
     new Server({
         configFile: __dirname + '/karma.conf.js'
     },  () => {
@@ -132,7 +145,8 @@ gulp.task('karma', (done) => {
     }).start();
 });
 
-gulp.task('test', ['karma'], () => {
+gulp.task('test', ['karma', 'ngconstant:test'], () => {
+
     process.env.NODE_ENV = 'test';
 
     return gulp.src(['test/database/**/*.js'], { read: false })

@@ -43,7 +43,7 @@ export const HomeComponent = {
         }
 
         selectVideo(video) {
-            if (video.id === this.videoPlayed) return;
+            if (!video || video.id === this.videoPlayed) return;
 
             this.VideoDataService
                 .get(video.id)

@@ -10,7 +10,7 @@ export const SyncDialogComponent = {
     controller: class SyncDialogController {
         constructor(ProductionDataService, $scope, $timeout) {
             'ngInject';
-            this.dataService = ProductionDataService.repositories.production;
+            this.dataService = ProductionDataService.repositories.production.dbService;
             this.logs = [];
             this.isSyncing = false;
             this.scope = $scope;
@@ -57,6 +57,17 @@ export const SyncDialogComponent = {
                     this.isSyncing = false;
                     this.scope.$apply();
                 })
+        }
+
+        destroy() {
+            this.isSyncing = true;
+
+            return this.dataService.destroy().then(() => dbDestroyedThen).catch(() => dbDestroyedThen);
+
+            function dbDestroyedThen() {
+                this.isSyncing = false;
+                this.scope.$apply();
+            }
         }
 
         close() {

@@ -10,7 +10,9 @@ describe('FacilityChargesRepositoryTest', () => {
     });
 
     after(() => {
-        repository.db.destroy();
+        return repository.dbService.destroy()
+            .then(() => repository.dbService.init())
+            .catch(() => repository.dbService.init());
     });
 
     describe('constructor test', () => {
@@ -43,7 +45,7 @@ describe('FacilityChargesRepositoryTest', () => {
         it('should find all facilityCharges objects in pouch', () => {
 
             return repository.getAll()
-                .then((data) => {
+                .then((data) => {repository.dbService.init();
                     data.forEach((item) => {
                         assert.instanceOf(item, FacilityCharges);
                     })

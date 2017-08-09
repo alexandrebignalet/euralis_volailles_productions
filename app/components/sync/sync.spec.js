@@ -1,14 +1,16 @@
-// load the backendito
-import '../../renderer';
-const FacilityCharges = require('./database/domain/facility_charges');
-const Production = require('./database/domain/production');
-const Facility = require('./database/domain/facility');
-const DatabaseService = require('./database/database.service');
+import {init} from '../../renderer';
+import env from '../../app.constants';
+
+const FacilityCharges = require('../../database/domain/facility_charges');
+const Production = require('../../database/domain/production');
+const Facility = require('../../database/domain/facility');
 
 describe('RemoteDb test using the phantom browser', () => {
 
+    beforeAll(() => init(env));
+
     afterAll((done) => {
-        window.repositories.production.remoteDb.destroy()
+        window.repositories.production.dbService.remoteDb.destroy()
             .then(() => done());
     });
 
@@ -47,7 +49,7 @@ describe('RemoteDb test using the phantom browser', () => {
 
     it('2. db should not be empty', (done) => {
 
-        window.repositories.production.db
+        window.repositories.production.dbService.db
             .info()
             .then((response) => {
                 expect(response.doc_count).toBeGreaterThan(0);
@@ -60,7 +62,7 @@ describe('RemoteDb test using the phantom browser', () => {
     });
 
     it('3. remote db should be empty', (done) => {
-        window.repositories.production.remoteDb
+        window.repositories.production.dbService.remoteDb
             .info()
             .then((response) => {
                 expect(response.doc_count).toEqual(0);
@@ -73,11 +75,11 @@ describe('RemoteDb test using the phantom browser', () => {
     });
 
     it('4. local db data should be synced', (done) => {
-        window.repositories.production.db
+        window.repositories.production.dbService.db
             .info()
             .then((response) => expect(response.doc_count).toBeGreaterThan(0) )
-            .then(() => window.repositories.production.sync())
-            .then((data) => window.repositories.production.remoteDb.info() )
+            .then(() => window.repositories.production.dbService.sync())
+            .then((data) => window.repositories.production.dbService.remoteDb.info() )
             .then((response) => {
                 expect(response.doc_count).toBeGreaterThan(0);
                 done();
@@ -89,15 +91,18 @@ describe('RemoteDb test using the phantom browser', () => {
     });
 
     it('5. delete the local db', (done) => {
-        window.repositories.production.destroy()
+        const databaseService = window.repositories.production.dbService;
+
+        databaseService.destroy()
+            .then(() => databaseService.init())
             .then(() => done());
     });
 
     it('6. sync the local db with external data', (done) => {
-        let newDataService = new DatabaseService();
+        const databaseService = window.repositories.production.dbService;
 
-        newDataService.sync()
-            .then(() => newDataService.db.info())
+        databaseService.sync()
+            .then(() => databaseService.db.info())
             .then((response) => {
                 expect(response.doc_count).toEqual(3);
                 done();

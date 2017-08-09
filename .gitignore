@@ -3,7 +3,7 @@ dist/
 .idea/
 euralis_volailles_db
 euralis_volailles_test_db
-electron/webapp/
-app/images/videos
+build/electron/webapp/
 docker/lib/
 !docker/lib/.gitkeep
+app/app.constants.js

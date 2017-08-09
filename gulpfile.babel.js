@@ -75,7 +75,7 @@ gulp.task('ngconstant:prod', () => {
         .pipe(gulp.dest(config.app));
 });
 
-gulp.task('webpack', ['clean'], (cb) => {
+gulp.task('webpack', ['clean', 'ngconstant:prod'], (cb) => {
 
   const config = require('./webpack.dist.config');
   config.entry.app = paths.entry;

@@ -6,4 +6,4 @@ import 'bootstrap/dist/js/bootstrap.min';
 import {init} from './renderer';
 import env from './app.constants';
 
-angular.module('eurvolpre', [env.name, AppModule]).run((ENV) => init(ENV));
+angular.module('eurvolpre', [env.name, AppModule]).run((ENV) => { 'ngInject'; init(ENV);});

@@ -25,31 +25,33 @@ export const SyncDialogComponent = {
                 .then(() =>
                     this.dataService.db.sync(this.dataService.remoteDb)
                         .on('complete', () => {
-                            this.logs.push('Synchronisation terminé avec succès');
+                            this.logs.push('Synchronisation terminée.');
                             this.isSyncing = false;
                             this.scope.$apply();
                             this.close();
                         })
                         .on('change', (change) => {
-                            this.logs.push("Changements effectués: ");
-                            this.logs.push(change);
+                            this.logs.push("Changements effectués avec succès !");
                             console.log('change ', change);
-                            this.scope.$apply();
                         })
                         .on('paused', (info) => {
-                            this.logs.push('Traitement en cours...');
+                            this.logs.push('Synchronisation mise en pause, reprise dans un instant...');
                             this.scope.$apply();
                             console.log('info ', info);
                         })
                         .on('active', (info) => {
-                            this.logs.push('Traitement en cours...');
+                            if(info.direction) {
+                                if(info.direction.pull) this.logs.push('<< Reception des changements');
+                                if(info.direction.push) this.logs.push('>> Envoi des changements')
+                            }
                             this.scope.$apply();
-                            console.log('active  ', info);
                         })
                         .on('error', (err) => {
-                            this.logs.push(err.result);
-                            this.isSyncing = false;
-                            this.scope.$apply();
+                            if(!err.ok) {
+                                this.logs.push('Erreur de synchronisation. Nouvel essai...');
+                                this.scope.$apply();
+                                this.sync();
+                            }
                             console.log('error ', err);
                         }))
                 .catch(() => {

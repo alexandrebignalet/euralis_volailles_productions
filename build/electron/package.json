@@ -1,4 +1,5 @@
 {
   "name": "euralis_volailles_production",
-  "main": "main.js"
+  "main": "main.js",
+  "version": "1.0"
 }

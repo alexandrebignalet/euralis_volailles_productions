@@ -48,13 +48,10 @@ const databaseSchema = [
 class DatabaseService {
     constructor(env) {
         this.env = env;
-        this.dbName = config.db.name + this.env
+        this.dbName = config.db.name + this.env;
         this.db = new PouchDB(this.dbName);
         this.remoteDb = new PouchDB(config.db.remoteUrl + this.dbName);
         this.db.setSchema(databaseSchema);
-
-        console.log(this.db);
-        console.log(this.remoteDb);
     }
 
     init() {

@@ -1,5 +1,4 @@
 import {init} from '../../renderer';
-import env from '../../app.constants';
 
 const FacilityCharges = require('../../database/domain/facility_charges');
 const Production = require('../../database/domain/production');
@@ -7,11 +6,12 @@ const Facility = require('../../database/domain/facility');
 
 describe('RemoteDb test using the phantom browser', () => {
 
-    beforeAll(() => init(env));
+    init('test');
 
     afterAll((done) => {
         window.repositories.production.dbService.remoteDb.destroy()
-            .then(() => done());
+            .then((data) => done())
+            .catch(() => done());
     });
 
     it('1. app should be loaded correctly', () => {
@@ -95,6 +95,8 @@ describe('RemoteDb test using the phantom browser', () => {
 
         databaseService.destroy()
             .then(() => databaseService.init())
+            .then(() => databaseService.db.info())
+            .then((info) => expect(info.doc_count).toEqual(0))
             .then(() => done());
     });
 

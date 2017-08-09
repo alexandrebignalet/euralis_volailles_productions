@@ -22,13 +22,15 @@ export const SyncDialogComponent = {
             this.isSyncing = true;
 
             this.dataService.remoteDb.info()
-                .then(() =>
+                .then(() => new Promise((resolve, reject) => {
+                    let attempts = 1;
                     this.dataService.db.sync(this.dataService.remoteDb)
                         .on('complete', () => {
                             this.logs.push('Synchronisation terminée.');
                             this.isSyncing = false;
                             this.scope.$apply();
                             this.close();
+                            resolve();
                         })
                         .on('change', (change) => {
                             this.logs.push("Changements effectués avec succès !");
@@ -47,13 +49,16 @@ export const SyncDialogComponent = {
                             this.scope.$apply();
                         })
                         .on('error', (err) => {
-                            if(!err.ok) {
-                                this.logs.push('Erreur de synchronisation. Nouvel essai...');
-                                this.scope.$apply();
-                                this.sync();
-                            }
                             console.log('error ', err);
-                        }))
+                            if(attempts === 5) reject();
+                            if(!err.ok) {
+                                attempts++;
+                                this.logs.push(`Erreur de synchronisation. Nouvel essai ${attempts}...`);
+                                this.scope.$apply();
+                                return this.sync();
+                            }
+                        })
+                }))
                 .catch(() => {
                     this.logs.push('Vous devez être connecté à internet pour synchroniser votre application.');
                     this.isSyncing = false;

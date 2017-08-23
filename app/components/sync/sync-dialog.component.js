@@ -16,6 +16,7 @@ export const SyncDialogComponent = {
             this.scope = $scope;
             this.timeout = $timeout;
             this.loader = loader;
+            this.syncAttemps = 1;
         }
 
         sync() {
@@ -23,7 +24,7 @@ export const SyncDialogComponent = {
 
             this.dataService.remoteDb.info()
                 .then(() => new Promise((resolve, reject) => {
-                    let attempts = 1;
+
                     this.dataService.db.sync(this.dataService.remoteDb)
                         .on('complete', () => {
                             this.logs.push('Synchronisation terminée.');
@@ -50,7 +51,10 @@ export const SyncDialogComponent = {
                         })
                         .on('error', (err) => {
                             console.log('error ', err);
-                            if(attempts === 5) reject();
+                            if(attempts === 5) {
+                                this.syncAttemps = 1;
+                                reject();
+                            }
                             if(!err.ok) {
                                 attempts++;
                                 this.logs.push(`Erreur de synchronisation. Nouvel essai ${attempts}...`);

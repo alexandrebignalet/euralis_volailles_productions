@@ -18,6 +18,10 @@ class FacilityCharges  {
         return this.warming + this.contributions + this.vetPrice + this.disinfection +
         this.commodities + this.litter + this.catching + this.insurances;
     }
+
+    toString() {
+        return `Grille de critères ${this.name || 'NON-DEFINIE'}`
+    }
 }
 
 module.exports = FacilityCharges;

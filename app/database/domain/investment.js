@@ -17,6 +17,10 @@ class Investment {
         this._facilityNb = 1;
     }
 
+    toString() {
+        return `Investissement ${this.name || 'NON-DEFINIE'}, ${this.designation || 'NON-DEFINIE'}`
+    }
+
     set facilityNb(nb) {
         this._facilityNb = nb;
     }

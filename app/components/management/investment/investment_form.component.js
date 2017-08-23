@@ -27,19 +27,19 @@ export const InvestmentFormComponent = {
             switch(this.currentState.replace("investment.", "")) {
                 case 'edit':
                     this.dataService.update(this.investment).then(() => {
-                        this.toastr.success('a été mis à jour.', this.investment.name);
+                        this.toastr.success('a été mis à jour.', this.investment.toString());
                         this.modalInstance.close()
                     });
                     break;
                 case 'remove':
                     this.dataService.remove(this.investment).then(() => {
-                        this.toastr.warning('a été supprimé.', this.investment.name);
+                        this.toastr.warning('a été supprimé.', this.investment.toString());
                         this.modalInstance.close()
                     });
                     break;
                 case 'create':
                     this.dataService.create(this.investment).then(() => {
-                        this.toastr.info('a été créé.', this.investment.name);
+                        this.toastr.info('a été créé.', this.investment.toString());
                         this.modalInstance.close()
                     });
                     break;

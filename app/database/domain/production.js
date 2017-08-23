@@ -116,6 +116,10 @@ class Production {
     getAnnualNetMargin(annuity){
         return this.getBrutMargin() * this.breedingPerYear - annuity;
     }
+
+    toString() {
+        return `Production ${this.name || 'NON-DEFINIE'}`
+    }
 }
 
 module.exports = Production;

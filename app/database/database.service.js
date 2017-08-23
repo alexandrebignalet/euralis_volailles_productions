@@ -75,7 +75,8 @@ class DatabaseService {
     }
 
     remove(entityName, id) {
-        return this.db.rel.del(entityName, id);
+        return this.db.rel.del(entityName, id)
+            .then(this.compact());
     }
     
     addAttachments(entityName, obj, files) {

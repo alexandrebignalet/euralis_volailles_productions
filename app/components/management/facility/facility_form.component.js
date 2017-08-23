@@ -41,8 +41,9 @@ export const FacilityFormComponent = {
                     });
                     break;
                 case 'remove':
-                    this.dataService.remove(this.facility).then(() => {
-                        this.toastr.warning('a été supprimé.', `${this.facility.type.value.toUpperCase()} ${this.facility.size}m²`);
+                    this.dataService.remove(this.facility).then((data) => {
+                        console.log(data);
+                        // this.toastr.warning('a été supprimé.', `${this.facility.type.value.toUpperCase()} ${this.facility.size}m²`);
                         this.modalInstance.close()
                     });
                     break;

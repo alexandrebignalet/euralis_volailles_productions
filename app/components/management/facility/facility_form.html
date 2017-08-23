@@ -65,7 +65,7 @@
         <file-uploader model="vm.facility.images"></file-uploader>
     </div>
     <div class="modal-body" ng-if="vm.currentState.indexOf('remove') != -1">
-        Confirmer la suppression du {{vm.facility.type | uppercase }} de {{vm.facility.size}}m²
+        Confirmer la suppression du bâtiment {{vm.facility.type.value | uppercase }} de {{vm.facility.size}}m²
     </div>
 
     <div class="modal-footer">

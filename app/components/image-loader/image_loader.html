@@ -2,7 +2,6 @@
     <div uib-slide ng-repeat="slide in vm.slides track by slide.id" index="$index">
         <img ng-src="{{slide.image}}" style="width:100%; max-height:500px;">
         <div class="carousel-caption">
-            <h4>Slide {{slide.id}}</h4>
             <p>{{slide.text}}</p>
         </div>
     </div>

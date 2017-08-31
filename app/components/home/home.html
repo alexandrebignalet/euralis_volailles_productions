@@ -132,7 +132,7 @@
             <span style="color: #a6ce39;">des élevages</span>
         </h1><hr>
         <div class="col-md-3 text-center">
-            <ul class="nav nav-pills nav-stacked">
+            <ul class="nav nav-pills nav-stacked" style="height:50%; overflow: auto;">
                 <li ng-repeat="video in vm.videos" ng-class="{'active': vm.videoPlayed == video.id}">
                     <a href ng-click="vm.selectVideo(video)">{{video.name | uppercase}}</a>
                 </li>

@@ -46,6 +46,10 @@ class Production {
         return this.classedPrice * 1000;
     }
 
+    getDeclassedPrice() {
+        return this.declassedPrice * 1000;
+    }
+
     getChickNb() {
         return this.chickNb * this.facilitiesNb;
     }
@@ -111,6 +115,10 @@ class Production {
 
     getAnnualNetMargin(annuity){
         return this.getBrutMargin() * this.breedingPerYear - annuity;
+    }
+
+    toString() {
+        return `Production ${this.name || 'NON-DEFINIE'}`
     }
 }
 

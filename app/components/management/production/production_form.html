@@ -105,7 +105,7 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="vaccinesPrice" class="control-label">Prix des vaccins</label>
+                    <label for="vaccinesPrice" class="control-label">Prix des poussins vaccinés</label>
                     <div class="input-group">
                         <input type="number" step="any" class="form-control {{ productionForm.vaccinesPrice.$invalid ? 'wrong' : 'valid'}}_input" id="vaccinesPrice" name="vaccinesPrice" ng-model="vm.production.vaccinesPrice" min="0" required>
                         <span class="input-group-addon">€/1000</span>
@@ -126,7 +126,7 @@
                     <label for="classedPrice" class="control-label">Prix du classé</label>
                     <div class="input-group">
                         <input type="number" step="any" class="form-control {{ productionForm.classedPrice.$invalid ? 'wrong' : 'valid'}}_input" id="classedPrice" name="classedPrice" ng-model="vm.production.classedPrice" min="0" required>
-                        <span class="input-group-addon">€/1000</span>
+                        <span class="input-group-addon">€/t</span>
                     </div>
                 </div>
             </div>
@@ -135,7 +135,7 @@
                     <label for="declassedPrice" class="control-label">Prix du déclassé (€/1000)</label>
                     <div class="input-group">
                         <input type="number" step="any" class="form-control {{ productionForm.declassedPrice.$invalid ? 'wrong' : 'valid'}}_input" id="declassedPrice" name="declassedPrice" ng-model="vm.production.declassedPrice" min="0" required>
-                        <span class="input-group-addon">€/1000</span>
+                        <span class="input-group-addon">€/t</span>
                     </div>
                 </div>
             </div>
@@ -167,7 +167,7 @@
         <file-uploader model="vm.production.images"></file-uploader>
     </div>
     <div class="modal-body" ng-if="vm.currentState.indexOf('remove') != -1">
-        Confirmer la suppression de la production {{production.name}}
+        Confirmer la suppression de la production {{vm.production.toString()}}
     </div>
 
     <div class="modal-footer">

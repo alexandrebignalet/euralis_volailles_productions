@@ -16,6 +16,8 @@ export const SyncDialogComponent = {
             this.scope = $scope;
             this.timeout = $timeout;
             this.loader = loader;
+            this.syncAttemps = 1;
+            this.syncHandler = null;
         }
 
         sync() {
@@ -23,8 +25,8 @@ export const SyncDialogComponent = {
 
             this.dataService.remoteDb.info()
                 .then(() => new Promise((resolve, reject) => {
-                    let attempts = 1;
-                    this.dataService.db.sync(this.dataService.remoteDb)
+
+                    this.syncHandler = this.dataService.db.sync(this.dataService.remoteDb)
                         .on('complete', () => {
                             this.logs.push('Synchronisation terminée.');
                             this.isSyncing = false;
@@ -50,10 +52,13 @@ export const SyncDialogComponent = {
                         })
                         .on('error', (err) => {
                             console.log('error ', err);
-                            if(attempts === 5) reject();
+                            if(this.syncAttemps === 5) {
+                                this.syncAttemps = 1;
+                                reject();
+                            }
                             if(!err.ok) {
-                                attempts++;
-                                this.logs.push(`Erreur de synchronisation. Nouvel essai ${attempts}...`);
+                                this.syncAttemps++;
+                                this.logs.push(`Erreur de synchronisation. Nouvel essai ${this.syncAttemps}...`);
                                 this.scope.$apply();
                                 return this.sync();
                             }
@@ -79,6 +84,7 @@ export const SyncDialogComponent = {
 
         close() {
             this.timeout(() => {
+                if(this.syncHandler) this.syncHandler.cancel();
                 this.modalInstance.close();
             }, 1000);
         }

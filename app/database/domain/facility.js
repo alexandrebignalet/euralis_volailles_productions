@@ -45,6 +45,10 @@ class Facility {
             };
         }
     }
+
+    toString() {
+        return `Bâtiment ${this.type.value || "NON-DEFINI"} de ${this.size || "pas de taille"} m2`
+    }
 }
 
 

@@ -37,8 +37,8 @@ class ProductionRepository {
             })
             .then(({productions, facilities, facilitiesCharges, images}) => {
                 productionEntity = new Production(productions[0]);
-                productionEntity.facility = new Facility(facilities[0]);
-                productionEntity.facility.facilityCharges = new FacilityCharges(facilitiesCharges[0]);
+                if(facilities[0]) productionEntity.facility = new Facility(facilities[0]);
+                if(facilities[0]) productionEntity.facility.facilityCharges = new FacilityCharges(facilitiesCharges[0]);
                 productionEntity.images = images;
                 
                 return productionEntity;

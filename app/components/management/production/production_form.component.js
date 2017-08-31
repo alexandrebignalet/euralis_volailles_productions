@@ -68,19 +68,19 @@ export const ProductionFormComponent = {
             switch(this.currentState.replace("production.", "")) {
                 case 'edit':
                     this.dataService.update(prod).then(() => {
-                        this.toastr.success('a été mise à jour.', this.production.name);
+                        this.toastr.success('a été mise à jour.', this.production.toString());
                         this.modalInstance.close()
                     });
                     break;
                 case 'remove':
                     this.dataService.remove(prod).then(() => {
-                        this.toastr.warning('a été supprimée.', this.production.name);
+                        this.toastr.warning('a été supprimée.', this.production.toString());
                         this.modalInstance.close()
                     });
                     break;
                 case 'create':
                     this.dataService.create(prod).then(() => {
-                        this.toastr.info('a été créée.', this.production.name);
+                        this.toastr.info('a été créée.', this.production.toString());
                         this.modalInstance.close()
                     });
                     break;

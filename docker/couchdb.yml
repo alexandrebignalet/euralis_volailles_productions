@@ -1,8 +1,6 @@
 version: '2'
 services:
     euralisvolaillesproductions-couchdb:
-        restart: always
-        image: couchdb:1.6.1
         volumes:
             - /home/euralis_volailles_productions_couch_db/docker/config/prod:/usr/local/etc/couchdb/local.d
             - /home/euralis_volailles_productions_couch_db/docker/lib:/usr/local/var/lib/couchdb

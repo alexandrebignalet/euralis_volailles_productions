@@ -3,8 +3,6 @@
 import gulp     from 'gulp';
 import webpack  from 'webpack';
 import path     from 'path';
-import gutil    from 'gulp-util';
-import mocha    from 'gulp-mocha';
 import browserSync from 'browser-sync';
 import del      from 'del';
 import webpackDevMiddleware from 'webpack-dev-middleware';
@@ -12,11 +10,17 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import colorsSupported      from 'supports-color';
 import historyApiFallback   from 'connect-history-api-fallback';
 import karma from 'karma';
-import rename from 'gulp-rename';
 import ngConstant from 'gulp-ng-constant';
+import gulpLoadPlugins from 'gulp-load-plugins';
+import electronCo from 'electron-connect';
+
+const electronConnect = electronCo.server.create();
+const $ = gulpLoadPlugins();
 
 const config = {
     app: 'app/',
+    main:'app/main.js',
+    tmp: '.tmp',
     constantTemplate:
     'angular.module(\'<%- moduleName %>\', [])' +
     '<% constants.forEach(function(constant) { %>.constant(\'<%- constant.name %>\', <%= constant.value %>)\n<% }) %>;\n' +
@@ -45,7 +49,7 @@ gulp.task('ngconstant:dev',  () => {
         template: config.constantTemplate,
         stream: true
     })
-        .pipe(rename('app.constants.js'))
+        .pipe($.rename('app.constants.js'))
         .pipe(gulp.dest(config.app));
 });
 
@@ -58,7 +62,7 @@ gulp.task('ngconstant:test',  () => {
         template: config.constantTemplate,
         stream: true
     })
-        .pipe(rename('app.constants.js'))
+        .pipe($.rename('app.constants.js'))
         .pipe(gulp.dest(config.app));
 });
 
@@ -71,7 +75,7 @@ gulp.task('ngconstant:prod', () => {
         template: config.constantTemplate,
         stream: true
     })
-        .pipe(rename('app.constants.js'))
+        .pipe($.rename('app.constants.js'))
         .pipe(gulp.dest(config.app));
 });
 
@@ -82,10 +86,10 @@ gulp.task('webpack', ['clean', 'ngconstant:prod'], (cb) => {
 
   webpack(config, (err, stats) => {
     if(err)  {
-      throw new gutil.PluginError("webpack", err);
+      throw new $.util.PluginError("webpack", err);
     }
 
-    gutil.log("[webpack]", stats.toString({
+    $.util.log("[webpack]", stats.toString({
       colors: colorsSupported,
       chunks: false,
       errorDetails: true
@@ -128,9 +132,48 @@ gulp.task('serve', ['ngconstant:dev'], () => {
     gulp.watch(['./app/**/*.spec.js'], ['karma', 'test']);
 });
 
+gulp.task('electron-dev', ['ngconstant:dev', 'script:main', 'compile'],() => {
+    process.env.NODE_ENV = 'dev';
+    electronConnect.start();
+
+    gulp.watch(['app/**/*.*', '!app/main.js'], () => {
+        gulp.start('compile', electronConnect.restart);
+    });
+    gulp.watch(['app/main.js'], () => {
+        gulp.start('script:main', electronConnect.restart);
+    })
+});
+
+gulp.task('compile', [], (cb) => {
+    const config = require('./webpack.dev.config');
+    config.entry.app = paths.entry;
+
+    webpack(config, (err, stats) => {
+        if (err) {
+            throw new $.util.PluginError("webpack", err);
+        }
+
+        $.util.log("[webpack]", stats.toString({
+            colors: colorsSupported,
+            chunks: false,
+            errorDetails: true
+        }));
+
+        cb();
+    })
+});
+
+gulp.task('script:main', () => {
+    return gulp.src(config.main)
+        .pipe($.plumber())
+        .pipe($.babel())
+        .pipe(gulp.dest(config.tmp));
+});
+
+
 gulp.task('clean', (cb) => {
   del([paths.dest]).then(function (paths) {
-    gutil.log("[clean]", paths);
+    $.util.log("[clean]", paths);
     cb();
   })
 });
@@ -150,8 +193,8 @@ gulp.task('test', ['karma', 'ngconstant:test'], () => {
     process.env.NODE_ENV = 'test';
 
     return gulp.src(['test/database/**/*.js'], { read: false })
-        .pipe(mocha({ reporter: 'spec' }))
-        .on('error', gutil.log);
+        .pipe($.mocha({ reporter: 'spec' }))
+        .on('error', $.util.log);
 });
 
 gulp.task('default', ['serve']);

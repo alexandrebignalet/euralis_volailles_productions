@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <base href="/" />
+        <base href="./" />
         <title>EURALIS Volailles Production</title>
     </head>
 
@@ -9,4 +9,8 @@
         <button id="print-pdf">Print</button>
         <app></app>
     </body>
+    <!-- build:remove -->
+    <!-- Connect to server process -->
+    <script>require('electron-connect').client.create()</script>
+    <!-- end:build -->
 </html>

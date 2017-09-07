@@ -4,8 +4,8 @@ var config  = require('./webpack.config');
 
 config.output = {
   filename: '[name].bundle.js',
-  publicPath: '/',
-  path: path.resolve(__dirname, './')
+  publicPath: '',
+  path: path.resolve(__dirname, './.tmp')
 };
 
 config.plugins = config.plugins.concat([

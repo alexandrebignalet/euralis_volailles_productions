@@ -1,8 +1,6 @@
 import angular from 'angular';
 import angularInview from 'angular-inview';
 import {HomeComponent} from './home.component';
-import {aquitaineMap} from './home.directive';
-import {department} from './home.directive';
 
 export const HomeModule = angular.module('HomeModule', [angularInview.name])
 
@@ -26,7 +24,5 @@ export const HomeModule = angular.module('HomeModule', [angularInview.name])
         $urlRouterProvider.otherwise('/home');
     })
     .component('home', HomeComponent)
-    .directive('aquitaineMap', aquitaineMap)
-    .directive('department', department)
     .constant('VERSION', 'V1')
     .name;

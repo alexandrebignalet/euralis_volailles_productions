@@ -1,16 +1,3 @@
-const ipc = require('electron').ipcRenderer;
-
-const printPdfButton = document.getElementById('print-pdf');
-
-printPdfButton.addEventListener('click', (event) => {
-    ipc.send('print-to-pdf');
-});
-
-ipc.on('wrote-pdf', (event, path) => {
-    const message = `Wrote PDF to: ${path}`;
-    document.getElementById('pdf-path').innerHTML = message;
-});
-
 export const init = (env) => {
 
     process.env.NODE_ENV = env;

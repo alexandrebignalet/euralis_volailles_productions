@@ -3,11 +3,6 @@ const path = require('path');
 const url = require('url');
 
 const electron = require('electron');
-const {shell} = require('electron')
-
-const fs = require('fs');
-const os = require('os');
-const ipc = electron.ipcMain;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -46,22 +41,6 @@ app.on('ready', createWindow);
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
     app.quit();
-});
-
-ipc.on('print-to-pdf', (event) => {
-    const pdfPath = path.join(os.tmpdir(), 'print.pdf');
-    console.log(pdfPath);
-    const win = BrowserWindow.fromWebContents(event.sender);
-
-    win.webContents.printToPDF({}, (err, data) => {
-        if(err) return console.log(err.message);
-
-        fs.writeFile(pdfPath, data, (err) => {
-            if(err) return console.log(err.message);
-            shell.openExternal('file://' + pdfPath);
-            event.sender.send('wrote-pdf', pdfPath);
-        })
-    })
 });
 
 app.on('activate', () => {

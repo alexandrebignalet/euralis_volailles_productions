@@ -2,14 +2,6 @@ var path    = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-var externals = {}, _externals = [
-    'sqlite3', 'leveldown'
-];
-
-_externals.forEach(function(s) {
-    externals[s] = 'commonjs ' + s;
-});
-
 module.exports = {
   devtool: 'source-map',
   entry: {},
@@ -30,8 +22,10 @@ module.exports = {
       'jquery': path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js')
     }
   },
-  target: "electron",
-  externals: externals,
+  externals: [
+      'leveldown',
+      'sqlite3'// <- Add here
+  ],
   plugins: [
     new webpack.ProvidePlugin({
       'window.jQuery': 'jquery', //in order to load it in angular

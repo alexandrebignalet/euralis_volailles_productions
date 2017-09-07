@@ -6,4 +6,4 @@ euralis_volailles_test_db
 build/electron/webapp/
 docker/lib/
 !docker/lib/.gitkeep
-app/client/app.constants.js
+app/app.constants.js

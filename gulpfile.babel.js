@@ -16,7 +16,7 @@ import rename from 'gulp-rename';
 import ngConstant from 'gulp-ng-constant';
 
 const config = {
-    app: 'app/',
+    app: 'app/client/',
     constantTemplate:
     'angular.module(\'<%- moduleName %>\', [])' +
     '<% constants.forEach(function(constant) { %>.constant(\'<%- constant.name %>\', <%= constant.value %>)\n<% }) %>;\n' +
@@ -29,7 +29,7 @@ let root = './';
 let paths = {
   entry: [
     'babel-polyfill',
-    path.join(__dirname, root, 'app/app.bootstrap.js')
+    path.join(__dirname, root, app, 'app.bootstrap.js')
   ],
   output: root,
   blankTemplates: path.join(__dirname, 'generator', 'component/**/*.**'),

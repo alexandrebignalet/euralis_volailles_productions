@@ -3,7 +3,7 @@ const path = require('path');
 const url = require('url');
 
 const electron = require('electron');
-const {shell} = require('electron')
+const {shell} = require('electron');
 
 const fs = require('fs');
 const os = require('os');

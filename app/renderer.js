@@ -15,11 +15,11 @@ export const init = (env) => {
 
     process.env.NODE_ENV = env;
 
-    const FacilityChargesRepository = require('./database/repository/facility_charges.repository');
-    const FacilityRepository = require('./database/repository/facility.repository');
-    const ProductionRepository = require('./database/repository/production.repository');
-    const InvestmentRepository = require('./database/repository/investment.repository');
-    const VideoRepository = require('./database/repository/video.repository');
+    const FacilityChargesRepository = require('./client/database/repository/facility_charges.repository');
+    const FacilityRepository = require('./client/database/repository/facility.repository');
+    const ProductionRepository = require('./client/database/repository/production.repository');
+    const InvestmentRepository = require('./client/database/repository/investment.repository');
+    const VideoRepository = require('./client/database/repository/video.repository');
 
     window.repositories = {
         video: new VideoRepository(),

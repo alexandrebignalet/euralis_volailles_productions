@@ -1,32 +1,45 @@
 const assert = require('chai').assert;
-const FacilityCharges = require('../../app/database/domain/facility_charges');
-const Production = require('../../app/database/domain/production');
-const Facility = require('../../app/database/domain/facility');
-const DatabaseService = require('../../app/database/database.service.js');
+const FacilityCharges = require('../../app/server/database/domain/facility_charges');
+const Production = require('../../app/server/database/domain/production');
+const Facility = require('../../app/server/database/domain/facility');
+const DatabaseService = require('../../app/server/database/database.service.js');
+const fs = require('fs');
 
 global.navigator = {
     userAgent: 'node.js'
 };
 
+const ATTACHMENT_SIZE = 5;
+const SYNC_TIMEOUT = 5000;
+const BASE_DOC_NUMBER = 100;
+
 describe('DatabaseServiceTest', () => {
-    let databaseService;
+    let databaseService = DatabaseService;
     const facilitiesChargesCreated = [];
     const facilitiesCreated = [];
     const productionsCreated = [];
 
-    beforeEach(()  => {
-        databaseService = DatabaseService;
+    before(() => {
+        addXDocInDb(BASE_DOC_NUMBER, 0, databaseService);
     });
 
     after(() => {
         return databaseService.destroy()
+            .then(() => databaseService.remoteDb.destroy())
             .then(() => databaseService.init())
             .catch(() => databaseService.init());
     });
 
-    describe('constructor test', () => {
+    describe('constructor and init tests', () => {
         it('should be a singleton', () => {
             assert.isNotNull(databaseService);
+        });
+
+        it(`should contain ${BASE_DOC_NUMBER} docs`, () => {
+            return databaseService.db.allDocs()
+                .then((data) => {
+                    assert(data.total_rows === BASE_DOC_NUMBER);
+                })
         });
 
         it('should create the db if not exists yet', () => {
@@ -38,22 +51,20 @@ describe('DatabaseServiceTest', () => {
     });
 
     describe('crud operations test', () => {
-        it('should save a facilityCharges Object', (done) => {
+        it('should save a facilityCharges Object', () => {
             let facilityCharges = new FacilityCharges({id: 'uid9999', name:'toto', warming:1, chickPrice:1, vetPrice:1,
                 contributions:1, disinfection:1, commodities:1,
                 litter:1, catching:1, insurances:1});
 
-            databaseService.save('facilityCharges', facilityCharges)
+            return databaseService.save('facilityCharges', facilityCharges)
                 .then((data) => {
                     assert(data.facilitiesCharges[0].warming === 1);
                     assert(data.facilitiesCharges[0].chickPrice === 1);
                     facilitiesChargesCreated.push(data.facilitiesCharges[0].id);
-                    done();
                 })
                 .catch((err) => {
                     console.log(err);
                     assert(false);
-                    done();
                 });
         });
 
@@ -61,6 +72,13 @@ describe('DatabaseServiceTest', () => {
             let facilityCharges = new FacilityCharges({id: 'uid9843', name:'toto', warming:1, chickPrice:1, vetPrice:1,
                 contributions:1, disinfection:1, commodities:1,
                 litter:1, catching:1, insurances:1});
+
+            facilityCharges._attachments = {
+                'foo.txt': {
+                    content_type: 'image/png',
+                    data: randomBuffer(ATTACHMENT_SIZE)
+                }
+            };
 
             let facility = new Facility({id: 3, size: 3222, type: 'cabane', facilityCharges: 'uid9843'});
             let production = new Production({id: 3, department: 'toto', name:'toto', chickNb:1, avgWeight:1, age:1, breedingPerYear:1,
@@ -72,6 +90,7 @@ describe('DatabaseServiceTest', () => {
                 .then((data) => {
                     assert(data.facilitiesCharges[0].warming === 1);
                     assert(data.facilitiesCharges[0].chickPrice === 1);
+                    assert(Object.keys(data.facilitiesCharges[0]._attachments).length >  0);
                     facilitiesChargesCreated.push(data.facilitiesCharges[0].id);
                     return data;
                 })
@@ -157,22 +176,75 @@ describe('DatabaseServiceTest', () => {
                     assert(data.deleted);
                 });
         });
+
     });
 
-    describe('database synchronisation', () => {
-        it('should dump the database into a file', () => {
-            return databaseService.replicate()
+    describe('database sync process test', () => {
+        it('should replicate to remote server', () => {
+            const WHO_REPLICATE = 'local';
+
+            let localDbTotalRows;
+            let remoteDbTotalRowsAfterReplication;
+
+            return databaseService.db.allDocs()
                 .then((data) => {
-                    console.log(data);
+                    localDbTotalRows = data.total_rows;
+                    console.log("local db total docs before rep: ", localDbTotalRows);
                 })
-        });
+                .then(() => databaseService.replicate(WHO_REPLICATE).then(() => { console.log("Replication done.");}))
+                .then(() => databaseService.remoteDb.allDocs())
+                .then((data) => {
+                    remoteDbTotalRowsAfterReplication = data.total_rows;
+                    console.log("remote db total docs after rep: ", remoteDbTotalRowsAfterReplication);
+                    assert(localDbTotalRows === remoteDbTotalRowsAfterReplication);
+                });
+        }).timeout(SYNC_TIMEOUT);
+
+        it('should replicate from remote server', () => {
+            const WHO_REPLICATE = 'server';
+
+            let remoteDbTotalRows;
+            let localDbTotalRowsAfterReplication;
+
+            return databaseService.remoteDb.allDocs()
+                .then((data) => {
+                    remoteDbTotalRows = data.total_rows;
+                    console.log("Remote db total docs before rep: ", remoteDbTotalRows);
+                })
+                .then(() => databaseService.destroy())
+                .then(() => databaseService.init())
+                .then(() => databaseService.replicate(WHO_REPLICATE).then(() => { console.log("Replication done.");}))
+                .then(() => databaseService.remoteDb.allDocs())
+                .then((data) => {
+                    localDbTotalRowsAfterReplication = data.total_rows;
+                    console.log("Local db total docs after rep: ", localDbTotalRowsAfterReplication);
+                    assert(localDbTotalRowsAfterReplication === remoteDbTotalRows)
+                });
+        }).timeout(SYNC_TIMEOUT);
+
+        it('should sync with remote server after some doc additions', () => {
+            let localDbTotalRows;
+
+            return addXDocInDb(200, 5000, databaseService)
+                .then(() => databaseService.db.allDocs())
+                .then((data) => { localDbTotalRows = data.total_rows; })
+                .then(() => databaseService.db.sync(databaseService.remoteDb))
+                .then(() => databaseService.remoteDb.allDocs())
+                .then((data) => {
+                    console.log(`State after sync: local docs ${localDbTotalRows}, remote docs: ${data.total_rows}`);
+                    assert(localDbTotalRows === data.total_rows) 
+                });
+        }).timeout(SYNC_TIMEOUT);
     });
+
+    // *************  WRITE NEW TEST ABOVE TO THIS LINE **********************///
+    // ***********  LAST TEST DESTROY THE DB *********************///
 
     describe('database empty', () => {
         it('should empty the database', () => {
-            return databaseService.find('facility')
+            return databaseService.db.allDocs()
                 .then((data) => {
-                    assert(data.facilities.length > 0)
+                    assert(data.total_rows > 0)
                 })
                 .then(() => databaseService.destroy())
                 .then((response) => assert(response.ok))
@@ -184,5 +256,43 @@ describe('DatabaseServiceTest', () => {
                 .catch(() => assert(true));
         });
     });
-
 });
+
+function randomBuffer(size) {
+    let buff = new Buffer(size);
+    for (let i = 0; i < size; i++) {
+        buff.write(
+            String.fromCharCode(Math.floor(65535 * Math.random())),
+            i, 1, 'binary');
+    }
+    return buff.toString('base64');
+}
+
+
+function createDocWithAttachment(databaseService, id) {
+
+    let facilityCharges = new FacilityCharges({id: id, name:'toto', warming:1, chickPrice:1, vetPrice:1,
+        contributions:1, disinfection:1, commodities:1,
+        litter:1, catching:1, insurances:1});
+
+    if (id%3 ===0) {
+        facilityCharges._attachments = {
+            'foo.txt': {
+                content_type: 'image/png',
+                data: randomBuffer(ATTACHMENT_SIZE)
+            }
+        };
+    }
+
+    return databaseService.save('facilityCharges', facilityCharges);
+}
+
+function addXDocInDb(docNumber, from, databaseService) {
+    let calls = [];
+
+    for(let j = from ; j < docNumber; j++) {
+        calls.push(createDocWithAttachment(databaseService, j));
+    }
+
+    return Promise.all(calls);
+}

@@ -1,6 +1,6 @@
 const assert = require('chai').assert;
-const Investment = require('../../app/database/domain/investment');
-const InvestmentRepository = require('../../app/database/repository/investment.repository.js');
+const Investment = require('../../app/server/database/domain/investment');
+const InvestmentRepository = require('../../app/server/database/repository/investment.repository.js');
 
 describe('InvestmentRepositoryTest', () => {
     let repository;

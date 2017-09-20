@@ -4,17 +4,17 @@ if (typeof btoa === 'undefined') {
         return new Buffer(str).toString('base64');
     };
 }
-const ipc = require('electron').ipcRenderer;
+
+const path = require('path');
 const config = require('./electron.config.js');
-// const MemoryStream = require('memorystream');
-// const replicationStream = require('pouchdb-replication-stream');
-const PouchDB = require('pouchdb-browser');
-PouchDB.plugin(require('pouchdb-adapter-node-websql'));
+const MemoryStream = require('memorystream');
+const replicationStream = require('pouchdb-replication-stream');
+const PouchDB = require('pouchdb');
 PouchDB.plugin(require('relational-pouch'));
 // const load = require('pouchdb-load');
 // PouchDB.plugin({ loadIt: load.load });
-// PouchDB.plugin(replicationStream.plugin);
-// PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
+PouchDB.plugin(replicationStream.plugin);
+PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
 
 
 const databaseSchema = [
@@ -55,6 +55,9 @@ const databaseSchema = [
 class DatabaseService {
     constructor(env) {
         this.env = env;
+
+        if(this.env === undefined) this.env = 'test';
+
         this.dbName = config.db.name + this.env;
         this.db = new PouchDB(this.dbName);
         this.remoteDb = new PouchDB(config.db.remoteUrl + this.dbName);
@@ -62,8 +65,9 @@ class DatabaseService {
     }
 
     init() {
-        this.db = new PouchDB(config.db.name + this.env);
-        this.remoteDb = new PouchDB(config.db.remoteUrl + config.db.name);
+        this.dbName = config.db.name + this.env;
+        this.db = new PouchDB(this.dbName);
+        this.remoteDb = new PouchDB(config.db.remoteUrl + this.dbName);
         this.db.setSchema(databaseSchema);
     }
 
@@ -120,10 +124,6 @@ class DatabaseService {
             })
     }
 
-    removeAttachment(entityName, obj, name) {
-        return this.db.rel.removeAttachment(entityName, obj, name);
-    }
-
     // it will empty the db, because we are using WebSql adapter
     destroy() {
         return this.db.info()
@@ -140,51 +140,30 @@ class DatabaseService {
             });
     }
 
-    load() {
-        // let dumpFile = require('../../dump-dev-db.txt');
-        //
-        // return this.db.loadIt('./dump-dev-db.txt').then((d) => {
-        //     console.log("LOADING OVER");
-        //     return d;
-        // }).catch( (err) => {
-        //     console.log("LOADING ERROR: ", err);
-        //     return err;
-        // });
-    }
+    replicate(who) {
+        let stream = new MemoryStream();
 
-    replicate(){
-        console.log('channel replicate created !');
-        ipc.on('replicate', (e,d) => {
-            console.log(d);
-            ipc.removeAllListeners('replicate');
-        });
+        let from = this.db;
+        let to = this.remoteDb;
 
-        ipc.send('db', {db: this.db, remote: this.remoteDb});
-    }
+        if(who === 'server') {
+            let aux = from;
+            from = to;
+            to = aux;
+        }
 
-    sync() {
-        return this.remoteDb.info()
-                .then(() => new Promise((resolve, reject) => {
-                        this.db.sync(this.remoteDb)
-                            .on('complete', () => {
-                                console.log("complete ");
-                                resolve({ok: true});
-                            })
-                            .on('change', (change) => {
-                                console.log("change ", change);
-                            })
-                            .on('paused', (info) => {
-                                console.log("paused ", info);
-                            })
-                            .on('active', (info) => {
-                                console.log("active ", info);
-                            })
-                            .on('error', (err) => {
-                                console.log(err, err.result);
-                                reject({ok: false});
-                            });
-                    }))
-                .catch(() => { return {ok: false}; });
+        console.log(`replication from ${from.name} to ${to.name}`);
+
+        return Promise.all([
+            from.dump(stream),
+            to.load(stream)
+        ])
+            .then(() => {
+                console.log(`Replication from ${who} SUCCESS !`);
+            })
+            .catch((err) => {
+                console.log(`Replication from ${who} FAIL !`, err);
+            })
     }
 }
 

@@ -16,17 +16,26 @@ export const init = (env) => {
 
     process.env.NODE_ENV = env;
 
-    const FacilityChargesRepository = require('./database/repository/facility_charges.repository');
-    const FacilityRepository = require('./database/repository/facility.repository');
-    const ProductionRepository = require('./database/repository/production.repository');
-    const InvestmentRepository = require('./database/repository/investment.repository');
-    const VideoRepository = require('./database/repository/video.repository');
+    // const FacilityChargesRepository = require('./server/database/repository/facility_charges.repository');
+    // const FacilityRepository = require('./server/database/repository/facility.repository');
+    // const ProductionRepository = require('./server/database/repository/production.repository');
+    // const InvestmentRepository = require('./server/database/repository/investment.repository');
+    // const VideoRepository = require('./server/database/repository/video.repository');
+
+    const mock = {
+        get: () => { return {} },
+        all: () => { return [] },
+        update: () => { return {} },
+        remove: () => { return {} },
+        create: () => { return {} }
+    };
 
     window.repositories = {
-        video: new VideoRepository(),
-        production: new ProductionRepository(),
-        facility: new FacilityRepository(),
-        facilityCharges: new FacilityChargesRepository(),
-        investment: new InvestmentRepository()
+        video: mock, //new VideoRepository(),
+        production: mock, //new ProductionRepository(),
+        facility: mock, //new FacilityRepository(), g
+        facilityCharges: mock, //new FacilityChargesRepository(),
+        investment: mock, //new InvestmentRepository()
     };
+
 };

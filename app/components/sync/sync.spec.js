@@ -1,8 +1,8 @@
 import {init} from '../../renderer';
 
-const FacilityCharges = require('../../database/domain/facility_charges');
-const Production = require('../../database/domain/production');
-const Facility = require('../../database/domain/facility');
+const FacilityCharges = require('.././domain/facility_charges');
+const Production = require('.././domain/production');
+const Facility = require('.././domain/facility');
 
 describe('RemoteDb test using the phantom browser', () => {
 

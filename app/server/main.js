@@ -8,12 +8,12 @@ const {shell} = require('electron');
 const fs = require('fs');
 const os = require('os');
 const ipc = electron.ipcMain;
-const ImageStore = require('./image-store.service');
-const Image = require('./image');
+const DatabaseEventInterface = require('./database/database-event.service');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow = null;
+let databaseEventListener = null;
 
 function createWindow () {
     // Create the browser window.
@@ -42,10 +42,14 @@ function createWindow () {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', () => {
+    databaseEventListener = new DatabaseEventInterface();
+    createWindow();
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
+    databaseEventListener.close();
     app.quit();
 });
 
@@ -65,55 +69,10 @@ ipc.on('print-to-pdf', (event) => {
     });
 });
 
-ipc.on('file', (event, data) => {
-    if(!data) return null;
-    let imageStore = new ImageStore();
-    if(data.type === "delete") {
-        let image = new Image().setFile(null, data.fileName);
-        event.sender.send('file-set', {
-            message: imageStore.delete(image),
-            serviceOwner: 'delete'
-        });
-        return;
-    }
-
-    if (data.type === "set") {
-        let image = new Image(data.displayName).setFile(data.file, data.name);
-console.log(data);
-        event.sender.send('file-set', {
-            message: imageStore.set(image),
-            serviceOwner: 'save'
-        });
-        return;
-    }
-
-    event.sender.send('file-get', imageStore.get(data.fileName));
-});
-
-const PouchDB = require('pouchdb');
-const replicationStream = require('pouchdb-replication-stream');
-const MemoryStream = require('memorystream');
-PouchDB.plugin(replicationStream.plugin);
-PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
-
-ipc.on('db', (e,d) => {
-
-    let stream = new MemoryStream();
-
-    const  dest = new PouchDB(d.remote.name);
-    const source = new PouchDB(d.db.name);
-
-    source.allDocs()
-        .then((data) => {
-            console.log(data);
-        })
-
-});
-
 app.on('activate', () => {
         // On macOS it's common to re-create a window in the app when the
         // dock icon is clicked and there are no other windows open.
         if (win === null) {
-        createWindow();
-    }
+            createWindow();
+        }
 });

@@ -16,7 +16,7 @@ module.exports = {
   module: {
     loaders: [
         { test: /\.js$/, exclude: [/node_modules/], loader: 'ng-annotate!babel'},
-        { test: /\.html$/, loader: 'raw' },
+        { test: /\.(html|txt)$/, loader: 'raw' },
         { test: /.(woff(2)?|eot|ttf)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=100000' },
         { test: /\.(scss|sass)$/, loader: 'style!css!sass' },
         { test: /\.(png|jpg|JPG|svg|mp4|gif)/, loader: 'url-loader?limit=100000&name=images/[name].[ext]'  },

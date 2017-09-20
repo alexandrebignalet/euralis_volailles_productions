@@ -19,8 +19,9 @@ const $ = gulpLoadPlugins();
 
 const config = {
     app: 'app/',
-    main:'app/main.js',
+    main:'app/server/**.js',
     tmp: '.tmp',
+    dist: 'build/electron',
     constantTemplate:
     'angular.module(\'<%- moduleName %>\', [])' +
     '<% constants.forEach(function(constant) { %>.constant(\'<%- constant.name %>\', <%= constant.value %>)\n<% }) %>;\n' +
@@ -79,97 +80,19 @@ gulp.task('ngconstant:prod', () => {
         .pipe(gulp.dest(config.app));
 });
 
-gulp.task('webpack', ['clean', 'ngconstant:prod'], (cb) => {
-
-  const config = require('./webpack.dist.config');
-  config.entry.app = paths.entry;
-
-  webpack(config, (err, stats) => {
-    if(err)  {
-      throw new $.util.PluginError("webpack", err);
-    }
-
-    $.util.log("[webpack]", stats.toString({
-      colors: colorsSupported,
-      chunks: false,
-      errorDetails: true
-    }));
-
-    cb();
-  });
-});
-
-gulp.task('serve', ['ngconstant:dev'], () => {
-
-  const config = require('./webpack.dev.config');
-  config.entry.app = [
-    // this modules required to make HRM working
-    // it responsible for all this webpack magic
-    'webpack-hot-middleware/client?reload=true',
-    // application entry point
-  ].concat(paths.entry);
-
-  var compiler = webpack(config);
-
-  browserSync({
-    port: process.env.PORT || 3000,
-    open: false,
-    server: {baseDir: root},
-    middleware: [
-      historyApiFallback(),
-      webpackDevMiddleware(compiler, {
-        stats: {
-          colors: colorsSupported,
-          chunks: false,
-          modules: false
-        },
-        publicPath: config.output.publicPath
-      }),
-      webpackHotMiddleware(compiler)
-    ]
-  });
-
-    gulp.watch(['./app/**/*.spec.js'], ['karma', 'test']);
-});
-
-gulp.task('electron-dev', ['ngconstant:dev', 'script:main', 'compile'],() => {
-    process.env.NODE_ENV = 'dev';
-    electronConnect.start();
-
-    gulp.watch(['app/**/*.*', '!app/main.js'], () => {
-        gulp.start('compile', electronConnect.restart);
-    });
-    gulp.watch(['app/main.js'], () => {
-        gulp.start('script:main', electronConnect.restart);
-    })
-});
-
-gulp.task('compile', [], (cb) => {
-    const config = require('./webpack.dev.config');
-    config.entry.app = paths.entry;
-
-    webpack(config, (err, stats) => {
-        if (err) {
-            throw new $.util.PluginError("webpack", err);
-        }
-
-        $.util.log("[webpack]", stats.toString({
-            colors: colorsSupported,
-            chunks: false,
-            errorDetails: true
-        }));
-
-        cb();
-    })
-});
-
-gulp.task('script:main', () => {
+gulp.task('script:main-dev', () => {
     return gulp.src(config.main)
         .pipe($.plumber())
         .pipe($.babel())
         .pipe(gulp.dest(config.tmp));
 });
 
+gulp.task('script:main-prod', () => {
+    return gulp.src(config.main)
+        .pipe($.plumber())
+        .pipe($.babel())
+        .pipe(gulp.dest(config.dist));
+});
 
 gulp.task('clean', (cb) => {
   del([paths.dest]).then(function (paths) {
@@ -195,6 +118,90 @@ gulp.task('test', ['karma', 'ngconstant:test'], () => {
     return gulp.src(['test/database/**/*.js'], { read: false })
         .pipe($.mocha({ reporter: 'spec' }))
         .on('error', $.util.log);
+});
+
+gulp.task('webpack', ['clean', 'ngconstant:prod', 'script:main-prod'], (cb) => {
+
+    const config = require('./webpack.dist.config');
+    config.entry.app = paths.entry;
+
+    webpack(config, (err, stats) => {
+        if(err)  {
+            throw new $.util.PluginError("webpack", err);
+        }
+
+        $.util.log("[webpack]", stats.toString({
+            colors: colorsSupported,
+            chunks: false,
+            errorDetails: true
+        }));
+        cb();
+    });
+
+});
+
+gulp.task('serve', ['ngconstant:dev'], () => {
+
+    const config = require('./webpack.dev.config');
+    config.entry.app = [
+        // this modules required to make HRM working
+        // it responsible for all this webpack magic
+        'webpack-hot-middleware/client?reload=true',
+        // application entry point
+    ].concat(paths.entry);
+
+    var compiler = webpack(config);
+
+    browserSync({
+        port: process.env.PORT || 3000,
+        open: false,
+        server: {baseDir: root},
+        middleware: [
+            historyApiFallback(),
+            webpackDevMiddleware(compiler, {
+                stats: {
+                    colors: colorsSupported,
+                    chunks: false,
+                    modules: false
+                },
+                publicPath: config.output.publicPath
+            }),
+            webpackHotMiddleware(compiler)
+        ]
+    });
+
+    gulp.watch(['./app/**/*.spec.js'], ['karma', 'test']);
+});
+
+gulp.task('electron-dev', ['ngconstant:dev', 'script:main-dev', 'compile'],() => {
+    process.env.NODE_ENV = 'dev';
+    electronConnect.start();
+
+    gulp.watch(['app/**/*.*', '!app/server/*'], () => {
+        gulp.start('compile', electronConnect.restart);
+    });
+    gulp.watch(['app/server/*.js'], () => {
+        gulp.start('script:main-dev', electronConnect.restart);
+    })
+});
+
+gulp.task('compile', [], (cb) => {
+    const config = require('./webpack.dev.config');
+    config.entry.app = paths.entry;
+
+    webpack(config, (err, stats) => {
+        if (err) {
+            throw new $.util.PluginError("webpack", err);
+        }
+
+        $.util.log("[webpack]", stats.toString({
+            colors: colorsSupported,
+            chunks: false,
+            errorDetails: true
+        }));
+
+        cb();
+    })
 });
 
 gulp.task('default', ['serve']);

@@ -11,6 +11,7 @@ ipc.on('wrote-pdf', (event, path) => {
     document.getElementById('pdf-path').innerHTML = message;
 });
 
+
 export const init = (env) => {
 
     process.env.NODE_ENV = env;

@@ -24,7 +24,7 @@ export const HomeComponent = {
     },
     template,
     controller: class HomeController {
-        constructor(DEPARTMENTS, VideoDataService, $scope) {
+        constructor(DEPARTMENTS, VideoDataService, $scope, $window) {
             'ngInject';
             //imgs
             this.banner = banner;
@@ -36,10 +36,16 @@ export const HomeComponent = {
             this.VideoDataService = VideoDataService;
             this.videoPlayed = null;
 
+            this.repositories = $window.repositories;
+            this.inProgress = false;
         }
 
         $onInit() {
             this.selectVideo(this.videos[0]);
+        }
+
+        load() {
+            this.repositories.facility.dbService.replicate();
         }
 
         selectVideo(video) {

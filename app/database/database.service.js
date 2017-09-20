@@ -4,11 +4,18 @@ if (typeof btoa === 'undefined') {
         return new Buffer(str).toString('base64');
     };
 }
-
+const ipc = require('electron').ipcRenderer;
 const config = require('./electron.config.js');
+// const MemoryStream = require('memorystream');
+// const replicationStream = require('pouchdb-replication-stream');
 const PouchDB = require('pouchdb-browser');
 PouchDB.plugin(require('pouchdb-adapter-node-websql'));
 PouchDB.plugin(require('relational-pouch'));
+// const load = require('pouchdb-load');
+// PouchDB.plugin({ loadIt: load.load });
+// PouchDB.plugin(replicationStream.plugin);
+// PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
+
 
 const databaseSchema = [
     {
@@ -131,6 +138,28 @@ class DatabaseService {
             }).catch((err) => {
                 return err;
             });
+    }
+
+    load() {
+        // let dumpFile = require('../../dump-dev-db.txt');
+        //
+        // return this.db.loadIt('./dump-dev-db.txt').then((d) => {
+        //     console.log("LOADING OVER");
+        //     return d;
+        // }).catch( (err) => {
+        //     console.log("LOADING ERROR: ", err);
+        //     return err;
+        // });
+    }
+
+    replicate(){
+        console.log('channel replicate created !');
+        ipc.on('replicate', (e,d) => {
+            console.log(d);
+            ipc.removeAllListeners('replicate');
+        });
+
+        ipc.send('db', {db: this.db, remote: this.remoteDb});
     }
 
     sync() {

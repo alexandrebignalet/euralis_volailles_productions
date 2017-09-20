@@ -159,7 +159,14 @@ describe('DatabaseServiceTest', () => {
         });
     });
 
-
+    describe('database synchronisation', () => {
+        it('should dump the database into a file', () => {
+            return databaseService.replicate()
+                .then((data) => {
+                    console.log(data);
+                })
+        });
+    });
 
     describe('database empty', () => {
         it('should empty the database', () => {

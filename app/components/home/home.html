@@ -17,6 +17,8 @@
             <i class="glyphicon glyphicon-grain" style="color:rgba(219, 226, 13, 0.88)"></i>
             <span style="color: #309f41;">Euralis</span>
             <span style="color: #a6ce39;">vous accompagne</span>
+            <button ng-click="vm.load()" ng-disabled="vm.inProgress">Load</button>
+            <span class="glyphicon glyphicon-cloud" ng-if="vm.inProgress"></span>
         </h1><hr>
 
         <div class="col-md-4">

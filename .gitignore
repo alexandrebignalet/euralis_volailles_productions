@@ -7,3 +7,4 @@ build/electron/webapp/
 docker/lib/
 !docker/lib/.gitkeep
 app/app.constants.js
+.tmp/

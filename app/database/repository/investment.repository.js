@@ -49,6 +49,13 @@ class InvestmentRepository {
      * @return Promise
      */
     create(investment) {
+
+        let images = investment.images;
+
+        investment.images = images.map((file) => {
+            return { displayName: file.name };
+        });
+
         return this.dbService.save(this.entityName, investment)
             .then((investmentSaved) => {
 
@@ -56,6 +63,7 @@ class InvestmentRepository {
                         id: investmentSaved.investments[0].id,
                         rev: investmentSaved.investments[0].rev
                     }, investment.images)
+
                 }
             )
             .then((obj) => this.get(obj.id));

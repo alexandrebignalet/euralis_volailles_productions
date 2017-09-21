@@ -3,7 +3,7 @@ const assert = require('chai').assert;
 const ImageStore = require('../../app/server/image-store.service');
 const Image = require('../../app/server/image');
 const imageFile = fs.readFileSync('/home/alexandre/WebstormProjects/EuralisVolaillesProductions/app/images/avigers.png');
-const Store = require('../../app/server/store');
+const Store = require('.././store');
 
 describe('ImageStoreServiceTest', () => {
     let store;

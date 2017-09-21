@@ -1,14 +1,17 @@
-const {app, BrowserWindow} = require('electron');
-const path = require('path');
-const url = require('url');
+import path from 'path';
+import url from 'url';
+import fs from'fs';
+import os from 'os';
+
+import DatabaseEventInterface from './database/database-event.service';
 
 const electron = require('electron');
-const {shell} = require('electron');
 
-const fs = require('fs');
-const os = require('os');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const shell = electron.shell;
+
 const ipc = electron.ipcMain;
-const DatabaseEventInterface = require('./database/database-event.service');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

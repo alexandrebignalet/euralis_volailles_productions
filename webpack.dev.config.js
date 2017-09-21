@@ -1,19 +1,47 @@
-var webpack = require('webpack');
-var path    = require('path');
-var config  = require('./webpack.config');
+import webpack from 'webpack';
+import path    from 'path';
+import {config}  from './webpack.config';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 config.output = {
-  filename: '[name].bundle.js',
+  filename: '[name].js',
   publicPath: '',
   path: path.resolve(__dirname, './.tmp')
 };
 
-config.plugins = config.plugins.concat([
+config.entry = {
+    renderer: [
+        'babel-polyfill',
+        path.join(__dirname, 'app/renderer/app.bootstrap.js')
+    ],
+    main: [
+        path.join(__dirname, 'app/main/main.js')
+    ]
+};
 
-    // Adds webpack HMR support. It act's like livereload,
-    // reloading page after webpack rebuilt modules.
-    // It also updates stylesheets and inline assets without page reloading.
-    new webpack.HotModuleReplacementPlugin()
+config.resolve.alias = {
+    '$': path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js'),
+    'jquery': path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js')
+};
+
+config.plugins = config.plugins.concat([
+    new webpack.ProvidePlugin({
+        'window.jQuery': 'jquery', //in order to load it in angular
+        '$': "jquery",
+        'jQuery': "jquery"
+    }),
+
+    // Injects bundles in your index.html instead of wiring all manually.
+    // It also adds hash to all injected assets so we don't have problems
+    // with cache purging during deployment.
+    new HtmlWebpackPlugin({
+        template: './app/index.html',
+        inject: false,
+        hash: true
+    })
 ]);
 
-module.exports = config;
+config.target = 'electron';
+
+
+export default config;

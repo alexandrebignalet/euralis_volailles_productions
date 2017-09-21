@@ -1,5 +1,5 @@
 const ipc = require('electron').ipcMain;
-const DatabaseService = require('./database.service');
+const DatabaseService = require('./database.service.js');
 
 class DatabaseEventInterface {
     constructor(){
@@ -9,8 +9,13 @@ class DatabaseEventInterface {
     listen() {
         ipc.on('get', (event, data) => {
             console.log("main on get event: ", data);
-            this.databaseService.get(data.entityName, data.id)
-                .then((res) => DatabaseEventInterface.resolveAndSend(event, 'get', res));
+            if(data.id) {
+                this.databaseService.find(data.entityName, data.id)
+                    .then((res) => DatabaseEventInterface.resolveAndSend(event, 'get', res));
+            } else {
+                this.databaseService.find(data.entityName)
+                    .then((res) => DatabaseEventInterface.resolveAndSend(event, 'get', res));
+            }
         });
 
         ipc.on('save', (event, data) => {

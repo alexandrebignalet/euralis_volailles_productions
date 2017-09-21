@@ -1,8 +1,8 @@
 const assert = require('chai').assert;
-const FacilityCharges = require('../../app/server/database/domain/facility_charges');
-const Production = require('../../app/server/database/domain/production');
-const Facility = require('../../app/server/database/domain/facility');
-const DatabaseService = require('../../app/server/database/database.service.js');
+const FacilityCharges = require('.././domain/facility_charges');
+const Production = require('.././domain/production');
+const Facility = require('.././domain/facility');
+const DatabaseService = require('.././database.service.js');
 const fs = require('fs');
 
 global.navigator = {

@@ -31,6 +31,9 @@ function createWindow () {
 
     mainWindow.maximize();
 
+    databaseEventListener = new DatabaseEventInterface();
+    databaseEventListener.listen();
+
     // Open the DevTools.
     if(process.env.NODE_ENV === 'dev') {
         mainWindow.openDevTools({detach: true});
@@ -46,7 +49,6 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-    databaseEventListener = new DatabaseEventInterface();
     createWindow();
 });
 

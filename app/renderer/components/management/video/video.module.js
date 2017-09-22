@@ -14,7 +14,7 @@ export const VideoModule = angular
                 parent: 'management',
                 url: '/videos',
                 resolve: {
-                    videos: VideoDataService => VideoDataService.all()
+                    videos: VideoDataService => VideoDataService.get()
                 },
                 views: {
                     'content@': {

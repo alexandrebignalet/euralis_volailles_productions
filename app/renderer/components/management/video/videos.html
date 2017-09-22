@@ -19,7 +19,7 @@
                 <span class="glyphicon glyphicon-plus"></span>
                 Ajouter une vidéo
             </a>
-            <div style="height:40%; overflow: auto;">
+            <div style="height:40%; overflow: auto;" ng-if="vm.videos.length > 0">
                 <table class="table table-hovered">
                 <thead>
                 <tr>
@@ -29,7 +29,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="video in vm.videos" ng-click="vm.loadVideo(video.id)" style="cursor: pointer;">
+                <tr ng-repeat="video in vm.videos" ng-click="vm.load(video)" style="cursor: pointer;">
                     <td>{{video.name}}</td>
                     <td colspan="2">{{video.size / 1000000 | number:1}}</td>
                     <td>

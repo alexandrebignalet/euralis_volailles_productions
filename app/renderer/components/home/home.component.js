@@ -9,7 +9,8 @@ import vol from '../../images/eurvol.jpg';
 import elev from '../../images/elev.png';
 import avigers from '../../images/avigers.png';
 import qualisud from '../../images/qualisud.png';
-
+import electron from 'electron';
+const ipc = electron.ipcRenderer;
 const filiere = [];
 filiere['sanders'] = sanders;
 filiere['eurvol'] = eurvol;
@@ -24,42 +25,43 @@ export const HomeComponent = {
     },
     template,
     controller: class HomeController {
-        constructor(DEPARTMENTS, VideoDataService, $scope, $window) {
+        constructor(DEPARTMENTS, VideoDataService) {
             'ngInject';
             //imgs
             this.banner = banner;
             this.accompagne = accompagne;
             this.imagesFiliere = filiere;
 
-            this.scope = $scope;
             this.departments = DEPARTMENTS;
             this.VideoDataService = VideoDataService;
             this.videoPlayed = null;
-
-            this.repositories = $window.repositories;
+            
             this.inProgress = false;
         }
 
         $onInit() {
-            this.selectVideo(this.videos[0]);
+            console.log(this.videos);
+            if(this.videos.length > 0)
+                this.VideoDataService.load(this.videos[0]);
         }
 
         load() {
-            this.repositories.facility.dbService.replicate();
+            this.inProgress = true;
+            ipc.send('sync');
+            
+            return new Promise((resolve) => {
+                ipc.on('sync', (e,d) => {
+                    this.inProgress = false;
+                    console.log(d);
+                    resolve();
+                })
+            })
         }
 
         selectVideo(video) {
             if (!video || video.id === this.videoPlayed) return;
-
-            this.VideoDataService
-                .get(video.id)
-                .then((data) => {
-                    let myVideo = document.getElementsByTagName('video')[0];
-                    this.videoPlayed = video.id;
-                    myVideo.src = URL.createObjectURL(data.file);
-                    myVideo.load();
-                    myVideo.play();
-                });
+            this.videoPlayed = video.id;
+            this.VideoDataService.load(video);
         }
     },
     controllerAs: 'vm'

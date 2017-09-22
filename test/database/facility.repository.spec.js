@@ -1,8 +1,8 @@
 const assert = require('chai').assert;
-const Facility = require('.././domain/facility');
-const Investment = require('.././domain/investment');
-const FacilityCharges = require('.././domain/facility_charges');
-const FacilityRepository = require('.././repository/facility.repository.js');
+const Facility = require('../../app/main/database/domain/facility');
+const Investment = require('../../app/main/database/domain/investment');
+const FacilityCharges = require('../../app/main/database/domain/facility_charges');
+const FacilityRepository = require('../../app/main/database/repository/facility.repository.js');
 
 describe('FacilityRepositoryTest', () => {
     let repository;

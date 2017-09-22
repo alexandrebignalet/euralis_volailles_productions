@@ -31,6 +31,7 @@
     "jquery": "^1.12.4",
     "level-js": "^2.2.4",
     "memorystream": "^0.3.1",
+    "mocha": "^3.5.3",
     "ngstorage": "^0.3.11",
     "pouchdb": "^6.3.4",
     "pouchdb-adapter-node-websql": "^6.2.0",

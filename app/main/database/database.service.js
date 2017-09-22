@@ -55,19 +55,27 @@ const databaseSchema = [
 class DatabaseService {
     constructor(env) {
         this.env = env;
-
         if(this.env === undefined) this.env = 'test';
 
+        this.dbOpts = { auto_compaction: true};
+        this.remoteDbOpts = {
+            ajax: { timeout: 10000 },
+            auth: {
+                username: 'admin',
+                password: 'c907f253966a6676d7c54232e'
+            }
+        };
+
         this.dbName = config.db.name + this.env;
-        this.db = new PouchDB(this.dbName);
-        this.remoteDb = new PouchDB(config.db.remoteUrl + this.dbName);
+        this.db = new PouchDB(this.dbName, this.dbOpts);
+        this.remoteDb = new PouchDB(config.db.remoteUrl + this.dbName, this.remoteDbOpts);
         this.db.setSchema(databaseSchema);
     }
 
     init() {
         this.dbName = config.db.name + this.env;
-        this.db = new PouchDB(this.dbName);
-        this.remoteDb = new PouchDB(config.db.remoteUrl + this.dbName);
+        this.db = new PouchDB(this.dbName, this.dbOpts);
+        this.remoteDb = new PouchDB(config.db.remoteUrl + this.dbName, this.remoteDbOpts);
         this.db.setSchema(databaseSchema);
     }
 
@@ -82,12 +90,40 @@ class DatabaseService {
     }
 
     find(entityName, id) {
-        return this.db.rel.find(entityName, id);
+        return this.db.rel.find(entityName, id)
+            .then((data) => {
+                let objects = data[Object.keys(data)[0]];
+
+                let objectsWithAttachmentsPromises = [];
+
+                for(let i = 0; i < objects.length; i++) {
+                    if (objects[i].attachments) {
+                        let attachmentsPromises = [];
+
+                        Object.keys(objects[i].attachments).forEach((key) => {
+                            attachmentsPromises.push(
+                                this.db.rel.getAttachment(entityName, objects[i].id, key)
+                                    .then((attachment) => {
+                                        objects[i].attachments[key].data = attachment;
+                                        return objects[i];
+                                    })
+                            );
+                        });
+
+                        objectsWithAttachmentsPromises.push(Promise.all(attachmentsPromises).then((data) => data[0]));
+                    }
+                }
+
+                return Promise.all(objectsWithAttachmentsPromises);
+            });
     }
 
-    remove(entityName, id) {
-        return this.db.rel.del(entityName, id)
-            .then(this.compact());
+    remove(entityName, object) {
+        return this.db.rel.del(entityName, object).then(() => this.compact());
+    }
+
+    putAttachment({entityName, obj, name, base64, contentType}) {
+        return this.db.rel.putAttachment(entityName, obj, name, base64, contentType);
     }
     
     addAttachments(entityName, obj, files) {
@@ -97,31 +133,6 @@ class DatabaseService {
         return files.reduce((p, file) => {
             return p.then(() => this.db.rel.putAttachment(entityName, obj, file.name, file, file.type));
         }, Promise.resolve());
-    }
-
-    getAttachments(entityName, id) {
-        return this.find(entityName, id)
-            .then((data) => {
-                const keys = Object.keys(data);
-                const entity = data[keys[0]][0];
-
-                if (!entity.attachments) return [];
-
-                let findAttachmentsPromises = [];
-                const attachmentsKeys = Object.keys(entity.attachments);
-
-                attachmentsKeys.forEach((key) => {
-                    findAttachmentsPromises.push(this.db.rel.getAttachment(entityName, entity.id, key));
-                });
-
-                return Promise.all(findAttachmentsPromises)
-                    .then((images) => {
-                        images.forEach((img, index) => {
-                            img.name = attachmentsKeys[index];
-                        });
-                        return images;
-                    });
-            })
     }
 
     // it will empty the db, because we are using WebSql adapter
@@ -138,6 +149,18 @@ class DatabaseService {
             }).catch((err) => {
                 return err;
             });
+    }
+
+    sync() {
+        return this.db.sync(this.remoteDb)
+            .then((data) => {
+                console.log(`Synchronisation SUCCESS: ${data}`);
+                return data;
+            })
+            .catch((err) => {
+                console.log(`Synchronisation ERROR: ${err}`);
+                return err;
+            })
     }
 
     replicate(who) {

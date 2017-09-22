@@ -1,17 +1,17 @@
 const assert = require('chai').assert;
-const FacilityCharges = require('.././domain/facility_charges');
-const Production = require('.././domain/production');
-const Facility = require('.././domain/facility');
-const DatabaseService = require('.././database.service.js');
+const FacilityCharges = require('../../app/main/database/domain/facility_charges');
+const Production = require('../../app/main/database/domain/production');
+const Facility = require('../../app/main/database/domain/facility');
+const DatabaseService = require('../../app/main/database/database.service.js');
 const fs = require('fs');
 
 global.navigator = {
     userAgent: 'node.js'
 };
 
-const ATTACHMENT_SIZE = 5;
-const SYNC_TIMEOUT = 5000;
-const BASE_DOC_NUMBER = 100;
+const ATTACHMENT_SIZE = 5000000;
+const SYNC_TIMEOUT = 100000000;
+const BASE_DOC_NUMBER = 100000;
 
 describe('DatabaseServiceTest', () => {
     let databaseService = DatabaseService;
@@ -19,8 +19,9 @@ describe('DatabaseServiceTest', () => {
     const facilitiesCreated = [];
     const productionsCreated = [];
 
-    before(() => {
-        addXDocInDb(BASE_DOC_NUMBER, 0, databaseService);
+    before(function () {
+        this.timeout(SYNC_TIMEOUT);
+        return addXDocInDb(BASE_DOC_NUMBER, 0, databaseService);
     });
 
     after(() => {

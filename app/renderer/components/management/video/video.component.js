@@ -4,24 +4,20 @@ export const VideoComponent = {
     bindings: { videos: '<' },
     template,
     controller: class VideoController {
-        constructor(VideoDataService, $scope){
+        constructor(VideoDataService){
             'ngInject';
-            this.scope = $scope;
             this.VideoDataService = VideoDataService;
-            this.video = {};
-            this.videoToSee = null;
         }
-        
-        loadVideo(id) {
 
-            this.VideoDataService.get(id)
-                .then((video) => {
+        $onInit() {
+            console.log(this.videos);
+            if(this.videos.length > 0) {
+                this.VideoDataService.load(this.videos[0]);
+            }
+        }
 
-                    let myVideo = document.getElementsByTagName('video')[0];
-                    myVideo.src = URL.createObjectURL(video.file);
-                    myVideo.load();
-                    myVideo.play();
-                });
+        load(video) {
+            this.VideoDataService.load(video);
         }
     },
     controllerAs: 'vm'

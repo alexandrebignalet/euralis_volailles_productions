@@ -1,4 +1,5 @@
 import template from './video_form.html';
+import {Video} from '../../../../main/database/domain/video';
 
 export const VideoFormComponent = {
     bindings: {
@@ -7,47 +8,55 @@ export const VideoFormComponent = {
     },
     template,
     controller: class VideoFormController {
-        constructor(VideoDataService, $state, toastr, $scope){
+        constructor(PouchDataService, $state, ToastrService, $scope){
             'ngInject';
 
-            this.VideoDataService = VideoDataService;
+            this.PouchDataService = PouchDataService;
             this.isSaving = false;
             this.currentState = $state.current.name;
-            this.toastr = toastr;
+            this.ToastrService = ToastrService;
+            this.entityName = 'video';
+            this.formData = {
+                file: null
+            };
+
+
 
             $scope.fileNameChanged = (elem) => {
-                this.video.file = elem.files[0];
-                this.VideoDataService.load(this.video);
+                this.formData.file = elem.files[0];
+                this.PouchDataService.load(elem.files[0]);
             };
         }
 
         $onInit() {
             this.video = this.resolve.video;
-            console.log(this.video);
-            this.VideoDataService.load(this.video);
+            if(this.video.id) {
+                this.PouchDataService.load(this.video.getFile());
+                this.formData.file = this.video.getFile();
+                this.video.name = this.video.getName();
+            }
         }
         
         onSubmit() {
             this.isSaving = true;
 
-            switch(this.currentState.replace("video.", "")) {
-                case 'edit':
+            const formState = this.currentState.replace("video.", "");
 
-                    this.VideoDataService.save(this.video).then(() => {
-                        this.toastr.success('a été mise à jour.', 'La vidéo ' + this.video.name);
+            switch(formState) {
+                case 'edit':
+                case 'create':
+                    this.video.attachments = {
+                        [this.video.name]: this.formData.file
+                    };
+
+                    this.PouchDataService.save(this.entityName, this.video).then(() => {
+                        this.ToastrService[formState](`Vidéo ${this.video.name}`);
                         this.modalInstance.close()
                     });
                     break;
                 case 'remove':
-                    this.VideoDataService.remove(this.video).then(() => {
-                        this.toastr.warning('a été supprimée.', 'La vidéo ' + this.video.name);
-                        this.modalInstance.close()
-                    });
-                    break;
-                case 'create':
-
-                    this.VideoDataService.save(this.video).then(() => {
-                        this.toastr.info('a été créée.', 'La vidéo ' + this.video.name);
+                    this.PouchDataService.remove(this.entityName, this.video).then(() => {
+                        this.ToastrService.remove(this.video);
                         this.modalInstance.close()
                     });
                     break;

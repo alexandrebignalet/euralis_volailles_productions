@@ -1,18 +1,18 @@
-class Investment {
+export class Investment {
 
-    constructor({id, name, designation, description, masonry, papers, facilityMoutingDeliveryPrice,
-                    equipmentMountingDeliveryPrice, diverseOptions, subsidies, helpEuralis}) {
-        this.id = id;
-        this.name = name;
-        this.designation = designation;
-        this.description = description;
-        this.papers = papers;
-        this.masonry = masonry;
-        this.facilityMoutingDeliveryPrice = facilityMoutingDeliveryPrice;
-        this.equipmentMountingDeliveryPrice = equipmentMountingDeliveryPrice;
-        this.diverseOptions = diverseOptions;
-        this.subsidies = subsidies;
-        this.helpEuralis = helpEuralis;
+    constructor(investment) {
+        this.id = investment.id;
+        this.rev = investment.rev;
+        this.name = investment.name;
+        this.designation = investment.designation;
+        this.description = investment.description;
+        this.papers = investment.papers;
+        this.masonry = investment.masonry;
+        this.facilityMoutingDeliveryPrice = investment.facilityMoutingDeliveryPrice;
+        this.equipmentMountingDeliveryPrice = investment.equipmentMountingDeliveryPrice;
+        this.diverseOptions = investment.diverseOptions;
+        this.subsidies = investment.subsidies;
+        this.helpEuralis = investment.helpEuralis;
         this.images = [];
         this._facilityNb = 1;
     }
@@ -50,5 +50,3 @@ class Investment {
         return this.getMasonry() + this.getFacilityMountingDeliveryPrice() + this.getEquipmentMountingDeliveryPrice() + this.papers;
     }
 }
-
-module.exports = Investment;

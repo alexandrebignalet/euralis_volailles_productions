@@ -1,29 +1,29 @@
 const Facility = require('./facility');
 
-class Production {
-    constructor({id, updateDate, fieldSpace, department, name, chickNb, avgWeight, age, breedingPerYear, consumptionIndex, mortalityPercent,
-                vaccinesPrice, foodPrice, classedPrice, declassedPrice, breedingDeclassedPercent, restraintPercent, facility}) {
+export class Production {
+    constructor(production) {
         this.facilitiesNb = 1;
 
-        this.id = id;
-        this.fieldSpace = fieldSpace;
-        this.updateDate = updateDate;
-        this.department = department;
-        this.name = name;
-        this.chickNb = chickNb;
-        this.avgWeight = avgWeight;
-        this.age = age;
-        this.breedingPerYear = breedingPerYear;
-        this.consumptionIndex = consumptionIndex;
-        this.mortalityPercent = mortalityPercent;
-        this.vaccinesPrice = vaccinesPrice;
-        this.foodPrice = foodPrice;
-        this.classedPrice = classedPrice;
-        this.declassedPrice = declassedPrice;
-        this.breedingDeclassedPercent = breedingDeclassedPercent;
-        this.restraintPercent = restraintPercent;
+        this.id = production.id;
+        this.rev = production.rev;
+        this.fieldSpace = production.fieldSpace;
+        this.updateDate = production.updateDate;
+        this.department = production.department;
+        this.name = production.name;
+        this.chickNb = production.chickNb;
+        this.avgWeight = production.avgWeight;
+        this.age = production.age;
+        this.breedingPerYear = production.breedingPerYear;
+        this.consumptionIndex = production.consumptionIndex;
+        this.mortalityPercent = production.mortalityPercent;
+        this.vaccinesPrice = production.vaccinesPrice;
+        this.foodPrice = production.foodPrice;
+        this.classedPrice = production.classedPrice;
+        this.declassedPrice = production.declassedPrice;
+        this.breedingDeclassedPercent = production.breedingDeclassedPercent;
+        this.restraintPercent = production.restraintPercent;
         this.chickPurchaseReduction = 0.02;
-        this.facility = facility;
+        this.facility = production.facility;
         this.images = [];
     }
 
@@ -121,5 +121,3 @@ class Production {
         return `Production ${this.name || 'NON-DEFINIE'}`
     }
 }
-
-module.exports = Production;

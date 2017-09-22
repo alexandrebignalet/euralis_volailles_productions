@@ -1,16 +1,18 @@
 import template from './investment_form.html';
+import {Investment} from '../../../../main/database/domain/investment';
 
 export const InvestmentFormComponent = {
     bindings: { resolve: '<', modalInstance: '<' },
     template,
     controller: class InvestmentFormController {
-        constructor(InvestmentDataService, $state, toastr){
+        constructor(PouchDataService, $state, ToastrService){
             'ngInject';
 
-            this.dataService = InvestmentDataService;
+            this.PouchDataService = PouchDataService;
             this.isSaving = false;
             this.currentState = $state.current.name;
-            this.toastr = toastr;
+            this.ToastrService = ToastrService;
+            this.entityName = 'investment';
         }
 
         $onInit() {
@@ -24,22 +26,19 @@ export const InvestmentFormComponent = {
 
         onSubmit() {
             this.isSaving = true;
-            switch(this.currentState.replace("investment.", "")) {
+            const formState = this.currentState.replace("investment.", "");
+
+            switch(formState) {
                 case 'edit':
-                    this.dataService.update(this.investment).then(() => {
-                        this.toastr.success('a été mis à jour.', this.investment.toString());
+                case 'create':
+                    this.PouchDataService.save(this.entityName, this.investment).then(() => {
+                        this.ToastrService[formState](new Investment(this.investment));
                         this.modalInstance.close()
                     });
                     break;
                 case 'remove':
-                    this.dataService.remove(this.investment).then(() => {
-                        this.toastr.warning('a été supprimé.', this.investment.toString());
-                        this.modalInstance.close()
-                    });
-                    break;
-                case 'create':
-                    this.dataService.create(this.investment).then(() => {
-                        this.toastr.info('a été créé.', this.investment.toString());
+                    this.PouchDataService.remove(this.entityName, this.investment).then(() => {
+                        this.ToastrService.remove(this.investment);
                         this.modalInstance.close()
                     });
                     break;

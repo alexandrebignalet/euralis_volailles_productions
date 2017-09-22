@@ -1,17 +1,18 @@
-class FacilityCharges  {
-    constructor({id, name, warming, chickPrice, vetPrice, contributions, disinfection, commodities,
-                litter, catching, insurances}) {
-        this.id = id;
-        this.name = name;
-        this.warming = warming;
-        this.chickPrice = chickPrice;
-        this.vetPrice = vetPrice;
-        this.contributions = contributions;
-        this.disinfection = disinfection;
-        this.commodities = commodities;
-        this.litter = litter;
-        this.catching = catching;
-        this.insurances = insurances;
+export class FacilityCharges  {
+    constructor(facilityCharges) {
+
+        this.id = facilityCharges.id;
+        this.rev = facilityCharges.rev;
+        this.name = facilityCharges.name;
+        this.warming = facilityCharges.warming;
+        this.chickPrice = facilityCharges.chickPrice;
+        this.vetPrice = facilityCharges.vetPrice;
+        this.contributions = facilityCharges.contributions;
+        this.disinfection = facilityCharges.disinfection;
+        this.commodities = facilityCharges.commodities;
+        this.litter = facilityCharges.litter;
+        this.catching = facilityCharges.catching;
+        this.insurances = facilityCharges.insurances;
     }
 
     getUnitPricesSum() {
@@ -23,5 +24,3 @@ class FacilityCharges  {
         return `Grille de critères ${this.name || 'NON-DEFINIE'}`
     }
 }
-
-module.exports = FacilityCharges;

@@ -86,10 +86,14 @@ class DatabaseService {
      * @return Promise
      */
     save(entityName, object) {
-        return this.db.rel.save(entityName, object);
+        console.log(entityName, object);
+        return this.db.rel.save(entityName, object)
+            .then(data => {console.log(data); return data;})
+            .catch(err => console.log(`Save Central DatabaseService: ${err}`));
     }
 
     find(entityName, id) {
+
         return this.db.rel.find(entityName, id)
             .then((data) => {
                 let objects = data[Object.keys(data)[0]];
@@ -111,19 +115,26 @@ class DatabaseService {
                         });
 
                         objectsWithAttachmentsPromises.push(Promise.all(attachmentsPromises).then((data) => data[0]));
+                    } else {
+                        objectsWithAttachmentsPromises.push(new Promise((resolve) => resolve(objects[i])));
                     }
                 }
 
                 return Promise.all(objectsWithAttachmentsPromises);
-            });
+            })
+            .catch(err => console.log(`Find Central DatabaseService: ${err}`));
     }
 
     remove(entityName, object) {
-        return this.db.rel.del(entityName, object).then(() => this.compact());
+        return this.db.rel.del(entityName, object)
+            .then(() => this.compact())
+            .catch(err => console.log(`Remove Central DatabaseService: ${err}`));
     }
 
     putAttachment({entityName, obj, name, base64, contentType}) {
-        return this.db.rel.putAttachment(entityName, obj, name, base64, contentType);
+        return this.db.rel.putAttachment(entityName, obj, name, base64, contentType)
+            .then(data => data)
+            .catch(err => console.log(`Find Central DatabaseService: ${err}`));
     }
     
     addAttachments(entityName, obj, files) {

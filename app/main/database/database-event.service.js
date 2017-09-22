@@ -10,6 +10,7 @@ class DatabaseEventInterface {
         console.log("DatabaseEventInterface listenning for renderer requests...");
 
         ipc.on('get', (event, data) => {
+            
             if(data.id) {
                 this.databaseService.find(data.entityName, data.id)
                     .then((res) => {
@@ -23,14 +24,11 @@ class DatabaseEventInterface {
             }
         });
 
-        ipc.on('save', (event, data) => {
-            this.databaseService.save(data.entityName, data.object)
-                .then((res) => DatabaseEventInterface.resolveAndSend(event, 'save', res));
-        });
+        // ipc.on('save', (event, data) => {
+        //     this.databaseService.save(data.entityName, data.object)
+        //         .then((res) => DatabaseEventInterface.resolveAndSend(event, 'save', res));
+        // });
 
-        /**
-         * data.object: {id: , rev: }
-         */
         ipc.on('remove', (event, data) => {
             let object = {id: data.object.id, rev: data.object.rev};
 
@@ -38,22 +36,26 @@ class DatabaseEventInterface {
                 .then((res) => DatabaseEventInterface.resolveAndSend(event, 'remove', res));
         });
 
-        ipc.on('saveVideo', (event, data) => {
-            let video = {id: data.object.id, rev: data.object.rev};
+        ipc.on('save', (event, data) => {
 
-            this.databaseService.save(data.entityName, video)
-                .then(({videos}) => {
-                    const attachment = {
-                        entityName: data.entityName,
-                        obj: videos[0],
-                        name: data.object.name,
-                        base64: data.object.file,
-                        contentType: data.object.type
-                    };
+            delete data.object.attachments;
 
-                    return this.databaseService.putAttachment(attachment);
+            this.databaseService.save(data.entityName, data.object)
+                .then((objects) => {
+                    let entity = objects[Object.keys(objects)[0]][0];
+                    let putAttachmentsPromises = [];
+
+                    if(data.attachments) {
+                        for(let i = 0; i < data.attachments.length; i++) {
+                            data.attachments[i].obj = entity;
+                            putAttachmentsPromises.push(this.databaseService.putAttachment(data.attachments[i]));
+                        }
+
+                        return Promise.all(putAttachmentsPromises);
+                    }
+                    return objects;
                 })
-                .then((res) => DatabaseEventInterface.resolveAndSend(event, 'saveVideo', res));
+                .then((res) => DatabaseEventInterface.resolveAndSend(event, 'save', res));
         });
 
         ipc.on('replicate', (event, data) => {

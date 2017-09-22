@@ -40,9 +40,8 @@ export const HomeComponent = {
         }
 
         $onInit() {
-            console.log(this.videos);
             if(this.videos.length > 0)
-                this.VideoDataService.load(this.videos[0]);
+                this.VideoDataService.load(this.videos[0].getFile());
         }
 
         load() {
@@ -52,7 +51,6 @@ export const HomeComponent = {
             return new Promise((resolve) => {
                 ipc.on('sync', (e,d) => {
                     this.inProgress = false;
-                    console.log(d);
                     resolve();
                 })
             })
@@ -61,7 +59,7 @@ export const HomeComponent = {
         selectVideo(video) {
             if (!video || video.id === this.videoPlayed) return;
             this.videoPlayed = video.id;
-            this.VideoDataService.load(video);
+            this.VideoDataService.load(video.getFile());
         }
     },
     controllerAs: 'vm'

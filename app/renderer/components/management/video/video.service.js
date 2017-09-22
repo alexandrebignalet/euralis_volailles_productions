@@ -1,6 +1,6 @@
 import electron from 'electron';
 const ipc = electron.ipcRenderer;
-import Video from '../../../../main/database/domain/video';
+import {Video} from '../../../../main/database/domain/video';
 
 export class VideoDataService {
     constructor($timeout) {
@@ -9,10 +9,11 @@ export class VideoDataService {
         this.entityName = 'video';
     }
 
-    load(video) {
+    load(file) {
+
         this.$timeout(() => {
             let myVideo = document.getElementsByTagName('video')[0];
-            myVideo.src = URL.createObjectURL(video.file);
+            myVideo.src = URL.createObjectURL(file);
             myVideo.load();
             myVideo.play();
         });
@@ -46,33 +47,43 @@ export class VideoDataService {
 
     save(video) {
 
-        return VideoDataService.getBuffer(video.file)
-            .then((base64) => {
-                video.type = video.file.type;
-                video.file = base64;
-console.log(video);
-                ipc.send('saveVideo', {entityName: this.entityName, object: video});
+        return this.toAttachmentFormat('video', video.attachments)
+            .then((attachments) => {
+                ipc.send('save', {entityName: this.entityName, object: video, attachments });
             })
             .then(() => new Promise((resolve) => {
-                ipc.on('saveVideo', (event, data) => {
+                ipc.on('save', (event, data) => {
                     resolve(data);
-                    ipc.removeAllListeners('saveVideo');
+                    ipc.removeAllListeners('save');
                 })
             }));
     }
 
-    static getBuffer(file) {
-        return new Promise((resolve, reject) => {
-            let reader = new FileReader();
-            reader.readAsArrayBuffer(file);
+    toAttachmentFormat(entityName, attachments) {
 
-            reader.onload = () => {
-                resolve(new Buffer(reader.result));
-            };
+        return Promise.all(
+            Object.keys(attachments).map(key => {
+                let name = key;
+                let attachmentFormat = {
+                    entityName,
+                    name,
+                    contentType: attachments[name].type
+                };
 
-            reader.onerror = (error) => {
-                reject(error);
-            };
-        });
+                return new Promise((resolve, reject) => {
+                    let reader = new FileReader();
+                    reader.readAsArrayBuffer(attachments[name]);
+
+                    reader.onload = () => {
+                        attachmentFormat.base64 = new Buffer(reader.result);
+                        resolve(attachmentFormat);
+                    };
+
+                    reader.onerror = (error) => {
+                        reject(error);
+                    };
+                })
+            })
+        );
     }
 }

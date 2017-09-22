@@ -1,10 +1,12 @@
-import {InvestmentDataService} from './investment.service';
+import {PouchDataService} from './investment.service';
 import {InvestmentComponent} from './investment.component';
 import {InvestmentFormComponent} from './investment_form.component';
 
 export const InvestmentModule = angular.module('InvestmentModule', [])
     .config(($stateProvider) => {
         'ngInject';
+        const ENTITY_NAME = 'investment';
+
         $stateProvider
             .state('investment', {
                 parent: 'components',
@@ -15,7 +17,7 @@ export const InvestmentModule = angular.module('InvestmentModule', [])
                     }
                 },
                 resolve: {
-                    investments: InvestmentDataService => InvestmentDataService.all()
+                    investments: PouchDataService => PouchDataService.get(ENTITY_NAME)
                 },
                 onEnter: (SidebarService) => SidebarService.closeNav()
             })
@@ -29,19 +31,18 @@ export const InvestmentModule = angular.module('InvestmentModule', [])
             .state('investment.edit', {
                 parent: 'investment',
                 url: '/:id/edit',
-                onEnter: (ModalService, InvestmentDataService, $stateParams) => ModalService.open('investmentForm', {
-                        investment: InvestmentDataService.get($stateParams.id)
+                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService.open('investmentForm', {
+                        investment: PouchDataService.get(ENTITY_NAME, $stateParams.id)
                     })
             })
             .state('investment.remove', {
                 parent: 'investment',
                 url: '/:id/remove',
-                onEnter: (ModalService, InvestmentDataService, $stateParams) => ModalService.open('investmentForm', {
-                        investment: InvestmentDataService.get($stateParams.id)
+                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService.open('investmentForm', {
+                        investment: PouchDataService.get(ENTITY_NAME, $stateParams.id)
                     })
             });
     })
-    .service('InvestmentDataService', InvestmentDataService)
     .component('investments', InvestmentComponent)
     .component('investmentForm', InvestmentFormComponent)
     .name;

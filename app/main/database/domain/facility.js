@@ -1,4 +1,5 @@
-class Facility {
+export class Facility {
+
     /**
      * @type string
      * @param id
@@ -18,13 +19,14 @@ class Facility {
      * @type Array[Investments]
      * @param investments
      */
-    constructor({id, size, type, facilityCharges, workHours, investments}) {
-        this.id = id;
-        this.size = size;
-        this.type = type;
-        this.facilityCharges = facilityCharges;
-        this.workHours = workHours;
-        this.investments = investments;
+    constructor(facility) {
+        this.id = facility.id;
+        this.rev = facility.rev;
+        this.size = facility.size;
+        this.type = facility.type;
+        this.facilityCharges = facility.facilityCharges;
+        this.workHours = facility.workHours;
+        this.investments = facility.investments;
         this.images = [];
     }
 
@@ -50,6 +52,3 @@ class Facility {
         return `Bâtiment ${this.type.value || "NON-DEFINI"} de ${this.size || "pas de taille"} m2`
     }
 }
-
-
-module.exports = Facility;

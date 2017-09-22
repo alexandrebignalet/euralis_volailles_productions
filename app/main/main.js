@@ -29,7 +29,7 @@ function createWindow () {
         slashes: true
     }));
 
-    mainWindow.maximize();
+    // mainWindow.maximize();
 
     databaseEventListener = new DatabaseEventInterface();
     databaseEventListener.listen();

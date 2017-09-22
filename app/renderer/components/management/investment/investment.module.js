@@ -1,4 +1,3 @@
-import {PouchDataService} from './investment.service';
 import {InvestmentComponent} from './investment.component';
 import {InvestmentFormComponent} from './investment_form.component';
 

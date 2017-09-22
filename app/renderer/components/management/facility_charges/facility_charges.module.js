@@ -1,7 +1,6 @@
 import angular from 'angular';
 import {FacilityChargesFormComponent} from './facility_charges_form.component';
 import {FacilityChargesComponent} from './facility_charges.component';
-import {PouchDataService} from './facility_charges.service';
 
 export const FacilityChargesModule = angular
     .module('FacilityChargesModule', [])

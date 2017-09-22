@@ -25,7 +25,7 @@ export const HomeComponent = {
     },
     template,
     controller: class HomeController {
-        constructor(DEPARTMENTS, VideoDataService) {
+        constructor(DEPARTMENTS, PouchDataService) {
             'ngInject';
             //imgs
             this.banner = banner;
@@ -33,7 +33,7 @@ export const HomeComponent = {
             this.imagesFiliere = filiere;
 
             this.departments = DEPARTMENTS;
-            this.VideoDataService = VideoDataService;
+            this.PouchDataService = PouchDataService;
             this.videoPlayed = null;
             
             this.inProgress = false;
@@ -41,7 +41,7 @@ export const HomeComponent = {
 
         $onInit() {
             if(this.videos.length > 0)
-                this.VideoDataService.load(this.videos[0].getFile());
+                this.PouchDataService.load(this.videos[0].getFile());
         }
 
         load() {
@@ -59,7 +59,7 @@ export const HomeComponent = {
         selectVideo(video) {
             if (!video || video.id === this.videoPlayed) return;
             this.videoPlayed = video.id;
-            this.VideoDataService.load(video.getFile());
+            this.PouchDataService.load(video.getFile());
         }
     },
     controllerAs: 'vm'

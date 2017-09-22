@@ -19,14 +19,20 @@ export const InvestmentFormComponent = {
             this.investment = this.resolve.investment;
         }
 
-        removeImage(img) {
-            let index = this.investment.images.indexOf(img);
-            this.investment.images.splice(index, 1);
+        removeAttachment(file) {
+            let index = this.investment.attachments.indexOf(file);
+            this.investment.attachments.splice(index, 1);
         }
 
         onSubmit() {
             this.isSaving = true;
             const formState = this.currentState.replace("investment.", "");
+
+            let attachments = {};
+            for(let i = 0; i < this.investment.attachments.length; i++) {
+                    attachments[this.investment.attachments[i].name] = this.investment.attachments[i];
+            }
+            this.investment.attachments = attachments;
 
             switch(formState) {
                 case 'edit':

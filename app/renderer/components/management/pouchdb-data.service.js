@@ -31,6 +31,7 @@ export class PouchDataService {
 
         return new Promise((resolve) => {
             ipc.on('get', (event, objects) => {
+
                 if(id && objects.length === 1)
                     return resolve(Reflect.construct(constructor, [objects[0]]));
 
@@ -58,7 +59,7 @@ export class PouchDataService {
     }
 
     save(entityName, object) {
-        return this.toAttachmentFormat(entityName, object.attachments || {}, )
+        return this.toAttachmentFormat(entityName, object.attachments || {})
             .then((attachments) => {
                 ipc.send('save', {entityName, object, attachments });
             })

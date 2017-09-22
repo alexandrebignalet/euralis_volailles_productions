@@ -42,16 +42,15 @@ class DatabaseEventInterface {
 
             this.databaseService.save(data.entityName, data.object)
                 .then((objects) => {
+
                     let entity = objects[Object.keys(objects)[0]][0];
-                    let putAttachmentsPromises = [];
 
                     if(data.attachments) {
-                        for(let i = 0; i < data.attachments.length; i++) {
-                            data.attachments[i].obj = entity;
-                            putAttachmentsPromises.push(this.databaseService.putAttachment(data.attachments[i]));
-                        }
 
-                        return Promise.all(putAttachmentsPromises);
+                        return data.attachments.reduce((p, attachment) => {
+                            attachment.obj = entity;
+                            return p.then(() => this.databaseService.putAttachment(attachment));
+                        }, Promise.resolve());
                     }
                     return objects;
                 })

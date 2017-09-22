@@ -13,8 +13,22 @@ export class Investment {
         this.diverseOptions = investment.diverseOptions;
         this.subsidies = investment.subsidies;
         this.helpEuralis = investment.helpEuralis;
-        this.images = [];
+
+        if(investment.attachments) {
+            this.attachments = Object.keys(investment.attachments).map(key => {
+                let fileName = key;
+                let type = investment.attachments[fileName].content_type;
+                let size = investment.attachments[fileName].length;
+                let file = new Blob([investment.attachments[fileName].data], {size, type});
+                file.name = fileName;
+                return file;
+            });
+        } else {
+            this.attachments = [];
+        }
+
         this._facilityNb = 1;
+
     }
 
     toString() {

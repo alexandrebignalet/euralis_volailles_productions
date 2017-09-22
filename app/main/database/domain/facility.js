@@ -17,7 +17,7 @@ export class Facility {
      * @param workHours
      *
      * @type Array[Investments]
-     * @param investments
+     * @param facilitys
      */
     constructor(facility) {
         this.id = facility.id;
@@ -27,7 +27,18 @@ export class Facility {
         this.facilityCharges = facility.facilityCharges;
         this.workHours = facility.workHours;
         this.investments = facility.investments;
-        this.images = [];
+        if(facility.attachments) {
+            this.attachments = Object.keys(facility.attachments).map(key => {
+                let fileName = key;
+                let type = facility.attachments[fileName].content_type;
+                let size = facility.attachments[fileName].length;
+                let file = new Blob([facility.attachments[fileName].data], {size, type});
+                file.name = fileName;
+                return file;
+            });
+        } else {
+            this.attachments = [];
+        }
     }
 
     getAnnuity() {

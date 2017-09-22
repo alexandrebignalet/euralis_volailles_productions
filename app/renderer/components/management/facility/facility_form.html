@@ -57,12 +57,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3" ng-repeat="img in vm.facility.images track by img.name">
-                <button type="button" class="btn btn-default btn-block" ng-click="vm.removeImage(img)"><span class="glyphicon glyphicon-remove"></span> </button>
-                <p thumb-images="{ file: img, height: 100 }"></p>
+            <div class="col-md-3" ng-repeat="attachment in vm.facility.attachments track by attachment.name">
+                <button type="button" class="btn btn-default btn-block" ng-click="vm.removeAttachment(attachment)"><span class="glyphicon glyphicon-remove"></span> </button>
+                <p thumb-images="{ file: attachment, height: 100 }"></p>
             </div>
         </div>
-        <file-uploader model="vm.facility.images"></file-uploader>
+        <file-uploader model="vm.facility.attachments"></file-uploader>
     </div>
     <div class="modal-body" ng-if="vm.currentState.indexOf('remove') != -1">
         Confirmer la suppression du {{vm.facility.toString()}}

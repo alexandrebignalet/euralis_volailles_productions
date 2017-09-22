@@ -26,17 +26,17 @@ export class PouchDataService {
     }
 
     get(entityName, id) {
-        ipc.send('get', {entityName, id});
+        ipc.send('get'+entityName, {entityName, id});
         const constructor = this.getConstructorFromEntityName(entityName);
 
         return new Promise((resolve) => {
-            ipc.on('get', (event, objects) => {
+            ipc.on('get'+entityName, (event, objects) => {
 
                 if(id && objects.length === 1)
                     return resolve(Reflect.construct(constructor, [objects[0]]));
 
                 resolve(objects.map((obj) => Reflect.construct(constructor, [obj])));
-                ipc.removeAllListeners('get');
+                ipc.removeAllListeners('get'+entityName);
             })
         });
     }

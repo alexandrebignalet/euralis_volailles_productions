@@ -19,6 +19,10 @@ let mainWindow = null;
 let databaseEventListener = null;
 
 function createWindow () {
+    // Listen to renderer events
+    databaseEventListener = new DatabaseEventInterface();
+    databaseEventListener.listen();
+
     // Create the browser window.
     mainWindow = new BrowserWindow({width: 800, height: 600, webPreferences: { nodeIntegration: true }});
 
@@ -30,9 +34,6 @@ function createWindow () {
     }));
 
     // mainWindow.maximize();
-
-    databaseEventListener = new DatabaseEventInterface();
-    databaseEventListener.listen();
 
     // Open the DevTools.
     if(process.env.NODE_ENV === 'dev') {

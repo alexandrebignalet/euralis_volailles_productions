@@ -96,11 +96,14 @@ class DatabaseService {
 
         return this.db.rel.find(entityName, id)
             .then((data) => {
-                let objects = data[Object.keys(data)[0]];
 
+                let objects = data[Object.keys(data)[0]];
                 let objectsWithAttachmentsPromises = [];
 
                 for(let i = 0; i < objects.length; i++) {
+
+                    this.transformRelationIdByObject(objects[i], data);
+
                     if (objects[i].attachments) {
                         let attachmentsPromises = [];
 
@@ -198,6 +201,52 @@ class DatabaseService {
             .catch((err) => {
                 console.log(`Replication from ${who} FAIL !`, err);
             })
+    }
+
+    transformRelationIdByObject(desiredObject, data) {
+        let findRequest = Object.keys(data);
+        findRequest.splice(0,1);
+        console.log("findrequest without desired  object: ", findRequest);
+
+        for(let i = 0; i < findRequest.length; i++) {
+            const pluralEntityName = findRequest[i];
+            const singularEntityName = getSingularEntityName(pluralEntityName);
+
+            if(desiredObject.hasOwnProperty(singularEntityName)) {
+                console.log(`has singularEntityName property: ${singularEntityName}`);
+                let relationId = desiredObject[singularEntityName];
+                let relationObjectFromId = arrayObjectIndexOf(data[pluralEntityName], relationId, 'id');
+                console.log(`Object ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationId} in data property: id`);
+                desiredObject[singularEntityName] = data[pluralEntityName][relationObjectFromId];
+            }
+            else if (desiredObject.hasOwnProperty(pluralEntityName)) {
+                console.log(`has pluralEntityName property: ${pluralEntityName}`);
+                let relationArrayIds = desiredObject[pluralEntityName];
+                let relationObjects = [];
+                for(let j = 0; j < relationArrayIds.length ; j++) {
+                    let relationObjectFromId = arrayObjectIndexOf(data[pluralEntityName], relationArrayIds[j], 'id');
+                    console.log(`Object  ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationArrayIds[j]} in data property: id`);
+                    relationObjects.push(data[pluralEntityName][relationObjectFromId]);
+                }
+                desiredObject[pluralEntityName] = relationObjects;
+            }
+        }
+
+
+        function getSingularEntityName(entityPluralName) {
+            for(let i = 0; i < databaseSchema.length; i++) {
+                if(databaseSchema[i].plural === entityPluralName) {
+                    return databaseSchema[i].singular;
+                }
+            }
+        }
+
+        function arrayObjectIndexOf(array, searchTerm, property) {
+            for(let i = 0, len = array.length; i < len; i++) {
+                if (array[i][property] === searchTerm) return i;
+            }
+            return -1;
+        }
     }
 }
 

@@ -28,15 +28,15 @@ export const InvestmentFormComponent = {
             this.isSaving = true;
             const formState = this.currentState.replace("investment.", "");
 
-            let attachments = {};
-            for(let i = 0; i < this.investment.attachments.length; i++) {
-                    attachments[this.investment.attachments[i].name] = this.investment.attachments[i];
-            }
-            this.investment.attachments = attachments;
-
             switch(formState) {
                 case 'edit':
                 case 'create':
+                    let attachments = {};
+                    for(let i = 0; i < this.investment.attachments.length; i++) {
+                        attachments[this.investment.attachments[i].name] = this.investment.attachments[i];
+                    }
+                    this.investment.attachments = attachments;
+
                     this.PouchDataService.save(this.entityName, this.investment).then(() => {
                         this.ToastrService[formState](new Investment(this.investment));
                         this.modalInstance.close()

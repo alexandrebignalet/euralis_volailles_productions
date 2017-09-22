@@ -4,30 +4,16 @@ const DatabaseService = require('./database.service.js');
 class DatabaseEventInterface {
     constructor(){
         this.databaseService = DatabaseService;
+        this.entityNamesList = ['facility', 'investment', 'video', 'facilityCharges', 'production'];
     }
 
     listen() {
         console.log("DatabaseEventInterface listenning for renderer requests...");
 
-        ipc.on('get', (event, data) => {
-            
-            if(data.id) {
-                this.databaseService.find(data.entityName, data.id)
-                    .then((res) => {
-                        return DatabaseEventInterface.resolveAndSend(event, 'get', res)
-                    });
-            } else {
-                this.databaseService.find(data.entityName)
-                    .then((res) => {
-                        return DatabaseEventInterface.resolveAndSend(event, 'get', res)
-                    });
-            }
-        });
 
-        // ipc.on('save', (event, data) => {
-        //     this.databaseService.save(data.entityName, data.object)
-        //         .then((res) => DatabaseEventInterface.resolveAndSend(event, 'save', res));
-        // });
+        for(let i = 0; i < this.entityNamesList.length ; i++) {
+            this.listenGetEvent(this.entityNamesList[i]);
+        }
 
         ipc.on('remove', (event, data) => {
             let object = {id: data.object.id, rev: data.object.rev};
@@ -69,13 +55,32 @@ class DatabaseEventInterface {
     }
 
     close() {
-        ipc.removeAllListeners('get');
+        for(let i = 0; i < this.entityNamesList.length ; i++) {
+            ipc.removeAllListeners('get'+this.entityNamesList[i]);
+        }
         ipc.removeAllListeners('save');
         ipc.removeAllListeners('saveVideo');
         ipc.removeAllListeners('remove');
         ipc.removeAllListeners('replicate');
         ipc.removeAllListeners('sync');
 
+    }
+
+    listenGetEvent(entityName) {
+        ipc.on('get'+entityName, (event, data) => {
+
+            if(data.id) {
+                this.databaseService.find(data.entityName, data.id)
+                    .then((res) => {
+                        return DatabaseEventInterface.resolveAndSend(event, 'get'+entityName, res)
+                    });
+            } else {
+                this.databaseService.find(data.entityName)
+                    .then((res) => {
+                        return DatabaseEventInterface.resolveAndSend(event, 'get'+entityName, res)
+                    });
+            }
+        });
     }
 
     static resolveAndSend(event, eventName, data) {

@@ -1,19 +1,19 @@
 import angular from 'angular';
 import {FacilityFormComponent} from './facility_form.component';
 import {FacilityComponent} from './facility.component';
-import {FacilityDataService} from './facility.service';
 
 export const FacilityModule = angular
     .module('FacilityModule', [])
     .config(($locationProvider, $stateProvider) => {
         'ngInject';
+        const ENTITY_NAME = 'facility';
 
         $stateProvider
             .state('facility', {
                 parent: 'management',
                 url: '/facilities',
                 resolve: {
-                    facilities: FacilityDataService => FacilityDataService.all()
+                    facilities: PouchDataService => PouchDataService.get(ENTITY_NAME)
                 },
                 views: {
                     'content@': {
@@ -25,34 +25,32 @@ export const FacilityModule = angular
             .state('facility.create', {
                 parent: 'facility',
                 url: '/create',
-                onEnter: (FacilityChargesDataService, InvestmentDataService, ModalService) => ModalService
+                onEnter: (PouchDataService, ModalService) => ModalService
                     .open('facilityForm', {
                         facility: {},
-                        facilitiesCharges: FacilityChargesDataService.all(),
-                        investments: InvestmentDataService.all()
+                        facilitiesCharges: PouchDataService.get('facilityCharges'),
+                        investments: PouchDataService.get('investment')
                     })
             })
             .state('facility.edit', {
                 parent: 'facility',
                 url: '/:id/edit',
-                onEnter: (ModalService, FacilityDataService,
-                          FacilityChargesDataService, InvestmentDataService, $stateParams) => ModalService
+                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService
                     .open('facilityForm', {
-                        facility: FacilityDataService.get($stateParams.id),
-                        facilitiesCharges: FacilityChargesDataService.all(),
-                        investments: InvestmentDataService.all()
+                        facility: (PouchDataService) => PouchDataService.get(ENTITY_NAME, $stateParams.id),
+                        facilitiesCharges: (PouchDataService) => PouchDataService.get('facilityCharges'),
+                        investments: (PouchDataService) => PouchDataService.get('investment')
                     })
             })
             .state('facility.remove', {
                 parent: 'facility',
                 url: '/:id/remove',
-                onEnter: (ModalService, FacilityDataService, $stateParams) => ModalService.open('facilityForm', {
-                        facility: FacilityDataService.get($stateParams.id)
+                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService.open('facilityForm', {
+                        facility: PouchDataService.get(ENTITY_NAME, $stateParams.id)
                     })
             });
     })
     .component('facilityForm', FacilityFormComponent)
     .component('facilities', FacilityComponent)
-    .service('FacilityDataService', FacilityDataService)
     .constant('FACILITIES_TYPES', [{key: 'fixed', value:'Fixes'}, {key: 'movable', value:'Déplaçables'}])
     .name;

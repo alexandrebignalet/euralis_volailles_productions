@@ -1,5 +1,5 @@
 import template from './investment_form.html';
-import {Investment} from '../../../../main/database/domain/investment';
+import {Investment} from './investment';
 
 export const InvestmentFormComponent = {
     bindings: { resolve: '<', modalInstance: '<' },

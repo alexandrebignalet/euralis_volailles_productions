@@ -1,5 +1,5 @@
 import template from './facility_form.html';
-import {Facility} from '../../../../main/database/domain/facility';
+import {Facility} from './facility';
 
 export const FacilityFormComponent = {
     bindings: {
@@ -22,7 +22,6 @@ export const FacilityFormComponent = {
             this.facility = this.resolve.facility;
             this.facilitiesCharges = this.resolve.facilitiesCharges;
             this.investments = this.resolve.investments;
-            console.log(this.facility, this.facilitiesCharges, this.investments);
         }
 
         removeAttachment(attachment) {

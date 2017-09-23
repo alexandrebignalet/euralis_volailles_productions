@@ -11,8 +11,6 @@ const MemoryStream = require('memorystream');
 const replicationStream = require('pouchdb-replication-stream');
 const PouchDB = require('pouchdb');
 PouchDB.plugin(require('relational-pouch'));
-// const load = require('pouchdb-load');
-// PouchDB.plugin({ loadIt: load.load });
 PouchDB.plugin(replicationStream.plugin);
 PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
 
@@ -207,6 +205,8 @@ class DatabaseService {
         let findRequest = Object.keys(data);
         findRequest.splice(0,1);
         console.log("findrequest without desired  object: ", findRequest);
+        let pluralNameRelationObjectFound = [];
+        let singularNameRelationObjectFound;
 
         for(let i = 0; i < findRequest.length; i++) {
             const pluralEntityName = findRequest[i];
@@ -218,6 +218,7 @@ class DatabaseService {
                 let relationObjectFromId = arrayObjectIndexOf(data[pluralEntityName], relationId, 'id');
                 console.log(`Object ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationId} in data property: id`);
                 desiredObject[singularEntityName] = data[pluralEntityName][relationObjectFromId];
+                singularNameRelationObjectFound = desiredObject[singularEntityName];
             }
             else if (desiredObject.hasOwnProperty(pluralEntityName)) {
                 console.log(`has pluralEntityName property: ${pluralEntityName}`);
@@ -227,10 +228,17 @@ class DatabaseService {
                     let relationObjectFromId = arrayObjectIndexOf(data[pluralEntityName], relationArrayIds[j], 'id');
                     console.log(`Object  ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationArrayIds[j]} in data property: id`);
                     relationObjects.push(data[pluralEntityName][relationObjectFromId]);
+                    pluralNameRelationObjectFound.push(data[pluralEntityName][relationObjectFromId]);
                 }
                 desiredObject[pluralEntityName] = relationObjects;
             }
         }
+
+        if(singularNameRelationObjectFound) this.transformRelationIdByObject(singularNameRelationObjectFound, data);
+        for(let l = 0; l < pluralNameRelationObjectFound.length; l++) {
+            this.transformRelationIdByObject(pluralNameRelationObjectFound[l], data);
+        }
+
 
 
         function getSingularEntityName(entityPluralName) {

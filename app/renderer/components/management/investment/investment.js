@@ -1,6 +1,7 @@
 export class Investment {
 
     constructor(investment) {
+
         this.id = investment.id;
         this.rev = investment.rev;
         this.name = investment.name;

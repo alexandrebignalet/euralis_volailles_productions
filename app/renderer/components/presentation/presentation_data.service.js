@@ -1,13 +1,15 @@
 export class PresentationDataService {
-    constructor(ProductionDataService) {
+    constructor(PouchDataService) {
         'ngInject';
-        this.dataService = ProductionDataService;
+        this.PouchDataService = PouchDataService;
+        this.entityName = 'production'
     }
 
     getProduction(department, facilityType) {
 
-        return this.dataService.all()
+        return this.PouchDataService.get(this.entityName)
             .then((productions) => {
+            console.log(productions);
                     let productionsChoosen = [];
 
                     productions.forEach((production) => {

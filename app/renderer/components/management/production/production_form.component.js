@@ -1,4 +1,5 @@
 import template from './production_form.html';
+import {Production} from './production';
 
 export const ProductionFormComponent = {
     bindings: {
@@ -7,20 +8,22 @@ export const ProductionFormComponent = {
     },
     template,
     controller: class ProductionFormController {
-        constructor(ProductionDataService, $state, DEPARTMENTS, toastr){
+        constructor(PouchDataService, $state, DEPARTMENTS, ToastrService){
             'ngInject';
 
-            this.dataService = ProductionDataService;
+            this.PouchDataService = PouchDataService;
             this.isSaving = false;
             this.currentState = $state.current.name;
             this.departments = DEPARTMENTS;
-            this.toastr = toastr;
+            this.ToastrService = ToastrService;
 
             this.pickerIsOpen = false;
             this.format = 'dd/MM/yyyy';
             this.dateOptions = {
                 showWeeks: true
             };
+
+            this.entityName = 'production';
         }
 
         $onInit() {
@@ -55,32 +58,34 @@ export const ProductionFormComponent = {
             return production;
         }
 
-        removeImage(img) {
-            let index = this.production.images.indexOf(img);
-            this.production.images.splice(index, 1);
+        removeAttachment(attachment) {
+            let index = this.production.attachments.indexOf(attachment);
+            this.production.attachments.splice(index, 1);
         }
 
         onSubmit() {
             this.isSaving = true;
 
             const prod = this.convertToSave(this.production);
+            const formState = this.currentState.replace("production.", "");
 
-            switch(this.currentState.replace("production.", "")) {
+            switch(formState) {
                 case 'edit':
-                    this.dataService.update(prod).then(() => {
-                        this.toastr.success('a été mise à jour.', this.production.toString());
+                case 'create':
+                    let attachments = {};
+                    for(let i = 0; i < prod.attachments.length; i++) {
+                        attachments[prod.attachments[i].name] = prod.attachments[i];
+                    }
+                    prod.attachments = attachments;
+
+                    this.PouchDataService.save(this.entityName, prod).then(() => {
+                        this.ToastrService[formState](new Production(prod));
                         this.modalInstance.close()
                     });
                     break;
                 case 'remove':
-                    this.dataService.remove(prod).then(() => {
-                        this.toastr.warning('a été supprimée.', this.production.toString());
-                        this.modalInstance.close()
-                    });
-                    break;
-                case 'create':
-                    this.dataService.create(prod).then(() => {
-                        this.toastr.info('a été créée.', this.production.toString());
+                    this.PouchDataService.remove(this.entityName, prod).then(() => {
+                        this.ToastrService.remove(this.production);
                         this.modalInstance.close()
                     });
                     break;

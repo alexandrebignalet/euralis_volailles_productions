@@ -1,11 +1,11 @@
 import electron from 'electron';
 const ipc = electron.ipcRenderer;
 
-import {Video} from '../../../main/database/domain/video';
-import {FacilityCharges} from '../../../main/database/domain/facility_charges';
-import {Investment} from '../../../main/database/domain/investment';
-import {Production} from '../../../main/database/domain/production';
-import {Facility} from '../../../main/database/domain/facility';
+import {Video} from './video/video';
+import {FacilityCharges} from './facility_charges/facility_charges';
+import {Investment} from './investment/investment';
+import {Production} from './production/production';
+import {Facility} from './facility/facility';
 
 export class PouchDataService {
     constructor($timeout) {

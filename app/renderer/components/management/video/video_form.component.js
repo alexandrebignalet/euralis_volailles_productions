@@ -1,5 +1,5 @@
 import template from './video_form.html';
-import {Video} from '../../../../main/database/domain/video';
+import {Video} from './video';
 
 export const VideoFormComponent = {
     bindings: {

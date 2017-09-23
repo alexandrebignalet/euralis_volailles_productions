@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
-const FacilityCharges = require('../../app/main/database/domain/facility_charges');
-const Production = require('../../app/main/database/domain/production');
-const Facility = require('../../app/main/database/domain/facility');
+const FacilityCharges = require('../../app/renderer/components/management/facility_charges/facility_charges');
+const Production = require('../../app/renderer/components/management/production/production');
+const Facility = require('../../app/renderer/components/management/facility/facility');
 const DatabaseService = require('../../app/main/database/database.service.js');
 const fs = require('fs');
 

@@ -1,5 +1,5 @@
 import template from './facility_charges_form.html';
-import {FacilityCharges} from '../../../../main/database/domain/facility_charges';
+import {FacilityCharges} from './facility_charges';
 
 export const FacilityChargesFormComponent = {
     bindings: {

@@ -1,7 +1,6 @@
 import angular from 'angular';
 import {ProductionFormComponent} from './production_form.component';
 import {ProductionComponent} from './production.component';
-import {ProductionDataService} from './production.service';
 import './production.scss';
 
 export const ProductionModule = angular
@@ -9,12 +8,14 @@ export const ProductionModule = angular
     .config(($locationProvider, $stateProvider) => {
         'ngInject';
 
+        const ENTITY_NAME = 'production';
+
         $stateProvider
             .state('production', {
                 parent: 'management',
                 url: '/productions',
                 resolve: {
-                    productions: ProductionDataService => ProductionDataService.all()
+                    productions: PouchDataService => PouchDataService.get(ENTITY_NAME)
                 },
                 views: {
                     'content@': {
@@ -26,29 +27,28 @@ export const ProductionModule = angular
             .state('production.create', {
                 parent: 'production',
                 url: '/create',
-                onEnter: (ModalService, FacilityDataService) => ModalService.open('productionForm', {
+                onEnter: (ModalService, PouchDataService) => ModalService.open('productionForm', {
                     production: {},
-                    facilities: FacilityDataService.all()
+                    facilities: PouchDataService.get('facility')
                 })
             })
             .state('production.edit', {
                 parent: 'production',
                 url: '/:id/edit',
-                onEnter: (ModalService, ProductionDataService, FacilityDataService, $stateParams) => ModalService
+                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService
                     .open('productionForm', {
-                        production: ProductionDataService.get($stateParams.id),
-                        facilities: FacilityDataService.all()
+                        production: PouchDataService.get(ENTITY_NAME, $stateParams.id),
+                        facilities: PouchDataService.get('facility')
                     })
             })
             .state('production.remove', {
                 parent: 'production',
                 url: '/:id/remove',
-                onEnter: (ModalService, ProductionDataService, $stateParams) => ModalService.open('productionForm', {
-                        production: ProductionDataService.get($stateParams.id)
+                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService.open('productionForm', {
+                        production: PouchDataService.get(ENTITY_NAME, $stateParams.id)
                     })
             });
     })
     .component('productionForm', ProductionFormComponent)
     .component('productions', ProductionComponent)
-    .service('ProductionDataService', ProductionDataService)
     .name;

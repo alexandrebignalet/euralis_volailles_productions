@@ -20,6 +20,7 @@ export const ImageLoaderComponent = {
         }
 
         $onInit() {
+            console.log(this.model);
             this.dataService.getAttachments(this.entityName, this.model.id)
                 .then((images) => {
                         images.forEach((img) => {

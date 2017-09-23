@@ -1,4 +1,4 @@
-const Facility = require('./facility');
+import {Facility} from '../facility/facility';
 
 export class Production {
     constructor(production) {
@@ -23,8 +23,20 @@ export class Production {
         this.breedingDeclassedPercent = production.breedingDeclassedPercent;
         this.restraintPercent = production.restraintPercent;
         this.chickPurchaseReduction = 0.02;
-        this.facility = production.facility;
-        this.images = [];
+        this.facility = new Facility(production.facility);
+
+        if(production.attachments) {
+            this.attachments = Object.keys(production.attachments).map(key => {
+                let fileName = key;
+                let type = production.attachments[fileName].content_type;
+                let size = production.attachments[fileName].length;
+                let file = new Blob([production.attachments[fileName].data], {size, type});
+                file.name = fileName;
+                return file;
+            });
+        } else {
+            this.attachments = [];
+        }
     }
 
     setFacilitiesNb(nb) {

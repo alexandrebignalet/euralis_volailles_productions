@@ -1,3 +1,6 @@
+import {Investment} from '../investment/investment';
+import {FacilityCharges} from '../facility_charges/facility_charges';
+
 export class Facility {
 
     /**
@@ -24,9 +27,14 @@ export class Facility {
         this.rev = facility.rev;
         this.size = facility.size;
         this.type = facility.type;
-        this.facilityCharges = facility.facilityCharges;
         this.workHours = facility.workHours;
-        this.investments = facility.investments;
+
+        this.facilityCharges = new FacilityCharges(facility.facilityCharges);
+        this.investments = [];
+        for(let i = 0; i < facility.investments.length; i++) {
+            this.investments.push(new Investment(facility.investments[i]))
+        }
+
         if(facility.attachments) {
             this.attachments = Object.keys(facility.attachments).map(key => {
                 let fileName = key;

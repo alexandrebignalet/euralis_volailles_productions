@@ -15,9 +15,6 @@ const BASE_DOC_NUMBER = 10;
 
 describe('DatabaseServiceTest', () => {
     let databaseService = DatabaseService;
-    const facilitiesChargesCreated = [];
-    const facilitiesCreated = [];
-    const productionsCreated = [];
 
     before(function () {
         this.timeout(SYNC_TIMEOUT);
@@ -161,139 +158,141 @@ describe('DatabaseServiceTest', () => {
         });
     });
 
-    // describe('crud operations test', () => {
-    //     it('should save a facilityCharges Object', () => {
-    //
-    //         let facilityCharges = new FacilityCharges({id: 'uid9999', name:'toto', warming:1, chickPrice:1, vetPrice:1,
-    //             contributions:1, disinfection:1, commodities:1,
-    //             litter:1, catching:1, insurances:1});
-    //
-    //         return databaseService.save('facilityCharges', facilityCharges)
-    //             .then((data) => {
-    //                 assert(data.facilitiesCharges[0].warming === 1);
-    //                 assert(data.facilitiesCharges[0].chickPrice === 1);
-    //                 facilitiesChargesCreated.push(data.facilitiesCharges[0].id);
-    //             })
-    //             .catch((err) => {
-    //                 console.log(err);
-    //                 assert(false);
-    //             });
-    //     });
-    //
-    //     it('should save a production object containing a facility Object which contains a facilityCharges object', () => {
-    //         let facilityCharges = new FacilityCharges({id: 'uid9843', name:'toto', warming:1, chickPrice:1, vetPrice:1,
-    //             contributions:1, disinfection:1, commodities:1,
-    //             litter:1, catching:1, insurances:1});
-    //
-    //         const attachment = {
-    //             entityName: 'facilityCharges',
-    //             name:'foo.png',
-    //             base64: randomBuffer(ATTACHMENT_SIZE),
-    //             contentType:'image/png'
-    //         };
-    //
-    //         let facility = new Facility({id: 3, size: 3222, type: 'cabane', facilityCharges: 'uid9843'});
-    //         let production = new Production({id: 3, department: 'toto', name:'toto', chickNb:1, avgWeight:1, age:1, breedingPerYear:1,
-    //             consumptionIndex:1, mortalityPercent:1,
-    //             vaccinesPrice:1, foodPrice:1, classedPrice:1, declassedPrice:1, breedingDeclassedPercent:1, restraintPercent:1,
-    //             chickPurchaseReduction:1, facility:3});
-    //
-    //         return databaseService.save('facilityCharges', facilityCharges)
-    //             .then(data => {
-    //                 attachment.obj = data.facilitiesCharges[0];
-    //                 return databaseService.putAttachment(attachment);
-    //             })
-    //             .then((data) => {
-    //                 assert(data.facilitiesCharges[0].warming === 1);
-    //                 assert(data.facilitiesCharges[0].chickPrice === 1);
-    //                 assert(Object.keys(data.facilitiesCharges[0].attachments).length >  0);
-    //                 facilitiesChargesCreated.push(data.facilitiesCharges[0].id);
-    //                 return data;
-    //             })
-    //             .then(() => databaseService.save('facility', facility))
-    //             .then((data) => {
-    //                 assert(data.facilities[0].size === 3222);
-    //                 assert(data.facilities[0].id === 3);
-    //                 facilitiesCreated.push(data.facilities[0].id);
-    //                 return data;
-    //             })
-    //             .then(() => databaseService.save('production', production))
-    //             .then((data) => {
-    //                 assert(data.productions[0].name === 'toto');
-    //                 assert(data.productions[0].id === 3);
-    //                 productionsCreated.push(data.productions[0].id);
-    //                 return data;
-    //             })
-    //             .then(() => databaseService.find('production', 3))
-    //             .then((data) => {
-    //                 assert(data.productions[0].id === production.id);
-    //                 assert(data.productions[0].facility === facility.id);
-    //                 return data;
-    //             })
-    //             .then((data) => databaseService.find('facility', data.productions[0].facility))
-    //             .then((data) => {
-    //                 assert(data.facilities[0].facilityCharges === facilityCharges.id);
-    //             })
-    //             .catch((err) => {
-    //                 console.log(err);
-    //                 assert(false);
-    //             });
-    //     });
-    //
-    //     it('should update a facilityCharges object in the db', () => {
-    //
-    //         return databaseService.find('facilityCharges', facilitiesChargesCreated[1])
-    //             .then((data) => {
-    //                 data.facilitiesCharges[0].warming = 0.097;
-    //                 return databaseService.db.rel.save('facilityCharges', data)
-    //             })
-    //             .then((data) => {
-    //                 assert(data.facilitiesCharges[0].facilitiesCharges[0].warming === 0.097);
-    //                 assert(data.facilitiesCharges[0].facilitiesCharges[0].id === facilitiesChargesCreated[1]);
-    //             });
-    //     });
-    //
-    //     it('should update an object in the db', () => {
-    //
-    //         return databaseService.find('facility', facilitiesCreated[0])
-    //             .then((data) => {
-    //                 data.facilities[0].size = 20000;
-    //                 return databaseService.db.rel.save('facility', data)
-    //             })
-    //             .then((data) => {
-    //                 assert(data.facilities[0].facilities[0].size === 20000);
-    //                 assert(data.facilities[0].facilities[0].id === facilitiesCreated[0]);
-    //             });
-    //     });
-    //
-    //     it('should delete a facilityCharges object in the db', () => {
-    //
-    //         return databaseService.find('facilityCharges', facilitiesChargesCreated[0])
-    //             .then((facilityCharges) => databaseService.remove('facilityCharges', facilityCharges))
-    //             .then((data) => {
-    //                 assert(data.deleted);
-    //             });
-    //
-    //     });
-    //     it('should delete production object', () => {
-    //
-    //         return databaseService.find('production', productionsCreated[0])
-    //             .then((production) => databaseService.remove('production', production))
-    //             .then((data) => {
-    //                 assert(data.deleted);
-    //             });
-    //     });
-    //
-    //     it('should delete facility object', () => {
-    //
-    //         return databaseService.find('facility', facilitiesChargesCreated[0])
-    //             .then((facility) => databaseService.remove('facility', facility))
-    //             .then((data) => {
-    //                 assert(data.deleted);
-    //             });
-    //     });
-    //
-    // });
+    describe('crud operations test', () => {
+        it('should save a facilityCharges Object', () => {
+
+            let facilityCharges = new FacilityCharges({id: 'uid9999', name:'toto', warming:1, chickPrice:1, vetPrice:1,
+                contributions:1, disinfection:1, commodities:1,
+                litter:1, catching:1, insurances:1});
+
+            return databaseService.save('facilityCharges', facilityCharges)
+                .then((data) => {
+                    assert(data.facilitiesCharges[0].warming === 1);
+                    assert(data.facilitiesCharges[0].chickPrice === 1);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    assert(false);
+                });
+        });
+
+        it('should save a production object containing a facility Object which contains a facilityCharges object', () => {
+            let facilityCharges = new FacilityCharges({id: 'uid98321243', name:'toto', warming:1, chickPrice:1, vetPrice:1,
+                contributions:1, disinfection:1, commodities:1,
+                litter:1, catching:1, insurances:1});
+
+            const attachment = {
+                entityName: 'facilityCharges',
+                name:'foo.png',
+                base64: randomBuffer(ATTACHMENT_SIZE),
+                contentType:'image/png'
+            };
+
+            let facility = new Facility({id: '32ze1rz23er1', size: 3222, type: 'cabane', facilityCharges: facilityCharges});
+            let production = new Production({id: '3rze213rze', department: 'toto', name:'toto', chickNb:1, avgWeight:1, age:1, breedingPerYear:1,
+                consumptionIndex:1, mortalityPercent:1,
+                vaccinesPrice:1, foodPrice:1, classedPrice:1, declassedPrice:1, breedingDeclassedPercent:1, restraintPercent:1,
+                chickPurchaseReduction:1, facility: facility});
+
+            return databaseService.save('facilityCharges', facilityCharges)
+                .then(data => {
+                    attachment.obj = data.facilitiesCharges[0];
+                    return databaseService.putAttachment(attachment);
+                })
+                .then((data) => databaseService.find('facilityCharges', facilityCharges.id))
+                .then((findData) => {
+                    assert.strictEqual(findData.facilitiesCharges[0].warming, 1);
+                    assert.strictEqual(findData.facilitiesCharges[0].chickPrice, 1);
+                    assert(Object.keys(findData.facilitiesCharges[0].attachments).length >  0);
+                    return findData;
+                })
+                .then(() => databaseService.save('facility', facility))
+                .then(() => databaseService.find('facilities', facility.id))
+                .then((data) => {
+                    assert(data.facilities[0].size === facility.size);
+                    assert(data.facilities[0].id === facility.id);
+                    return data;
+                })
+                .then(() => databaseService.save('production', production))
+                .then(() => databaseService.find('production', production.id))
+                .then((data) => {
+                    assert(data.productions[0].name === production.name);
+                    assert(data.productions[0].id === production.id);
+                    return data;
+                })
+                .then(() => databaseService.find('production', production.id))
+                .then((data) => {
+                    assert(data.productions[0].id === production.id);
+                    assert(data.productions[0].facility.id === facility.id);
+                    return data;
+                })
+                .then((data) => databaseService.find('facility', facility.id))
+                .then((data) => {
+                    assert(data.facilities[0].facilityCharges.id === facilityCharges.id);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    assert(false);
+                });
+        });
+
+        it('should update a facilityCharges object in the db', () => {
+
+            return databaseService.find('facilityCharges', 'uid98321243')
+                .then((data) => {
+                    data.facilitiesCharges[0].warming = 0.097;
+                    return databaseService.save('facilityCharges', data.facilitiesCharges[0])
+                })
+                .then(() => databaseService.find('facilityCharges', 'uid98321243'))
+                .then((data) => {
+                    assert(data.facilitiesCharges[0].warming === 0.097);
+                    assert(data.facilitiesCharges[0].id === 'uid98321243');
+                });
+        });
+
+        it('should update an object in the db', () => {
+
+            return databaseService.find('facility', '32ze1rz23er1')
+                .then((data) => {
+                    data.facilities[0].size = 20000;
+                    return databaseService.save('facility', data.facilities[0])
+                })
+                .then(() => databaseService.find('facility', '32ze1rz23er1'))
+                .then((data) => {
+                    assert(data.facilities[0].size === 20000);
+                    assert(data.facilities[0].id === '32ze1rz23er1');
+                });
+        });
+
+        it('should delete a facilityCharges object in the db', () => {
+
+            return databaseService.find('facilityCharges', 'uid98321243')
+                .then((facilityCharges) => databaseService.remove('facilityCharges', facilityCharges.id))
+                .then((data) => {
+                    assert(data.ok);
+                });
+
+        });
+
+        it('should delete production object', () => {
+
+            return databaseService.find('production', '3rze213rze')
+                .then((production) => databaseService.remove('production', production.id))
+                .then((data) => {
+                    assert(data.ok);
+                });
+        });
+
+        it('should delete facility object', () => {
+
+            return databaseService.find('facility', '32ze1rz23er1')
+                .then((facility) => databaseService.remove('facility', facility.id))
+                .then((data) => {
+                    assert(data.ok);
+                });
+        });
+
+    });
 
     // describe('database sync process test', () => {
     //     it('should replicate to remote server', () => {
@@ -348,7 +347,7 @@ describe('DatabaseServiceTest', () => {
     //             .then(() => databaseService.remoteDb.allDocs())
     //             .then((data) => {
     //                 console.log(`State after sync: local docs ${localDbTotalRows}, remote docs: ${data.total_rows}`);
-    //                 assert(localDbTotalRows === data.total_rows) 
+    //                 assert(localDbTotalRows === data.total_rows)
     //             });
     //     }).timeout(SYNC_TIMEOUT);
     // });
@@ -386,7 +385,7 @@ function randomBuffer(size) {
 
 
 function createDocWithAttachment(databaseService, id) {
-    let facilityCharges = new FacilityCharges({id: id, name:'toto', warming:1, chickPrice:1, vetPrice:1,
+    let facilityCharges = new FacilityCharges({id: id+'', name:'toto', warming:1, chickPrice:1, vetPrice:1,
         contributions:1, disinfection:1, commodities:1,
         litter:1, catching:1, insurances:1});
 
@@ -396,11 +395,10 @@ function createDocWithAttachment(databaseService, id) {
         base64: randomBuffer(ATTACHMENT_SIZE),
         contentType:'image/png'
     };
-console.log(id);
+
     if (id%3 ===0) {
         
         if (id%6 === 0) {
-            console.log("ñodulo 6");
             return databaseService.save('facilityCharges', facilityCharges)
                 .then(data => {
                     attachment.obj = data.facilitiesCharges[0];

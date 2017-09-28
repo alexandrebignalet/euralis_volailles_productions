@@ -25,9 +25,9 @@ export const HomeComponent = {
     },
     template,
     controller: class HomeController {
-        constructor(DEPARTMENTS, PouchDataService) {
+        constructor(DEPARTMENTS, PouchDataService, $timeout) {
             'ngInject';
-            //imgs
+
             this.banner = banner;
             this.accompagne = accompagne;
             this.imagesFiliere = filiere;
@@ -37,6 +37,10 @@ export const HomeComponent = {
             this.videoPlayed = null;
             
             this.inProgress = false;
+
+
+
+            this.$timeout = $timeout;
         }
 
         $onInit() {
@@ -47,7 +51,7 @@ export const HomeComponent = {
         load() {
             this.inProgress = true;
             ipc.send('sync');
-            
+
             return new Promise((resolve) => {
                 ipc.on('sync', (e,d) => {
                     this.inProgress = false;

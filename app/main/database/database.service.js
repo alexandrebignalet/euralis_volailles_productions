@@ -92,14 +92,36 @@ class DatabaseService {
         return this.db.rel.find(entityName, id)
             .then((data) => {
                 let objects = data[Object.keys(data)[0]];
+                let objectsAttachmentsPromises = [];
 
                 for(let i = 0 ; i < objects.length ; i++) {
                     this.transformRelationIdByObject(objects[i], data);
+                    objectsAttachmentsPromises.push(this.assignAttachmentsToObject(entityName, objects[i]));
                 }
 
-                return data;
+                return Promise.all(objectsAttachmentsPromises);
             })
             .catch(err => console.log(`Find Central DatabaseService: ${err}`));
+    }
+
+    assignAttachmentsToObject(entityName, object) {
+
+        if (object.attachments) {
+            let attachmentsPromises = [];
+
+            Object.keys(object.attachments).forEach((key) => {
+                attachmentsPromises.push(
+                    this.db.rel.getAttachment(entityName, object.id, key)
+                        .then((attachment) => {
+                            object.attachments[key].data = attachment;
+                        })
+                );
+            });
+
+            return Promise.all(attachmentsPromises).then( () => object);
+        } else {
+            return Promise.resolve(object);
+        }
     }
 
     remove(entityName, object) {

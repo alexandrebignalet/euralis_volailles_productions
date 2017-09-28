@@ -26,14 +26,14 @@ export const VideoModule = angular
             .state('video.create', {
                 parent: 'video',
                 url: '/create',
-                onEnter: (ModalService, FacilityDataService) => ModalService.open('videoForm', {
+                onEnter: (ModalService) => ModalService.open('videoForm', {
                     video: {}
                 })
             })
             .state('video.edit', {
                 parent: 'video',
                 url: '/:id/edit',
-                onEnter: (ModalService, PouchDataService, FacilityDataService, $stateParams) => ModalService
+                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService
                     .open('videoForm', {
                         video: PouchDataService.get(ENTITY_NAME, $stateParams.id)
                     })

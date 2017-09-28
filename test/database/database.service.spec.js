@@ -54,7 +54,7 @@ describe('DatabaseServiceTest', () => {
         });
 
         it('should return an empty array if no data', () => {
-            return databaseService.find('production').then(data => assert(data.productions.length === 0));
+            return databaseService.find('production').then(data => assert(data.length === 0));
         });
 
         it('should transform nested relation id by the right object(s) retrieved', () => {
@@ -150,10 +150,10 @@ describe('DatabaseServiceTest', () => {
                 .then(() => databaseService.find('production'))
                 .then((data) => {
                     assert.isDefined(data);
-                    assert.strictEqual(data.productions[0].facility.id, facility.id);
-                    assert.strictEqual(data.productions[0].facility.size, facility.size);
-                    assert.strictEqual(data.productions[0].facility.investments.length, facility.investments.length);
-                    assert.strictEqual(data.productions[0].facility.investments[0].id, facility.investments[0].id);
+                    assert.strictEqual(data[0].facility.id, facility.id);
+                    assert.strictEqual(data[0].facility.size, facility.size);
+                    assert.strictEqual(data[0].facility.investments.length, facility.investments.length);
+                    assert.strictEqual(data[0].facility.investments[0].id, facility.investments[0].id);
                 });
         });
     });
@@ -169,6 +169,35 @@ describe('DatabaseServiceTest', () => {
                 .then((data) => {
                     assert(data.facilitiesCharges[0].warming === 1);
                     assert(data.facilitiesCharges[0].chickPrice === 1);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    assert(false);
+                });
+        });
+        
+        it('should bind each attachments foreach objects', () => {
+
+            let facilityCharges = new FacilityCharges({id: 'uid999546549', name:'tato', warming:1, chickPrice:1, vetPrice:1,
+                contributions:1, disinfection:1, commodities:1,
+                litter:1, catching:1, insurances:1});
+
+            const attachment = {
+                entityName: 'facilityCharges',
+                name:'foo.png',
+                base64: randomBuffer(ATTACHMENT_SIZE),
+                contentType:'image/png'
+            };
+
+            return databaseService.save('facilityCharges', facilityCharges)
+                .then(data => {
+                    attachment.obj = data.facilitiesCharges[0];
+                    return databaseService.putAttachment(attachment);
+                })
+                .then((data) => databaseService.find('facilityCharges', facilityCharges.id))
+                .then((data) => {
+                    assert(Object.keys(data[0].attachments).length > 0);
+                    assert.isDefined(data[0].attachments[Object.keys(data[0].attachments)[0]].data);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -201,34 +230,34 @@ describe('DatabaseServiceTest', () => {
                 })
                 .then((data) => databaseService.find('facilityCharges', facilityCharges.id))
                 .then((findData) => {
-                    assert.strictEqual(findData.facilitiesCharges[0].warming, 1);
-                    assert.strictEqual(findData.facilitiesCharges[0].chickPrice, 1);
-                    assert(Object.keys(findData.facilitiesCharges[0].attachments).length >  0);
+                    assert.strictEqual(findData[0].warming, 1);
+                    assert.strictEqual(findData[0].chickPrice, 1);
+                    assert(Object.keys(findData[0].attachments).length >  0);
                     return findData;
                 })
                 .then(() => databaseService.save('facility', facility))
                 .then(() => databaseService.find('facilities', facility.id))
                 .then((data) => {
-                    assert(data.facilities[0].size === facility.size);
-                    assert(data.facilities[0].id === facility.id);
+                    assert(data[0].size === facility.size);
+                    assert(data[0].id === facility.id);
                     return data;
                 })
                 .then(() => databaseService.save('production', production))
                 .then(() => databaseService.find('production', production.id))
                 .then((data) => {
-                    assert(data.productions[0].name === production.name);
-                    assert(data.productions[0].id === production.id);
+                    assert(data[0].name === production.name);
+                    assert(data[0].id === production.id);
                     return data;
                 })
                 .then(() => databaseService.find('production', production.id))
                 .then((data) => {
-                    assert(data.productions[0].id === production.id);
-                    assert(data.productions[0].facility.id === facility.id);
+                    assert(data[0].id === production.id);
+                    assert(data[0].facility.id === facility.id);
                     return data;
                 })
                 .then((data) => databaseService.find('facility', facility.id))
                 .then((data) => {
-                    assert(data.facilities[0].facilityCharges.id === facilityCharges.id);
+                    assert(data[0].facilityCharges.id === facilityCharges.id);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -240,13 +269,13 @@ describe('DatabaseServiceTest', () => {
 
             return databaseService.find('facilityCharges', 'uid98321243')
                 .then((data) => {
-                    data.facilitiesCharges[0].warming = 0.097;
-                    return databaseService.save('facilityCharges', data.facilitiesCharges[0])
+                    data[0].warming = 0.097;
+                    return databaseService.save('facilityCharges', data[0])
                 })
                 .then(() => databaseService.find('facilityCharges', 'uid98321243'))
                 .then((data) => {
-                    assert(data.facilitiesCharges[0].warming === 0.097);
-                    assert(data.facilitiesCharges[0].id === 'uid98321243');
+                    assert(data[0].warming === 0.097);
+                    assert(data[0].id === 'uid98321243');
                 });
         });
 
@@ -254,13 +283,13 @@ describe('DatabaseServiceTest', () => {
 
             return databaseService.find('facility', '32ze1rz23er1')
                 .then((data) => {
-                    data.facilities[0].size = 20000;
-                    return databaseService.save('facility', data.facilities[0])
+                    data[0].size = 20000;
+                    return databaseService.save('facility', data[0])
                 })
                 .then(() => databaseService.find('facility', '32ze1rz23er1'))
                 .then((data) => {
-                    assert(data.facilities[0].size === 20000);
-                    assert(data.facilities[0].id === '32ze1rz23er1');
+                    assert(data[0].size === 20000);
+                    assert(data[0].id === '32ze1rz23er1');
                 });
         });
 

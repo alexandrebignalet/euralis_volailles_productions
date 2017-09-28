@@ -71,14 +71,13 @@ class DatabaseEventInterface {
 
             this.databaseService.find(data.entityName, data.id)
                 .then((res) => {
-                console.log(res);
                     return DatabaseEventInterface.resolveAndSend(event, 'get'+entityName, res)
                 });
         });
     }
 
     static resolveAndSend(event, eventName, data) {
-        console.log(`${eventName} then result: ${data}`);
+        console.log(`${eventName} then result:`, data);
         event.sender.send(`${eventName}`, data);
     }
 }

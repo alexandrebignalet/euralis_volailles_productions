@@ -29,6 +29,7 @@ export const VideoFormComponent = {
         }
 
         $onInit() {
+            console.log('bonjour');
             this.video = this.resolve.video;
             if(this.video.id) {
                 this.PouchDataService.load(this.video.getFile());

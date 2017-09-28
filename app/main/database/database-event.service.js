@@ -63,7 +63,6 @@ class DatabaseEventInterface {
         ipc.removeAllListeners('remove');
         ipc.removeAllListeners('replicate');
         ipc.removeAllListeners('sync');
-
     }
 
     listenGetEvent(entityName) {
@@ -77,7 +76,7 @@ class DatabaseEventInterface {
     }
 
     static resolveAndSend(event, eventName, data) {
-        console.log(`${eventName} then result:`, data);
+        // console.log(`${eventName} then result:`, data);
         event.sender.send(`${eventName}`, data);
     }
 }

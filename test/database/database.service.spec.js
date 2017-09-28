@@ -11,6 +11,7 @@ global.navigator = {
 
 const ATTACHMENT_SIZE = 5000;
 const SYNC_TIMEOUT = 100000000;
+const INDEX_NUMBER = 1;
 const BASE_DOC_NUMBER = 10;
 
 describe('DatabaseServiceTest', () => {
@@ -36,7 +37,7 @@ describe('DatabaseServiceTest', () => {
         it(`should contain ${BASE_DOC_NUMBER} docs`, () => {
             return databaseService.db.allDocs()
                 .then((data) => {
-                    assert(data.total_rows === BASE_DOC_NUMBER);
+                    assert(data.total_rows === BASE_DOC_NUMBER + INDEX_NUMBER);
                 })
         });
 
@@ -103,11 +104,13 @@ describe('DatabaseServiceTest', () => {
                 ]
             };
 
-            databaseService.transformRelationIdByObject(data.productions[0], data);
-            assert(data.productions[0].facility.facilityCharges.name === 'toto');
-            assert(data.productions[0].facility.facilityCharges.id === '132ABC');
-            assert.deepEqual(data.productions[0].facility.investments[0], data.investments[0]);
-            assert.deepEqual(data.productions[0].facility.investments[1], data.investments[1]);
+            return databaseService.transformRelationIdByObject('production', data.productions[0], data)
+                .then((desiredObject) => {
+                    assert(desiredObject.facility.facilityCharges.name === 'toto');
+                    assert(desiredObject.facility.facilityCharges.id === '132ABC');
+                    assert.deepEqual(desiredObject.facility.investments[0], data.investments[0]);
+                    assert.deepEqual(desiredObject.facility.investments[1], data.investments[1]);
+                });
         });
 
         it('should return the array of object well formatted with find and transform methods', () => {
@@ -133,7 +136,7 @@ describe('DatabaseServiceTest', () => {
                 vaccinesPrice:1, foodPrice:1, classedPrice:1, declassedPrice:1, breedingDeclassedPercent:1, restraintPercent:1,
                 chickPurchaseReduction:1, facility: facility});
 
-            let production4 = new Production({id: '4', department: 'toto', name:'toto', chickNb:1, avgWeight:1, age:1, breedingPerYear:1,
+            let production4 = new Production({id: '4', department: 'tata', name:'toto', chickNb:1, avgWeight:1, age:1, breedingPerYear:1,
                 consumptionIndex:1, mortalityPercent:1,
                 vaccinesPrice:1, foodPrice:1, classedPrice:1, declassedPrice:1, breedingDeclassedPercent:1, restraintPercent:1,
                 chickPurchaseReduction:1, facility: facility});
@@ -218,7 +221,7 @@ describe('DatabaseServiceTest', () => {
             };
 
             let facility = new Facility({id: '32ze1rz23er1', size: 3222, type: 'cabane', facilityCharges: facilityCharges});
-            let production = new Production({id: '3rze213rze', department: 'toto', name:'toto', chickNb:1, avgWeight:1, age:1, breedingPerYear:1,
+            let production = new Production({id: '3rze213rze', department: 'tata', name:'toto', chickNb:1, avgWeight:1, age:1, breedingPerYear:1,
                 consumptionIndex:1, mortalityPercent:1,
                 vaccinesPrice:1, foodPrice:1, classedPrice:1, declassedPrice:1, breedingDeclassedPercent:1, restraintPercent:1,
                 chickPurchaseReduction:1, facility: facility});
@@ -263,6 +266,16 @@ describe('DatabaseServiceTest', () => {
                     console.log(err);
                     assert(false);
                 });
+        });
+        
+        it('should find productions by department', () => {
+            const DEPARTMENT_PARAM = 'toto';
+            return databaseService.getProductionsByDepartment(DEPARTMENT_PARAM)
+                .then((data) => {
+                    data.forEach((obj) => {
+                        assert.strictEqual(obj.department, DEPARTMENT_PARAM)
+                    })
+                })
         });
 
         it('should update a facilityCharges object in the db', () => {

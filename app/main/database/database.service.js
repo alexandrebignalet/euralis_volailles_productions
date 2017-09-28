@@ -10,6 +10,7 @@ const config = require('./electron.config.js');
 const MemoryStream = require('memorystream');
 const replicationStream = require('pouchdb-replication-stream');
 const PouchDB = require('pouchdb');
+PouchDB.plugin(require('pouchdb-find'));
 PouchDB.plugin(require('relational-pouch'));
 PouchDB.plugin(replicationStream.plugin);
 PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
@@ -67,6 +68,9 @@ class DatabaseService {
         this.dbName = config.db.name + this.env;
         this.db = new PouchDB(this.dbName, this.dbOpts);
         this.remoteDb = new PouchDB(config.db.remoteUrl + this.dbName, this.remoteDbOpts);
+        this.db.createIndex({
+            index: {fields: ['data.department']}
+        });
         this.db.setSchema(databaseSchema);
     }
 
@@ -74,6 +78,9 @@ class DatabaseService {
         this.dbName = config.db.name + this.env;
         this.db = new PouchDB(this.dbName, this.dbOpts);
         this.remoteDb = new PouchDB(config.db.remoteUrl + this.dbName, this.remoteDbOpts);
+        this.db.createIndex({
+            index: {fields: ['data.department']}
+        });
         this.db.setSchema(databaseSchema);
     }
 
@@ -91,37 +98,16 @@ class DatabaseService {
 
         return this.db.rel.find(entityName, id)
             .then((data) => {
+                let fullObjectsPromises = [];
                 let objects = data[Object.keys(data)[0]];
-                let objectsAttachmentsPromises = [];
 
                 for(let i = 0 ; i < objects.length ; i++) {
-                    this.transformRelationIdByObject(objects[i], data);
-                    objectsAttachmentsPromises.push(this.assignAttachmentsToObject(entityName, objects[i]));
+                    fullObjectsPromises.push(this.transformRelationIdByObject(Object.keys(data)[0], objects[i], data));
                 }
 
-                return Promise.all(objectsAttachmentsPromises);
+                return Promise.all(fullObjectsPromises);
             })
             .catch(err => console.log(`Find Central DatabaseService: ${err}`));
-    }
-
-    assignAttachmentsToObject(entityName, object) {
-
-        if (object.attachments) {
-            let attachmentsPromises = [];
-
-            Object.keys(object.attachments).forEach((key) => {
-                attachmentsPromises.push(
-                    this.db.rel.getAttachment(entityName, object.id, key)
-                        .then((attachment) => {
-                            object.attachments[key].data = attachment;
-                        })
-                );
-            });
-
-            return Promise.all(attachmentsPromises).then( () => object);
-        } else {
-            return Promise.resolve(object);
-        }
     }
 
     remove(entityName, object) {
@@ -199,9 +185,55 @@ class DatabaseService {
             })
     }
 
-    transformRelationIdByObject(desiredObject, data) {
+    assignAttachmentsToObject(entityName, object) {
+
+        if (object.attachments) {
+            let attachmentsPromises = [];
+
+            Object.keys(object.attachments).forEach((key) => {
+                attachmentsPromises.push(
+                    this.db.rel.getAttachment(entityName, object.id, key)
+                        .then((attachment) => {
+                            object.attachments[key].data = attachment;
+                        })
+                );
+            });
+
+            return Promise.all(attachmentsPromises).then( () => object);
+        } else {
+            return Promise.resolve(object);
+        }
+    }
+
+    getProductionsByDepartment(department) {
+        const findOpts  = {
+            selector: {
+                'data.department': { '$eq': department }
+            }
+        };
+
+        return this.db.find(findOpts)
+            .then((data) => this.db.rel.parseRelDocs('production', data.docs))
+            .then((data) => {
+                let fullObjectsPromises = [];
+                let objects = data[Object.keys(data)[0]];
+
+                for(let i = 0 ; i < objects.length ; i++) {
+                    fullObjectsPromises.push(this.transformRelationIdByObject(Object.keys(data)[0], objects[i], data));
+                }
+
+                return Promise.all(fullObjectsPromises);
+            })
+            .catch((err) => console.log(err));
+    }
+
+    transformRelationIdByObject(entityName, desiredObject, data) {
         let findRequest = Object.keys(data);
         findRequest.splice(0,1);
+
+        let name = getSingularEntityName(entityName);
+        if(name) entityName = name;
+
         // console.log("findrequest without desired  object: ", findRequest);
         let pluralNameRelationObjectFound = [];
         let singularNameRelationObjectFound;
@@ -223,7 +255,7 @@ class DatabaseService {
                 }
 
                 desiredObject[singularEntityName] = data[pluralEntityName][relationObjectFromId];
-                singularNameRelationObjectFound = desiredObject[singularEntityName];
+                singularNameRelationObjectFound = { value: desiredObject[singularEntityName], key: singularEntityName };
             }
             else if (desiredObject.hasOwnProperty(pluralEntityName)) {
                 // console.log(`has pluralEntityName property: ${pluralEntityName}`);
@@ -240,17 +272,26 @@ class DatabaseService {
                     }
 
                     relationObjects.push(data[pluralEntityName][relationObjectFromId]);
-                    pluralNameRelationObjectFound.push(data[pluralEntityName][relationObjectFromId]);
+                    pluralNameRelationObjectFound.push({value: data[pluralEntityName][relationObjectFromId], key: singularEntityName});
                 }
 
                 desiredObject[pluralEntityName] = relationObjects;
             }
         }
 
-        if(singularNameRelationObjectFound) this.transformRelationIdByObject(singularNameRelationObjectFound, data);
-        for(let l = 0; l < pluralNameRelationObjectFound.length; l++) {
-            this.transformRelationIdByObject(pluralNameRelationObjectFound[l], data);
+        let promiseRelationsFound = [];
+
+        if(singularNameRelationObjectFound) {
+            promiseRelationsFound.push(this.transformRelationIdByObject(singularNameRelationObjectFound.key, singularNameRelationObjectFound.value, data));
         }
+        for(let l = 0; l < pluralNameRelationObjectFound.length; l++) {
+            promiseRelationsFound.push(this.transformRelationIdByObject(pluralNameRelationObjectFound[l].key, pluralNameRelationObjectFound[l].value, data));
+        }
+
+        promiseRelationsFound.push(this.assignAttachmentsToObject(entityName, desiredObject));
+        return Promise.all(promiseRelationsFound)
+            .then(() => desiredObject)
+            .catch((err) => console.log("Transform method error: ", err));
 
 
 

@@ -69,17 +69,11 @@ class DatabaseEventInterface {
     listenGetEvent(entityName) {
         ipc.on('get'+entityName, (event, data) => {
 
-            if(data.id) {
-                this.databaseService.find(data.entityName, data.id)
-                    .then((res) => {
-                        return DatabaseEventInterface.resolveAndSend(event, 'get'+entityName, res)
-                    });
-            } else {
-                this.databaseService.find(data.entityName)
-                    .then((res) => {
-                        return DatabaseEventInterface.resolveAndSend(event, 'get'+entityName, res)
-                    });
-            }
+            this.databaseService.find(data.entityName, data.id)
+                .then((res) => {
+                console.log(res);
+                    return DatabaseEventInterface.resolveAndSend(event, 'get'+entityName, res)
+                });
         });
     }
 

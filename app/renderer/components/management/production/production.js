@@ -23,7 +23,9 @@ export class Production {
         this.breedingDeclassedPercent = production.breedingDeclassedPercent;
         this.restraintPercent = production.restraintPercent;
         this.chickPurchaseReduction = 0.02;
-        this.facility = new Facility(production.facility);
+        if( !(typeof production.facility === 'string' || typeof production.facility === 'number')) {
+            this.facility = new Facility(production.facility);
+        }
 
         if(production.attachments) {
             this.attachments = Object.keys(production.attachments).map(key => {

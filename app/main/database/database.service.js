@@ -84,46 +84,57 @@ class DatabaseService {
      * @return Promise
      */
     save(entityName, object) {
-        console.log(entityName, object);
+        // console.log(entityName, object);
         return this.db.rel.save(entityName, object)
-            .then(data => {console.log(data); return data;})
-            .catch(err => console.log(`Save Central DatabaseService: ${err}`));
+            // .then(data => {console.log(data); return data;})
+            // .catch(err => console.log(`Save Central DatabaseService: ${err}`));
     }
 
     find(entityName, id) {
 
         return this.db.rel.find(entityName, id)
             .then((data) => {
-
                 let objects = data[Object.keys(data)[0]];
-                let objectsWithAttachmentsPromises = [];
 
-                for(let i = 0; i < objects.length; i++) {
-
+                for(let i = 0 ; i < objects.length ; i++) {
+                    console.log(`object ${Object.keys(data)[0]} of id ${objects[i].id}`);
                     this.transformRelationIdByObject(objects[i], data);
-
-                    if (objects[i].attachments) {
-                        let attachmentsPromises = [];
-
-                        Object.keys(objects[i].attachments).forEach((key) => {
-                            attachmentsPromises.push(
-                                this.db.rel.getAttachment(entityName, objects[i].id, key)
-                                    .then((attachment) => {
-                                        objects[i].attachments[key].data = attachment;
-                                        return objects[i];
-                                    })
-                            );
-                        });
-
-                        objectsWithAttachmentsPromises.push(Promise.all(attachmentsPromises).then((data) => data[0]));
-                    } else {
-                        objectsWithAttachmentsPromises.push(new Promise((resolve) => resolve(objects[i])));
-                    }
                 }
 
-                return Promise.all(objectsWithAttachmentsPromises);
+                return data;
             })
             .catch(err => console.log(`Find Central DatabaseService: ${err}`));
+    }
+
+    assignAttachmentToObjects(entityName, objects) {
+
+        let objectsWithAttachmentsPromises = [];
+
+        for(let i = 0; i < objects.length; i++) {
+
+            // this.transformRelationIdByObject(objects[i], data);
+
+            if (objects[i].attachments) {
+                let attachmentsPromises = [];
+
+                Object.keys(objects[i].attachments).forEach((key) => {
+                    attachmentsPromises.push(
+                        this.db.rel.getAttachment(entityName, objects[i].id, key)
+                            .then((attachment) => {
+                                objects[i].attachments[key].data = attachment;
+                            })
+                    );
+                });
+
+                objectsWithAttachmentsPromises.push(Promise.all(attachmentsPromises).then( () => objects[i]));
+                console.log("with attachments");
+            } else {
+                console.log("without attachments");
+                objectsWithAttachmentsPromises.push(new Promise((resolve) => resolve(objects[i])));
+            }
+        }
+
+        return Promise.all(objectsWithAttachmentsPromises);
     }
 
     remove(entityName, object) {
@@ -190,8 +201,8 @@ class DatabaseService {
         console.log(`replication from ${from.name} to ${to.name}`);
 
         return Promise.all([
-            from.dump(stream),
-            to.load(stream)
+            from.dump(stream).then(data => console.log(`DATA dump: `,data)).catch(err => console.log(`ERREUR dump: `, err)),
+            to.load(stream).then(data => console.log(`DATA load: `,data)).catch(err => console.log(`ERREUR load: `, err))
         ])
             .then(() => {
                 console.log(`Replication from ${who} SUCCESS !`);
@@ -215,8 +226,15 @@ class DatabaseService {
             if(desiredObject.hasOwnProperty(singularEntityName)) {
                 console.log(`has singularEntityName property: ${singularEntityName}`);
                 let relationId = desiredObject[singularEntityName];
-                let relationObjectFromId = arrayObjectIndexOf(data[pluralEntityName], relationId, 'id');
-                console.log(`Object ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationId} in data property: id`);
+                let relationObjectFromId;
+                if(typeof relationId === 'string') {
+                    relationObjectFromId = arrayObjectIndexOf(data[pluralEntityName], relationId, 'id');
+                    console.log(`Object ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationId} in data property: id`);
+                } else {
+                    relationObjectFromId = data[pluralEntityName].indexOf(relationId);
+                    console.log(`Object ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationId.id} in data property: id`);
+                }
+
                 desiredObject[singularEntityName] = data[pluralEntityName][relationObjectFromId];
                 singularNameRelationObjectFound = desiredObject[singularEntityName];
             }
@@ -224,12 +242,20 @@ class DatabaseService {
                 console.log(`has pluralEntityName property: ${pluralEntityName}`);
                 let relationArrayIds = desiredObject[pluralEntityName];
                 let relationObjects = [];
+                let relationObjectFromId;
                 for(let j = 0; j < relationArrayIds.length ; j++) {
-                    let relationObjectFromId = arrayObjectIndexOf(data[pluralEntityName], relationArrayIds[j], 'id');
-                    console.log(`Object  ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationArrayIds[j]} in data property: id`);
+                    if(typeof relationArrayIds[j] === 'string') {
+                        relationObjectFromId = arrayObjectIndexOf(data[pluralEntityName], relationArrayIds[j], 'id');
+                        console.log(`Object  ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationArrayIds[j]} in data property: id`);
+                    } else {
+                        relationObjectFromId = data[pluralEntityName].indexOf(relationArrayIds[j]);
+                        console.log(`Object  ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationArrayIds[j].id} in data property: id`);
+                    }
+
                     relationObjects.push(data[pluralEntityName][relationObjectFromId]);
                     pluralNameRelationObjectFound.push(data[pluralEntityName][relationObjectFromId]);
                 }
+
                 desiredObject[pluralEntityName] = relationObjects;
             }
         }

@@ -2,14 +2,12 @@ import template from './image_loader.html';
 
 export const ImageLoaderComponent = {
     bindings: {
-        model: '<',
-        entityName: '@',
+        model: '<'
     },
     template,
     controller: class ImageLoaderController {
-        constructor(ImageLoaderService, $scope) {
+        constructor($scope) {
             'ngInject';
-            this.dataService = ImageLoaderService;
             this.slides = [];
             this.currentIndex = 0;
 
@@ -20,16 +18,9 @@ export const ImageLoaderComponent = {
         }
 
         $onInit() {
-            console.log(this.model);
-            this.dataService.getAttachments(this.entityName, this.model.id)
-                .then((images) => {
-                        images.forEach((img) => {
-                            this.slides.push({id: ++this.currentIndex, image: URL.createObjectURL(img), text: img.name});
-                            this.scope.$apply();
-                        });
-                    }
-                )
-                .catch((err) => console.log(err));
+            this.model.attachments.forEach((attachment) => {
+                this.slides.push({id: ++this.currentIndex, image: URL.createObjectURL(attachment), text: attachment.name});
+            });
         }
     },
     controllerAs: 'vm'

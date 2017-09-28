@@ -2,26 +2,6 @@ import {Investment} from '../investment/investment';
 import {FacilityCharges} from '../facility_charges/facility_charges';
 
 export class Facility {
-
-    /**
-     * @type string
-     * @param id
-     *
-     * @type int
-     * @param size
-     *
-     * @type string
-     * @param type
-     *
-     * @type FacilityCharges
-     * @param facilityCharges
-     *
-     * @type integer
-     * @param workHours
-     *
-     * @type Array[Investments]
-     * @param facilitys
-     */
     constructor(facility) {
         this.id = facility.id;
         this.rev = facility.rev;
@@ -31,8 +11,10 @@ export class Facility {
 
         this.facilityCharges = new FacilityCharges(facility.facilityCharges);
         this.investments = [];
-        for(let i = 0; i < facility.investments.length; i++) {
-            this.investments.push(new Investment(facility.investments[i]))
+        if(facility.investments) {
+            for(let i = 0; i < facility.investments.length; i++) {
+                this.investments.push(new Investment(facility.investments[i]))
+            }
         }
 
         if(facility.attachments) {

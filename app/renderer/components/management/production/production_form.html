@@ -1,0 +1,179 @@
+<form name="productionForm" ng-submit="vm.onSubmit()">
+    <div class="modal-header">
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('create') != -1">Création d'une nouvelle production.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('edit') != -1">Modification d'une production existante.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('remove') != -1">Suppression d'une production.</h3>
+    </div>
+    <div class="modal-body" ng-if="vm.currentState.indexOf('remove') == -1">
+        <div class="row">
+            <h2 class="text-center">Production</h2><hr>
+            <div class="col-md-12">
+                    <label>Date de mise à jour de la production</label>
+                    <p class="input-group">
+                        <button type="button" class="btn btn-block btn-default {{ !vm.production.updateDate ? 'wrong' : 'valid'}}_input" ng-click="vm.openPicker()"
+                                uib-datepicker-popup="{{vm.format}}" ng-model="vm.production.updateDate" is-open="vm.pickerIsOpen" datepicker-options="vm.dateOptions"
+                                close-text="Close">
+                            <span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;{{vm.production.updateDate | date }}
+                        </button>
+                    </p>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="name" class="control-label">Appellation</label>
+                    <input type="text" class="form-control {{ productionForm.name.$invalid ? 'wrong' : 'valid'}}_input" id="name" name="name" ng-model="vm.production.name" required>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="facility" class="control-label">Type de bâtiment</label>
+                    <select class="form-control {{ productionForm.facility.$invalid ? 'wrong' : 'valid'}}_input" id="facility" name="facility" ng-model="vm.production.facility" required
+                            ng-options="facility as facility.type.toUpperCase() +' '+facility.size+'m² '+facility.facilityCharges.name for facility in vm.facilities track by facility.id">
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="department" class="control-label">Département</label>
+                    <select class="form-control {{ productionForm.department.$invalid ? 'wrong' : 'valid'}}_input" id="department" name="department" ng-model="vm.production.department" required>
+                        <option ng-selected="vm.production.department === department.key" ng-repeat="department in vm.departments" value="{{department.key}}">{{department.value}}</option>
+                        <option ng-selected="vm.departments.indexOf(vm.production.department) === -1" value="Others">Tous</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="fieldSpace" class="control-label">Taille du parcours</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.fieldSpace.$invalid ? 'wrong' : 'valid'}}_input" id="fieldSpace" name="fieldSpace" ng-model="vm.production.fieldSpace" min="0" required>
+                        <span class="input-group-addon">m²</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="chickNb" class="control-label">Nombre de poussins / bâtiment</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.chickNb.$invalid ? 'wrong' : 'valid'}}_input" id="chickNb" name="chickNb" ng-model="vm.production.chickNb" min="0" required>
+                        <span class="input-group-addon">poussins/bâtiment</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="avgWeight" class="control-label">Poids moyen</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.avgWeight.$invalid ? 'wrong' : 'valid'}}_input" id="avgWeight" name="avgWeight" ng-model="vm.production.avgWeight" min="0" required>
+                        <span class="input-group-addon">kg</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="age" class="control-label">Age</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.age.$invalid ? 'wrong' : 'valid'}}_input" id="age" name="age" ng-model="vm.production.age" min="0" required>
+                        <span class="input-group-addon">j</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="breedingPerYear" class="control-label">Nombre de bandes par an</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.breedingPerYear.$invalid ? 'wrong' : 'valid'}}_input" id="breedingPerYear" name="breedingPerYear" ng-model="vm.production.breedingPerYear" min="0" required>
+                        <span class="input-group-addon">bandes/an</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="consumptionIndex" class="control-label">Indice de consommation</label>
+                    <input type="number" step="any" class="form-control {{ productionForm.consumptionIndex.$invalid ? 'wrong' : 'valid'}}_input" id="consumptionIndex" name="consumptionIndex" ng-model="vm.production.consumptionIndex" min="0" required>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="mortalityPercent" class="control-label">Taux de mortalité (%)</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.mortalityPercent.$invalid ? 'wrong' : 'valid'}}_input" id="mortalityPercent" name="mortalityPercent" ng-model="vm.production.mortalityPercent" min="0" max="20" required>
+                        <span class="input-group-addon">%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="vaccinesPrice" class="control-label">Prix des poussins vaccinés</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.vaccinesPrice.$invalid ? 'wrong' : 'valid'}}_input" id="vaccinesPrice" name="vaccinesPrice" ng-model="vm.production.vaccinesPrice" min="0" required>
+                        <span class="input-group-addon">€/1000</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="foodPrice" class="control-label">Prix de l'aliment</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.foodPrice.$invalid ? 'wrong' : 'valid'}}_input" id="foodPrice" name="foodPrice" ng-model="vm.production.foodPrice" min="0" required>
+                        <span class="input-group-addon">€/t</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="classedPrice" class="control-label">Prix du classé</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.classedPrice.$invalid ? 'wrong' : 'valid'}}_input" id="classedPrice" name="classedPrice" ng-model="vm.production.classedPrice" min="0" required>
+                        <span class="input-group-addon">€/t</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="declassedPrice" class="control-label">Prix du déclassé (€/1000)</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.declassedPrice.$invalid ? 'wrong' : 'valid'}}_input" id="declassedPrice" name="declassedPrice" ng-model="vm.production.declassedPrice" min="0" required>
+                        <span class="input-group-addon">€/t</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="breedingDeclassedPercent" class="control-label">Taux de déclassé (%)</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.breedingDeclassedPercent.$invalid ? 'wrong' : 'valid'}}_input" id="breedingDeclassedPercent" name="breedingDeclassedPercent" ng-model="vm.production.breedingDeclassedPercent" min="0" max="20" required>
+                        <span class="input-group-addon">%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="restraintPercent" class="control-label">Taux de saisie (%)</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ productionForm.restraintPercent.$invalid ? 'wrong' : 'valid'}}_input" id="restraintPercent" name="restraintPercent" ng-model="vm.production.restraintPercent" min="0" max="20" required>
+                        <span class="input-group-addon">%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3" ng-repeat="attachment in vm.production.attachments track by attachment.name">
+                <button type="button" class="btn btn-default btn-block" ng-click="vm.removeAttachment(attachment)"><span class="glyphicon glyphicon-remove"></span> </button>
+                <p thumb-images="{ file: attachment, height: 100 }"></p>
+            </div>
+        </div>
+        <file-uploader model="vm.production.attachments"></file-uploader>
+    </div>
+    <div class="modal-body" ng-if="vm.currentState.indexOf('remove') != -1">
+        Confirmer la suppression de la production {{vm.production.toString()}}
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="vm.modalInstance.close()">Annuler</button>
+        <button class="btn btn-primary" type="submit" ng-if="vm.currentState.indexOf('create') != -1" ng-disabled="vm.isSaving || productionForm.$invalid">Créer</button>
+        <button class="btn btn-success" type="submit" ng-if="vm.currentState.indexOf('edit') != -1" ng-disabled="vm.isSaving || productionForm.$invalid">Modifier</button>
+        <button class="btn btn-danger" type="submit" ng-if="vm.currentState.indexOf('remove') != -1" ng-disabled="vm.isSaving || productionForm.$invalid">Supprimer</button>
+    </div>
+</form>

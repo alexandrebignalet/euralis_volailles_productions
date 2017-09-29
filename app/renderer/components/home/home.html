@@ -1,0 +1,150 @@
+
+
+<img src="{{vm.banner}}" class="banner" alt="jeanmic">
+
+<div id="menu" class="row">
+    <div class="col-md-3" ng-repeat="item in vm.departments">
+        <button class="btn btn-block btn-success btn-raised" ui-sref="presentation({department:item.key})">
+            <b>{{item.value | uppercase }}</b>
+        </button>
+        <br>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <h1>
+            <i class="glyphicon glyphicon-grain" style="color:rgba(219, 226, 13, 0.88)"></i>
+            <span style="color: #309f41;">Euralis</span>
+            <span style="color: #a6ce39;">vous accompagne</span>
+        </h1><hr>
+
+        <div class="col-md-4">
+            <img class="slide-right" src="{{vm.accompagne}}" style="box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 1);" />
+        </div>
+        <div class="col-md-8">
+            <ul class="custom-bullet">
+                <li class="eva1">Auprès de votre banque</li>
+                <li class="eva2">Permis de construire</li>
+                <li class="eva1">Déclaration de l'élevage ICPE</li>
+                <li class="eva2">Dossier de subventions</li>
+                <li class="eva1">Mise en relation, devis fournisseurs (bâtiment, matériel)</li>
+                <li class="eva2">Supervise et coordonne les travaux</li>
+                <li class="eva1">Suivi technique renforcé la 1ère année</li>
+                <li class="eva2">Possibilité de mise en place de volailles festives (marges supérieures)</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <h1>
+            <i class="glyphicon glyphicon-home" style="color:rgba(219, 226, 13, 0.88)"></i>
+            <span style="color: #309f41;">Filière poulet</span>
+            <span style="color: #a6ce39;">LABEL EURALIS</span>
+        </h1><hr>
+        <div class="row text-center">
+            <h3 class="pull-right" style="color: #309f41"><strong>AMONT</strong></h3>
+            <div class="col-md-3 col-md-offset-3" in-view="sandersVisible = $inview" ng-class="{ 'slide-right': sandersVisible }">
+                <figure>
+                    <img src="{{vm.imagesFiliere['sanders']}}" style="width:50%;"/>
+                    <figcaption><h4 style="color: #399528;"><strong>Fournisseur d'aliment</strong></h4></figcaption>
+                </figure>
+            </div>
+
+            <div class="col-md-3 slide-left" in-view="accouvVisible = $inview" ng-class="{ 'slide-left': accouvVisible }">
+                <h2 style="margin-top: 100px;color: #399528;">ACCOUVEURS</h2>
+                <ul class="list-unstyled">
+                    <li><strong>CARINGA</strong> à LISLE JOURDAIN 32</li>
+                    <li><strong>SOCAVIC</strong> à SAINT SEVER 40</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row text-center">
+            <span class="arrow arrow-down" style="height: 100px;"></span>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-3" in-view="groupProdVisible = $inview" ng-class="{ 'slide-right': groupProdVisible }">
+                <h3>
+                    <strong>Groupement de producteurs</strong>
+                </h3>
+                <figure>
+                    <img src="{{vm.imagesFiliere['eurvol']}}" style="width: 80%;"/>
+                    <figcaption><h4><strong>EURALIS VOLAILLES</strong></h4></figcaption>
+                </figure>
+                <strong>Planifie les mises en places des ventes</strong>
+                <div class="row"  style="margin-top: 19px;">
+                    <div class="col-md-6">
+                        <img src="{{vm.imagesFiliere['vol']}}" style="width: 50%;"/>
+                        <p style="font-size: 20px;color: #399528;">
+                            {{6500000 | number}}
+                        </p>
+                        <span style="font-size: 13px;color: #a6ce39;">VOLAILLES</span>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="{{vm.imagesFiliere['elev']}}" style="width: 50%;"/>
+                        <p  style="font-size: 20px;color: #399528;">
+                            {{250 | number}}
+                        </p>
+                        <span style="font-size: 13px;color: #a6ce39;">ELEVEURS</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <span class="arrow arrow-right vmid"></span>
+            </div>
+            <div class="col-md-4" ng-class="{ 'fade-in': groupProdVisible }">
+                <h3>
+                    <strong>Groupement qualité</strong>
+                </h3>
+                <figure>
+                    <img src="{{vm.imagesFiliere['avigers']}}" />
+                    <figcaption><h5><strong>Sud Ouest Landes</strong></h5></figcaption>
+                </figure>
+            </div>
+            <div class="col-md-1">
+                <span class="arrow arrow-left vmid"></span>
+            </div>
+            <div class="col-md-3" ng-class="{ 'slide-left': groupProdVisible }">
+                <figure>
+                    <img src="{{vm.imagesFiliere['qualisud']}}" style="width:50%;"/>
+                </figure>
+                <h3>Contrôle des normes Label à tous les niveaux de la filière</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center">
+        <span class="arrow arrow-down" style="height: 100px"></span>
+    </div>
+    <div class="row text-center">
+        <h3 class="pull-right" style="color: #309f41"><strong>AVAL</strong></h3>
+        <div class="col-md-4 col-md-offset-4" in-view="abattoirsVisible = $inview" ng-class="{ 'fade-in': abattoirsVisible }">
+            <h3 style="color: #399528;"><strong>5 abattoirs</strong></h3>
+            <ul class="list-unstyled">
+                <li><strong>FSO</strong>(Fermiers du Sud-Ouest) à CONDOM, SAINT SEVER, SARAMON.</li>
+                <li><strong>RONSARD</strong> à LOSSE 40.</li>
+                <li><strong>LDC</strong> à BAZAS 33.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" ng-if="vm.videos.length > 0">
+        <h1>
+            <i class="glyphicon glyphicon-facetime-video" style="color:rgba(219, 226, 13, 0.88)"></i>
+            <span style="color: #309f41;">Présentation vidéos</span>
+            <span style="color: #a6ce39;">des élevages</span>
+        </h1><hr>
+        <div class="col-md-3 text-center">
+            <ul class="nav nav-pills nav-stacked" style="height:50%; overflow: auto;">
+                <li ng-repeat="video in vm.videos" ng-class="{'active': vm.videoPlayed == video.id}">
+                    <a href ng-click="vm.selectVideo(video)">{{video.getName() | uppercase}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <video width="100%" controls>
+                <source src type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+        </div>
+    </div>
+    <br>
+
+</div>

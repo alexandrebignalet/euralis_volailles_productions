@@ -1,0 +1,115 @@
+<form name="facilityChargesForm" ng-submit="vm.onSubmit()">
+    <div class="modal-header">
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('create') != -1">Création d'une nouvelle grille de critères.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('edit') != -1">Modification d'une grille de critères existante.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('remove') != -1">Suppression d'une grille de critères.</h3>
+    </div>
+    <div class="modal-body" ng-if="vm.currentState.indexOf('remove') == -1">
+        <div class="row">
+            <h2 class="text-center">Critères</h2><hr>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="charges_name" class="control-label">Appelation de la grille de critères</label>
+                    <input type="text" class="form-control {{ facilityChargesForm.charges_name.$invalid ? 'wrong' : 'valid'}}_input" id="charges_name" name="charges_name" ng-model="vm.facilityCharges.name" minlength="0" required>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="charges_chickPrice" class="control-label">Prix du poussin (€)</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ facilityChargesForm.charges_chickPrice.$invalid ? 'wrong' : 'valid'}}_input" id="charges_chickPrice" name="charges_chickPrice" ng-model="vm.facilityCharges.chickPrice" min="0" required>
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="charges_warming" class="control-label">Chauffage</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ facilityChargesForm.charges_warming.$invalid ? 'wrong' : 'valid'}}_input" id="charges_warming" name="charges_warming" ng-model="vm.facilityCharges.warming" min="0" required>
+                        <span class="input-group-addon">€ / 1000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="charges_vetPrice" class="control-label">Prix des soins</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ facilityChargesForm.charges_vetPrice.$invalid ? 'wrong' : 'valid'}}_input" id="charges_vetPrice" name="charges_vetPrice" ng-model="vm.facilityCharges.vetPrice" min="0" required>
+                        <span class="input-group-addon">€ / 1000</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="charges_contributions" class="control-label">Cotisations</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ facilityChargesForm.charges_contributions.$invalid ? 'wrong' : 'valid'}}_input" id="charges_contributions" name="charges_contributions" ng-model="vm.facilityCharges.contributions" min="0" required>
+                        <span class="input-group-addon">€ / 1000</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="charges_disinfection" class="control-label">Désinfection</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ facilityChargesForm.charges_disinfection.$invalid ? 'wrong' : 'valid'}}_input" id="charges_disinfection" name="charges_disinfection" ng-model="vm.facilityCharges.disinfection" min="0" required>
+                        <span class="input-group-addon">€ / 1000</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="charges_litter" class="control-label">Prix litière</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ facilityChargesForm.charges_litter.$invalid ? 'wrong' : 'valid'}}_input" id="charges_litter" name="charges_litter" ng-model="vm.facilityCharges.litter" min="0" required>
+                        <span class="input-group-addon">€ / 1000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="charges_commodities" class="control-label">Prix eau, électricité et divers</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ facilityChargesForm.charges_commodities.$invalid ? 'wrong' : 'valid'}}_input" id="charges_commodities" name="charges_commodities" ng-model="vm.facilityCharges.commodities" min="0" required>
+                        <span class="input-group-addon">€ / 1000</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="charges_catching" class="control-label">Prix de l'attrapage</label>
+
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ facilityChargesForm.charges_catching.$invalid ? 'wrong' : 'valid'}}_input" id="charges_catching" name="charges_catching" ng-model="vm.facilityCharges.catching" min="0" required>
+                        <span class="input-group-addon">€ / 1000</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="charges_insurances" class="control-label">Prix de l'assurance</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ facilityChargesForm.charges_insurances.$invalid ? 'wrong' : 'valid'}}_input" id="charges_insurances" name="charges_insurances" ng-model="vm.facilityCharges.insurances" min="0" required>
+                        <span class="input-group-addon">€ / 1000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" ng-if="vm.currentState.indexOf('remove') != -1">
+        Confirmer la suppression de la  {{vm.facilityCharges.toString() }}
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="vm.modalInstance.close()">Annuler</button>
+        <button class="btn btn-primary" type="submit" ng-if="vm.currentState.indexOf('create') != -1" ng-disabled="vm.isSaving || facilityChargesForm.$invalid">Créer</button>
+        <button class="btn btn-success" type="submit" ng-if="vm.currentState.indexOf('edit') != -1" ng-disabled="vm.isSaving || facilityChargesForm.$invalid">Modifier</button>
+        <button class="btn btn-danger" type="submit" ng-if="vm.currentState.indexOf('remove') != -1" ng-disabled="vm.isSaving || facilityChargesForm.$invalid">Supprimer</button>
+    </div>
+</form>

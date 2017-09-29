@@ -1,0 +1,74 @@
+<div class="container">
+    <div class="row">
+            <h1>
+                <i class="glyphicon glyphicon-grain" style="color:rgba(219, 226, 13, 0.88)"></i>
+                <span style="color: #309f41;">Gestion des données</span>
+                <span style="color: #a6ce39;">de productions</span>
+            </h1><hr>
+
+        <div class="pull-right">
+            <button class="btn btn-block btn-primary" ui-sref="production.create">
+                <span class="glyphicon glyphicon-plus"></span>
+                Créer un nouveau type de production
+            </button>
+        </div>
+    </div>
+
+    <table class="table table-responsive table-hover management-table">
+        <thead>
+        <tr>
+            <th>Date de màj</th>
+            <th>Taille du parcours</th>
+            <th>Nom de production</th>
+            <th>Département</th>
+            <th>Taille</th>
+            <th>Type</th>
+            <th>Nombre de poussins</th>
+            <th>Poids moyen</th>
+            <th>Age</th>
+            <th>Nb. bandes/an</th>
+            <th>I.C.</th>
+            <th>% Mortalité</th>
+            <th>Prix vaccins</th>
+            <th>Prix aliment</th>
+            <th>Prix du classé</th>
+            <th>Prix du déclassé</th>
+            <th>Taux de déclassé</th>
+            <th>Taux de saisie</th>
+
+            <th>Modifier/Supprimer</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="production in $ctrl.productions">
+            <td>{{ production.updateDate | date }}</td>
+            <td>{{ production.fieldSpace }}</td>
+            <td>{{ production.name }}</td>
+            <td>
+                <span ng-if="production.department != 'Others'">{{ production.department }}</span>
+                <span ng-if="production.department == 'Others'">Tous</span>
+            </td>
+            <td>{{ production.facility.size }}m²</td>
+            <td>{{ production.facility.type.value | uppercase }}</td>
+            <td class="aligntd">{{ production.chickNb }}</td>
+            <td class="aligntd">{{ production.avgWeight }}</td>
+            <td class="aligntd">{{ production.age }} j.</td>
+            <td class="aligntd">{{ production.breedingPerYear }}</td>
+            <td class="aligntd">{{ production.consumptionIndex }}</td>
+            <td class="aligntd">{{ production.mortalityPercent * 100}}%</td>
+            <td class="aligntd">{{ production.vaccinesPrice* 1000 | number: 0}}€</td>
+            <td class="aligntd">{{ production.foodPrice * 1000 | number: 0}}€</td>
+            <td class="aligntd">{{ production.classedPrice * 1000 | number: 0}}€</td>
+            <td class="aligntd">{{ production.declassedPrice * 1000 | number: 0}}€</td>
+            <td class="aligntd">{{ production.breedingDeclassedPercent * 100}}%</td>
+            <td class="aligntd">{{ production.restraintPercent * 100}}%</td>
+            <td class="aligntd">
+                <button class="btn btn-success" ui-sref="production.edit({id: production.id})"><span class="glyphicon glyphicon-pencil"></span></button>
+                <button class="btn btn-danger" ui-sref="production.remove({id: production.id})"><span class="glyphicon glyphicon-remove"></span></button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

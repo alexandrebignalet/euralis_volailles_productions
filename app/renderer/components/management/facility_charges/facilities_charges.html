@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="row">
+        <h1>
+            <i class="glyphicon glyphicon-grain" style="color:rgba(219, 226, 13, 0.88)"></i>
+            <span style="color: #309f41;">Gestion des données</span>
+            <span style="color: #a6ce39;">des grille de critères</span>
+        </h1><hr>
+
+        <div class="pull-right">
+            <button class="btn btn-block btn-primary" ui-sref="facility_charges.create">
+                <span class="glyphicon glyphicon-plus"></span>
+                Créer un nouvelle grille de critères
+            </button>
+        </div>
+    </div>
+
+    <table class="table table-responsive table-hover">
+        <thead>
+        <tr>
+            <th >Appellation</th>
+            <th><i>€/1000</i></th>
+            <th >Chauffage</th>
+            <th >Prix poussins</th>
+            <th >Prix soins</th>
+            <th >Cotisations</th>
+            <th >Prix désinfection</th>
+            <th >Eau, électricité, divers</th>
+            <th >Litière</th>
+            <th >Attrapages</th>
+            <th >Assurances</th>
+
+            <th >Modifier/Supprimer</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="facilityCharges in $ctrl.facilitiesCharges">
+            <td >{{ facilityCharges.name }}</td>
+            <td></td>
+            <td >{{ facilityCharges.warming * 1000  }}</td>
+            <td >{{ facilityCharges.chickPrice * 1000 }}</td>
+            <td >{{ facilityCharges.vetPrice * 1000 }}</td>
+            <td >{{ facilityCharges.contributions * 1000 }}</td>
+            <td >{{ facilityCharges.disinfection * 1000 }}</td>
+            <td >{{ facilityCharges.commodities * 1000 }}</td>
+            <td >{{ facilityCharges.litter * 1000 }}</td>
+            <td >{{ facilityCharges.catching * 1000 }}</td>
+            <td >{{ facilityCharges.insurances * 1000 }}</td>
+            <td >
+                <button class="btn btn-success" ui-sref="facility_charges.edit({id: facilityCharges.id})">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+                <button class="btn btn-danger" ui-sref="facility_charges.remove({id: facilityCharges.id})">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

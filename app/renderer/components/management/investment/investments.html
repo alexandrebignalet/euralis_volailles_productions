@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="row">
+        <h1>
+            <i class="glyphicon glyphicon-grain" style="color:rgba(219, 226, 13, 0.88)"></i>
+            <span style="color: #309f41;">Gestion des données</span>
+            <span style="color: #a6ce39;">des investissements liés aux bâtiments</span>
+        </h1><hr>
+
+        <div class="pull-right">
+            <button class="btn btn-block btn-primary" ui-sref="investment.create">
+                <span class="glyphicon glyphicon-plus"></span>
+                Créer un nouveau type d'investissement
+            </button>
+        </div>
+    </div>
+
+    <table class="table table-responsive table-hover management-table">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Désignation</th>
+            <th>Description</th>
+            <th class="text-center">Gros oeuvre</th>
+            <th class="text-center">Coût des dossiers</th>
+            <th class="text-center">Livraison/Montage Bâtiment</th>
+            <th class="text-center">Livraison/Montage Matériel</th>
+            <th class="text-center">Total (avant subventions)</th>
+            <th class="text-center">Subvention AREA PCAE</th>
+            <th class="text-center">Aide EURALIS Volailles</th>
+            <th class="text-center">Divers options</th>
+            <th class="text-center">Total</th>
+
+            <th class="col-md-3 text-center">Modifier/Supprimer</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="investment in $ctrl.investments">
+            <td>{{ investment.name | uppercase}}</td>
+            <td>{{ investment.designation }}</td>
+            <td>{{ investment.description}}</td>
+            <td class="col-md-2 text-center">{{ investment.masonry}}€</td>
+            <td class="col-md-2 text-center">{{ investment.papers}}€</td>
+            <td class="col-md-2 text-center">{{ investment.facilityMoutingDeliveryPrice}}€</td>
+            <td class="col-md-2 text-center">{{ investment.equipmentMountingDeliveryPrice}}€</td>
+            <td class="col-md-2 text-center">{{ investment.getTotalBeforeSubsidies()}}€</td>
+            <td class="col-md-2 text-center">{{ investment.subsidies}}€</td>
+            <td class="col-md-2 text-center">{{ investment.helpEuralis}}€</td>
+            <td class="col-md-2 text-center">{{ investment.diverseOptions}}€</td>
+            <td class="col-md-2 text-center">{{ investment.getTotal()}}€</td>
+            <td class="col-md-3 text-center">
+                <button class="btn btn-success" ui-sref="investment.edit({id: investment.id})"><span class="glyphicon glyphicon-pencil"></span></button>
+                <button class="btn btn-danger" ui-sref="investment.remove({id: investment.id})"><span class="glyphicon glyphicon-remove"></span></button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>

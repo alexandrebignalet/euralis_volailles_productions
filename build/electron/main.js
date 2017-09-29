@@ -1,35 +1,46 @@
-const {app, BrowserWindow} = require('electron');
-const path = require('path');
-const url = require('url');
+'use strict';
 
-const electron = require('electron');
+var _require = require('electron'),
+    app = _require.app,
+    BrowserWindow = _require.BrowserWindow;
+
+var path = require('path');
+var url = require('url');
+
+var electron = require('electron');
+
+var _require2 = require('electron'),
+    shell = _require2.shell;
+
+var fs = require('fs');
+var os = require('os');
+var ipc = electron.ipcMain;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win;
+var mainWindow = null;
 
-function createWindow () {
-
+function createWindow() {
     // Create the browser window.
-    win = new BrowserWindow({width: 800, height: 600, webPreferences: { nodeIntegration: true }});
+    mainWindow = new BrowserWindow({ width: 800, height: 600, webPreferences: { nodeIntegration: true } });
 
     // and load the index.html of the app.
-    win.loadURL(url.format({
-        pathname: path.resolve(__dirname, 'webapp/index.html'),
+    mainWindow.loadURL(url.format({
+        pathname: path.resolve(__dirname, 'index.html'),
         protocol: 'file:',
         slashes: true
     }));
 
-    win.maximize();
+    mainWindow.maximize();
+
     // Open the DevTools.
-    // win.webContents.openDevTools();
+    if (process.env.NODE_ENV === 'dev') {
+        mainWindow.openDevTools({ detach: true });
+    }
 
     // Emitted when the window is closed.
-    win.on('closed', () => {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
-        win = null;
+    mainWindow.on('closed', function () {
+        mainWindow = null;
     });
 }
 
@@ -39,14 +50,30 @@ function createWindow () {
 app.on('ready', createWindow);
 
 // Quit when all windows are closed.
-app.on('window-all-closed', () => {
+app.on('window-all-closed', function () {
     app.quit();
 });
 
-app.on('activate', () => {
-        // On macOS it's common to re-create a window in the app when the
-        // dock icon is clicked and there are no other windows open.
-        if (win === null) {
+ipc.on('print-to-pdf', function (event) {
+    var pdfPath = path.join(os.tmpdir(), 'print.pdf');
+    console.log(pdfPath);
+    var win = BrowserWindow.fromWebContents(event.sender);
+
+    win.webContents.printToPDF({}, function (err, data) {
+        if (err) return console.log(err.message);
+
+        fs.writeFile(pdfPath, data, function (err) {
+            if (err) return console.log(err.message);
+            shell.openExternal('file://' + pdfPath);
+            event.sender.send('wrote-pdf', pdfPath);
+        });
+    });
+});
+
+app.on('activate', function () {
+    // On macOS it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (win === null) {
         createWindow();
     }
 });

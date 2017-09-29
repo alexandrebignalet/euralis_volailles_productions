@@ -1,11 +1,19 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <base href="/" />
+        <base href="./" />
         <title>EURALIS Volailles Production</title>
     </head>
 
     <body ng-app="eurvolpre">
+        <button id="print-pdf">Print</button>
+        <button id="image">images</button>
         <app></app>
+
+        <script src="./renderer.js"></script>
+        <!-- build:remove -->
+        <!-- Connect to server process -->
+        <script>require('electron-connect').client.create()</script>
+        <!-- end:build -->
     </body>
 </html>

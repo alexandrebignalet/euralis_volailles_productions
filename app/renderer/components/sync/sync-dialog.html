@@ -1,0 +1,21 @@
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-4 text-center vertical-align">
+            <img class="" ng-src="{{vm.loader}}" alt="loader" ng-if="vm.isSyncing"/>
+            <button ng-click="vm.close()" class="btn btn-default pull-right">
+                <span class="glyphicon glyphicon-ban-circle"></span>
+                Annuler
+            </button>
+            &nbsp;&nbsp;
+            <button ng-click="vm.sync()" class="btn btn-primary pull-right" ng-disabled="vm.isSyncing">
+                <span class="glyphicon glyphicon-refresh"></span>
+                Synchroniser
+            </button>
+        </div>
+        <div class="col-md-8">
+            <pre style="margin-left:10px;">
+                <p ng-repeat="log in vm.logs track by $index">{{log}}</p>
+            </pre>
+        </div>
+    </div>
+</div>

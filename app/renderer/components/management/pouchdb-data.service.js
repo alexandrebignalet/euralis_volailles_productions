@@ -41,6 +41,21 @@ export class PouchDataService {
         });
     }
 
+    getProdByDept(department) {
+        ipc.send('getProdByDepartment', {department});
+
+        return new Promise((resolve) => {
+            ipc.on('getProdByDepartment', (event, productions) => {
+
+                if(productions.length === 1)
+                    return resolve(new Production(productions[0]));
+
+                resolve(productions.map((production) => new Production(production)));
+                ipc.removeAllListeners('getProdByDepartment');
+            })
+        });
+    }
+
     /**
      *
      * @param entityName

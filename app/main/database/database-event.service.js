@@ -15,6 +15,12 @@ class DatabaseEventInterface {
             this.listenGetEvent(this.entityNamesList[i]);
         }
 
+        ipc.on('getProdByDepartment', (event, data) => {
+
+            this.databaseService.getProductionsByDepartment(data.department)
+                .then((res) => DatabaseEventInterface.resolveAndSend(event, 'getProdByDepartment', res));
+        });
+
         ipc.on('remove', (event, data) => {
             let object = {id: data.object.id, rev: data.object.rev};
 
@@ -63,6 +69,7 @@ class DatabaseEventInterface {
         ipc.removeAllListeners('remove');
         ipc.removeAllListeners('replicate');
         ipc.removeAllListeners('sync');
+        ipc.removeAllListeners('getProdByDepartment');
     }
 
     listenGetEvent(entityName) {

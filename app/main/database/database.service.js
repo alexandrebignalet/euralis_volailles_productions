@@ -206,11 +206,7 @@ class DatabaseService {
     }
 
     getProductionsByDepartment(department) {
-        const findOpts  = {
-            selector: {
-                'data.department': { '$eq': department }
-            }
-        };
+        const findOpts  = { selector: {'$or': [{'data.department': {'$eq': department}}, {'data.department': {'$eq': 'Others'}}]}};
 
         return this.db.find(findOpts)
             .then((data) => this.db.rel.parseRelDocs('production', data.docs))

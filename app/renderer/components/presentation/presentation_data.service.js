@@ -1,27 +1,25 @@
 export class PresentationDataService {
-    constructor(PouchDataService) {
+    constructor(PouchDataService, FACILITIES_TYPES) {
         'ngInject';
         this.PouchDataService = PouchDataService;
-        this.entityName = 'production'
+        this.FACILITIES_TYPES = FACILITIES_TYPES
     }
 
-    getProduction(department, facilityType) {
+    getProdByDeptAndFacilityType(department) {
 
-        return this.PouchDataService.get(this.entityName)
+        return this.PouchDataService.getProdByDept(department)
             .then((productions) => {
-            console.log(productions);
-                    let productionsChoosen = [];
-
-                    productions.forEach((production) => {
-                        if ( (production.department === department || production.department === 'Others') &&
-                            production.facility.type.key === facilityType.key)
-                        {
-                            productionsChoosen.push(production);
+                        let result = {};
+                        for(let i = 0; i < productions.length ; i++) {
+                            this.FACILITIES_TYPES.forEach((type) => {
+                                if(!result.hasOwnProperty(type.key)) result[type.key] = [];
+                                if(productions[i].facility.type.key === type.key) {
+                                    result[type.key].push(productions[i]);
+                                }
+                            });
                         }
-                    });
-                    
-                    return productionsChoosen;
-                }
-            );
+
+                        return Object.keys(result).map((key) => result[key]);
+                });
     }
 }

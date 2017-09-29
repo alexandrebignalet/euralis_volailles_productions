@@ -9,8 +9,7 @@ import vol from '../../images/eurvol.jpg';
 import elev from '../../images/elev.png';
 import avigers from '../../images/avigers.png';
 import qualisud from '../../images/qualisud.png';
-import electron from 'electron';
-const ipc = electron.ipcRenderer;
+
 const filiere = [];
 filiere['sanders'] = sanders;
 filiere['eurvol'] = eurvol;
@@ -25,7 +24,7 @@ export const HomeComponent = {
     },
     template,
     controller: class HomeController {
-        constructor(DEPARTMENTS, PouchDataService, $timeout) {
+        constructor(DEPARTMENTS) {
             'ngInject';
 
             this.banner = banner;
@@ -33,31 +32,12 @@ export const HomeComponent = {
             this.imagesFiliere = filiere;
 
             this.departments = DEPARTMENTS;
-            this.PouchDataService = PouchDataService;
             this.videoPlayed = null;
-            
-            this.inProgress = false;
-
-
-
-            this.$timeout = $timeout;
         }
 
         $onInit() {
             if(this.videos.length > 0)
                 this.PouchDataService.load(this.videos[0].getFile());
-        }
-
-        load() {
-            this.inProgress = true;
-            ipc.send('sync');
-
-            return new Promise((resolve) => {
-                ipc.on('sync', (e,d) => {
-                    this.inProgress = false;
-                    resolve();
-                })
-            })
         }
 
         selectVideo(video) {

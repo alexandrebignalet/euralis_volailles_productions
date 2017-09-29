@@ -4,5 +4,11 @@ import './presentation.scss';
 export const PresentationComponent = {
     bindings: { productions: '<' },
     template,
-    restrict: 'E'
+    controller: class Controller {
+        constructor(){}
+        
+        $onInit(){
+            console.log(this.productions);
+        }
+    }
 };

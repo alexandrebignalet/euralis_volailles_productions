@@ -9,6 +9,11 @@ import vol from '../../images/eurvol.jpg';
 import elev from '../../images/elev.png';
 import avigers from '../../images/avigers.png';
 import qualisud from '../../images/qualisud.png';
+import bio from '../../images/logo_bio.png';
+import sequoia from '../../images/logo_sequoia.jpg';
+import tag_gers from '../../images/gers_tag.png';
+import tag_landes from '../../images/landes_tag.png';
+import tag_sudouest from '../../images/sudouest_tag.png';
 
 const filiere = [];
 filiere['sanders'] = sanders;
@@ -17,6 +22,12 @@ filiere['vol'] = vol;
 filiere['elev'] = elev;
 filiere['avigers'] = avigers;
 filiere['qualisud'] = qualisud;
+filiere['sequoia'] = sequoia;
+filiere['bio'] = bio;
+filiere['tags'] = [];
+filiere['tags']['gers'] = tag_gers;
+filiere['tags']['sudouest'] = tag_sudouest;
+filiere['tags']['landes'] = tag_landes;
 
 export const HomeComponent = {
     bindings: {
@@ -24,7 +35,7 @@ export const HomeComponent = {
     },
     template,
     controller: class HomeController {
-        constructor(DEPARTMENTS) {
+        constructor(DEPARTMENTS, PouchDataService) {
             'ngInject';
 
             this.banner = banner;
@@ -33,6 +44,8 @@ export const HomeComponent = {
 
             this.departments = DEPARTMENTS;
             this.videoPlayed = null;
+
+            this.PouchDataService = PouchDataService;
         }
 
         $onInit() {

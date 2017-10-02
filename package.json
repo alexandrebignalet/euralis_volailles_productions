@@ -108,12 +108,12 @@
     "webpack-dev-server": "^2.4.5",
     "webpack-hot-middleware": "^2.6.0",
     "webpack-target-electron-renderer": "^0.4.0",
-    "yargs": "^3.9.0"
+    "yargs": "^3.32.0"
   },
   "scripts": {
     "release-win": "build -w --x64 --ia32",
     "release": "build",
-    "rebuild": "electron-rebuild -f -w sqlite3 -v 1.7",
+    "rebuild": "electron-rebuild -f -w sqlite3 -v 1.4",
     "test": "gulp test",
     "serve": "gulp serve",
     "webpack": "gulp webpack"

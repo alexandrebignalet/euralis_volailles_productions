@@ -6,8 +6,8 @@
     </h1><hr>
 
     <div class="row text-center">
-        <div class="col-md-3 col-md-offset-3">
-            <label for="facility_nb" class="control-label">Type de bâtiment</label>
+        <div class="col-md-3">
+            <label for="facility_nb" class="control-label">Nombre de bâtiment</label>
             <input class="form-control" type="number" id="facility_nb" name="facility_nb" ng-model="vm.facilityNb" required />
         </div>
         <div class="col-md-3">
@@ -18,7 +18,22 @@
             </select>
 
         </div>
-        <div class="col-md-8 text-center" ng-if="vm.facilityType" style="padding-top: 10px;">
+        <div class="col-md-3" ng-if="vm.investmentChoosen" ng-init="showDialog = false">
+            <a href ng-click="showDialog = !showDialog"><span class="glyphicon glyphicon-plus"></span></a>
+            <div ng-if="showDialog">
+                <div class="form-group">
+                    <label for="help_euralis" class="control-label">Aides EURALIS</label>
+                    <input class="form-control" type="number" id="help_euralis" name="help_euralis" ng-model="vm.investmentChoosen.helpEuralis" required />
+                </div>
+                <div class="form-group">
+                    <label for="subsidies" class="control-label">Subventions AREA PCAE</label>
+                    <input class="form-control" type="number" id="subsidies" name="subsidies" ng-model="vm.investmentChoosen.subsidies" required />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center" ng-if="vm.facilityType" style="padding-top: 10px;">
             <ul class="nav nav-pills">
                 <li ng-repeat="production in vm.productions | facility: vm.facilityType : vm.facilityNb track by production.id"
                     ng-class="{'active': vm.productionsChoosen.indexOf(production) != -1}">

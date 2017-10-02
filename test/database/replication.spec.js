@@ -6,10 +6,10 @@ global.navigator = {
     userAgent: 'node.js'
 };
 
-const ATTACHMENT_SIZE = 500000;
+const ATTACHMENT_SIZE = 500;
 const SYNC_TIMEOUT = 100000000;
 const INDEX_NUMBER = 1;
-const BASE_DOC_NUMBER = 100000;
+const BASE_DOC_NUMBER = 100;
 
 describe('DatabaseServiceTest', () => {
     let databaseService = DatabaseService;
@@ -21,7 +21,7 @@ describe('DatabaseServiceTest', () => {
 
     after(() => {
         return databaseService.destroy()
-            .then(() => databaseService.remoteDb.destroy())
+            // .then(() => databaseService.remoteDb.destroy())
             .then(() => databaseService.init())
             .catch(() => databaseService.init());
     });
@@ -40,25 +40,25 @@ describe('DatabaseServiceTest', () => {
     });
 
     describe('database sync process test', () => {
-        it('should replicate to remote server', () => {
-            const WHO_REPLICATE = 'local';
-
-            let localDbTotalRows;
-            let remoteDbTotalRowsAfterReplication;
-
-            return databaseService.db.allDocs()
-                .then((data) => {
-                    localDbTotalRows = data.total_rows;
-                    console.log("local db total docs before rep: ", localDbTotalRows);
-                })
-                .then(() => databaseService.replicate(WHO_REPLICATE).then(() => { console.log("Replication done.");}))
-                .then(() => databaseService.remoteDb.allDocs())
-                .then((data) => {
-                    remoteDbTotalRowsAfterReplication = data.total_rows;
-                    console.log("remote db total docs after rep: ", remoteDbTotalRowsAfterReplication);
-                    assert(localDbTotalRows === remoteDbTotalRowsAfterReplication);
-                });
-        }).timeout(SYNC_TIMEOUT);
+        // it('should replicate to remote server', () => {
+        //     const WHO_REPLICATE = 'local';
+        //
+        //     let localDbTotalRows;
+        //     let remoteDbTotalRowsAfterReplication;
+        //
+        //     return databaseService.db.allDocs()
+        //         .then((data) => {
+        //             localDbTotalRows = data.total_rows;
+        //             console.log("local db total docs before rep: ", localDbTotalRows);
+        //         })
+        //         .then(() => databaseService.replicate(WHO_REPLICATE).then(() => { console.log("Replication done.");}))
+        //         .then(() => databaseService.remoteDb.allDocs())
+        //         .then((data) => {
+        //             remoteDbTotalRowsAfterReplication = data.total_rows;
+        //             console.log("remote db total docs after rep: ", remoteDbTotalRowsAfterReplication);
+        //             assert(localDbTotalRows === remoteDbTotalRowsAfterReplication);
+        //         });
+        // }).timeout(SYNC_TIMEOUT);
         //
         // it('should replicate from remote server', () => {
         //     const WHO_REPLICATE = 'server';
@@ -113,34 +113,35 @@ function createDocWithAttachment(databaseService, id) {
         contributions:1, disinfection:1, commodities:1,
         litter:1, catching:1, insurances:1});
 
-    // const attachment = {
-    //     entityName: 'facilityCharges',
-    //     name:'foo.png',
-    //     base64: randomBuffer(ATTACHMENT_SIZE),
-    //     contentType:'image/png'
-    // };
+    const attachment = {
+        entityName: 'facilityCharges',
+        name:'foo.png',
+        base64: 'toto',
+        contentType:'image/png'
+    };
 
-    // if (id%3 ===0) {
-    //
-    //     if (id%6 === 0) {
-    //         return databaseService.save('facilityCharges', facilityCharges)
-    //             .then(data => {
-    //                 attachment.obj = data.facilitiesCharges[0];
-    //                 return databaseService.putAttachment(attachment);
-    //             })
-    //             .then(data => {
-    //                 attachment.obj = data.facilitiesCharges[0];
-    //                 attachment.name = 'foo2.png';
-    //                 return databaseService.putAttachment(attachment);
-    //             });
-    //     }
-    //
-    //     return databaseService.save('facilityCharges', facilityCharges)
-    //         .then(data => {
-    //             attachment.obj = data.facilitiesCharges[0];
-    //             return databaseService.putAttachment(attachment);
-    //         });
-    // }
+    if (id%3 ===0) {
+
+        if (id%6 === 0) {
+            return databaseService.save('facilityCharges', facilityCharges)
+                .then(data => {
+                    attachment.obj = data.facilitiesCharges[0];
+                    return databaseService.putAttachment(attachment);
+                })
+                .then(data => {
+                    attachment.obj = data.facilitiesCharges[0];
+                    attachment.name = 'foo2.png';
+                    return databaseService.putAttachment(attachment);
+                });
+        }
+
+        return databaseService.save('facilityCharges', facilityCharges)
+            .then(data => {
+                console.log(data);
+                attachment.obj = data.facilitiesCharges[0];
+                return databaseService.putAttachment(attachment);
+            });
+    }
 
     return databaseService.save('facilityCharges', facilityCharges);
 }

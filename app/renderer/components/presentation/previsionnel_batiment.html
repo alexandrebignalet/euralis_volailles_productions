@@ -28,8 +28,8 @@
              heading="{{production.name | uppercase}} ({{production.facility.size}}m²)">
         <br><br>
         <div class="row">
-            <div class="col-lg-12 col-md-12 col-xs-12">
-                <image-loader model="production.facility"></image-loader>
+            <div class="col-lg-8 col-md-8 col-xs-8 col-md-offset-2 col-lg-offset-2 col-xs-offset-2">
+                <image-loader model="production.facility" height="50"></image-loader>
             </div>
         </div>
         <br><br>
@@ -87,7 +87,7 @@
                     </table>
                 </div>
             <div class="col-lg-6 col-md-6 col-xs-12">
-                <image-loader model="production"></image-loader>
+                <image-loader model="production" height="50"></image-loader>
             </div>
         </div>
         <div class="row text-center">
@@ -105,49 +105,49 @@
                         <td>{{  production.getChicksPaid() * production.facility.facilityCharges.chickPrice | number:0 }} €</td>
                     </tr>
                     <tr>
+                        <th>Aliment (€/t)</th>
+                        <td>{{ production.foodPrice * 1000 }} €/t</td>
+                        <td>{{ production.foodPrice * production.getDeliveredChicks() | number:0 }} €</td>
+                    </tr>
+                    <tr>
                         <th>Cotisations</th>
                         <td>{{ production.facility.facilityCharges.contributions * 1000 }} €</td>
-                        <td>{{ production.facility.facilityCharges.contributions * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.contributions * production.getDeliveredChicks() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Chauffage</th>
                         <td>{{ production.facility.facilityCharges.warming * 1000 }} €</td>
-                        <td>{{ production.facility.facilityCharges.warming * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.warming * production.getDeliveredChicks() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Frais vétérinaires</th>
                         <td>{{ production.facility.facilityCharges.vetPrice * 1000 }} €</td>
-                        <td>{{ production.facility.facilityCharges.vetPrice * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.vetPrice * production.getDeliveredChicks() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Désinfection</th>
                         <td>{{ production.facility.facilityCharges.disinfection * 1000 }} €</td>
-                        <td>{{ production.facility.facilityCharges.disinfection * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.disinfection * production.getDeliveredChicks() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Eau - Electricité - Divers</th>
                         <td>{{ production.facility.facilityCharges.commodities * 1000 }} €</td>
-                        <td>{{ production.facility.facilityCharges.commodities * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.commodities * production.getDeliveredChicks() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Litière</th>
                         <td>{{ production.facility.facilityCharges.litter * 1000 }} €</td>
-                        <td>{{ production.facility.facilityCharges.litter * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.litter * production.getDeliveredChicks() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Attrapage</th>
                         <td>{{ production.facility.facilityCharges.catching * 1000 }} €</td>
-                        <td>{{ production.facility.facilityCharges.catching * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.catching * production.getDeliveredChicks() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Assurances</th>
                         <td>{{ production.facility.facilityCharges.insurances * 1000 }} €</td>
-                        <td>{{ production.facility.facilityCharges.insurances * production.getChickNb() | number:0 }} €</td>
-                    </tr>
-                    <tr>
-                        <th>Aliment (€/t)</th>
-                        <td>{{ production.foodPrice * 1000 }} €/t</td>
-                        <td>{{ production.foodPrice * production.getChickNb() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.insurances * production.getDeliveredChicks() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <td><i>Charges / tête</i></td>
@@ -177,8 +177,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="col-md-2">Documents</th>
+                        <th class="col-md-2">
+                            Documents
+                        </th>
                         <td ng-repeat="investment in production.facility.investments">
+                            <span class="glyphicon glyphicon-alert" style="color:red" uib-tooltip="Architecte?"></span>
                             {{ investment.papers }}€
                         </td>
                     </tr>
@@ -188,7 +191,6 @@
                             {{ investment.getMasonry() }}€
                         </td>
                     </tr>
-
                     <tr>
                         <th class="col-md-2">Livraison et montage bâtiment</th>
                         <td ng-repeat="investment in production.facility.investments">
@@ -235,9 +237,9 @@
             </div>
         </div>
         <div class="row text-center">
-            <div class="col-md-{{12 / production.facility.investments.length}}" ng-repeat="investment in production.facility.investments">
-                <h3>{{investment.desgination | uppercase }}</h3>
-                <image-loader model="investment"></image-loader>
+            <div class="col-xs-8 col-lg-8 col-md-8 col-md-offset-2 col-xs-offset-2 col-lg-offset-2" ng-repeat="investment in production.facility.investments">
+                <h3>{{investment.designation | uppercase }}</h3>
+                <image-loader model="investment" height="50"></image-loader>
                 <br><br>
             </div>
         </div>
@@ -284,6 +286,7 @@
                             <div class="col-md-1">Annuité</div>
                             <div class="col-md-4">
                                 <select class="form-control" id="annuity" ng-model="investmentChoosen" required>
+                                    <option ng-value="0" selected="selected">Pas d'investissement</option>
                                     <option ng-repeat="investment in production.facility.investments" ng-value="investment">{{investment.name | uppercase}}</option>
                                 </select>
                             </div>
@@ -299,11 +302,13 @@
                             </div>
                         </form>
                     </th>
-                    <th>{{ investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest) | number:0 }}€</th>
+                    <th ng-if="investmentChoosen != 0">{{ investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest) | number:0 }}€</th>
+                    <th ng-if="investmentChoosen == 0">{{ 0 | number:0 }}€</th>
                 </tr>
                 <tr>
                     <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>
-                    <th>{{ production.getAnnualNetMargin(investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest)) | number:0 }}€</th>
+                    <th ng-if="investmentChoosen != 0">{{ production.getAnnualNetMargin(investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest)) | number:0 }}€</th>
+                    <th ng-if="investmentChoosen == 0">{{ production.getAnnualNetMargin(0) | number:0 }}€</th>
                 </tr>
             </table>
             <p>Temps travail: {{vm.facilityNb}}h/jour en moyenne</p>

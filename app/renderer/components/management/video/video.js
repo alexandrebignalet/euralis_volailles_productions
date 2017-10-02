@@ -8,7 +8,6 @@ export class Video {
         let size = video.attachments[fileName].length;
         let file = new Blob([video.attachments[fileName].data], {size, type});
         file.name = fileName;
-console.log(video);
         this.attachments = [file];
     }
 

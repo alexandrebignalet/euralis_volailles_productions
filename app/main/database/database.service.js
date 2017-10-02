@@ -174,8 +174,8 @@ class DatabaseService {
         console.log(`replication from ${from.name} to ${to.name}`);
 
         return Promise.all([
-            from.dump(stream).then(data => console.log(`DATA dump: `,data)).catch(err => console.log(`ERREUR dump: `, err)),
-            to.load(stream).then(data => console.log(`DATA load: `,data)).catch(err => console.log(`ERREUR load: `, err))
+            from.dump(stream),
+            to.load(stream)
         ])
             .then(() => {
                 console.log(`Replication from ${who} SUCCESS !`);
@@ -307,5 +307,5 @@ class DatabaseService {
         }
     }
 }
-
+console.log(process.env.NODE_ENV);
 module.exports = new DatabaseService(process.env.NODE_ENV);

@@ -35,7 +35,7 @@ export const HomeComponent = {
     },
     template,
     controller: class HomeController {
-        constructor(DEPARTMENTS, PouchDataService) {
+        constructor(DEPARTMENTS, PouchDataService, PDFGenerator) {
             'ngInject';
 
             this.banner = banner;
@@ -46,6 +46,7 @@ export const HomeComponent = {
             this.videoPlayed = null;
 
             this.PouchDataService = PouchDataService;
+            this.PDFGenerator = PDFGenerator;
         }
 
         $onInit() {
@@ -58,6 +59,14 @@ export const HomeComponent = {
             this.videoPlayed = video.id;
             this.PouchDataService.load(video.getFile());
         }
+
+        /////////////////////////
+
+        generate() {
+            this.PDFGenerator.generate();
+        }
+
+        /////////////////////////
     },
     controllerAs: 'vm'
 };

@@ -12,6 +12,7 @@ import {FileUploaderModule} from './file_uploader/file_uploader.module';
 import {RotationModule} from './rotation/rotation.module';
 
 import {ModalService} from '../service/modal.service';
+import {PDFGenerator} from '../service/pdf-generator.service';
 import {SyncDialogComponent} from './sync/sync-dialog.component';
 
 toastr.options = {
@@ -31,6 +32,7 @@ toastr.options = {
     "showMethod": "fadeIn",
     "hideMethod": "fadeOut"
 };
+
 
 export const ComponentsModule = angular.module('ComponentsModule', [
     SidebarModule,
@@ -85,6 +87,8 @@ export const ComponentsModule = angular.module('ComponentsModule', [
         // });
     })
     .service('ModalService', ModalService)
+    .service('PDFGenerator', PDFGenerator)
     .component('syncDialog', SyncDialogComponent)
     .constant('toastr', toastr)
     .name;
+

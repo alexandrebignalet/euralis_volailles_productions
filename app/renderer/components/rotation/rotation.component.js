@@ -4,7 +4,7 @@ export const RotationComponent = {
     bindings: { productions: '<' },
     template,
     controller: class RotationController {
-        constructor(FACILITIES_TYPES, facilityFilter, $scope, $timeout){
+        constructor(FACILITIES_TYPES, facilityFilter, $scope, $timeout, PDFGenerator){
             'ngInject';
 
             this.facilityTypes = FACILITIES_TYPES;
@@ -18,6 +18,8 @@ export const RotationComponent = {
                 annuityDuration: 15,
                 interest: 2.5
             };
+
+            this.PDFGenerator = PDFGenerator;
 
             $scope.$watch('vm.facilityType', () => {
                 this.timeout(() => {
@@ -60,6 +62,10 @@ export const RotationComponent = {
             return this.productionsChoosen.reduce((acc, production) => {
                 return  acc + production.getBrutMargin();
             }, 0);
+        }
+
+        generatePDF(nbFacilities, productions, investment, annuity) {
+            this.PDFGenerator.generateRotations(nbFacilities, productions, investment, annuity);
         }
 
         getNetMarginForChoosenProductions(annuity) { return this.getTotalProductionsChoosen() - annuity; }

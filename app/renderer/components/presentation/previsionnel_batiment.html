@@ -28,6 +28,14 @@
              heading="{{production.name | uppercase}} ({{production.facility.size}}m²)">
         <br><br>
         <div class="row">
+            <div class="col-md-1">
+                <button
+                    ng-click="vm.generatePDF(production, investmentChoosen, date, vm.annuityDuration, vm.interest)"
+                    ng-disabled="!production || !investmentChoosen || !date || !vm.annuityDuration || !vm.interest"
+                    class="btn btn-default">
+                    <span class="glyphicon glyphicon-print"></span>
+                </button>
+            </div>
             <div class="col-lg-8 col-md-8 col-xs-8 col-md-offset-2 col-lg-offset-2 col-xs-offset-2">
                 <image-loader model="production.facility" height="50"></image-loader>
             </div>
@@ -65,15 +73,15 @@
                             <td>{{ production.getVaccinesPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Prix aliment producteur (farine, < 12.5t) en euros/t</th>
+                            <th>Prix aliment producteur (farine, < 12.5t) en €/t</th>
                             <td>{{ production.getFoodPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Prix reprise classé en euros/t (bonif 54 euros/t incluse)</th>
+                            <th>Prix reprise classé en euros/t (bonif 54 €/t incluse)</th>
                             <td>{{ production.getClassedPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Prix reprise déclassé en euros</th>
+                            <th>Prix reprise déclassé en €</th>
                             <td>{{ production.getDeclassedPrice() }} €</td>
                         </tr>
                         <tr>
@@ -255,7 +263,7 @@
                     <th>{{ production.getSoldChicks() | number:0 }}</th>
                 </tr>
                 <tr>
-                    <th>Prix de vente moyen par tonne</th>
+                    <th>Prix de vente moyen /t</th>
                     <th>{{ production.getAvgWagesPerTon() | number:0 }}€</th>
                 </tr>
                 <tr>

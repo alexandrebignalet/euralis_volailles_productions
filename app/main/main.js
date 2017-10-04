@@ -34,16 +34,6 @@ function createWindow () {
         slashes: true
     }));
 
-    const menuTemplate = [
-        {
-            label: 'Imprimer',
-            click: printToPDF
-
-        }
-    ];
-    const menu = Menu.buildFromTemplate(menuTemplate);
-    Menu.setApplicationMenu(menu);
-
     // mainWindow.maximize();
 
     // Open the DevTools.
@@ -69,36 +59,6 @@ app.on('window-all-closed', () => {
     databaseEventListener.close();
     app.quit();
 });
-
-ipc.on('print-to-pdf', (event) => {
-    const pdfPath = path.join(os.tmpdir(), 'print.pdf');
-    console.log(pdfPath);
-    const win = BrowserWindow.fromWebContents(event.sender);
-
-    win.webContents.printToPDF({printBackground: false}, (err, data) => {
-        if(err) return console.log(err.message);
-
-        fs.writeFile(pdfPath, data, (err) => {
-            if(err) return console.log(err.message);
-            shell.openExternal('file://' + pdfPath);
-            event.sender.send('wrote-pdf', pdfPath);
-        });
-    });
-});
-
-function printToPDF() {
-    const pdfPath = path.join(os.tmpdir(), 'print.pdf');
-    const win = BrowserWindow.getFocusedWindow();
-
-    win.webContents.printToPDF({printBackground: false}, (err, data) => {
-        if(err) return console.log(err.message);
-
-        fs.writeFile(pdfPath, data, (err) => {
-            if(err) return console.log(err.message);
-            shell.openExternal('file://' + pdfPath);
-        });
-    });
-}
 
 app.on('activate', () => {
         // On macOS it's common to re-create a window in the app when the

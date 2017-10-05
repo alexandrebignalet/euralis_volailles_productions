@@ -51,12 +51,14 @@ class DatabaseEventInterface {
 
         ipc.on('replicate', (event, data) => {
             this.databaseService.replicate(data.who)
-                .then((res) => DatabaseEventInterface.resolveAndSend(event, 'replicate', res));
+                .then((res) => DatabaseEventInterface.resolveAndSend(event, 'replicate', res))
+                .catch((err) => DatabaseEventInterface.resolveAndSend(event, 'replicate', err));
         });
 
         ipc.on('sync', (event) => {
             this.databaseService.db.sync(this.databaseService.remoteDb)
                 .then((res) => DatabaseEventInterface.resolveAndSend(event, 'sync', res))
+                .catch((err) => DatabaseEventInterface.resolveAndSend(event, 'sync', err));
         });
     }
 

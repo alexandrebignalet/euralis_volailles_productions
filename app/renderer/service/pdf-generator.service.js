@@ -25,7 +25,7 @@ export class PDFGenerator {
     generatePrevisionnel(production, investment, date, annuity) {
 
         let docDefinition = {
-            content: this.putHeader(`\nPREVISIONNEL ${production.facilitiesNb} * ${production.facility.size} m² ${production.name}`),
+            content: this.putHeader(`\nPREVISIONNEL ${production.facilitiesNb} * ${production.facility.size} m² \n ${production.name}`),
             styles: {
                 header: {
                     fontSize: 16,
@@ -234,14 +234,11 @@ export class PDFGenerator {
         contentToConcat.push('Document non contractuel');
 
         docDefinition.content = docDefinition.content.concat(contentToConcat);
-        
-        console.log(docDefinition, contentToConcat);
 
         pdfMake.createPdf(docDefinition).download('previsionnel.pdf');
     }
 
     generateRotations(nbFacilities, productions, investment, annuity) {
-        console.log(nbFacilities, productions, investment, annuity);
         let docDefinition = {
             content: this.putHeader('\n ROTATIONS REALISABLES \n  POUR UNE SURFACE DE ' + productions[0].facility.size * nbFacilities + 'm²'),
             styles: {
@@ -305,20 +302,20 @@ export class PDFGenerator {
                 productions[i].name,
                 productions[i].facility.size * nbFacilities,
                 productions[i].fieldSpace,
-                Math.round(productions[i].facility.size / productions[i].chickNb * 100) / 100,
+                Math.round(productions[i].chickNb / productions[i].facility.size * 100) / 100,
                 productions[i].chickNb * nbFacilities,
                 1,
-                Math.round(productions[i].getSoldChicks() * 100) / 100,
-                Math.round(productions[i].getBrutMargin() / productions[i].getSoldChicks() * 100 ) / 100,
-                Math.round(productions[i].getBrutMargin()*100)/100
+                Math.round(productions[i].getSoldChicks()),
+                Math.round(productions[i].getBrutMargin() / productions[i].getSoldChicks() * 100) / 100,
+                Math.round(productions[i].getBrutMargin())
             ])
         }
 
-        table.table.body.push(['', '', '', '', '', '', '', '',
-            Math.round(productions.reduce((acc, production) => {
-                return  acc + production.getBrutMargin();
-            }, 0) * 100) /100
-        ]);
+        let total = productions.reduce((acc, production) => {
+            return  acc + production.getBrutMargin();
+        }, 0);
+
+        table.table.body.push(['', '', '', '', '', '', '', '', {text: Math.round(total) + '€', fontSize: 13}]);
 
         docDefinition.content = docDefinition.content.concat(table);
 
@@ -356,13 +353,14 @@ export class PDFGenerator {
                     text: ' à'
                 },
                 {
-                    width: 75,
+                    width: 60,
                     text: annuity.interest + '%)'
                 },
                 {
-                    width: 'auto',
+                    width: 100,
                     text: Math.round(investment.getAnnuity(annuity.duration, annuity.interest)) + '€',
-                    bold: true
+                    bold: true,
+                    fontSize: 13
                 }
             ]
         });
@@ -375,7 +373,7 @@ export class PDFGenerator {
                 },
                 {
                     width: 330,
-                    text: 'Avec ' + investment.name + ' ' + investment.designation + '(AREA et aides EURALIS déduites)',
+                    text: 'Avec ' + investment.name + ' ' + investment.designation + '\n(AREA et aides EURALIS déduites)',
                 },
                 {
                     width: 100,
@@ -391,24 +389,21 @@ export class PDFGenerator {
                     text:''
                 },
                 {
-                    width: 150,
+                    width: 160,
                     text: 'Marge nette avant MSA',
                     bold:true
                 },
                 {
-                    width: 'auto',
-                    text: Math.round(productions.reduce((acc, production) => {
-                        return  acc + production.getBrutMargin();
-                    }, 0) - investment.getAnnuity(annuity.duration, annuity.interest) * 100) / 100 + '€',
-                    bold: true
+                    width: 100,
+                    text: Math.round(total - investment.getAnnuity(annuity.duration, annuity.interest)) + '€',
+                    bold: true,
+                    fontSize: 13
                 }
             ]
         });
         docDefinition.content.push('\n');
         docDefinition.content.push({text: '\n\nMarge brute = Ventes - poussins, aliment, cotis, prophylaxie, gaz, eau, edf, paille, attrapage, chaponnage, assurances', bold:true, fontSize: 9});
         docDefinition.content.push({text: '\n\n\n(document non contractuel)', fontSize: 9});
-
-        console.log(docDefinition);
 
         pdfMake.createPdf(docDefinition).download('rotations.pdf');
     }

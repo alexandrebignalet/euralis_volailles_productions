@@ -18,14 +18,19 @@
             </select>
 
         </div>
-        <div class="col-md-1" ng-if="vm.productionsChoosen.length > 0 && vm.investmentChoosen && vm.investment.interest && vm.investment.annuityDuration">
-            <button ng-click="vm.generatePDF(vm.facilityNb, vm.productionsChoosen, vm.investmentChoosen, {interest: vm.investment.interest, duration: vm.investment.annuityDuration})"
-                    class="btn btn-default">
-                <span class="glyphicon glyphicon-print"></span>
-            </button>
-        </div>
-        <div class="col-md-3" ng-if="vm.investmentChoosen" ng-init="showDialog = false">
-            <a href ng-click="showDialog = !showDialog"><span class="glyphicon glyphicon-plus"></span></a>
+
+        <div class="col-md-3 pull-right" ng-if="vm.investmentChoosen" ng-init="showDialog = false" style="padding-top: 4%">
+            <div class="input-group" id="input_options">
+                <button ng-click="showDialog = !showDialog" class="btn btn-info">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+                <button ng-click="vm.generatePDF(vm.facilityNb, vm.productionsChoosen, vm.investmentChoosen, {interest: vm.investment.interest, duration: vm.investment.annuityDuration})"
+                        ng-if="vm.productionsChoosen.length > 0 && vm.investment.interest && vm.investment.annuityDuration"
+                        class="btn btn-default">
+                    <span class="glyphicon glyphicon-print"></span>
+                </button>
+            </div>
+
             <div ng-if="showDialog">
                 <div class="form-group">
                     <label for="help_euralis" class="control-label">Aides EURALIS</label>

@@ -86,6 +86,17 @@ export class PouchDataService {
             }));
     }
 
+    synchronise() {
+        ipc.send('sync');
+
+        return new Promise((resolve) => {
+            ipc.on('sync', (event, data) => {
+                resolve(data);
+                ipc.removeAllListeners('sync');
+            })
+        });
+    }
+
     toAttachmentFormat(entityName, attachments) {
 
         return Promise.all(

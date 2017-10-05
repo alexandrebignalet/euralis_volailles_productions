@@ -3,8 +3,8 @@ dist/
 .idea/
 euralis_volailles_db
 euralis_volailles_test_db
-euralis_volailles_db-dev/
-euralis_volailles_db-test/
+euralis_volailles_db-dev*
+euralis_volailles_db-test*
 build/electron/webapp/
 docker/lib/
 !docker/lib/.gitkeep

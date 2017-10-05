@@ -1,6 +1,6 @@
 import template from './navbar.html';
 import './navbar.scss';
-import logo from '../../images/logo.png';
+import logo from '../../images/logo_euralis.gif';
 
 export const NavbarComponent = {
     bindings: {},

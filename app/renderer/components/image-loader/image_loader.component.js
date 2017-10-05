@@ -2,7 +2,8 @@ import template from './image_loader.html';
 
 export const ImageLoaderComponent = {
     bindings: {
-        model: '<'
+        model: '<',
+        height: '<'
     },
     template,
     controller: class ImageLoaderController {

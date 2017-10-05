@@ -5,18 +5,20 @@ export const PrevisionnelBatimentComponent = {
     bindings: { productions: '<' },
     template,
     controller: class PrevisionnelBatimentController {
-        constructor($scope, $timeout){
+        constructor($scope, $timeout, PDFGenerator){
             'ngInject';
             this.scope = $scope;
             this.timeout = $timeout;
             this.facilityNb = 2;
-            this.investmentChoosen = null;
+            this.investmentChoosen = 0;
             this.annuityDuration = 15;
             this.interest = 2.5;
             this.sliderOptions = {
                 floor: 1,
                 ceil: 20
             };
+
+            this.PDFGenerator = PDFGenerator;
 
             this.pickerIsOpen = false;
             this.format = 'dd/MM/yyyy';
@@ -35,6 +37,11 @@ export const PrevisionnelBatimentComponent = {
 
         openPicker() {
             this.pickerIsOpen = true;
+        }
+
+        generatePDF(production, investment, date, duration, interest) {
+            const annuity = { duration, interest };
+            this.PDFGenerator.generatePrevisionnel(production, investment, date, annuity);
         }
 
         update() {

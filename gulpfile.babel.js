@@ -34,16 +34,18 @@ gulp.task('karma', (done) => {
     }).start();
 });
 
-gulp.task('test', ['karma'], () => {
+gulp.task('mocha', () => {
 
     process.env.NODE_ENV = 'test';
 
     return gulp.src(['test/database/**/*.js'], { read: false })
-        .pipe($.mocha({ reporter: 'spec' }))
+        .pipe($.electronMocha({ reporter: 'spec' }))
         .on('error', $.util.log);
 });
 
-gulp.task('webpack', ['compile'], () => process.env.NODE_ENV = 'prod');
+gulp.task('test', ['karma', 'mocha'], () => process.env.NODE_ENV = 'test');
+
+gulp.task('webpack', ['compile']);
 
 gulp.task('electron-dev', ['compile'], () => {
     process.env.NODE_ENV = 'dev';

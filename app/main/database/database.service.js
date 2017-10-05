@@ -54,7 +54,7 @@ const databaseSchema = [
 class DatabaseService {
     constructor(env) {
         this.env = env;
-        if(this.env === undefined) this.env = 'test';
+        if(this.env === undefined) this.env = 'prod';
 
         this.dbOpts = { auto_compaction: true};
         this.remoteDbOpts = {

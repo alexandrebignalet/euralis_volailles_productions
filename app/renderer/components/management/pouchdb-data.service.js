@@ -97,6 +97,18 @@ export class PouchDataService {
         });
     }
 
+    // replicate() {
+    //     let who = 'local';
+    //     ipc.send('replicate', {who});
+    //
+    //     return new Promise((resolve) => {
+    //         ipc.on('replicate', (event, data) => {
+    //             resolve(data);
+    //             ipc.removeAllListeners('replicate');
+    //         })
+    //     });
+    // }
+
     toAttachmentFormat(entityName, attachments) {
 
         return Promise.all(

@@ -88,21 +88,21 @@ export const SyncDialogComponent = {
                 });
         }
 
-        replicate() {
-            this.isSyncing = true;
-            this.PouchDataService.replicate()
-                .then((data) => {
-                    console.log(data);
-                    this.isSyncing = false;
-                    this.scope.$apply();
-                    this.close();
-                })
-                .catch((err) => {
-                    console.log(err);
-                    this.isSyncing = false;
-                    this.scope.$apply();
-                });
-        }
+        // replicate() {
+        //     this.isSyncing = true;
+        //     this.PouchDataService.replicate()
+        //         .then((data) => {
+        //             console.log(data);
+        //             this.isSyncing = false;
+        //             this.scope.$apply();
+        //             this.close();
+        //         })
+        //         .catch((err) => {
+        //             console.log(err);
+        //             this.isSyncing = false;
+        //             this.scope.$apply();
+        //         });
+        // }
 
         // destroy() {
         //     this.isSyncing = true;

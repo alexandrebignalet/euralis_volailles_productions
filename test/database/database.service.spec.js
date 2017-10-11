@@ -3,31 +3,31 @@ import {FacilityCharges} from '../../app/renderer/components/management/facility
 import {Production} from '../../app/renderer/components/management/production/production';
 import {Facility} from '../../app/renderer/components/management/facility/facility';
 import {Investment} from '../../app/renderer/components/management/investment/investment';
-import DatabaseService from '../../app/main/database/database.service.js';
-
-global.navigator = {
-    userAgent: 'node.js'
-};
+import {PouchDbService} from '../../app/renderer/database/pouchdb.service';
+import {randomBuffer} from './utils.spec';
+// global.navigator = {
+//     userAgent: 'node.js'
+// };
 
 const ATTACHMENT_SIZE = 5000;
 
-describe('DatabaseServiceTest', () => {
-    let databaseService = DatabaseService;
+describe('PouchDbServiceTest', () => {
+    let pouchDbService = new PouchDbService('test', { name: 'euralis_volailles_db-', remoteUrl: 'http://217.182.169.232:5984/' });
 
     after(() => {
-        return databaseService.destroy()
-            .then(() => databaseService.remoteDb.destroy())
-            .then(() => databaseService.init())
-            .catch(() => databaseService.init());
+        return pouchDbService.destroy()
+            .then(() => pouchDbService.remoteDb.destroy())
+            .then(() => pouchDbService.init())
+            .catch(() => pouchDbService.init());
     });
 
     describe('constructor and init tests', () => {
         it('should be a singleton', () => {
-            assert.isNotNull(databaseService);
+            assert.isNotNull(pouchDbService);
         });
 
         it('should create the db if not exists yet', () => {
-            return databaseService.db.info()
+            return pouchDbService.db.info()
                 .then((data) => {
                     assert(data.db_name === 'euralis_volailles_db-test')
                 });
@@ -36,11 +36,11 @@ describe('DatabaseServiceTest', () => {
     
     describe('find function blocks test', () => {
         it('should return some data if there is', () => {
-            return databaseService.find('facilityCharges').then(data => assert.isDefined(data));
+            return pouchDbService.find('facilityCharges').then(data => assert.isDefined(data));
         });
 
         it('should return an empty array if no data', () => {
-            return databaseService.find('production').then(data => assert(data.length === 0));
+            return pouchDbService.find('production').then(data => assert(data.length === 0));
         });
 
         it('should transform nested relation id by the right object(s) retrieved', () => {
@@ -89,7 +89,7 @@ describe('DatabaseServiceTest', () => {
                 ]
             };
 
-            return databaseService.transformRelationIdByObject('production', data.productions[0], data)
+            return pouchDbService.transformRelationIdByObject('production', data.productions[0], data)
                 .then((desiredObject) => {
                     assert(desiredObject.facility.facilityCharges.name === 'toto');
                     assert(desiredObject.facility.facilityCharges.id === '132ABC');
@@ -127,15 +127,15 @@ describe('DatabaseServiceTest', () => {
                 chickPurchaseReduction:1, facility: facility});
 
 
-            return databaseService.save('facilityCharges', facilityCharges)
-                .then((data) => databaseService.save('investment', investment2))
-                .then(() => databaseService.save('investment', investment))
-                .then(() => databaseService.save('facility', facility))
-                .then(() => databaseService.save('production', production3))
-                .then(() => databaseService.save('production', production2))
-                .then(() => databaseService.save('production', production4))
-                .then(() => databaseService.save('production', production))
-                .then(() => databaseService.find('production'))
+            return pouchDbService.save('facilityCharges', facilityCharges)
+                .then((data) => pouchDbService.save('investment', investment2))
+                .then(() => pouchDbService.save('investment', investment))
+                .then(() => pouchDbService.save('facility', facility))
+                .then(() => pouchDbService.save('production', production3))
+                .then(() => pouchDbService.save('production', production2))
+                .then(() => pouchDbService.save('production', production4))
+                .then(() => pouchDbService.save('production', production))
+                .then(() => pouchDbService.find('production'))
                 .then((data) => {
                     assert.isDefined(data);
                     assert.strictEqual(data[0].facility.id, facility.id);
@@ -153,7 +153,7 @@ describe('DatabaseServiceTest', () => {
                 contributions:1, disinfection:1, commodities:1,
                 litter:1, catching:1, insurances:1});
 
-            return databaseService.save('facilityCharges', facilityCharges)
+            return pouchDbService.save('facilityCharges', facilityCharges)
                 .then((data) => {
                     assert(data.facilitiesCharges[0].warming === 1);
                     assert(data.facilitiesCharges[0].chickPrice === 1);
@@ -177,12 +177,12 @@ describe('DatabaseServiceTest', () => {
                 contentType:'image/png'
             };
 
-            return databaseService.save('facilityCharges', facilityCharges)
+            return pouchDbService.save('facilityCharges', facilityCharges)
                 .then(data => {
                     attachment.obj = data.facilitiesCharges[0];
-                    return databaseService.putAttachment(attachment);
+                    return pouchDbService.putAttachment(attachment);
                 })
-                .then((data) => databaseService.find('facilityCharges', facilityCharges.id))
+                .then((data) => pouchDbService.find('facilityCharges', facilityCharges.id))
                 .then((data) => {
                     assert(Object.keys(data[0].attachments).length > 0);
                     assert.isDefined(data[0].attachments[Object.keys(data[0].attachments)[0]].data);
@@ -211,39 +211,39 @@ describe('DatabaseServiceTest', () => {
                 vaccinesPrice:1, foodPrice:1, classedPrice:1, declassedPrice:1, breedingDeclassedPercent:1, restraintPercent:1,
                 chickPurchaseReduction:1, facility: facility});
 
-            return databaseService.save('facilityCharges', facilityCharges)
+            return pouchDbService.save('facilityCharges', facilityCharges)
                 .then(data => {
                     attachment.obj = data.facilitiesCharges[0];
-                    return databaseService.putAttachment(attachment);
+                    return pouchDbService.putAttachment(attachment);
                 })
-                .then((data) => databaseService.find('facilityCharges', facilityCharges.id))
+                .then((data) => pouchDbService.find('facilityCharges', facilityCharges.id))
                 .then((findData) => {
                     assert.strictEqual(findData[0].warming, 1);
                     assert.strictEqual(findData[0].chickPrice, 1);
                     assert(Object.keys(findData[0].attachments).length >  0);
                     return findData;
                 })
-                .then(() => databaseService.save('facility', facility))
-                .then(() => databaseService.find('facilities', facility.id))
+                .then(() => pouchDbService.save('facility', facility))
+                .then(() => pouchDbService.find('facilities', facility.id))
                 .then((data) => {
                     assert(data[0].size === facility.size);
                     assert(data[0].id === facility.id);
                     return data;
                 })
-                .then(() => databaseService.save('production', production))
-                .then(() => databaseService.find('production', production.id))
+                .then(() => pouchDbService.save('production', production))
+                .then(() => pouchDbService.find('production', production.id))
                 .then((data) => {
                     assert(data[0].name === production.name);
                     assert(data[0].id === production.id);
                     return data;
                 })
-                .then(() => databaseService.find('production', production.id))
+                .then(() => pouchDbService.find('production', production.id))
                 .then((data) => {
                     assert(data[0].id === production.id);
                     assert(data[0].facility.id === facility.id);
                     return data;
                 })
-                .then((data) => databaseService.find('facility', facility.id))
+                .then((data) => pouchDbService.find('facility', facility.id))
                 .then((data) => {
                     assert(data[0].facilityCharges.id === facilityCharges.id);
                 })
@@ -255,7 +255,7 @@ describe('DatabaseServiceTest', () => {
         
         it('should find productions by department', () => {
             const DEPARTMENT_PARAM = 'toto';
-            return databaseService.getProductionsByDepartment(DEPARTMENT_PARAM)
+            return pouchDbService.getProductionsByDepartment(DEPARTMENT_PARAM)
                 .then((data) => {
                     data.forEach((obj) => {
                         assert.strictEqual(obj.department, DEPARTMENT_PARAM)
@@ -265,12 +265,12 @@ describe('DatabaseServiceTest', () => {
 
         it('should update a facilityCharges object in the db', () => {
 
-            return databaseService.find('facilityCharges', 'uid98321243')
+            return pouchDbService.find('facilityCharges', 'uid98321243')
                 .then((data) => {
                     data[0].warming = 0.097;
-                    return databaseService.save('facilityCharges', data[0])
+                    return pouchDbService.save('facilityCharges', data[0])
                 })
-                .then(() => databaseService.find('facilityCharges', 'uid98321243'))
+                .then(() => pouchDbService.find('facilityCharges', 'uid98321243'))
                 .then((data) => {
                     assert(data[0].warming === 0.097);
                     assert(data[0].id === 'uid98321243');
@@ -279,12 +279,12 @@ describe('DatabaseServiceTest', () => {
 
         it('should update an object in the db', () => {
 
-            return databaseService.find('facility', '32ze1rz23er1')
+            return pouchDbService.find('facility', '32ze1rz23er1')
                 .then((data) => {
                     data[0].size = 20000;
-                    return databaseService.save('facility', data[0])
+                    return pouchDbService.save('facility', data[0])
                 })
-                .then(() => databaseService.find('facility', '32ze1rz23er1'))
+                .then(() => pouchDbService.find('facility', '32ze1rz23er1'))
                 .then((data) => {
                     assert(data[0].size === 20000);
                     assert(data[0].id === '32ze1rz23er1');
@@ -293,8 +293,8 @@ describe('DatabaseServiceTest', () => {
 
         it('should delete a facilityCharges object in the db', () => {
 
-            return databaseService.find('facilityCharges', 'uid98321243')
-                .then((facilityCharges) => databaseService.remove('facilityCharges', facilityCharges.id))
+            return pouchDbService.find('facilityCharges', 'uid98321243')
+                .then((facilityCharges) => pouchDbService.remove('facilityCharges', facilityCharges.id))
                 .then((data) => {
                     assert(data.ok);
                 });
@@ -303,8 +303,8 @@ describe('DatabaseServiceTest', () => {
 
         it('should delete production object', () => {
 
-            return databaseService.find('production', '3rze213rze')
-                .then((production) => databaseService.remove('production', production.id))
+            return pouchDbService.find('production', '3rze213rze')
+                .then((production) => pouchDbService.remove('production', production.id))
                 .then((data) => {
                     assert(data.ok);
                 });
@@ -312,8 +312,8 @@ describe('DatabaseServiceTest', () => {
 
         it('should delete facility object', () => {
 
-            return databaseService.find('facility', '32ze1rz23er1')
-                .then((facility) => databaseService.remove('facility', facility.id))
+            return pouchDbService.find('facility', '32ze1rz23er1')
+                .then((facility) => pouchDbService.remove('facility', facility.id))
                 .then((data) => {
                     assert(data.ok);
                 });
@@ -326,13 +326,13 @@ describe('DatabaseServiceTest', () => {
 
     describe('database empty', () => {
         it('should empty the database', () => {
-            return databaseService.db.allDocs()
+            return pouchDbService.db.allDocs()
                 .then((data) => {
                     assert(data.total_rows > 0)
                 })
-                .then(() => databaseService.destroy())
+                .then(() => pouchDbService.destroy())
                 .then((response) => assert(response.ok))
-                .then(() => databaseService.db.info())
+                .then(() => pouchDbService.db.info())
                 .then(() => {
                     // database is destroyed
                     assert(false)

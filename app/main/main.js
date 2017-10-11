@@ -1,28 +1,16 @@
 import path from 'path';
 import url from 'url';
-import fs from'fs';
-import os from 'os';
-
-import DatabaseEventInterface from './database/database-event.service';
 
 const electron = require('electron');
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
-const shell = electron.shell;
-
-const Menu = electron.Menu;
-const ipc = electron.ipcMain;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow = null;
-let databaseEventListener = null;
 
 function createWindow () {
-    // Listen to renderer events
-    databaseEventListener = new DatabaseEventInterface();
-    databaseEventListener.listen();
 
     // Create the browser window.
     mainWindow = new BrowserWindow({width: 800, height: 600, webPreferences: { nodeIntegration: true }});
@@ -56,7 +44,6 @@ app.on('ready', () => {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-    databaseEventListener.close();
     app.quit();
 });
 

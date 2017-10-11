@@ -14,7 +14,7 @@ export const FacilityChargesModule = angular
                 parent: 'management',
                 url: '/facilities_charges',
                 resolve: {
-                    facilitiesCharges: PouchDataService => PouchDataService.get(ENTITY_NAME)
+                    facilitiesCharges: PouchDbService => PouchDbService.find(ENTITY_NAME)
                 },
                 views: {
                     'content@': {
@@ -33,17 +33,17 @@ export const FacilityChargesModule = angular
             .state('facility_charges.edit', {
                 parent: 'facility_charges',
                 url: '/:id/edit',
-                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService
+                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService
                     .open('facilityChargesForm', {
-                        facilityCharges: PouchDataService.get(ENTITY_NAME, $stateParams.id)
+                        facilityCharges: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
             })
             .state('facility_charges.remove', {
                 parent: 'facility_charges',
                 url: '/:id/remove',
-                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService
+                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService
                     .open('facilityChargesForm', {
-                        facilityCharges: PouchDataService.get(ENTITY_NAME, $stateParams.id)
+                        facilityCharges: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
             });
     })

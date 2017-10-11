@@ -5,10 +5,10 @@ export const InvestmentFormComponent = {
     bindings: { resolve: '<', modalInstance: '<' },
     template,
     controller: class InvestmentFormController {
-        constructor(PouchDataService, $state, ToastrService){
+        constructor(PouchDbService, $state, ToastrService){
             'ngInject';
 
-            this.PouchDataService = PouchDataService;
+            this.PouchDbService = PouchDbService;
             this.isSaving = false;
             this.currentState = $state.current.name;
             this.ToastrService = ToastrService;
@@ -18,7 +18,7 @@ export const InvestmentFormComponent = {
         $onInit() {
             this.investment = this.resolve.investment;
         }
-
+        
         removeAttachment(file) {
             let index = this.investment.attachments.indexOf(file);
             this.investment.attachments.splice(index, 1);
@@ -37,13 +37,13 @@ export const InvestmentFormComponent = {
                     }
                     this.investment.attachments = attachments;
 
-                    this.PouchDataService.save(this.entityName, this.investment).then(() => {
+                    this.PouchDbService.save(this.entityName, this.investment).then(() => {
                         this.ToastrService[formState](new Investment(this.investment));
                         this.modalInstance.close()
                     });
                     break;
                 case 'remove':
-                    this.PouchDataService.remove(this.entityName, this.investment).then(() => {
+                    this.PouchDbService.remove(this.entityName, this.investment).then(() => {
                         this.ToastrService.remove(this.investment);
                         this.modalInstance.close()
                     });

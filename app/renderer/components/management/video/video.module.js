@@ -1,6 +1,7 @@
 import angular from 'angular';
 import {VideoFormComponent} from './video_form.component';
 import {VideoComponent} from './video.component';
+import {VideoService} from './video.service';
 
 
 export const VideoModule = angular
@@ -14,7 +15,7 @@ export const VideoModule = angular
                 parent: 'management',
                 url: '/videos',
                 resolve: {
-                    videos: PouchDataService => PouchDataService.get(ENTITY_NAME)
+                    videos: PouchDbService => PouchDbService.find(ENTITY_NAME)
                 },
                 views: {
                     'content@': {
@@ -33,19 +34,20 @@ export const VideoModule = angular
             .state('video.edit', {
                 parent: 'video',
                 url: '/:id/edit',
-                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService
+                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService
                     .open('videoForm', {
-                        video: PouchDataService.get(ENTITY_NAME, $stateParams.id)
+                        video: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
             })
             .state('video.remove', {
                 parent: 'video',
                 url: '/:id/remove',
-                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService.open('videoForm', {
-                        video: PouchDataService.get(ENTITY_NAME, $stateParams.id)
+                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService.open('videoForm', {
+                        video: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
             });
     })
     .component('videoForm', VideoFormComponent)
     .component('videos', VideoComponent)
+    .service('VideoService', VideoService)
     .name;

@@ -8,10 +8,10 @@ export const FacilityChargesFormComponent = {
     },
     template,
     controller: class FacilityChargesFormController {
-        constructor(PouchDataService, $state, ToastrService){
+        constructor(PouchDbService, $state, ToastrService){
             'ngInject';
 
-            this.PouchDataService = PouchDataService;
+            this.PouchDbService = PouchDbService;
             this.isSaving = false;
             this.currentState = $state.current.name;
             this.ToastrService = ToastrService;
@@ -56,13 +56,13 @@ export const FacilityChargesFormComponent = {
             switch(formState) {
                 case 'edit':
                 case 'create':
-                    this.PouchDataService.save(this.entityName, facilityCharges).then(() => {
+                    this.PouchDbService.save(this.entityName, facilityCharges).then(() => {
                         this.ToastrService[formState](new FacilityCharges(facilityCharges));
                         this.modalInstance.close();
                     });
                     break;
                 case 'remove':
-                    this.PouchDataService.remove(this.entityName, facilityCharges).then(() => {
+                    this.PouchDbService.remove(this.entityName, facilityCharges).then(() => {
                         this.ToastrService[formState](facilityCharges);
                         this.modalInstance.close();
                     });

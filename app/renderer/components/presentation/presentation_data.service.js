@@ -1,13 +1,13 @@
 export class PresentationDataService {
-    constructor(PouchDataService, FACILITIES_TYPES) {
+    constructor(PouchDbService, FACILITIES_TYPES) {
         'ngInject';
-        this.PouchDataService = PouchDataService;
+        this.PouchDbService = PouchDbService;
         this.FACILITIES_TYPES = FACILITIES_TYPES
     }
 
     getProdByDeptAndFacilityType(department) {
 
-        return this.PouchDataService.getProdByDept(department)
+        return this.PouchDbService.getProductionsByDepartment(department)
             .then((productions) => {
                         let result = {};
                         for(let i = 0; i < productions.length ; i++) {

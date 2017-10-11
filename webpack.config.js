@@ -15,9 +15,6 @@ export let config = {
         renderer: [
             'babel-polyfill',
             path.join(__dirname, 'app/renderer/app.bootstrap.js')
-        ],
-        main: [
-            path.join(__dirname, 'app/main/main.js')
         ]
     },
     module: {
@@ -33,7 +30,7 @@ export let config = {
     },
     output: {
         filename: '[name].js',
-        publicPath: ''
+        publicPath: '/'
     },
     node: {
         __dirname: false,
@@ -46,7 +43,6 @@ export let config = {
         }
     },
     externals: externals,
-    target: 'electron',
     plugins: [
         new webpack.ProvidePlugin({
             'window.jQuery': 'jquery', //in order to load it in angular

@@ -62,8 +62,8 @@
                 <th>Surface parcours (ha)</th>
                 <th>Densité (m²)</th>
                 <th>Nbre / bande</th>
-                <th>Nbre de bande / an</th>
                 <th>Nbre vendus / an</th>
+                <th>Marge PAC</th>
                 <th>Marge brute / sujet vendus (€)</th>
                 <th>Marge brute / an (€)</th>
                 <th>Supprimer</th>
@@ -76,8 +76,8 @@
                 <td>{{production.fieldSpace}}</td>
                 <td>{{production.chickNb / production.facility.size | number: 0}}</td>
                 <td>{{production.chickNb * vm.facilityNb}}</td>
-                <td>1</td>
                 <td>{{production.getSoldChicks() | number:2}}</td>
+                <td> {{production.getMargePACByChickPIP() * production.getChickNb()| number: 2}}</td>
                 <td>{{production.getBrutMargin() / production.getSoldChicks() | number:2}}</td>
                 <td> {{production.getBrutMargin() | number:2 }}</td>
                 <td>
@@ -86,11 +86,11 @@
                     </button>
                 </td>
             </tr>
-            <tr ng-if="vm.productionsChoosen.length == 3">
+            <tr ng-if="vm.productionsChoosen.length > 0">
                 <td colspan="8"></td>
                 <td>{{ vm.getTotalProductionsChoosen() | number: 0 }}€</td>
             </tr>
-            <tr ng-if="vm.productionsChoosen.length == 3">
+            <tr ng-if="vm.productionsChoosen.length > 0">
                 <td colspan="8">
                     <form class="form-inline">
                         <div class="col-md-1"><strong>Annuité</strong></div>
@@ -117,7 +117,7 @@
                 </td>
                 <td><strong>{{ vm.investmentChoosen.getAnnuity(vm.investment.annuityDuration, vm.investment.interest) | number:0 }}€</strong></td>
             </tr><strong>
-            <tr ng-if="vm.productionsChoosen.length == 3">
+            <tr ng-if="vm.productionsChoosen.length > 0">
                 <td colspan="8">
                     <strong class="pull-right">Marge Nette avant MSA</strong>
                 </td>

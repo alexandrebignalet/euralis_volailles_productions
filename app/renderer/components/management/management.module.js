@@ -5,7 +5,6 @@ import {FacilityModule} from './facility/facility.module';
 import {VideoModule} from './video/video.module';
 import {MultiselectDirective} from '../../service/multiselect.directive';
 import {CustomOnChangeDirective} from '../../service/on-change.directive';
-import {PouchDataService} from './pouchdb-data.service';
 import {ToastrService} from './toastr.service';
 
 const departmentNames = [];
@@ -34,7 +33,6 @@ export const ManagementModule = angular
     })
     .directive('multiselect', MultiselectDirective)
     .directive('customOnChange', CustomOnChangeDirective)
-    .service('PouchDataService', PouchDataService)
     .service('ToastrService', ToastrService)
     .constant('DEPARTMENTS', departmentNames)
     .name;

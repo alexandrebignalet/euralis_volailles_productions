@@ -16,7 +16,7 @@ export const InvestmentModule = angular.module('InvestmentModule', [])
                     }
                 },
                 resolve: {
-                    investments: PouchDataService => PouchDataService.get(ENTITY_NAME)
+                    investments: PouchDbService => PouchDbService.find(ENTITY_NAME)
                 },
                 onEnter: (SidebarService) => SidebarService.closeNav()
             })
@@ -30,15 +30,15 @@ export const InvestmentModule = angular.module('InvestmentModule', [])
             .state('investment.edit', {
                 parent: 'investment',
                 url: '/:id/edit',
-                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService.open('investmentForm', {
-                        investment: PouchDataService.get(ENTITY_NAME, $stateParams.id)
+                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService.open('investmentForm', {
+                        investment: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
             })
             .state('investment.remove', {
                 parent: 'investment',
                 url: '/:id/remove',
-                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService.open('investmentForm', {
-                        investment: PouchDataService.get(ENTITY_NAME, $stateParams.id)
+                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService.open('investmentForm', {
+                        investment: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
             });
     })

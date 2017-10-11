@@ -8,6 +8,7 @@ import eurvol from '../../images/logo.png';
 import vol from '../../images/eurvol.jpg';
 import elev from '../../images/elev.png';
 import avigers from '../../images/avigers.png';
+import agrocert from '../../images/agrocert.jpg';
 import qualisud from '../../images/qualisud.png';
 import bio from '../../images/logo_bio.png';
 import sequoia from '../../images/logo_sequoia.jpg';
@@ -21,6 +22,7 @@ filiere['eurvol'] = eurvol;
 filiere['vol'] = vol;
 filiere['elev'] = elev;
 filiere['avigers'] = avigers;
+filiere['agrocert'] = agrocert;
 filiere['qualisud'] = qualisud;
 filiere['sequoia'] = sequoia;
 filiere['bio'] = bio;
@@ -35,7 +37,7 @@ export const HomeComponent = {
     },
     template,
     controller: class HomeController {
-        constructor(DEPARTMENTS, PouchDataService) {
+        constructor(DEPARTMENTS, VideoService) {
             'ngInject';
 
             this.banner = banner;
@@ -45,18 +47,18 @@ export const HomeComponent = {
             this.departments = DEPARTMENTS;
             this.videoPlayed = null;
 
-            this.PouchDataService = PouchDataService;
+            this.VideoService = VideoService;
         }
 
         $onInit() {
             if(this.videos.length > 0)
-                this.PouchDataService.load(this.videos[0].getFile());
+                this.VideoService.load(this.videos[0].getFile());
         }
 
         selectVideo(video) {
             if (!video || video.id === this.videoPlayed) return;
             this.videoPlayed = video.id;
-            this.PouchDataService.load(video.getFile());
+            this.VideoService.load(video.getFile());
         }
     },
     controllerAs: 'vm'

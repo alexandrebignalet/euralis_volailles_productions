@@ -12,11 +12,19 @@
                     <label for="investment_name" class="control-label">Nom</label>
                     <input type="text" class="form-control {{ investmentForm.investment_name.$invalid ? 'wrong' : 'valid'}}_input" id="investment_name" name="investment_name" ng-model="vm.investment.name" required minlength="0">
                 </div>
+                <div class="form-group">
+                    <label for="investment_description" class="control-label">Description</label>
+                    <textarea class="form-control {{ investmentForm.investment_description.$invalid ? 'wrong' : 'valid'}}_input" id="investment_description" name="investment_description" ng-model="vm.investment.description" required minlength="0"></textarea>
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="investment_designation" class="control-label">Désignation</label>
                     <input type="text" class="form-control {{ investmentForm.investment_designation.$invalid ? 'wrong' : 'valid'}}_input" id="investment_designation" name="investment_designation" ng-model="vm.investment.designation" required minlength="0">
+                </div>
+                <div class="form-group">
+                    <label for="investment_detail_designation" class="control-label">Détails désignation</label>
+                    <textarea class="form-control {{ investmentForm.investment_detail_designation.$invalid ? 'wrong' : 'valid'}}_input" id="investment_detail_designation" name="investment_detail_designation" ng-model="vm.investment.details.designation" required minlength="0"></textarea>
                 </div>
             </div>
             <div class="col-md-4">
@@ -27,6 +35,10 @@
                         <span class="input-group-addon">€</span>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="investment_detail_papers" class="control-label">Détails dossiers</label>
+                    <textarea class="form-control {{ investmentForm.investment_detail_papers.$invalid ? 'wrong' : 'valid'}}_input" id="investment_detail_papers" name="investment_detail_papers" ng-model="vm.investment.details.papers" minlength="0" required></textarea>
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
@@ -35,6 +47,10 @@
                         <input type="number" step="any" class="form-control {{ investmentForm.investment_masonry.$invalid ? 'wrong' : 'valid'}}_input" id="investment_masonry" name="investment_masonry" ng-model="vm.investment.masonry" min="0" required>
                         <span class="input-group-addon">€</span>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="investment_detail_masonry" class="control-label">Détails gros oeuvre</label>
+                    <textarea class="form-control {{ investmentForm.investment_detail_masonry.$invalid ? 'wrong' : 'valid'}}_input" id="investment_detail_masonry" name="investment_detail_masonry" ng-model="vm.investment.details.masonry" minlength="0" required></textarea>
                 </div>
             </div>
             <div class="col-md-4">
@@ -45,6 +61,10 @@
                         <span class="input-group-addon">€</span>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="investment_detail_facilityMoutingDeliveryPrice" class="control-label">Détails livraison/montage bâtiment</label>
+                    <textarea class="form-control {{ investmentForm.investment_detail_masonry.$invalid ? 'wrong' : 'valid'}}_input" id="investment_detail_facilityMoutingDeliveryPrice" name="investment_detail_facilityMoutingDeliveryPrice" ng-model="vm.investment.details.facilityMoutingDeliveryPrice" minlength="0" required></textarea>
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
@@ -53,6 +73,10 @@
                         <input type="number" step="any" class="form-control {{ investmentForm.investment_equipmentMountingDeliveryPrice.$invalid ? 'wrong' : 'valid'}}_input" id="investment_equipmentMountingDeliveryPrice" name="investment_equipmentMountingDeliveryPrice" ng-model="vm.investment.equipmentMountingDeliveryPrice" min="0" required>
                         <span class="input-group-addon">€</span>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="investment_details_equipmentMountingDeliveryPrice" class="control-label">Détails livraison/montage matériel</label>
+                    <textarea class="form-control {{ investmentForm.investment_details_equipmentMountingDeliveryPrice.$invalid ? 'wrong' : 'valid'}}_input" id="investment_details_equipmentMountingDeliveryPrice" name="investment_details_equipmentMountingDeliveryPrice" ng-model="vm.investment.details.equipmentMountingDeliveryPrice" minlength="0" required></textarea>
                 </div>
             </div>
             <div class="col-md-4">
@@ -63,6 +87,10 @@
                         <span class="input-group-addon">€</span>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="investment_details_diverseOptions" class="control-label">Détails diverse options</label>
+                    <textarea class="form-control {{ investmentForm.investment_details_diverseOptions.$invalid ? 'wrong' : 'valid'}}_input" id="investment_details_diverseOptions" name="investment_details_diverseOptions" ng-model="vm.investment.details.diverseOptions" minlength="0" required></textarea>
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
@@ -71,6 +99,10 @@
                         <input type="number" step="any" class="form-control {{ investmentForm.investment_subsidies.$invalid ? 'wrong' : 'valid'}}_input" id="investment_subsidies" name="investment_subsidies" ng-model="vm.investment.subsidies" min="0" required>
                         <span class="input-group-addon">€</span>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="investment_details_subsidies" class="control-label">Détails subventions</label>
+                    <textarea class="form-control {{ investmentForm.investment_details_subsidies.$invalid ? 'wrong' : 'valid'}}_input" id="investment_details_subsidies" name="investment_details_subsidies" ng-model="vm.investment.details.subsidies" minlength="0" required></textarea>
                 </div>
             </div>
             <div class="col-md-4">
@@ -81,11 +113,9 @@
                         <span class="input-group-addon">€</span>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
                 <div class="form-group">
-                    <label for="investment_description" class="control-label">Description</label>
-                    <textarea class="form-control {{ investmentForm.investment_description.$invalid ? 'wrong' : 'valid'}}_input" id="investment_description" name="investment_description" ng-model="vm.investment.description" required minlength="0"></textarea>
+                    <label for="investment_details_helpEuralis" class="control-label">Détails aides EURALIS Volailles</label>
+                    <textarea class="form-control {{ investmentForm.investment_details_helpEuralis.$invalid ? 'wrong' : 'valid'}}_input" id="investment_details_helpEuralis" name="investment_details_helpEuralis" ng-model="vm.investment.details.helpEuralis" minlength="0" required></textarea>
                 </div>
             </div>
         </div>

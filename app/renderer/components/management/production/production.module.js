@@ -15,7 +15,7 @@ export const ProductionModule = angular
                 parent: 'management',
                 url: '/productions',
                 resolve: {
-                    productions: PouchDataService => PouchDataService.get(ENTITY_NAME)
+                    productions: PouchDbService => PouchDbService.find(ENTITY_NAME)
                 },
                 views: {
                     'content@': {
@@ -27,25 +27,25 @@ export const ProductionModule = angular
             .state('production.create', {
                 parent: 'production',
                 url: '/create',
-                onEnter: (ModalService, PouchDataService) => ModalService.open('productionForm', {
+                onEnter: (ModalService, PouchDbService) => ModalService.open('productionForm', {
                     production: {},
-                    facilities: PouchDataService.get('facility')
+                    facilities: PouchDbService.find('facility')
                 })
             })
             .state('production.edit', {
                 parent: 'production',
                 url: '/:id/edit',
-                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService
+                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService
                     .open('productionForm', {
-                        production: PouchDataService.get(ENTITY_NAME, $stateParams.id),
-                        facilities: PouchDataService.get('facility')
+                        production: PouchDbService.find(ENTITY_NAME, $stateParams.id),
+                        facilities: PouchDbService.find('facility')
                     })
             })
             .state('production.remove', {
                 parent: 'production',
                 url: '/:id/remove',
-                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService.open('productionForm', {
-                        production: PouchDataService.get(ENTITY_NAME, $stateParams.id)
+                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService.open('productionForm', {
+                        production: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
             });
     })

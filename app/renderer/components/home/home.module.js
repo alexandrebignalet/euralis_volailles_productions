@@ -6,13 +6,13 @@ export const HomeModule = angular.module('HomeModule', [angularInview.name])
 
     .config(($locationProvider, $stateProvider, $urlRouterProvider) => {
         'ngInject';
-
+console.log("coucou home module");
         $stateProvider
             .state('home', {
                 parent: 'components',
                 url: '/home',
                 resolve: {
-                  videos: (PouchDataService) => PouchDataService.get('video')
+                  videos: (PouchDbService) => PouchDbService.find('video')
                 },
                 views: {
                     'content@': {

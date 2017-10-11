@@ -5,15 +5,19 @@ if (typeof btoa === 'undefined') {
     };
 }
 
-const path = require('path');
-const config = require('./electron.config.js');
-const MemoryStream = require('memorystream');
-const replicationStream = require('pouchdb-replication-stream');
-const PouchDB = require('pouchdb');
+import path from 'path';
+
+import {Production} from '../components/management/production/production'
+import {Facility} from '../components/management/facility/facility'
+import {FacilityCharges} from '../components/management/facility_charges/facility_charges'
+import {Investment} from '../components/management/investment/investment'
+import {Video} from '../components/management/video/video'
+
+import PouchDB from 'pouchdb-browser';
+
+PouchDB.plugin(require('pouchdb-adapter-node-websql'));
 PouchDB.plugin(require('pouchdb-find'));
 PouchDB.plugin(require('relational-pouch'));
-PouchDB.plugin(replicationStream.plugin);
-PouchDB.adapter('writableStream', replicationStream.adapters.writableStream);
 
 
 const databaseSchema = [
@@ -46,17 +50,33 @@ const databaseSchema = [
     }
 ];
 
+function getConstructorFromEntityName(entityName) {
+    const nameToConstructor = {
+        video: Video,
+        facilityCharges: FacilityCharges,
+        investment: Investment,
+        production: Production,
+        facility: Facility
+    };
+
+    return nameToConstructor[entityName];
+}
 /**
  * This class is used to create the local database if it does not exist yet.
  * And the schema of THIS app.
  * Also provide an API in order to manipulate data.
  */
-class DatabaseService {
-    constructor(env) {
-        this.env = env;
-        if(this.env === undefined) this.env = 'prod';
+export class PouchDbService {
+    constructor(ENV, DB_INFO) {
+        'ngInject';
 
-        this.dbOpts = { auto_compaction: true};
+        this.env = ENV;
+        this.DB_INFO = DB_INFO;
+
+        if(this.env === undefined) this.env = 'prod';
+        if(this.env === 'dev') PouchDB.debug.enable('*');
+
+        this.dbOpts = { auto_compaction: true };
         this.remoteDbOpts = {
             ajax: { timeout: 10000 },
             auth: {
@@ -65,23 +85,26 @@ class DatabaseService {
             }
         };
 
-        this.dbName = config.db.name + this.env;
+        this.dbName = this.DB_INFO.name + this.env;
         this.db = new PouchDB(this.dbName, this.dbOpts);
-        this.remoteDb = new PouchDB(config.db.remoteUrl + this.dbName, this.remoteDbOpts);
+        this.remoteDb = new PouchDB(DB_INFO.remoteUrl + this.dbName, this.remoteDbOpts);
+
         this.db.createIndex({
             index: {fields: ['data.department']}
         });
+
         this.db.setSchema(databaseSchema);
     }
 
     init() {
-        this.dbName = config.db.name + this.env;
-        this.db = new PouchDB(this.dbName, this.dbOpts);
-        this.remoteDb = new PouchDB(config.db.remoteUrl + this.dbName, this.remoteDbOpts);
-        this.db.createIndex({
-            index: {fields: ['data.department']}
-        });
+        this.db = new PouchDB(path.join(__dirname, this.dbName), this.dbOpts);
+        this.remoteDb = new PouchDB(this.DB_INFO.remoteUrl + this.dbName, this.remoteDbOpts);
+
         this.db.setSchema(databaseSchema);
+
+        return this.db.createIndex({
+            index: {fields: ['data.department']}
+        })
     }
 
     /**
@@ -91,7 +114,25 @@ class DatabaseService {
      * @return Promise
      */
     save(entityName, object) {
-        return this.db.rel.save(entityName, object);
+        return this.toAttachmentFormat(entityName, object.attachments || {})
+            .then((attachments) => {
+                delete object.attachments;
+
+                return this.db.rel.save(entityName, object)
+                    .then((objects) => {
+
+                        let entity = objects[Object.keys(objects)[0]][0];
+
+                        if(attachments) {
+
+                            return attachments.reduce((p, attachment) => {
+                                attachment.obj = entity;
+                                return p.then(() => this.putAttachment(attachment));
+                            }, Promise.resolve());
+                        }
+                        return objects;
+                    })
+            })
     }
 
     find(entityName, id) {
@@ -107,29 +148,30 @@ class DatabaseService {
 
                 return Promise.all(fullObjectsPromises);
             })
-            .catch(err => console.log(`Find Central DatabaseService: ${err}`));
+            .then((objects) => {
+        
+                const constructor = getConstructorFromEntityName(entityName);
+
+                if(id && objects.length === 1)
+                    return Reflect.construct(constructor, [objects[0]]);
+
+                return objects.map((obj) => Reflect.construct(constructor, [obj]));
+            })
+            .catch(err => console.log(`Find Central PouchDbService: ${err}`));
     }
 
     remove(entityName, object) {
         return this.db.rel.del(entityName, object)
             .then(() => this.compact())
-            .catch(err => console.log(`Remove Central DatabaseService: ${err}`));
+            .catch(err => console.log(`Remove Central PouchDbService: ${err}`));
     }
 
-    putAttachment({entityName, obj, name, base64, contentType}) {
-        return this.db.rel.putAttachment(entityName, obj, name, base64, contentType)
+    putAttachment({entityName, obj, name, blob, contentType}) {
+        return this.db.rel.putAttachment(entityName, obj, name, blob, contentType)
             .then(data => data)
-            .catch(err => console.log(`Find Central DatabaseService: ${err}`));
+            .catch(err => console.log(`Find Central PouchDbService: ${err}`));
     }
-    
-    addAttachments(entityName, obj, files) {
 
-        if (files.length === 0 || !files.reduce((acc, item) =>  typeof item.name == 'string', true) ) return obj;
-
-        return files.reduce((p, file) => {
-            return p.then(() => this.db.rel.putAttachment(entityName, obj, file.name, file, file.type));
-        }, Promise.resolve());
-    }
 
     // it will empty the db, because we are using WebSql adapter
     destroy() {
@@ -138,29 +180,32 @@ class DatabaseService {
             .catch(() => { return {ok: true}; });
     }
 
-    compact() {
-        return this.db.compact()
-            .then((info) => {
-                return info;
-            }).catch((err) => {
-                return err;
+    sync() {
+        return this.db.sync(this.remoteDb, {
+            live:true,
+            retry: true
+        })
+            .on('complete', () => {
+                // console.log("complete ");
+            })
+            .on('denied', function (err) {
+                console.log('document denied ', err);
+            })
+            .on('change', (change) => {
+                // console.log("change ", change);
+            })
+            .on('paused', (info) => {
+                // console.log("paused ", info);
+            })
+            .on('active', (info) => {
+                // console.log("active ", info);
+            })
+            .on('error', (err) => {
+                console.log(err, err.result);
             });
     }
 
-    sync() {
-        return this.db.sync(this.remoteDb)
-            .then((data) => {
-                console.log(`Synchronisation SUCCESS: ${data}`);
-                return data;
-            })
-            .catch((err) => {
-                console.log(`Synchronisation ERROR: ${err}`);
-                return err;
-            })
-    }
-
     replicate(who) {
-        let stream = new MemoryStream();
 
         let from = this.db;
         let to = this.remoteDb;
@@ -173,16 +218,25 @@ class DatabaseService {
 
         console.log(`replication from ${from.name} to ${to.name}`);
 
-        return Promise.all([
-            from.dump(stream),
-            to.load(stream)
-        ])
-            .then(() => {
-                console.log(`Replication from ${who} SUCCESS !`);
+        return PouchDB.replicate(from, to, {
+            live:true,
+            retry: true
+        })
+            .on('complete', () => {
+                // console.log("complete ");
             })
-            .catch((err) => {
-                console.log(`Replication from ${who} FAIL !`, err);
+            .on('change', (change) => {
+                // console.log("change ", change);
             })
+            .on('paused', (info) => {
+                // console.log("paused ", info);
+            })
+            .on('active', (info) => {
+                // console.log("active ", info);
+            })
+            .on('error', (err) => {
+                console.log(err, err.result);
+            });
     }
 
     assignAttachmentsToObject(entityName, object) {
@@ -220,7 +274,44 @@ class DatabaseService {
 
                 return Promise.all(fullObjectsPromises);
             })
+            .then((productions) => {
+                if(productions.length === 1)
+                    return new Production(productions[0]);
+
+                return productions.map((production) => new Production(production));
+            })
             .catch((err) => console.log(err));
+    }
+
+    toAttachmentFormat(entityName, attachments) {
+console.log(attachments);
+        return Promise.all(
+            Object.keys(attachments).map(key => {
+                let name = key;
+                let attachmentFormat = {
+                    entityName,
+                    name,
+                    contentType: attachments[name].type,
+                    blob: attachments[name]
+                };
+
+                return Promise.resolve(attachmentFormat);
+
+                return new Promise((resolve, reject) => {
+                    let reader = new FileReader();
+                    reader.readAsArrayBuffer(attachments[name]);
+
+                    reader.onload = () => {
+                        attachmentFormat.base64 = new Buffer(reader.result);
+                        resolve(attachmentFormat);
+                    };
+
+                    reader.onerror = (error) => {
+                        reject(error);
+                    };
+                })
+            })
+        );
     }
 
     transformRelationIdByObject(entityName, desiredObject, data) {
@@ -307,5 +398,3 @@ class DatabaseService {
         }
     }
 }
-console.log(process.env.NODE_ENV);
-module.exports = new DatabaseService(process.env.NODE_ENV);

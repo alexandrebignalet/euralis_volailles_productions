@@ -13,7 +13,7 @@ export const FacilityModule = angular
                 parent: 'management',
                 url: '/facilities',
                 resolve: {
-                    facilities: PouchDataService => PouchDataService.get(ENTITY_NAME)
+                    facilities: PouchDbService => PouchDbService.find(ENTITY_NAME)
                 },
                 views: {
                     'content@': {
@@ -25,28 +25,28 @@ export const FacilityModule = angular
             .state('facility.create', {
                 parent: 'facility',
                 url: '/create',
-                onEnter: (PouchDataService, ModalService) => ModalService
+                onEnter: (PouchDbService, ModalService) => ModalService
                     .open('facilityForm', {
                         facility: {},
-                        facilitiesCharges: PouchDataService.get('facilityCharges'),
-                        investments: PouchDataService.get('investment')
+                        facilitiesCharges: PouchDbService.find('facilityCharges'),
+                        investments: PouchDbService.find('investment')
                     })
             })
             .state('facility.edit', {
                 parent: 'facility',
                 url: '/:id/edit',
-                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService
+                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService
                     .open('facilityForm', {
-                        facility: (PouchDataService) => PouchDataService.get(ENTITY_NAME, $stateParams.id),
-                        facilitiesCharges: (PouchDataService) => PouchDataService.get('facilityCharges'),
-                        investments: (PouchDataService) => PouchDataService.get('investment')
+                        facility: (PouchDbService) => PouchDbService.find(ENTITY_NAME, $stateParams.id),
+                        facilitiesCharges: (PouchDbService) => PouchDbService.find('facilityCharges'),
+                        investments: (PouchDbService) => PouchDbService.find('investment')
                     })
             })
             .state('facility.remove', {
                 parent: 'facility',
                 url: '/:id/remove',
-                onEnter: (ModalService, PouchDataService, $stateParams) => ModalService.open('facilityForm', {
-                        facility: PouchDataService.get(ENTITY_NAME, $stateParams.id)
+                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService.open('facilityForm', {
+                        facility: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
             });
     })

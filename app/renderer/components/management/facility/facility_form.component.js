@@ -8,9 +8,9 @@ export const FacilityFormComponent = {
     },
     template,
     controller: class FacilityFormController {
-        constructor(PouchDataService, $state, FACILITIES_TYPES, ToastrService){
+        constructor(PouchDbService, $state, FACILITIES_TYPES, ToastrService){
             'ngInject';
-            this.PouchDataService = PouchDataService;
+            this.PouchDbService = PouchDbService;
             this.isSaving = false;
             this.currentState = $state.current.name;
             this.facilityTypes = FACILITIES_TYPES;
@@ -41,14 +41,14 @@ export const FacilityFormComponent = {
                     }
                     this.facility.attachments = attachments;
 
-                    this.PouchDataService.save(this.entityName, this.facility)
+                    this.PouchDbService.save(this.entityName, this.facility)
                         .then(() => {
                             this.ToastrService[formState](new Facility(this.facility));
                             this.modalInstance.close()
                         });
                     break;
                 case 'remove':
-                    this.PouchDataService.remove(this.entityName, this.facility)
+                    this.PouchDbService.remove(this.entityName, this.facility)
                         .then(() => {
                             this.ToastrService.remove(this.facility);
                             this.modalInstance.close()

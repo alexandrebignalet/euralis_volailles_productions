@@ -7,6 +7,7 @@ import 'ngstorage';
 import {ComponentsModule} from './components/components.module';
 import {StateHandler} from './service/state.handler';
 import {UserService} from './service/user.service';
+import {PouchDbModule} from './database/pouchdb.module';
 
 import {AppComponent} from './app.component';
 
@@ -14,7 +15,8 @@ export const AppModule = angular.module('AppModule', [
     'ngStorage',
     uiRouter,
     uiBootstrap,
-    ComponentsModule
+    ComponentsModule,
+    PouchDbModule
 ])
     .config(($locationProvider, $stateProvider, $urlRouterProvider, $sceProvider, $localStorageProvider, localStoragePrefix) => {
         'ngInject';

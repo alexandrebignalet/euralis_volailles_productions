@@ -8,10 +8,10 @@ export const ProductionFormComponent = {
     },
     template,
     controller: class ProductionFormController {
-        constructor(PouchDataService, $state, DEPARTMENTS, ToastrService){
+        constructor(PouchDbService, $state, DEPARTMENTS, ToastrService){
             'ngInject';
 
-            this.PouchDataService = PouchDataService;
+            this.PouchDbService = PouchDbService;
             this.isSaving = false;
             this.currentState = $state.current.name;
             this.departments = DEPARTMENTS;
@@ -78,13 +78,13 @@ export const ProductionFormComponent = {
                     }
                     prod.attachments = attachments;
 
-                    this.PouchDataService.save(this.entityName, prod).then(() => {
+                    this.PouchDbService.save(this.entityName, prod).then(() => {
                         this.ToastrService[formState](new Production(prod));
                         this.modalInstance.close()
                     });
                     break;
                 case 'remove':
-                    this.PouchDataService.remove(this.entityName, prod).then(() => {
+                    this.PouchDbService.remove(this.entityName, prod).then(() => {
                         this.ToastrService.remove(this.production);
                         this.modalInstance.close()
                     });

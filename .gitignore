@@ -9,5 +9,5 @@ euralis_volailles_db-prod*
 build/electron/webapp/
 docker/lib/
 !docker/lib/.gitkeep
-app/app.constants.js
+app/renderer/app.constants.js
 .tmp/

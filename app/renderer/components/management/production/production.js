@@ -42,7 +42,9 @@ export class Production {
     }
 
     getMargePACByChickPIP() {
-        return this.foodPrice + this.facility.facilityCharges.chickPrice + this.facility.facilityCharges.contributions;
+        let charges = this.getTotalFoodCost() + (this.facility.facilityCharges.chickPrice + this.facility.facilityCharges.contributions) * this.getChickNb();
+
+        return (this.avgWeight * ( this.getChickNb() * (this.getClassedPercent() * this.classedPrice + this.breedingDeclassedPercent + this.declassedPrice )) - charges) / this.getChickNb();
     }
 
     setFacilitiesNb(nb) {
@@ -58,6 +60,10 @@ export class Production {
 
     getFoodPrice() {
         return this.foodPrice * 1000;
+    }
+
+    getClassedPercent() {
+        return (100 - this.breedingDeclassedPercent )/ 100;
     }
 
     getClassedPrice() {
@@ -110,7 +116,7 @@ export class Production {
     }
 
     getTotalFoodCost() {
-        return this.getChickNb() * this.consumptionIndex * this.avgWeight * this.foodPrice;
+        return this.getFoodEaten() * this.foodPrice;
     }
 
     getTotalCosts() {
@@ -123,6 +129,9 @@ export class Production {
         return this.getTotalWages() - this.getTotalCosts();
     }
 
+    getFoodEaten(){
+        return this.getChickNb() * this.consumptionIndex * this.avgWeight;
+    }
     getAnnualBrutMargin(){
         return this.getBrutMargin() * this.breedingPerYear;
     }

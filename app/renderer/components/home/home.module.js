@@ -6,7 +6,7 @@ export const HomeModule = angular.module('HomeModule', [angularInview.name])
 
     .config(($locationProvider, $stateProvider, $urlRouterProvider) => {
         'ngInject';
-console.log("coucou home module");
+
         $stateProvider
             .state('home', {
                 parent: 'components',

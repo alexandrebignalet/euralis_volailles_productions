@@ -22,9 +22,9 @@ export let config = {
         { test: /\.js$/, exclude: [/node_modules/], loader: 'ng-annotate!babel'},
         { test: /\.(html|txt)$/, loader: 'raw' },
         { test: /.(woff(2)?|eot|ttf)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=100000' },
-        { test: /\.(scss|sass)$/, loader: 'style!css!sass' },
+        { test: /\.(scss|sass)$/, loader: 'style!css?url=false!sass' },
         { test: /\.(png|jpg|JPG|svg|mp4|gif)/, loader: 'url-loader?limit=100000&name=images/[name].[ext]'  },
-        { test: /\.css$/, loader: 'style!css' },
+        { test: /\.css$/, loader: 'style!css?url=false' },
         { test: /\.json$/, loader: 'json-loader' }
     ]
     },
@@ -38,6 +38,7 @@ export let config = {
     },
     resolve: {
         alias: {
+            'assets': path.resolve(__dirname, 'app/renderer/images'),
             '$': path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js'),
             'jquery': path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js')
         }

@@ -1,13 +1,6 @@
 .parallax {
-  /* The image used */
-  background-image: url("../../images/poulet.svg");
-  /* Set a specific height */
   height: 20%;
-
-  /* Create the parallax scrolling effect */
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: url("../../images/poulet.svg") no-repeat fixed center;
   background-size: cover;
 }
 

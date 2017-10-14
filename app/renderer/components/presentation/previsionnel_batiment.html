@@ -40,7 +40,7 @@
         <br><br>
         <div class="row">
             <div class="col-lg-6 col-md-6 col-xs-12">
-                <image-loader model="production" height="50"></image-loader>
+                <image-loader model="production" height="350"></image-loader>
             </div>
             <div class="col-lg-6 col-md-6 col-xs-12">
                     <table class="table table-condensed table-hover table-responsive">
@@ -112,12 +112,12 @@
                     <tr>
                         <th>Aliment (€)</th>
                         <td>{{ production.foodPrice | number:3 }} €</td>
-                        <td>{{ production.foodPrice * production.getDeliveredChicks() | number:0 }} €</td>
+                        <td>{{ production.getTotalFoodCost() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Cotisations</th>
                         <td>{{ production.facility.facilityCharges.contributions | number:3 }} €</td>
-                        <td>{{ production.facility.facilityCharges.contributions * production.getDeliveredChicks() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.contributions * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <td><i>Marge PAC / poulet MEP</i></td>
@@ -129,37 +129,37 @@
                     <tr>
                         <th>Chauffage</th>
                         <td>{{ production.facility.facilityCharges.warming }} €</td>
-                        <td>{{ production.facility.facilityCharges.warming * production.getDeliveredChicks() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.warming * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Frais vétérinaires</th>
                         <td>{{ production.facility.facilityCharges.vetPrice }} €</td>
-                        <td>{{ production.facility.facilityCharges.vetPrice * production.getDeliveredChicks() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.vetPrice * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Désinfection</th>
                         <td>{{ production.facility.facilityCharges.disinfection }} €</td>
-                        <td>{{ production.facility.facilityCharges.disinfection * production.getDeliveredChicks() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.disinfection * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Eau - Electricité - Divers</th>
                         <td>{{ production.facility.facilityCharges.commodities }} €</td>
-                        <td>{{ production.facility.facilityCharges.commodities * production.getDeliveredChicks() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.commodities * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Litière</th>
                         <td>{{ production.facility.facilityCharges.litter }} €</td>
-                        <td>{{ production.facility.facilityCharges.litter * production.getDeliveredChicks() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.litter * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Attrapage</th>
                         <td>{{ production.facility.facilityCharges.catching }} €</td>
-                        <td>{{ production.facility.facilityCharges.catching * production.getDeliveredChicks() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.catching * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <th>Assurances</th>
                         <td>{{ production.facility.facilityCharges.insurances }} €</td>
-                        <td>{{ production.facility.facilityCharges.insurances * production.getDeliveredChicks() | number:0 }} €</td>
+                        <td>{{ production.facility.facilityCharges.insurances * production.getChickNb() | number:0 }} €</td>
                     </tr>
                     <tr>
                         <td><i>Charges / tête</i></td>
@@ -173,8 +173,8 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-lg-6 col-md-6 col-xs-12">
-                <image-loader model="production.facility" height="50"></image-loader>
+            <div class="col-lg-6 col-md-6 col-xs-12" style="margin-top:5%;">
+                <image-loader model="production.facility" height="350"></image-loader>
             </div>
         </div>
         <div class="row text-center">
@@ -294,7 +294,7 @@
             </div>
             <div class="col-md-{{12/production.facility.investments.length}} col-xs-12 col-lg-{{12/production.facility.investments.length}}" ng-repeat="investment in production.facility.investments">
                 <h3>{{investment.designation | uppercase }}</h3>
-                <image-loader model="investment" height="50"></image-loader>
+                <image-loader model="investment" height="350"></image-loader>
             </div>
         </div>
         <div class="row text-center">

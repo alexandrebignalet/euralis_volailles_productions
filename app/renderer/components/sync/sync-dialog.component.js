@@ -8,12 +8,13 @@ export const SyncDialogComponent = {
     },
     template,
     controller: class SyncDialogController {
-        constructor($scope, $timeout, PouchDbService) {
+        constructor($scope, $timeout, PouchDbService, SidebarService) {
             'ngInject';
             this.scope = $scope;
             this.timeout = $timeout;
 
             this.PouchDbService = PouchDbService;
+            this.SidebarService = SidebarService;
             this.syncHandler = null;
 
             this.logs = [];
@@ -25,24 +26,26 @@ export const SyncDialogComponent = {
 
             this.syncHandler = this.PouchDbService.sync()
             .on('complete', (res) => {
-                this.log("Synchronisation terminée.");
+                this.SidebarService.closeNav();
                 this.endSync(2000);
             })
             .on('denied', (res) => {
-                this.log("Denied ", JSON.stringify(res));
+                this.log("Denied " + JSON.stringify(res));
             })
             .on('change', (res) => {
-                this.log("Change ", JSON.stringify(res));
+                if(res.direction === 'pull')
+                    this.log("Récupération des modifications.");
+                if(res.direction === 'push')
+                    this.log("Envoi des modifications.");
             })
             .on('paused', (res) => {
-                if(!res) {
-                    this.log("Synchronisation terminée, en attente e nouveau changement.");
-                    this.endSync(2000);
-                }
+                this.PouchDbService.db.info()
+                    .then((data) => {
+                    if(data.update_seq > 0) this.endSync(2000);
+                    this.log("Synchronisation terminée.");
+                })
             })
-            .on('active', (res) => {
-
-            })
+            .on('active', () => {})
             .on('error', (err) => {
                 this.log("Erreur: ", err);
                 this.endSync(2000);

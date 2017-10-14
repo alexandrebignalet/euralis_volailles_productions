@@ -74,7 +74,7 @@ export class PouchDbService {
         this.DB_INFO = DB_INFO;
 
         if(this.env === undefined) this.env = 'prod';
-        if(this.env === 'dev') PouchDB.debug.enable('*');
+        // if(this.env === 'dev') PouchDB.debug.enable('*');
 
         this.dbOpts = { auto_compaction: true };
         this.remoteDbOpts = {
@@ -186,19 +186,20 @@ export class PouchDbService {
             retry: true
         })
             .on('complete', () => {
-                // console.log("complete ");
+                console.log("complete ");
             })
             .on('denied', function (err) {
                 console.log('document denied ', err);
             })
             .on('change', (change) => {
-                // console.log("change ", change);
+                console.log("change ", change);
             })
             .on('paused', (info) => {
-                // console.log("paused ", info);
+
+                console.log("paused ", info);
             })
             .on('active', (info) => {
-                // console.log("active ", info);
+                console.log("active ", info);
             })
             .on('error', (err) => {
                 console.log(err, err.result);

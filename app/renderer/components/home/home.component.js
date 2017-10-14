@@ -4,7 +4,7 @@ import './arrow.scss';
 import banner from '../../images/fd_good.jpg';
 import accompagne from '../../images/accompagne.jpg';
 import sanders from '../../images/sanders.jpg';
-import eurvol from '../../images/logo.png';
+import eurvol from '../../images/logo_euralis.gif';
 import vol from '../../images/eurvol.jpg';
 import elev from '../../images/elev.png';
 import avigers from '../../images/avigers.png';
@@ -41,6 +41,7 @@ export const HomeComponent = {
             'ngInject';
 
             this.banner = banner;
+            console.log(banner);
             this.accompagne = accompagne;
             this.imagesFiliere = filiere;
 

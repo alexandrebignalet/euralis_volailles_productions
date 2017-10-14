@@ -97,7 +97,7 @@ gulp.task('compile', () => {
     });
 });
 
-gulp.task('serve', () => {
+gulp.task('serve', ['ngconstant:dev'], () => {
     const config = require('./webpack.dev.config');
 
     const compiler = webpack(config);

@@ -13,7 +13,7 @@ export const RotationComponent = {
             this.productionsChoosen = [];
             this.filter = facilityFilter;
             this.timeout = $timeout;
-            this.investmentChoosen = null;
+            this.investmentChoosen = 0;
             this.investment = {
                 annuityDuration: 15,
                 interest: 2.5
@@ -28,10 +28,10 @@ export const RotationComponent = {
             });
         }
 
-        $onInit() { this.timeout(() => {
+        $onInit() {
+            this.timeout(() => {
                 $('#production_selector').multiselect({
                     onChange: (option, checked) => {
-                        // Get selected options.
                         var selectedOptions = $('#production_selector option:selected');
 
                         if (selectedOptions.length >= 3) {

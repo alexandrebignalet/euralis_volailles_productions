@@ -3,8 +3,6 @@ import webpack from 'webpack';
 import path from 'path';
 import {config} from './webpack.config';
 
-config.devtool = 'source-map';
-
 config.entry.main = [
     path.join(__dirname, 'app/main/main.js')
 ];

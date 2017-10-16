@@ -105,7 +105,7 @@ export class PDFGenerator {
                         [`Poussins`, production.facility.facilityCharges.chickPrice, Math.round(production.getChicksPaid() * production.facility.facilityCharges.chickPrice)],
                         ['Aliment (€/t)', production.foodPrice, Math.round(production.foodPrice * production.getDeliveredChicks())],
                         ['Cotisations', production.facility.facilityCharges.contributions , Math.round(production.facility.facilityCharges.contributions * production.getDeliveredChicks())],
-                        [{text: `Marge PAC / poulet MEP`, italic: true}, {text: production.getMargePACByChickPIP(), colSpan: 2, alignement: 'left'}, ''],
+                        [{text: `Marge PAC / poulet MEP`, italic: true}, {text: Math.round(production.getMargePACByChickPIP()*100)/100, colSpan: 2, alignement: 'left'}, ''],
                         ['Chauffage', production.facility.facilityCharges.warming , Math.round(production.facility.facilityCharges.warming * production.getDeliveredChicks())],
                         ['Frais vétérinaires', production.facility.facilityCharges.vetPrice , Math.round(production.facility.facilityCharges.vetPrice * production.getDeliveredChicks())],
                         ['Désinfection', production.facility.facilityCharges.disinfection , Math.round(production.facility.facilityCharges.disinfection * production.getDeliveredChicks())],

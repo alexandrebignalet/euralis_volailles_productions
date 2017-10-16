@@ -43,8 +43,7 @@ export class Production {
 
     getMargePACByChickPIP() {
         let charges = this.getTotalFoodCost() + (this.facility.facilityCharges.chickPrice + this.facility.facilityCharges.contributions) * this.getChickNb();
-
-        return (this.avgWeight * ( this.getChickNb() * (this.getClassedPercent() * this.classedPrice + this.breedingDeclassedPercent + this.declassedPrice )) - charges) / this.getChickNb();
+        return (this.getTotalWages() - charges) / this.getChickNb();
     }
 
     setFacilitiesNb(nb) {

@@ -4,7 +4,7 @@
 
 <div id="menu" class="row">
     <div class="col-md-3 col-lg-3 col-xs-3" ng-repeat="item in vm.departments">
-        <button class="btn btn-block btn-success btn-raised" ui-sref="presentation({department:item.key})">
+        <button class="btn btn-block btn-success btn-raised btn-main" ui-sref="presentation({department:item.key})">
             <b style="font-size: 70%">{{item.value | uppercase }}</b>
         </button>
         <br>

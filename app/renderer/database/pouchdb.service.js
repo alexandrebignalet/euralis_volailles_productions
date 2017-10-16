@@ -84,7 +84,7 @@ export class PouchDbService {
         };
 
         this.dbName = this.DB_INFO.name + this.env;
-        this.db = new PouchDB(path.join(__dirname, this.dbName), this.dbOpts);
+        this.db = new PouchDB(this.dbName, this.dbOpts);
         this.remoteDb = new PouchDB(DB_INFO.remoteUrl + this.dbName, this.remoteDbOpts);
 
         this.db.createIndex({
@@ -95,7 +95,7 @@ export class PouchDbService {
     }
 
     init() {
-        this.db = new PouchDB(path.join(__dirname, this.dbName), this.dbOpts);
+        this.db = new PouchDB(this.dbName, this.dbOpts);
         this.remoteDb = new PouchDB(this.DB_INFO.remoteUrl + this.dbName, this.remoteDbOpts);
 
         this.db.setSchema(databaseSchema);

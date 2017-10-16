@@ -320,21 +320,21 @@
             <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
                 <tr>
                     <th>{{ "produit total par bande" | uppercase }}</th>
-                    <th>{{ production.getTotalWages() | number:0 }} €</th>
+                    <th class="table-number">{{ production.getTotalWages() | number:0 }} €</th>
                 </tr>
 
                 <tr>
                     <th>{{ "marge brute par bande" | uppercase }}</th>
-                    <th> {{ production.getBrutMargin() | number:0 }} €</th>
+                    <th class="table-number"> {{ production.getBrutMargin() | number:0 }} €</th>
                 </tr>
 
                 <tr>
                     <th>{{ "marge brute annuelle" | uppercase }} avec {{ production.breedingPerYear }} bandes par année</th>
-                    <th> {{ production.getAnnualBrutMargin() | number:0 }} €</th>
+                    <th class="table-number"> {{ production.getAnnualBrutMargin() | number:0 }} €</th>
                 </tr>
                 <tr>
                     <td><i>Marge par m²</i></td>
-                    <td><i>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }} €</i></td>
+                    <td class="table-number"><i>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }} €</i></td>
                 </tr>
                 <tr>
                     <th>
@@ -358,13 +358,13 @@
                             </div>
                         </form>
                     </th>
-                    <th ng-if="vm.investmentChoosen != 'none'">{{ vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest) | number:0 }} €</th>
-                    <th ng-if="vm.investmentChoosen == 'none'">{{ 0 | number:0 }} €</th>
+                    <th ng-if="vm.investmentChoosen != 'none'" class="table-number">{{ vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest) | number:0 }} €</th>
+                    <th ng-if="vm.investmentChoosen == 'none'" class="table-number">{{ 0 | number:0 }} €</th>
                 </tr>
                 <tr>
                     <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>
-                    <th ng-if="vm.investmentChoosen != 'none'">{{ production.getAnnualNetMargin(vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest)) | number:0 }} €</th>
-                    <th ng-if="vm.investmentChoosen == 'none'">{{ production.getAnnualNetMargin(0) | number:0 }} €</th>
+                    <th ng-if="vm.investmentChoosen != 'none'" class="table-number">{{ production.getAnnualNetMargin(vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest)) | number:0 }} €</th>
+                    <th ng-if="vm.investmentChoosen == 'none'" class="table-number">{{ production.getAnnualNetMargin(0) | number:0 }} €</th>
                 </tr>
             </table>
             <p>Temps travail: {{production.facility.workHours * vm.facilityNb | number: 1}}h/jour en moyenne</p>

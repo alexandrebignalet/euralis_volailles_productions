@@ -4,9 +4,7 @@ if (typeof btoa === 'undefined') {
         return new Buffer(str).toString('base64');
     };
 }
-
 import path from 'path';
-
 import {Production} from '../components/management/production/production'
 import {Facility} from '../components/management/facility/facility'
 import {FacilityCharges} from '../components/management/facility_charges/facility_charges'
@@ -74,7 +72,7 @@ export class PouchDbService {
         this.DB_INFO = DB_INFO;
 
         if(this.env === undefined) this.env = 'prod';
-        // if(this.env === 'dev') PouchDB.debug.enable('*');
+        if(this.env === 'dev') PouchDB.debug.enable('*');
 
         this.dbOpts = { auto_compaction: true };
         this.remoteDbOpts = {
@@ -86,7 +84,7 @@ export class PouchDbService {
         };
 
         this.dbName = this.DB_INFO.name + this.env;
-        this.db = new PouchDB(this.dbName, this.dbOpts);
+        this.db = new PouchDB(path.join(__dirname, this.dbName), this.dbOpts);
         this.remoteDb = new PouchDB(DB_INFO.remoteUrl + this.dbName, this.remoteDbOpts);
 
         this.db.createIndex({
@@ -114,6 +112,7 @@ export class PouchDbService {
      * @return Promise
      */
     save(entityName, object) {
+
         return this.toAttachmentFormat(entityName, object.attachments || {})
             .then((attachments) => {
                 delete object.attachments;
@@ -123,16 +122,18 @@ export class PouchDbService {
 
                         let entity = objects[Object.keys(objects)[0]][0];
 
-                        if(attachments) {
+                        if(attachments.length > 0) {
 
                             return attachments.reduce((p, attachment) => {
                                 attachment.obj = entity;
                                 return p.then(() => this.putAttachment(attachment));
                             }, Promise.resolve());
                         }
-                        return objects;
+
+                        return entity;
                     })
-            })
+                    .catch((err) => console.log("Save central repo : ", err));
+            });
     }
 
     find(entityName, id) {
@@ -161,12 +162,11 @@ export class PouchDbService {
     }
 
     remove(entityName, object) {
-        return this.db.rel.del(entityName, object)
-            .then(() => this.compact())
-            .catch(err => console.log(`Remove Central PouchDbService: ${err}`));
+        return this.db.rel.del(entityName, object);
     }
 
     putAttachment({entityName, obj, name, blob, contentType}) {
+        
         return this.db.rel.putAttachment(entityName, obj, name, blob, contentType)
             .then(data => data)
             .catch(err => console.log(`Find Central PouchDbService: ${err}`));
@@ -181,29 +181,8 @@ export class PouchDbService {
     }
 
     sync() {
-        return this.db.sync(this.remoteDb, {
-            live:true,
-            retry: true
-        })
-            .on('complete', () => {
-                console.log("complete ");
-            })
-            .on('denied', function (err) {
-                console.log('document denied ', err);
-            })
-            .on('change', (change) => {
-                console.log("change ", change);
-            })
-            .on('paused', (info) => {
-
-                console.log("paused ", info);
-            })
-            .on('active', (info) => {
-                console.log("active ", info);
-            })
-            .on('error', (err) => {
-                console.log(err, err.result);
-            });
+        const syncOptions = { live:true, retry: true };
+        return this.db.sync(this.remoteDb, syncOptions);
     }
 
     replicate(who) {
@@ -222,22 +201,7 @@ export class PouchDbService {
         return PouchDB.replicate(from, to, {
             live:true,
             retry: true
-        })
-            .on('complete', () => {
-                // console.log("complete ");
-            })
-            .on('change', (change) => {
-                // console.log("change ", change);
-            })
-            .on('paused', (info) => {
-                // console.log("paused ", info);
-            })
-            .on('active', (info) => {
-                // console.log("active ", info);
-            })
-            .on('error', (err) => {
-                console.log(err, err.result);
-            });
+        });
     }
 
     assignAttachmentsToObject(entityName, object) {
@@ -285,7 +249,7 @@ export class PouchDbService {
     }
 
     toAttachmentFormat(entityName, attachments) {
-console.log(attachments);
+
         return Promise.all(
             Object.keys(attachments).map(key => {
                 let name = key;
@@ -297,20 +261,6 @@ console.log(attachments);
                 };
 
                 return Promise.resolve(attachmentFormat);
-
-                return new Promise((resolve, reject) => {
-                    let reader = new FileReader();
-                    reader.readAsArrayBuffer(attachments[name]);
-
-                    reader.onload = () => {
-                        attachmentFormat.base64 = new Buffer(reader.result);
-                        resolve(attachmentFormat);
-                    };
-
-                    reader.onerror = (error) => {
-                        reject(error);
-                    };
-                })
             })
         );
     }

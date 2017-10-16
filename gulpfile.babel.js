@@ -78,7 +78,7 @@ gulp.task('mocha', () => {
 
     process.env.NODE_ENV = 'test';
 
-    return gulp.src(['test/database/**/*.js'], { read: false })
+    return gulp.src(['app/test/database/**/*.js'], { read: false })
         .pipe($.mocha({reporter: 'spec', compilers: 'js:babel-core/register'}))
         .on('error', $.util.log);
 });

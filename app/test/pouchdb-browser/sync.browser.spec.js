@@ -1,31 +1,30 @@
 import {assert}  from 'chai';
-import {PouchDbService} from '../../app/renderer/database/pouchdb.service';
-import {addXDocInDb} from './utils.spec';
+import {PouchDbService} from '../../renderer/database/pouchdb.service';
+import {addXDocInDb} from '../database/utils';
 
 const SYNC_TIMEOUT = 100000000;
 const INDEX_NUMBER = 1;
 const BASE_DOC_NUMBER = 10;
 
 describe('PouchCouchReplicationTest', () => {
-    let pouchDbService = new PouchDbService('test', { name: 'euralis_volailles_db-', remoteUrl: 'http://217.182.169.232:5984/' });
-
-    before(function () {
-        this.timeout(SYNC_TIMEOUT);
-        return addXDocInDb(BASE_DOC_NUMBER, 0, pouchDbService);
+    let pouchDbService = new PouchDbService('test', { name: 'euralis_volailles_db-', remoteUrl: 'http://46.101.36.6:5984/' });
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = SYNC_TIMEOUT;
+    
+    beforeAll(function(done) {
+        pouchDbService.init()
+            .then(() => addXDocInDb(BASE_DOC_NUMBER, 0, pouchDbService) )
+            .then(() => done());
     });
 
-    after(function() {
-        this.timeout(SYNC_TIMEOUT);
-        return pouchDbService.destroy()
+    afterAll(function(done) {
+        pouchDbService.destroy()
             .then(() => pouchDbService.remoteDb.destroy())
             .then(() => pouchDbService.init())
-            .catch(() => pouchDbService.init());
+            .catch(() => pouchDbService.init())
+            .then(() => done());
     });
 
     describe('constructor and init tests', () => {
-        it('should be a singleton', () => {
-            assert.isNotNull(pouchDbService);
-        });
 
         it(`should contain ${BASE_DOC_NUMBER} docs`, () => {
             return pouchDbService.db.allDocs()
@@ -37,7 +36,6 @@ describe('PouchCouchReplicationTest', () => {
 
     describe('database sync process test', () => {
         it('should replicate to remote server', () => {
-            const WHO_REPLICATE = 'local';
 
             let localDbTotalRows;
             let remoteDbTotalRowsAfterReplication;
@@ -48,7 +46,7 @@ describe('PouchCouchReplicationTest', () => {
                     console.log("local db total docs before rep: ", localDbTotalRows);
                 })
                 .then(() => new Promise((resolve, reject) => {
-                    pouchDbService.replicate(WHO_REPLICATE)
+                    pouchDbService.db.replicate.to(pouchDbService.remoteDb)
                         .on('complete', () => {
                             resolve();
                         })
@@ -65,10 +63,9 @@ describe('PouchCouchReplicationTest', () => {
                     console.log("remote db total docs after rep: ", remoteDbTotalRowsAfterReplication);
                     assert(localDbTotalRows === remoteDbTotalRowsAfterReplication);
                 });
-        }).timeout(SYNC_TIMEOUT);
+        }, SYNC_TIMEOUT);
 
         it('should replicate from remote server', () => {
-            const WHO_REPLICATE = 'server';
 
             let remoteDbTotalRows;
             let localDbTotalRowsAfterReplication;
@@ -89,7 +86,7 @@ describe('PouchCouchReplicationTest', () => {
                     console.log("Local db total docs after rep: ", localDbTotalRowsAfterReplication);
                     assert(localDbTotalRowsAfterReplication === remoteDbTotalRows)
                 });
-        }).timeout(SYNC_TIMEOUT);
+        }, SYNC_TIMEOUT);
 
         it('should sync with remote server after some doc additions', () => {
             const ADDED_DOCS = 200;
@@ -107,8 +104,12 @@ describe('PouchCouchReplicationTest', () => {
                             resolve();
                         })
                         .on('paused', (info) => {
-                            console.log("paused ", info);
-                            if(!info) resolve();
+                            pouchDbService.remoteDb.info()
+                                .then((data) => {
+                                    if(data.doc_count === localDbTotalRows) {
+                                        resolve();
+                                    }
+                                })
                         })
                         .on('error', (err) => {
                             reject();
@@ -119,6 +120,6 @@ describe('PouchCouchReplicationTest', () => {
                     console.log(`State after sync: local docs ${localDbTotalRows}, remote docs: ${data.rows.length}`);
                     assert(localDbTotalRows === data.rows.length)
                 });
-        }).timeout(SYNC_TIMEOUT);
+        }, SYNC_TIMEOUT);
     });
 });

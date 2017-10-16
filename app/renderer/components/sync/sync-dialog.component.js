@@ -41,9 +41,9 @@ export const SyncDialogComponent = {
             .on('paused', (res) => {
                 this.PouchDbService.db.info()
                     .then((data) => {
-                    if(data.update_seq > 0) this.endSync(2000);
-                    this.log("Synchronisation terminée.");
-                })
+                        if(data.update_seq > 0) this.endSync(2000);
+                        this.log("Synchronisation terminée.");
+                    });
             })
             .on('active', () => {})
             .on('error', (err) => {

@@ -107,7 +107,8 @@
     "url-loader": "^0.5.8",
     "webpack": "^1.13.3",
     "webpack-dev-middleware": "^1.6.1",
-    "webpack-hot-middleware": "^2.6.0"
+    "webpack-hot-middleware": "^2.6.0",
+    "webpack-node-externals": "^1.6.0"
   },
   "scripts": {
     "release-win": "build -w --x64 --ia32",

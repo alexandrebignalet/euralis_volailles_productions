@@ -1,14 +1,16 @@
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
+import nodeExternal from 'webpack-node-externals';
 
-const externals = {}, _externals = [
+const externals = {node: nodeExternal()}, _externals = [
     'sqlite3', 'leveldown'
 ];
 
-_externals.forEach(function(s) {
+_externals.forEach((s) => {
     externals[s] = 'commonjs ' + s;
 });
+
 
 export let config = {
     entry: {
@@ -38,7 +40,6 @@ export let config = {
     },
     resolve: {
         alias: {
-            'assets': path.resolve(__dirname, 'app/renderer/images'),
             '$': path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js'),
             'jquery': path.resolve(__dirname, 'node_modules/jquery/dist/jquery.js')
         }

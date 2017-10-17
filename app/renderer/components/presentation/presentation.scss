@@ -1,6 +1,9 @@
 .parallax {
+  background-image: url("../../images/poulet.jpg");
   height: 20%;
-  background: no-repeat fixed center url('../../images/poulet.jpg');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
   background-size: cover;
 }
 

@@ -29,7 +29,6 @@ export const VideoFormComponent = {
         }
 
         $onInit() {
-            console.log('bonjour');
             this.video = this.resolve.video;
             if(this.video.id) {
                 this.PouchDataService.load(this.video.getFile());
@@ -37,7 +36,7 @@ export const VideoFormComponent = {
                 this.video.name = this.video.getName();
             }
         }
-        
+
         onSubmit() {
             this.isSaving = true;
 

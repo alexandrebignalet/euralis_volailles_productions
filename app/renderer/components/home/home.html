@@ -4,8 +4,8 @@
 
 <div id="menu" class="row">
     <div class="col-md-3 col-lg-3 col-xs-3" ng-repeat="item in vm.departments">
-        <button class="btn btn-block btn-success btn-raised" ui-sref="presentation({department:item.key})">
-            <b style="font-size: 70%">{{item.value | uppercase }}</b>
+        <button class="btn btn-block btn-success btn-raised btn-main" ui-sref="presentation({department:item.key})">
+            <b style="font-size: 12pt">{{item.value | uppercase }}</b>
         </button>
         <br>
     </div>
@@ -74,15 +74,15 @@
                 <div class="row"  style="margin-top: 2%;">
                     <div class="col-md-6 col-xs-6 col-lg-6">
                         <img src="{{vm.imagesFiliere['vol']}}" style="width: 50%;"/>
-                        <p style="font-size: 70%;color: #399528;">
-                            {{6500000 | number}}
+                        <p style="font-size: 14pt;color: #399528;">
+                            {{6500000 | number: 0}}
                         </p>
                         <span style="font-size: 1%;color: #a6ce39;">VOLAILLES</span>
                     </div>
                     <div class="col-md-6 col-xs-6 col-lg-6">
                         <img src="{{vm.imagesFiliere['elev']}}" style="width: 50%;"/>
-                        <p  style="font-size: 70%;color: #399528;">
-                            {{250 | number}}
+                        <p  style="font-size: 14pt;color: #399528;">
+                            {{250 | number: 0}}
                         </p>
                         <span style="font-size: 1%;color: #a6ce39;">ELEVEURS</span>
                     </div>
@@ -110,7 +110,7 @@
                     </tr>
                     <tr>
                         <td>
-                            AVFL
+                            <h3>AVFL</h3>
                         </td>
                         <td style="text-align: left;">
                             <figure>
@@ -120,11 +120,21 @@
                     </tr>
                     <tr>
                         <td>
-                            BIO
+                            <h3>BIO</h3>
                         </td>
                         <td style="text-align: left;">
                             <figure>
                                 <img src="{{vm.imagesFiliere['bio']}}" />
+                            </figure>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3>SUD-OUEST</h3>
+                        </td>
+                        <td style="text-align: left;">
+                            <figure>
+                                <img src="{{vm.imagesFiliere['tags']['sudouest']}}" />
                             </figure>
                         </td>
                     </tr>
@@ -136,6 +146,9 @@
             <div class="col-md-3 col-xs-3 col-lg-3" ng-class="{ 'slide-left': groupProdVisible }">
                 <figure>
                     <img src="{{vm.imagesFiliere['qualisud']}}" style="width:50%;"/>
+                </figure>
+                <figure>
+                    <img src="{{vm.imagesFiliere['agrocert']}}" style="width:50%;"/>
                 </figure>
                 <strong>Contrôle des normes Label à tous les niveaux de la filière</strong>
             </div>

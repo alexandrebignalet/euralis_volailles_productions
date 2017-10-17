@@ -10,7 +10,7 @@ export const PrevisionnelBatimentComponent = {
             this.scope = $scope;
             this.timeout = $timeout;
             this.facilityNb = 2;
-            this.investmentChoosen = 0;
+            this.investmentChoosen = "none";
             this.annuityDuration = 15;
             this.interest = 2.5;
             this.sliderOptions = {
@@ -22,8 +22,8 @@ export const PrevisionnelBatimentComponent = {
 
             this.pickerIsOpen = false;
             this.format = 'dd/MM/yyyy';
+            $scope.date = new Date();
             this.dateOptions = {
-                minDate: new Date(),
                 showWeeks: true
             };
         }
@@ -33,6 +33,10 @@ export const PrevisionnelBatimentComponent = {
             this.scope.$watch('vm.facilityNb', () => {
                 this.update();
             });
+        }
+
+        hasUser() {
+            return !!this.PDFGenerator.UserService.getUser();
         }
 
         openPicker() {
@@ -47,8 +51,6 @@ export const PrevisionnelBatimentComponent = {
         update() {
             angular.forEach(this.productions, (production) => {
                 production.setFacilitiesNb(this.facilityNb);
-
-                this.investmentChoosen = production.facility.investments[0];
 
                 angular.forEach(production.facility.investments, (investment) => {
                     investment.facilityNb = this.facilityNb;

@@ -11,7 +11,7 @@ export const RotationModule = angular.module('RotationModule', [])
                 parent: 'components',
                 url: '/rotation',
                 resolve: {
-                    productions: (PouchDataService) => PouchDataService.get('production')
+                    productions: (PouchDbService) => PouchDbService.find('production')
                 },
                 views: {
                     'content@': {

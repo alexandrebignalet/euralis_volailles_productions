@@ -8,7 +8,7 @@ module.exports = function (config) {
     frameworks: ['jasmine', 'mocha', 'chai', 'sinon'],
 
     // list of files/patterns to load in the browser
-    files: ['app/**/*.spec.js'],
+    files: ['app/test/pouchdb-browser/**/*.spec.js'],
 
     // files to exclude
     exclude: [],
@@ -26,21 +26,16 @@ module.exports = function (config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: { 'app/**/*.spec.js': ['webpack'] },
+    preprocessors: { 'app/test/pouchdb-browser/**/*.spec.js': ['webpack'] },
 
     webpack: {
       devtool: 'inline-source-map',
       module: {
         loaders: [
-            { test: /\.js$/, exclude: [/node_modules/], loader: 'ng-annotate!babel'},
-            { test: /\.html$/, loader: 'raw' },
-            { test: /.(woff(2)?|eot|ttf)(\?[a-z0-9=\.]+)?$/, loader: 'url-loader?limit=100000' },
-            { test: /\.(scss|sass)$/, loader: 'style!css!sass' },
-            { test: /\.(png|jpg|JPG|svg)/, loader: 'url-loader?limit=100000&name=images/[name].[ext]'  },
-            { test: /\.css$/, loader: 'style!css' },
-            { test: /\.json$/, loader: 'json-loader' }
+            { test: /\.js$/, exclude: [/node_modules/], loader: 'ng-annotate!babel'}
         ]
-      }
+      },
+      watch: true
     },
 
     webpackServer: {

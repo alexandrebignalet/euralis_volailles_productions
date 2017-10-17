@@ -1,14 +1,20 @@
 .parallax {
-  /* The image used */
-  background-image: url("../../images/poulet.svg");
-  /* Set a specific height */
+  background-image: url("../../images/poulet.jpg");
   height: 20%;
-
-  /* Create the parallax scrolling effect */
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.table-header{
+  text-transform: uppercase;
+  font-size: 12pt;
+}
+
+.table-number {
+  font-size: 14pt;
+  font-weight: bold;
 }
 
 .rzslider .rz-bubble {

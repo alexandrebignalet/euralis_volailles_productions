@@ -14,6 +14,7 @@ export class Investment {
         this.diverseOptions = investment.diverseOptions;
         this.subsidies = investment.subsidies;
         this.helpEuralis = investment.helpEuralis;
+        this.details = new InvestmentDescription(investment.details);
 
         if(investment.attachments) {
             this.attachments = Object.keys(investment.attachments).map(key => {
@@ -29,7 +30,6 @@ export class Investment {
         }
 
         this._facilityNb = 1;
-
     }
 
     toString() {
@@ -63,5 +63,21 @@ export class Investment {
 
     getTotalBeforeSubsidies() {
         return this.getMasonry() + this.getFacilityMountingDeliveryPrice() + this.getEquipmentMountingDeliveryPrice() + this.papers;
+    }
+}
+
+class InvestmentDescription {
+    constructor(details) {
+        if(!details) return;
+        this.name = details.name;
+        this.designation = details.designation;
+        this.description = details.description;
+        this.papers = details.papers;
+        this.masonry = details.masonry;
+        this.facilityMoutingDeliveryPrice = details.facilityMoutingDeliveryPrice;
+        this.equipmentMountingDeliveryPrice = details.equipmentMountingDeliveryPrice;
+        this.diverseOptions = details.diverseOptions;
+        this.subsidies = details.subsidies;
+        this.helpEuralis = details.helpEuralis;
     }
 }

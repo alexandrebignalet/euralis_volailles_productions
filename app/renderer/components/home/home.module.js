@@ -12,7 +12,7 @@ export const HomeModule = angular.module('HomeModule', [angularInview.name])
                 parent: 'components',
                 url: '/home',
                 resolve: {
-                  videos: (PouchDataService) => PouchDataService.get('video')
+                  videos: (PouchDbService) => PouchDbService.find('video')
                 },
                 views: {
                     'content@': {

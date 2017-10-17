@@ -56,7 +56,12 @@ export const RotationComponent = {
                         }
                     }
                 });
-            }); }
+            });
+        }
+
+        hasUser() {
+            return !!this.PDFGenerator.UserService.getUser();
+        }
 
         getTotalProductionsChoosen() {
             return this.productionsChoosen.reduce((acc, production) => {

@@ -1,3 +1,9 @@
+.parallax {
+  height: 20%;
+  background: no-repeat fixed center url('../../images/poulet.jpg');
+  background-size: cover;
+}
+
 .table-header{
   text-transform: uppercase;
   font-size: 12pt;

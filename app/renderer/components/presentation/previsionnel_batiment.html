@@ -31,7 +31,7 @@
             <div class="col-md-1">
                 <button
                     ng-click="vm.generatePDF(production, vm.investmentChoosen, date, vm.annuityDuration, vm.interest)"
-                    ng-disabled="!production || !vm.investmentChoosen || !date || !vm.annuityDuration || !vm.interest"
+                    ng-disabled="!production || !vm.investmentChoosen || !date || !vm.annuityDuration || !vm.interest || !vm.hasUser()"
                     class="btn btn-default">
                     <span class="glyphicon glyphicon-print"></span>
                 </button>
@@ -193,7 +193,7 @@
                     </tr>
                     <tr>
                         <td ng-repeat="investment in production.facility.investments">
-                            <image-loader model="investment" height="200"></image-loader>
+                            <image-loader model="investment" height="300"></image-loader>
                         </td>
                     </tr>
                     <tr>

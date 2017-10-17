@@ -1,13 +1,8 @@
 import template  from './presentation.html';
 import './presentation.scss';
-import poulet_svg from '../../images/poulet.svg';
+import '../../images/poulet.jpg';
 
 export const PresentationComponent = {
     bindings: { productions: '<' },
-    template,
-    controller: class PresentationController {
-        constructor() {
-            this.pouletSvg = poulet_svg;
-        }
-    }
+    template
 };

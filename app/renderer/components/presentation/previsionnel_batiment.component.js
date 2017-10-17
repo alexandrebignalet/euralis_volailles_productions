@@ -35,6 +35,10 @@ export const PrevisionnelBatimentComponent = {
             });
         }
 
+        hasUser() {
+            return !!this.PDFGenerator.UserService.getUser();
+        }
+
         openPicker() {
             this.pickerIsOpen = true;
         }

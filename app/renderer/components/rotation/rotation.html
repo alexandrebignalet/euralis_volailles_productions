@@ -26,7 +26,8 @@
                 </button>
                 <button ng-click="vm.generatePDF(vm.facilityNb, vm.productionsChoosen, vm.investmentChoosen, {interest: vm.investment.interest, duration: vm.investment.annuityDuration})"
                         ng-if="vm.productionsChoosen.length > 0 && vm.investment.interest && vm.investment.annuityDuration"
-                        class="btn btn-default">
+                        class="btn btn-default"
+                        ng-disabled="!vm.hasUser()">
                     <span class="glyphicon glyphicon-print"></span>
                 </button>
             </div>

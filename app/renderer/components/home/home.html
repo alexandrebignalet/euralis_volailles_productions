@@ -5,7 +5,7 @@
 <div id="menu" class="row">
     <div class="col-md-3 col-lg-3 col-xs-3" ng-repeat="item in vm.departments">
         <button class="btn btn-block btn-success btn-raised btn-main" ui-sref="presentation({department:item.key})">
-            <b style="font-size: 70%">{{item.value | uppercase }}</b>
+            <b style="font-size: 12pt">{{item.value | uppercase }}</b>
         </button>
         <br>
     </div>
@@ -74,15 +74,15 @@
                 <div class="row"  style="margin-top: 2%;">
                     <div class="col-md-6 col-xs-6 col-lg-6">
                         <img src="{{vm.imagesFiliere['vol']}}" style="width: 50%;"/>
-                        <p style="font-size: 70%;color: #399528;">
-                            {{6500000 | number}}
+                        <p style="font-size: 14pt;color: #399528;">
+                            {{6500000 | number: 0}}
                         </p>
                         <span style="font-size: 1%;color: #a6ce39;">VOLAILLES</span>
                     </div>
                     <div class="col-md-6 col-xs-6 col-lg-6">
                         <img src="{{vm.imagesFiliere['elev']}}" style="width: 50%;"/>
-                        <p  style="font-size: 70%;color: #399528;">
-                            {{250 | number}}
+                        <p  style="font-size: 14pt;color: #399528;">
+                            {{250 | number: 0}}
                         </p>
                         <span style="font-size: 1%;color: #a6ce39;">ELEVEURS</span>
                     </div>

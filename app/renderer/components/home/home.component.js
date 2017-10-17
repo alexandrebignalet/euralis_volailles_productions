@@ -41,7 +41,6 @@ export const HomeComponent = {
             'ngInject';
 
             this.banner = banner;
-            console.log(banner);
             this.accompagne = accompagne;
             this.imagesFiliere = filiere;
 

@@ -23,7 +23,7 @@ export const SyncDialogComponent = {
 
         synchronise() {
             this.isSyncing = true;
-
+            let localDataCount = 0;
             this.syncHandler = this.PouchDbService.sync()
             .on('complete', (res) => {
                 this.SidebarService.closeNav();
@@ -41,9 +41,13 @@ export const SyncDialogComponent = {
             .on('paused', (res) => {
                 this.PouchDbService.db.info()
                     .then((data) => {
-                        if(data.update_seq > 0) this.endSync(2000);
+                        localDataCount = data.doc_count;
+                        return this.PouchDbService.remoteDb.info()
+                    })
+                    .then((data) => {
+                        if(localDataCount === data.doc_count) this.endSync(2000);
                         this.log("Synchronisation terminée.");
-                    });
+                    })
             })
             .on('active', () => {})
             .on('error', (err) => {

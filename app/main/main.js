@@ -22,7 +22,7 @@ function createWindow () {
         slashes: true
     }));
 
-    // mainWindow.maximize();
+    mainWindow.maximize();
 
     // Open the DevTools.
     if(process.env.NODE_ENV === 'dev') {

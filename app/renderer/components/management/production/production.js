@@ -124,6 +124,10 @@ export class Production {
             this.getTotalFoodCost();
     }
 
+    getBrutMarginPerChickPIP() {
+        return Math.round((this.getMargePACByChickPIP() - this.facility.facilityCharges.getChargesByChick())*100)/100;
+    }
+
     getBrutMargin(){
         return this.getTotalWages() - this.getTotalCosts();
     }

@@ -113,7 +113,7 @@
   "scripts": {
     "release-win": "build -w --x64 --ia32",
     "release": "build",
-    "rebuild": "electron-rebuild -f -w sqlite3",
+    "rebuild": "electron-rebuild -f -w sqlite3 -v 1.7.8",
     "test": "gulp test",
     "serve": "gulp serve",
     "webpack": "gulp webpack"

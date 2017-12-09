@@ -11,11 +11,11 @@ config.output.publicPath = '';
 config.target = 'electron';
 
 config.plugins = config.plugins.concat([
-    new webpack.optimize.UglifyJsPlugin({
-        mangle: {
-            except: ['$super', '$', 'exports', 'require', 'angular']
-        }
-    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //     mangle: {
+    //         except: ['$super', '$', 'exports', 'require', 'angular', 'facility']
+    //     }
+    // }),
     new CleanWebpackPlugin(['./build/electron'])
 ]);
 

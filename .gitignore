@@ -11,3 +11,5 @@ docker/lib/
 !docker/lib/.gitkeep
 app/renderer/app.constants.js
 .tmp/
+
+.vs/

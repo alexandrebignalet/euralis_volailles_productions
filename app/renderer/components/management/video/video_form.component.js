@@ -1,5 +1,4 @@
 import template from './video_form.html';
-import {Video} from './video';
 
 export const VideoFormComponent = {
     bindings: {
@@ -8,10 +7,11 @@ export const VideoFormComponent = {
     },
     template,
     controller: class VideoFormController {
-        constructor(PouchDataService, $state, ToastrService, $scope){
+        constructor(PouchDbService, $state, ToastrService, $scope, VideoService){
             'ngInject';
 
-            this.PouchDataService = PouchDataService;
+            this.PouchDbService = PouchDbService;
+            this.VideoService = VideoService;
             this.isSaving = false;
             this.currentState = $state.current.name;
             this.ToastrService = ToastrService;
@@ -24,14 +24,14 @@ export const VideoFormComponent = {
 
             $scope.fileNameChanged = (elem) => {
                 this.formData.file = elem.files[0];
-                this.PouchDataService.load(elem.files[0]);
+                this.PouchDbService.load(elem.files[0]);
             };
         }
 
         $onInit() {
             this.video = this.resolve.video;
             if(this.video.id) {
-                this.PouchDataService.load(this.video.getFile());
+                this.VideoService.load(this.video.getFile());
                 this.formData.file = this.video.getFile();
                 this.video.name = this.video.getName();
             }
@@ -49,13 +49,13 @@ export const VideoFormComponent = {
                         [this.video.name]: this.formData.file
                     };
 
-                    this.PouchDataService.save(this.entityName, this.video).then(() => {
+                    this.PouchDbService.save(this.entityName, this.video).then(() => {
                         this.ToastrService[formState](`Vidéo ${this.video.name}`);
                         this.modalInstance.close()
                     });
                     break;
                 case 'remove':
-                    this.PouchDataService.remove(this.entityName, this.video).then(() => {
+                    this.PouchDbService.remove(this.entityName, this.video).then(() => {
                         this.ToastrService.remove(this.video);
                         this.modalInstance.close()
                     });

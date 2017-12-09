@@ -182,6 +182,62 @@
                 <image-loader model="production.facility" height="350"></image-loader>
             </div>
         </div>
+
+        <div class="row text-center">
+            <h1>Produit par bande (ventes)</h1>
+            <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
+                <tr>
+                    <th>{{ "produit total par bande" | uppercase }}</th>
+                    <th class="table-number">{{ production.getTotalWages() | number:0 }} €</th>
+                </tr>
+
+                <tr>
+                    <th>{{ "marge brute par bande" | uppercase }}</th>
+                    <th class="table-number"> {{ production.getBrutMargin() | number:0 }} €</th>
+                </tr>
+
+                <tr>
+                    <th>{{ "marge brute annuelle" | uppercase }} avec {{ production.breedingPerYear }} bandes par année</th>
+                    <th class="table-number"> {{ production.getAnnualBrutMargin() | number:0 }} €</th>
+                </tr>
+                <tr>
+                    <td><i>Marge par m²</i></td>
+                    <td class="table-number"><i>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }} €</i></td>
+                </tr>
+                <tr>
+                    <th>
+                        <form class="form-inline">
+                            <div class="col-md-1">Annuité</div>
+                            <div class="col-md-4">
+                                <select class="form-control" id="annuity" ng-model="vm.investmentChoosen" required>
+                                    <option ng-value="'none'">Pas d'investissement</option>
+                                    <option ng-repeat="investment in production.facility.investments" ng-value="investment">{{investment.name | uppercase}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 input-group">
+                                <span class="input-group-addon">/</span>
+                                <input class="form-control" ng-model="vm.annuityDuration" type="number" min="0"/>
+                                <span class="input-group-addon">ans</span>
+                            </div>
+                            <div class="col-md-3 input-group">
+                                <span class="input-group-addon">à</span>
+                                <input class="form-control" ng-model="vm.interest" type="number" min="0"/>
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </form>
+                    </th>
+                    <th ng-if="vm.investmentChoosen != 'none'" class="table-number">{{ vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest) | number:0 }} €</th>
+                    <th ng-if="vm.investmentChoosen == 'none'" class="table-number">{{ 0 | number:0 }} €</th>
+                </tr>
+                <tr>
+                    <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>
+                    <th ng-if="vm.investmentChoosen != 'none'" class="table-number">{{ production.getAnnualNetMargin(vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest)) | number:0 }} €</th>
+                    <th ng-if="vm.investmentChoosen == 'none'" class="table-number">{{ production.getAnnualNetMargin(0) | number:0 }} €</th>
+                </tr>
+            </table>
+            <p>Temps travail: {{production.facility.workHours * vm.facilityNb | number: 1}}h/jour en moyenne</p>
+        </div>
+
         <div class="row text-center">
             <div class="col-md-12 col-xs-12 col-lg-12">
                 <h1>Investissement</h1>
@@ -319,60 +375,6 @@
                     </tr>
                 </table>
             </div>
-        </div>
-        <div class="row text-center">
-            <h1>Produit par bande</h1>
-            <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
-                <tr>
-                    <th>{{ "produit total par bande" | uppercase }}</th>
-                    <th class="table-number">{{ production.getTotalWages() | number:0 }} €</th>
-                </tr>
-
-                <tr>
-                    <th>{{ "marge brute par bande" | uppercase }}</th>
-                    <th class="table-number"> {{ production.getBrutMargin() | number:0 }} €</th>
-                </tr>
-
-                <tr>
-                    <th>{{ "marge brute annuelle" | uppercase }} avec {{ production.breedingPerYear }} bandes par année</th>
-                    <th class="table-number"> {{ production.getAnnualBrutMargin() | number:0 }} €</th>
-                </tr>
-                <tr>
-                    <td><i>Marge par m²</i></td>
-                    <td class="table-number"><i>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }} €</i></td>
-                </tr>
-                <tr>
-                    <th>
-                        <form class="form-inline">
-                            <div class="col-md-1">Annuité</div>
-                            <div class="col-md-4">
-                                <select class="form-control" id="annuity" ng-model="vm.investmentChoosen" required>
-                                    <option ng-value="'none'">Pas d'investissement</option>
-                                    <option ng-repeat="investment in production.facility.investments" ng-value="investment">{{investment.name | uppercase}}</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3 input-group">
-                                <span class="input-group-addon">/</span>
-                                <input class="form-control" ng-model="vm.annuityDuration" type="number" min="0"/>
-                                <span class="input-group-addon">ans</span>
-                            </div>
-                            <div class="col-md-3 input-group">
-                                <span class="input-group-addon">à</span>
-                                <input class="form-control" ng-model="vm.interest" type="number" min="0"/>
-                                <span class="input-group-addon">%</span>
-                            </div>
-                        </form>
-                    </th>
-                    <th ng-if="vm.investmentChoosen != 'none'" class="table-number">{{ vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest) | number:0 }} €</th>
-                    <th ng-if="vm.investmentChoosen == 'none'" class="table-number">{{ 0 | number:0 }} €</th>
-                </tr>
-                <tr>
-                    <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>
-                    <th ng-if="vm.investmentChoosen != 'none'" class="table-number">{{ production.getAnnualNetMargin(vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest)) | number:0 }} €</th>
-                    <th ng-if="vm.investmentChoosen == 'none'" class="table-number">{{ production.getAnnualNetMargin(0) | number:0 }} €</th>
-                </tr>
-            </table>
-            <p>Temps travail: {{production.facility.workHours * vm.facilityNb | number: 1}}h/jour en moyenne</p>
         </div>
     </uib-tab>
 </uib-tabset>

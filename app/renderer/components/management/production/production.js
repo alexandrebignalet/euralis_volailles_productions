@@ -6,7 +6,7 @@ export class Production {
 
         this.id = production.id;
         this.rev = production.rev;
-        this.fieldSpace = production.fieldSpace;
+        this.chickBySquare = production.chickBySquare;
         this.updateDate = production.updateDate;
         this.department = production.department;
         this.name = production.name;

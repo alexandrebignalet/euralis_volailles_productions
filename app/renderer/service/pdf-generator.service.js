@@ -69,7 +69,7 @@ export class PDFGenerator {
                 ]
             },
             '\n',
-            `Parcours: ${Math.round(production.fieldSpace / production.getChickNb())} m²/poulets soit ${production.fieldSpace/10000}ha`,
+            `Parcours: ${production.chickBySquare} m²/poulet soit ${production.chickBySquare*production.getChickNb()/10000}ha`,
             `Mis à jour le ` + updateDate.toLocaleDateString("fr-FR"),
             {
                 style: 'tableExample',

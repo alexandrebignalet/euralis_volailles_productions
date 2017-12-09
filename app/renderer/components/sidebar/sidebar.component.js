@@ -7,7 +7,7 @@ import investmentLogo from '../../images/investment_logo.png';
 export const SidebarComponent = {
     template,
     controller: class SidebarController {
-        constructor($uibModal, UserService, $state) {
+        constructor($uibModal, UserService, $state, SidebarService) {
             'ngInject';
             this.productionLogo = productionLogo;
             this.facilityChargesLogo = facilityChargesLogo;
@@ -15,8 +15,14 @@ export const SidebarComponent = {
             this.investmentLogo = investmentLogo;
             this.modal = $uibModal;
             this.state = $state;
+            this.SidebarService = SidebarService;
+
 
             this.userService = UserService;
+        }
+
+        closeSidebar() {
+            this.SidebarService.toggle();
         }
 
         openSyncDialog() {

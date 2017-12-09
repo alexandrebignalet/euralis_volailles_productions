@@ -1,4 +1,7 @@
-<div id="mySidenav" class="sidenav">
+<div id="mySidenav" class="sidenav text-center">
+    <a href="javascript:void(0)" ng-click="vm.closeSidebar()">
+        <span class="glyphicon glyphicon-remove" style="font-size: 2em;margin-top:2%; color:green;cursor: pointer;"></span>
+    </a>
     <h2 class="text-center" style="color:green">Gestions</h2>
 
     <h4 class="text-center" style="color:green" ng-if="vm.userService.isAuthenticated()">Bonjour {{vm.userService.getUser()}}</h4>

@@ -19,7 +19,7 @@
             <thead>
             <tr>
                 <th>Date de màj</th>
-                <th>Taille du parcours</th>
+                <th>M²/poulet</th>
                 <th>Nom de production</th>
                 <th>Département</th>
                 <th>Taille</th>
@@ -44,7 +44,7 @@
 
             <tr ng-repeat="production in $ctrl.productions">
                 <td>{{ production.updateDate | date }}</td>
-                <td>{{ production.fieldSpace }}</td>
+                <td>{{ production.chickBySquare }}</td>
                 <td>{{ production.name }}</td>
                 <td>
                     <span ng-if="production.department != 'Others'">{{ production.department }}</span>

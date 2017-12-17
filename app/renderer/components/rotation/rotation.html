@@ -73,10 +73,10 @@
         <tbody>
             <tr ng-repeat="production in vm.productionsChoosen track by $index">
                 <td>{{production.name}}</td>
-                <td>{{production.facility.size * vm.facilityNb}}</td>
-                <td>{{production.fieldSpace}}</td>
+                <td>{{production.facility.size * vm.facilityNb | number:0}}</td>
+                <td>{{production.chickBySquare * production.getChickNb() / 10000 | number:0}}</td>
                 <td>{{production.chickNb / production.facility.size | number: 0}}</td>
-                <td>{{production.chickNb * vm.facilityNb}}</td>
+                <td>{{production.chickNb * vm.facilityNb | number:0}}</td>
                 <td>{{production.getSoldChicks() | number:2}}</td>
                 <td> {{production.getMargePACByChickPIP() * production.getChickNb()| number: 2}}</td>
                 <td>{{production.getBrutMargin() / production.getSoldChicks() | number:2}}</td>

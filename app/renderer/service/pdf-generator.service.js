@@ -85,9 +85,9 @@ export class PDFGenerator {
                         ['Indice de consommation', `${production.consumptionIndex}`],
                         ['Poids moyen', `${production.avgWeight} kg`],
                         ['Prix poussins vaccinés', `${production.getVaccinesPrice()} €`],
-                        ['Prix aliment producteur (farine, < 12.5t) en euros/t', `${production.getFoodPrice()} €`],
-                        ['Prix reprise classé en euros/t (bonif 54 €/t incluse)', `${production.getClassedPrice()} €`],
-                        ['Prix reprise déclassé en €', `${production.getDeclassedPrice()} €`],
+                        ['Prix aliment producteur (€/t)', `${production.getFoodPrice()} €`],
+                        ['Prix reprise classé (€/t)', `${production.getClassedPrice()} €`],
+                        ['Prix reprise déclassé (€)', `${production.getDeclassedPrice()} €`],
                         ['Taux de déclassé', `${production.breedingDeclassedPercent * 100} %`],
                         ['Taux de saisie', `${production.restraintPercent * 100} %`]
                     ]
@@ -114,7 +114,7 @@ export class PDFGenerator {
                         ['Attrapage', production.facility.facilityCharges.catching , Math.round(production.facility.facilityCharges.catching * production.getChickNb())],
                         ['Assurances', production.facility.facilityCharges.insurances , Math.round(production.facility.facilityCharges.insurances * production.getChickNb())],
                         [{text: `Charges / tête`, italic: true}, {text: production.facility.facilityCharges.getChargesByChick(), colSpan: 2, alignement: 'left'}, ''],
-                        [`Marge Brute / poulet MEP`, {text: production.getBrutMarginPerChickPIP(), colSpan: 2, alignement: 'left'}, ''],
+                        [`Marge Brute / poulet MEP`, {text: Math.round(production.getBrutMarginPerChickPIP()*100)/100, colSpan: 2, alignement: 'left'}, ''],
                         [{text: `TOTAL PAR BANDE`}, {text:`${Math.round(production.getTotalCosts())}`, colSpan: 2, alignement: 'center'}, ''],
                     ]
                 }
@@ -124,48 +124,25 @@ export class PDFGenerator {
         contentToConcat.push({text: '', pageBreak: 'before'});
         contentToConcat.push(this.putHeader(''));
 
-        if(investment !== 'none') {
-            contentToConcat.push({
-                    style: 'tableExample',
-                    table: {
-                        widths: ['*', 75],
-                        headerRows: 1,
-                        body: [
-                            [`INVESTISSEMENT`, `€`],
-                            ['Désignation', investment.designation],
-                            [`Description`, investment.description],
-                            [`Documents`, investment.papers],
-                            [`Gros oeuvre`, investment.getMasonry()],
-                            ['Livraison et montage bâtiment', investment.getFacilityMountingDeliveryPrice()],
-                            ['Livraison et montage du matériel', investment.getEquipmentMountingDeliveryPrice()],
-                            [`Investissement total`, investment.getTotalBeforeSubsidies()],
-                            [`Subventions AREA PCAE`, investment.subsidies],
-                            [`Aides EURALIS Vollailes`, investment.helpEuralis],
-                            [`Emprunt bancaire`, investment.getTotal()],
-                        ]
-                    }
-                })
-        }
-
         contentToConcat.push({
-                style: 'tableExample',
-                table: {
-                    widths: ['*', 75],
-                    headerRows: 1,
-                    body: [
-                        [`PRODUIT TOTAL PAR BANDE`, Math.round(production.getTotalWages()) + ' €'],
-                        [`MARGE BRUTE PAR BANDE`, Math.round(production.getBrutMargin()) + ' €'],
-                        [`MARGE BRUTE ANNUELLE avec ${production.breedingPerYear} bandes par année`, Math.round(production.getAnnualBrutMargin()) + ' €'],
-                        [{text:`Marge par m²`, fontSize: 10},  {text:Math.round(production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size )) + ' €', fontSize: 10}],
-                    ]
-                }
+            style: 'tableExample',
+            table: {
+                widths: ['*', 130],
+                headerRows: 1,
+                body: [
+                    [`PRODUIT TOTAL PAR BANDE`, Math.round(production.getTotalWages()) + ' €'],
+                    [`MARGE BRUTE PAR BANDE`, Math.round(production.getBrutMargin()) + ' €'],
+                    [`MARGE BRUTE ANNUELLE avec ${production.breedingPerYear} bandes par année`, Math.round(production.getAnnualBrutMargin()) + ' €'],
+                    [{text:`Marge par m²`, fontSize: 10},  {text:Math.round(production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size )) + ' €', fontSize: 10}],
+                ]
+            }
         });
 
         if(investment !== 'none') {
             contentToConcat.push(	{
                 columns: [
                     {
-                        width: 100,
+                        width: 50,
                         text: 'Annuité ',
                         bold: true
                     },
@@ -192,7 +169,7 @@ export class PDFGenerator {
                         text: ' à'
                     },
                     {
-                        width: 75,
+                        width: 50,
                         text: annuity.interest + '%'
                     },
                     {
@@ -206,7 +183,7 @@ export class PDFGenerator {
                 {
                     style: 'tableExample',
                     table: {
-                        widths: ['*', 75],
+                        widths: ['*', 130],
                         headerRows: 1,
                         body: [
                             [`MARGE NETTE ANNUELLE avant MSA`, Math.round(production.getAnnualNetMargin(investment.getAnnuity(annuity.duration, annuity.interest))) + '€']
@@ -230,6 +207,32 @@ export class PDFGenerator {
         }
 
         contentToConcat.push('Temps de travail ' + production.facility.workHours * production.facilitiesNb + 'h / j en moyenne');
+
+        if(investment !== 'none') {
+            contentToConcat.push({
+                    style: 'tableExample',
+                    table: {
+                        widths: ['*', 130],
+                        headerRows: 1,
+                        body: [
+                            [`INVESTISSEMENT`, `€`],
+                            ['Désignation', investment.designation],
+                            [`Description`, investment.description],
+                            [`Documents`, investment.papers],
+                            [`Gros oeuvre`, investment.getMasonry()],
+                            ['Livraison et montage bâtiment', investment.getFacilityMountingDeliveryPrice()],
+                            ['Livraison et montage du matériel', investment.getEquipmentMountingDeliveryPrice()],
+                            ['Diverses options', investment.diverseOptions],
+                            [`Investissement total`, investment.getTotalBeforeSubsidies()],
+                            [`Subventions AREA PCAE`, investment.subsidies],
+                            [`Aides EURALIS Vollailes`, investment.helpEuralis],
+                            [`Emprunt bancaire`, investment.getTotal()],
+                        ]
+                    }
+                })
+        }
+
+
         contentToConcat.push('Document non contractuel');
 
         docDefinition.content = docDefinition.content.concat(contentToConcat);
@@ -290,7 +293,7 @@ export class PDFGenerator {
                 width: 'auto',
                 headerRows: 1,
                 body: [
-                    ['Type de production', 'Surface bâtiment (m²)', 'Surface parcours minimum (ha)',
+                    ['Type de production', 'Surface bâtiment (m²)', 'Surface parcour minimum (ha)',
                         'Densité (m²/poulet)', 'Nombre / bandes', 'Nbre vendus / an', 'Marge PAC', 'Marge brute / sujet vendu (€)', 'Marge brute / an (€)']
                 ]
             }
@@ -300,7 +303,7 @@ export class PDFGenerator {
             table.table.body.push([
                 productions[i].name,
                 productions[i].facility.size * nbFacilities,
-                productions[i].fieldSpace /10000,
+                productions[i].chickBySquare*productions[i].getChickNb()/10000,
                 Math.round(productions[i].chickNb / productions[i].facility.size * 100) / 100,
                 productions[i].chickNb * nbFacilities,
                 Math.round(productions[i].getSoldChicks()),

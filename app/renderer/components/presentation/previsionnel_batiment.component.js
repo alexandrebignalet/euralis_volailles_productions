@@ -1,6 +1,8 @@
 import angular from 'angular';
 import template from './previsionnel_batiment.html';
 
+const DEFAULT_INVESTMENT_CHOOSEN = 'none';
+
 export const PrevisionnelBatimentComponent = {
     bindings: { productions: '<' },
     template,
@@ -10,7 +12,7 @@ export const PrevisionnelBatimentComponent = {
             this.scope = $scope;
             this.timeout = $timeout;
             this.facilityNb = 2;
-            this.investmentChoosen = "none";
+            this.investmentChoosen = DEFAULT_INVESTMENT_CHOOSEN;
             this.annuityDuration = 15;
             this.interest = 2.5;
             this.sliderOptions = {
@@ -33,6 +35,10 @@ export const PrevisionnelBatimentComponent = {
             this.scope.$watch('vm.facilityNb', () => {
                 this.update();
             });
+        }
+
+        onNewTabSelected() {
+            this.investmentChoosen = DEFAULT_INVESTMENT_CHOOSEN;
         }
 
         hasUser() {

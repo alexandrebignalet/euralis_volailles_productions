@@ -58,11 +58,11 @@ export class Investment {
     }
 
     getTotal() {
-        return this.getTotalBeforeSubsidies() - this.subsidies - this.helpEuralis + this.diverseOptions;
+        return this.getTotalBeforeSubsidies() - this.subsidies - this.helpEuralis;
     }
 
     getTotalBeforeSubsidies() {
-        return this.getMasonry() + this.getFacilityMountingDeliveryPrice() + this.getEquipmentMountingDeliveryPrice() + this.papers;
+        return this.getMasonry() + this.getFacilityMountingDeliveryPrice() + this.getEquipmentMountingDeliveryPrice() + this.papers + this.diverseOptions;
     }
 }
 

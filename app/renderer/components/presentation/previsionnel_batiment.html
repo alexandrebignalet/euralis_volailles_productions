@@ -25,7 +25,7 @@
 <br><br>
 <uib-tabset active="active_production" justified="true" type="pills" class="tab-animation">
     <uib-tab index="$index" ng-repeat="production in vm.productions"
-             heading="{{production.name | uppercase}} ({{production.facility.size}}m²)">
+             heading="{{production.name | uppercase}} ({{production.facility.size}}m²)" select="vm.onNewTabSelected()">
         <br><br>
         <div class="row">
             <div class="col-md-1">
@@ -73,19 +73,19 @@
                             <td>{{ production.getVaccinesPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Prix aliment producteur (farine, < 12.5t) en €/t</th>
+                            <th>Prix aliment producteur (€/t)</th>
                             <td>{{ production.getFoodPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Prix reprise classé en euros/t (bonif 54 €/t incluse)</th>
+                            <th>Prix reprise classé (€/t)</th>
                             <td>{{ production.getClassedPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Prix reprise déclassé en €</th>
+                            <th>Prix reprise déclassé (€)</th>
                             <td>{{ production.getDeclassedPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Taux de déclassé (0% sur les 3 premières bandes)</th>
+                            <th>Taux de déclassé</th>
                             <td>{{ production.breedingDeclassedPercent * 100 }} %</td>
                         </tr>
                         <tr>
@@ -323,6 +323,19 @@
                     <tr>
                         <td class="text-left" ng-if="investment.details.equipmentMountingDeliveryPrice" ng-repeat="investment in production.facility.investments">
                             {{ investment.details.equipmentMountingDeliveryPrice }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="table-header" colspan="{{production.facility.investments.length}}">Diverses options</th>
+                    </tr>
+                    <tr>
+                        <td ng-repeat="investment in production.facility.investments" class="table-number">
+                            {{ investment.diverseOptions | number: 0 }} €
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" ng-if="investment.details.diverseOptions" ng-repeat="investment in production.facility.investments">
+                            {{ investment.details.diverseOptions }}
                         </td>
                     </tr>
                     <tr>

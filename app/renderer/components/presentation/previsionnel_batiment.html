@@ -58,7 +58,9 @@
                         </tr>
                         <tr>
                             <th>Nombre de bandes par année</th>
-                            <td>{{ production.breedingPerYear }}</td>
+                            <td>
+                                <input ng-model="production.breedingPerYear" type="number" class="form-control"/>
+                            </td>
                         </tr>
                         <tr>
                             <th>Indice de consommation</th>
@@ -363,7 +365,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="table-header" colspan="{{production.facility.investments.length}}">Aides EURALIS Vollailes</th>
+                        <th class="table-header" colspan="{{production.facility.investments.length}}">Aides EURALIS Volailles</th>
                     </tr>
                     <tr>
                         <td ng-repeat="investment in production.facility.investments">

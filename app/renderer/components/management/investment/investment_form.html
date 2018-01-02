@@ -42,6 +42,19 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
+                    <label for="investment_personal_contribution" class="control-label">Apport personnel</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control {{ investmentForm.investment_personal_contribution.$invalid ? 'wrong' : 'valid'}}_input" id="investment_personal_contribution" name="investment_personal_contribution" ng-model="vm.investment.personalContribution" min="0" required>
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="investment_detail_personal_contribution" class="control-label">Détails Apport personnel</label>
+                    <textarea class="form-control {{ investmentForm.investment_detail_personal_contribution.$invalid ? 'wrong' : 'valid'}}_input" id="investment_detail_personal_contribution" name="investment_detail_personal_contribution" ng-model="vm.investment.details.personalContribution" minlength="0" required></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
                     <label for="investment_masonry" class="control-label">Gros oeuvre</label>
                     <div class="input-group">
                         <input type="number" step="any" class="form-control {{ investmentForm.investment_masonry.$invalid ? 'wrong' : 'valid'}}_input" id="investment_masonry" name="investment_masonry" ng-model="vm.investment.masonry" min="0" required>

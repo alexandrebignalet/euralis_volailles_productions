@@ -12,6 +12,7 @@ export class Investment {
         this.facilityMoutingDeliveryPrice = investment.facilityMoutingDeliveryPrice;
         this.equipmentMountingDeliveryPrice = investment.equipmentMountingDeliveryPrice;
         this.diverseOptions = investment.diverseOptions;
+        this.personalContribution = investment.personalContribution == undefined ? 0 : investment.personalContribution;
         this.subsidies = investment.subsidies;
         this.helpEuralis = investment.helpEuralis;
         this.details = new InvestmentDescription(investment.details);
@@ -58,7 +59,7 @@ export class Investment {
     }
 
     getTotal() {
-        return this.getTotalBeforeSubsidies() - this.subsidies - this.helpEuralis;
+        return this.getTotalBeforeSubsidies() - this.subsidies - this.helpEuralis - this.personalContribution;
     }
 
     getTotalBeforeSubsidies() {
@@ -77,6 +78,7 @@ class InvestmentDescription {
         this.facilityMoutingDeliveryPrice = details.facilityMoutingDeliveryPrice;
         this.equipmentMountingDeliveryPrice = details.equipmentMountingDeliveryPrice;
         this.diverseOptions = details.diverseOptions;
+        this.personalContribution = details.personalContribution;
         this.subsidies = details.subsidies;
         this.helpEuralis = details.helpEuralis;
     }

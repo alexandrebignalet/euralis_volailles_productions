@@ -381,7 +381,23 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="table-header" colspan="{{production.facility.investments.length}}">Emprunt bancaire</th>
+                        <th class="table-header" colspan="{{production.facility.investments.length}}">Apport personnel</th>
+                    </tr>
+                    <tr>
+                        <td ng-repeat="investment in production.facility.investments">
+                            <div class="input-group text-center">
+                                <input type="number" class="form-control" ng-model="investment.personalContribution" />
+                                <span class="input-group-addon">€</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left" ng-if="investment.details.personalContribution" ng-repeat="investment in production.facility.investments">
+                            {{ investment.details.personalContribution  }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="table-header" colspan="{{production.facility.investments.length}}">Emprunt bancaire (aides et apport déduits)</th>
                     </tr>
                     <tr>
                         <td ng-repeat="investment in production.facility.investments" class="table-number">

@@ -130,7 +130,7 @@ export class PDFGenerator {
                 widths: ['*', 130],
                 headerRows: 1,
                 body: [
-                    [`PRODUIT TOTAL PAR BANDE`, Math.round(production.getTotalWages()) + ' €'],
+                    [`PRODUIT TOTAL PAR BANDE (Ventes)`, Math.round(production.getTotalWages()) + ' €'],
                     [`MARGE BRUTE PAR BANDE`, Math.round(production.getBrutMargin()) + ' €'],
                     [`MARGE BRUTE ANNUELLE avec ${production.breedingPerYear} bandes par année`, Math.round(production.getAnnualBrutMargin()) + ' €'],
                     [{text:`Marge par m²`, fontSize: 10},  {text:Math.round(production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size )) + ' €', fontSize: 10}],
@@ -225,8 +225,9 @@ export class PDFGenerator {
                             ['Diverses options', investment.diverseOptions],
                             [`Investissement total`, investment.getTotalBeforeSubsidies()],
                             [`Subventions AREA PCAE`, investment.subsidies],
-                            [`Aides EURALIS Vollailes`, investment.helpEuralis],
-                            [`Emprunt bancaire`, investment.getTotal()],
+                            [`Aides EURALIS Volailles`, investment.helpEuralis],
+                            [`Apport personnel`, investment.personalContribution],
+                            [`Emprunt bancaire (aides et apport déduits)`, investment.getTotal()],
                         ]
                     }
                 })

@@ -1,0 +1,168 @@
+<div class="row text-center">
+    <div class="col-md-12 col-xs-12 col-lg-12">
+        <h1 ng-if="$ctrl.investments.length == 1">Investissement</h1>
+        <h1 ng-if="$ctrl.investments.length > 1">Investissements</h1>
+        <table class="table table-condensed table-hover table-responsive text-center">
+            <tr>
+                <td ng-repeat="investment in $ctrl.investments" class="text-center">
+                    <strong>{{ investment.name | uppercase }}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left" ng-if="investment.description" ng-repeat="investment in $ctrl.investments">
+                    {{ investment.description }}
+                </td>
+            </tr>
+            <tr>
+                <td ng-repeat="investment in $ctrl.investments">
+                    <image-loader model="investment" height="300"></image-loader>
+                </td>
+            </tr>
+            <tr>
+                <th class="table-header" colspan="{{$ctrl.investments.length}}">Désignation</th>
+            </tr>
+            <tr>
+                <td ng-repeat="investment in $ctrl.investments">
+                    <strong>{{ investment.designation | uppercase }}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left" ng-if="investment.details.designation" ng-repeat="investment in $ctrl.investments">
+                    {{ investment.details.designation  }}
+                </td>
+            </tr>
+            <tr>
+                <th class="table-header" colspan="{{$ctrl.investments.length}}">
+                    Documents
+                    <span class="glyphicon glyphicon-asterisk" uib-tooltip="Architecte ?" style="font-size:0.5em;"></span>
+                </th>
+            </tr>
+            <tr>
+                <td ng-repeat="investment in $ctrl.investments" class="table-number">
+                    {{ investment.papers | number: 0 }} €
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left" ng-if="investment.details.papers" ng-repeat="investment in $ctrl.investments">
+                    {{ investment.details.papers  }}
+                </td>
+            </tr>
+            <tr>
+                <th class="table-header" colspan="{{$ctrl.investments.length}}">Gros oeuvre</th>
+            </tr>
+            <tr>
+                <td ng-repeat="investment in $ctrl.investments" class="table-number">
+                    {{ investment.getMasonry() | number: 0 }} €
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left" ng-if="investment.details.masonry" ng-repeat="investment in $ctrl.investments">
+                    {{ investment.details.masonry }}
+                </td>
+            </tr>
+            <tr>
+                <th class="table-header" colspan="{{$ctrl.investments.length}}">Livraison et montage bâtiment</th>
+            </tr>
+            <tr>
+                <td ng-repeat="investment in $ctrl.investments" class="table-number">
+                    {{ investment.getFacilityMountingDeliveryPrice() | number: 0 }} €
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left" ng-if="investment.details.facilityMoutingDeliveryPrice" ng-repeat="investment in $ctrl.investments">
+                    {{ investment.details.facilityMoutingDeliveryPrice }}
+                </td>
+            </tr>
+            <tr>
+                <th class="table-header" colspan="{{$ctrl.investments.length}}">Livraison et montage du matériel</th>
+            </tr>
+            <tr>
+                <td ng-repeat="investment in $ctrl.investments" class="table-number">
+                    {{ investment.getEquipmentMountingDeliveryPrice() | number: 0 }} €
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left" ng-if="investment.details.equipmentMountingDeliveryPrice" ng-repeat="investment in $ctrl.investments">
+                    {{ investment.details.equipmentMountingDeliveryPrice }}
+                </td>
+            </tr>
+            <tr>
+                <th class="table-header" colspan="{{$ctrl.investments.length}}">Diverses options</th>
+            </tr>
+            <tr>
+                <td ng-repeat="investment in $ctrl.investments" class="table-number">
+                    {{ investment.diverseOptions | number: 0 }} €
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left" ng-if="investment.details.diverseOptions" ng-repeat="investment in $ctrl.investments">
+                    {{ investment.details.diverseOptions }}
+                </td>
+            </tr>
+            <tr>
+                <th class="table-header" colspan="{{$ctrl.investments.length}}">Investissement total</th>
+            </tr>
+            <tr>
+                <td ng-repeat="investment in $ctrl.investments" class="table-number">
+                    <strong>{{ investment.getTotalBeforeSubsidies() | number: 0 }} €</strong>
+                </td>
+            </tr>
+            <tr>
+                <th class="table-header" colspan="{{$ctrl.investments.length}}">Subventions AREA PCAE</th>
+            </tr>
+            <tr>
+                <td ng-repeat="investment in $ctrl.investments">
+                    <div class="input-group">
+                        <input type="number" class="form-control" ng-model="investment.subsidies" />
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left" ng-if="investment.details.subsidies" ng-repeat="investment in $ctrl.investments">
+                    {{ investment.details.subsidies  }}
+                </td>
+            </tr>
+            <tr>
+                <th class="table-header" colspan="{{$ctrl.investments.length}}">Aides EURALIS Volailles</th>
+            </tr>
+            <tr>
+                <td ng-repeat="investment in $ctrl.investments">
+                    <div class="input-group text-center">
+                        <input type="number" class="form-control" ng-model="investment.helpEuralis" />
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left" ng-if="investment.details.helpEuralis" ng-repeat="investment in $ctrl.investments">
+                    {{ investment.details.helpEuralis  }}
+                </td>
+            </tr>
+            <tr>
+                <th class="table-header" colspan="{{$ctrl.investments.length}}">Apport personnel</th>
+            </tr>
+            <tr>
+                <td ng-repeat="investment in $ctrl.investments">
+                    <div class="input-group text-center">
+                        <input type="number" class="form-control" ng-model="investment.personalContribution" />
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-left" ng-if="investment.details.personalContribution" ng-repeat="investment in $ctrl.investments">
+                    {{ investment.details.personalContribution  }}
+                </td>
+            </tr>
+            <tr>
+                <th class="table-header" colspan="{{$ctrl.investments.length}}">Emprunt bancaire (aides et apport déduits)</th>
+            </tr>
+            <tr>
+                <td ng-repeat="investment in $ctrl.investments" class="table-number">
+                    <strong>{{ investment.getTotal() | number: 0 }} €</strong>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -8,7 +8,6 @@ export class ToastrService {
     }
 
     create(object) {
-        console.log(object);
         toastr.info('a été créé.', object.toString());
     }
 

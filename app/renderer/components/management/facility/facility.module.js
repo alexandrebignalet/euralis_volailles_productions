@@ -35,12 +35,13 @@ export const FacilityModule = angular
             .state('facility.edit', {
                 parent: 'facility',
                 url: '/:id/edit',
-                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService
-                    .open('facilityForm', {
+                onEnter: (ModalService, PouchDbService, $stateParams) => {
+                    return ModalService.open('facilityForm', {
                         facility: (PouchDbService) => PouchDbService.find(ENTITY_NAME, $stateParams.id),
                         facilitiesCharges: (PouchDbService) => PouchDbService.find('facilityCharges'),
                         investments: (PouchDbService) => PouchDbService.find('investment')
                     })
+                }
             })
             .state('facility.remove', {
                 parent: 'facility',

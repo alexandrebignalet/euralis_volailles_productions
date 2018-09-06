@@ -4,7 +4,6 @@ if (typeof btoa === 'undefined') {
         return new Buffer(str).toString('base64');
     };
 }
-import path from 'path';
 import {Production} from '../components/management/production/production'
 import {Facility} from '../components/management/facility/facility'
 import {FacilityCharges} from '../components/management/facility_charges/facility_charges'
@@ -272,7 +271,6 @@ export class PouchDbService {
         let name = getSingularEntityName(entityName);
         if(name) entityName = name;
 
-        // console.log("findrequest without desired  object: ", findRequest);
         let pluralNameRelationObjectFound = [];
         let singularNameRelationObjectFound;
 
@@ -281,32 +279,26 @@ export class PouchDbService {
             const singularEntityName = getSingularEntityName(pluralEntityName);
 
             if(desiredObject.hasOwnProperty(singularEntityName)) {
-                // console.log(`has singularEntityName property: ${singularEntityName}`);
                 let relationId = desiredObject[singularEntityName];
                 let relationObjectFromId;
                 if(typeof relationId === 'string') {
                     relationObjectFromId = arrayObjectIndexOf(data[pluralEntityName], relationId, 'id');
-                    // console.log(`Object ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationId} in data property: id`);
                 } else {
                     relationObjectFromId = data[pluralEntityName].indexOf(relationId);
-                    // console.log(`Object ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationId.id} in data property: id`);
                 }
 
                 desiredObject[singularEntityName] = data[pluralEntityName][relationObjectFromId];
                 singularNameRelationObjectFound = { value: desiredObject[singularEntityName], key: singularEntityName };
             }
             else if (desiredObject.hasOwnProperty(pluralEntityName)) {
-                // console.log(`has pluralEntityName property: ${pluralEntityName}`);
                 let relationArrayIds = desiredObject[pluralEntityName];
                 let relationObjects = [];
                 let relationObjectFromId;
                 for(let j = 0; j < relationArrayIds.length ; j++) {
                     if(typeof relationArrayIds[j] === 'string') {
                         relationObjectFromId = arrayObjectIndexOf(data[pluralEntityName], relationArrayIds[j], 'id');
-                        // console.log(`Object  ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationArrayIds[j]} in data property: id`);
                     } else {
                         relationObjectFromId = data[pluralEntityName].indexOf(relationArrayIds[j]);
-                        // console.log(`Object  ${data[pluralEntityName][relationObjectFromId].id} will replace id ${relationArrayIds[j].id} in data property: id`);
                     }
 
                     relationObjects.push(data[pluralEntityName][relationObjectFromId]);

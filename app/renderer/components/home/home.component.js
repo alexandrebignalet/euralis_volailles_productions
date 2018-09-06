@@ -51,7 +51,7 @@ export const HomeComponent = {
         }
 
         $onInit() {
-            if(this.videos.length > 0)
+            if(this.videos && this.videos.length > 0)
                 this.VideoService.load(this.videos[0].getFile());
         }
 

@@ -33,6 +33,7 @@
     "level-js": "^2.2.4",
     "mocha": "^3.5.3",
     "ngstorage": "^0.3.11",
+    "npm": "^6.4.1",
     "pdfmake": "^0.1.33",
     "pouchdb": "^6.3.4",
     "pouchdb-adapter-node-websql": "^6.2.0",
@@ -113,7 +114,8 @@
   "scripts": {
     "release-win": "build -w --x64 --ia32",
     "release": "build",
-    "rebuild": "electron-rebuild -f -w sqlite3 -v 1.7.8",
+    "rebuild": "electron-rebuild -f -w sqlite3 -v 1.7.2",
+    "pre-prod": "electron build/electron/main.js",
     "test": "gulp test",
     "serve": "gulp serve",
     "webpack": "gulp webpack"

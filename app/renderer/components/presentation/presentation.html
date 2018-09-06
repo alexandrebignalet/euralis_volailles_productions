@@ -1,7 +1,11 @@
-<div class="parallax"></div>
-
-<br><br>
+<br /><br />
 <div class="container">
+    <ul class="nav nav-pills nav-justified" ng-if="productions.length > 0">
+        <li ng-class="[{active: active, disabled: disabled}]" class="nav-item" ng-repeat="productions in $ctrl.productions track by $index" index="$index">
+            <a href="#" ng-click="select($event)" class="nav-link ng-binding">{{ productions[0].facility.type.value | uppercase }}</a>
+        </li>
+    </ul>
+
     <uib-tabset active="activeJustified" justified="true" type="pills" class="tab-animation">
         <uib-tab ng-repeat="productions in $ctrl.productions track by $index" index="$index"
                  ng-if="productions.length > 0"

@@ -10,15 +10,6 @@ config.output.path = path.resolve(__dirname, 'build/electron/');
 config.output.publicPath = '';
 config.target = 'electron';
 
-config.plugins = config.plugins.concat([
-
-    new webpack.optimize.UglifyJsPlugin({
-        mangle: {
-            except: ['$super', '$', 'exports', 'require', 'angular', 'facility', 'facilityCharges', 'production', 'investment']
-        }
-    }),
-
-    new CleanWebpackPlugin(['./build/electron'])
-]);
+config.plugins = config.plugins.concat([new CleanWebpackPlugin(['./build/electron'])]);
 
 module.exports = config;

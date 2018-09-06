@@ -9,6 +9,7 @@ import {PresentationComponent} from './presentation.component';
 import {PrevisionnelBatimentComponent} from './previsionnel_batiment.component';
 import {FileInputDirective} from '../../service/file_input.directive';
 import {HighlighterDirective} from './highlighter.directive';
+import {InvestmentsPresentationComponent} from "./investments_presentation.component";
 
 export const PresentationModule = angular.module('PresentationModule', [rzModule, ImageLoaderModule, animate])
     .config(($stateProvider) => {
@@ -33,4 +34,5 @@ export const PresentationModule = angular.module('PresentationModule', [rzModule
     .directive('fileInput', FileInputDirective)
     .directive('highlighter', HighlighterDirective)
     .component('previsionnelBatiment', PrevisionnelBatimentComponent)
+    .component('investmentsPresentation', InvestmentsPresentationComponent)
     .name;

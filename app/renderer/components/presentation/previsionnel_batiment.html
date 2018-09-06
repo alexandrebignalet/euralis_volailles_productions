@@ -21,12 +21,13 @@
         </button>
     </div>
 </div>
-</div>
-<br><br>
+
+<br /><br />
+
 <uib-tabset active="active_production" justified="true" type="pills" class="tab-animation">
     <uib-tab index="$index" ng-repeat="production in vm.productions"
              heading="{{production.name | uppercase}} ({{production.facility.size}}m²)" select="vm.onNewTabSelected()">
-        <br><br>
+        <br /><br />
         <div class="row">
             <div class="col-md-1">
                 <button
@@ -97,9 +98,10 @@
                     </table>
                 </div>
         </div>
-        <div class="row text-center">
+        <div class="row">
             <div class="col-lg-6 col-md-6 col-xs-12">
                 <h1>Critères économiques</h1>
+                <br />
                 <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
                     <tr>
                         <th></th>
@@ -185,227 +187,69 @@
             </div>
         </div>
 
-        <div class="row text-center">
-            <h1>Produit par bande (ventes)</h1>
-            <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
-                <tr>
-                    <th>{{ "produit total par bande" | uppercase }}</th>
-                    <th class="table-number">{{ production.getTotalWages() | number:0 }} €</th>
-                </tr>
-
-                <tr>
-                    <th>{{ "marge brute par bande" | uppercase }}</th>
-                    <th class="table-number"> {{ production.getBrutMargin() | number:0 }} €</th>
-                </tr>
-
-                <tr>
-                    <th>{{ "marge brute annuelle" | uppercase }} avec {{ production.breedingPerYear }} bandes par année</th>
-                    <th class="table-number"> {{ production.getAnnualBrutMargin() | number:0 }} €</th>
-                </tr>
-                <tr>
-                    <td><i>Marge par m²</i></td>
-                    <td class="table-number"><i>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }} €</i></td>
-                </tr>
-                <tr>
-                    <th>
-                        <form class="form-inline">
-                            <div class="col-md-1">Annuité</div>
-                            <div class="col-md-4">
-                                <select class="form-control" id="annuity" ng-model="vm.investmentChoosen" required>
-                                    <option ng-value="'none'">Pas d'investissement</option>
-                                    <option ng-repeat="investment in production.facility.investments" ng-value="investment">{{investment.name | uppercase}}</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3 input-group">
-                                <span class="input-group-addon">/</span>
-                                <input class="form-control" ng-model="vm.annuityDuration" type="number" min="0"/>
-                                <span class="input-group-addon">ans</span>
-                            </div>
-                            <div class="col-md-3 input-group">
-                                <span class="input-group-addon">à</span>
-                                <input class="form-control" ng-model="vm.interest" type="number" min="0"/>
-                                <span class="input-group-addon">%</span>
-                            </div>
-                        </form>
-                    </th>
-                    <th ng-if="vm.investmentChoosen != 'none'" class="table-number">{{ vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest) | number:0 }} €</th>
-                    <th ng-if="vm.investmentChoosen == 'none'" class="table-number">{{ 0 | number:0 }} €</th>
-                </tr>
-                <tr>
-                    <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>
-                    <th ng-if="vm.investmentChoosen != 'none'" class="table-number">{{ production.getAnnualNetMargin(vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest)) | number:0 }} €</th>
-                    <th ng-if="vm.investmentChoosen == 'none'" class="table-number">{{ production.getAnnualNetMargin(0) | number:0 }} €</th>
-                </tr>
-            </table>
-            <p>Temps travail: {{production.facility.workHours * vm.facilityNb | number: 1}}h/jour en moyenne</p>
-        </div>
-
-        <div class="row text-center">
+        <div class="row">
             <div class="col-md-12 col-xs-12 col-lg-12">
-                <h1>Investissement</h1>
-                <table class="table table-condensed table-hover table-responsive text-center">
+                <h1>Produit par bande (ventes)</h1>
+                <br />
+                <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
                     <tr>
-                        <td ng-repeat="investment in production.facility.investments" class="text-center">
-                            <strong>{{ investment.name | uppercase }}</strong>
-                        </td>
+                        <th>{{ "produit total par bande" | uppercase }}</th>
+                        <th class="table-number">{{ production.getTotalWages() | number:0 }} €</th>
+                    </tr>
+
+                    <tr>
+                        <th>{{ "marge brute par bande" | uppercase }}</th>
+                        <th class="table-number"> {{ production.getBrutMargin() | number:0 }} €</th>
+                    </tr>
+
+                    <tr>
+                        <th>{{ "marge brute annuelle" | uppercase }} avec {{ production.breedingPerYear }} bandes par année</th>
+                        <th class="table-number"> {{ production.getAnnualBrutMargin() | number:0 }} €</th>
                     </tr>
                     <tr>
-                        <td class="text-left" ng-if="investment.description" ng-repeat="investment in production.facility.investments">
-                            {{ investment.description }}
-                        </td>
+                        <td><i>Marge par m²</i></td>
+                        <td class="table-number"><i>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }} €</i></td>
                     </tr>
                     <tr>
-                        <td ng-repeat="investment in production.facility.investments">
-                            <image-loader model="investment" height="300"></image-loader>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="table-header" colspan="{{production.facility.investments.length}}">Désignation</th>
-                    </tr>
-                    <tr>
-                        <td ng-repeat="investment in production.facility.investments">
-                            <strong>{{ investment.designation | uppercase }}</strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" ng-if="investment.details.designation" ng-repeat="investment in production.facility.investments">
-                            {{ investment.details.designation  }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="table-header" colspan="{{production.facility.investments.length}}">
-                            Documents
-                            <span class="glyphicon glyphicon-asterisk" uib-tooltip="Architecte ?" style="font-size:0.5em;"></span>
+                        <th>
+                            <form class="form-inline">
+                                <div class="col-md-1">Annuité</div>
+                                <div class="col-md-4">
+                                    <select class="form-control" id="annuity" ng-model="vm.investmentChoosen" required>
+                                        <option ng-value="'none'">Pas d'investissement</option>
+                                        <option ng-repeat="investment in production.facility.investments" ng-value="investment">{{investment.name | uppercase}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 input-group">
+                                    <span class="input-group-addon">/</span>
+                                    <input class="form-control" ng-model="vm.annuityDuration" type="number" min="0"/>
+                                    <span class="input-group-addon">ans</span>
+                                </div>
+                                <div class="col-md-3 input-group">
+                                    <span class="input-group-addon">à</span>
+                                    <input class="form-control" ng-model="vm.interest" type="number" min="0"/>
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </form>
                         </th>
+                        <th ng-if="vm.investmentChoosen != 'none'" class="table-number">{{ vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest) | number:0 }} €</th>
+                        <th ng-if="vm.investmentChoosen == 'none'" class="table-number">{{ 0 | number:0 }} €</th>
                     </tr>
                     <tr>
-                        <td ng-repeat="investment in production.facility.investments" class="table-number">
-                            {{ investment.papers | number: 0 }} €
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" ng-if="investment.details.papers" ng-repeat="investment in production.facility.investments">
-                            {{ investment.details.papers  }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="table-header" colspan="{{production.facility.investments.length}}">Gros oeuvre</th>
-                    </tr>
-                    <tr>
-                        <td ng-repeat="investment in production.facility.investments" class="table-number">
-                            {{ investment.getMasonry() | number: 0 }} €
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" ng-if="investment.details.masonry" ng-repeat="investment in production.facility.investments">
-                            {{ investment.details.masonry }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="table-header" colspan="{{production.facility.investments.length}}">Livraison et montage bâtiment</th>
-                    </tr>
-                    <tr>
-                        <td ng-repeat="investment in production.facility.investments" class="table-number">
-                            {{ investment.getFacilityMountingDeliveryPrice() | number: 0 }} €
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" ng-if="investment.details.facilityMoutingDeliveryPrice" ng-repeat="investment in production.facility.investments">
-                            {{ investment.details.facilityMoutingDeliveryPrice }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="table-header" colspan="{{production.facility.investments.length}}">Livraison et montage du matériel</th>
-                    </tr>
-                    <tr>
-                        <td ng-repeat="investment in production.facility.investments" class="table-number">
-                            {{ investment.getEquipmentMountingDeliveryPrice() | number: 0 }} €
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" ng-if="investment.details.equipmentMountingDeliveryPrice" ng-repeat="investment in production.facility.investments">
-                            {{ investment.details.equipmentMountingDeliveryPrice }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="table-header" colspan="{{production.facility.investments.length}}">Diverses options</th>
-                    </tr>
-                    <tr>
-                        <td ng-repeat="investment in production.facility.investments" class="table-number">
-                            {{ investment.diverseOptions | number: 0 }} €
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" ng-if="investment.details.diverseOptions" ng-repeat="investment in production.facility.investments">
-                            {{ investment.details.diverseOptions }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="table-header" colspan="{{production.facility.investments.length}}">Investissement total</th>
-                    </tr>
-                    <tr>
-                        <td ng-repeat="investment in production.facility.investments" class="table-number">
-                            <strong>{{ investment.getTotalBeforeSubsidies() | number: 0 }} €</strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="table-header" colspan="{{production.facility.investments.length}}">Subventions AREA PCAE</th>
-                    </tr>
-                    <tr>
-                        <td ng-repeat="investment in production.facility.investments">
-                            <div class="input-group">
-                                <input type="number" class="form-control" ng-model="investment.subsidies" />
-                                <span class="input-group-addon">€</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" ng-if="investment.details.subsidies" ng-repeat="investment in production.facility.investments">
-                            {{ investment.details.subsidies  }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="table-header" colspan="{{production.facility.investments.length}}">Aides EURALIS Volailles</th>
-                    </tr>
-                    <tr>
-                        <td ng-repeat="investment in production.facility.investments">
-                            <div class="input-group text-center">
-                                <input type="number" class="form-control" ng-model="investment.helpEuralis" />
-                                <span class="input-group-addon">€</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" ng-if="investment.details.helpEuralis" ng-repeat="investment in production.facility.investments">
-                            {{ investment.details.helpEuralis  }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="table-header" colspan="{{production.facility.investments.length}}">Apport personnel</th>
-                    </tr>
-                    <tr>
-                        <td ng-repeat="investment in production.facility.investments">
-                            <div class="input-group text-center">
-                                <input type="number" class="form-control" ng-model="investment.personalContribution" />
-                                <span class="input-group-addon">€</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-left" ng-if="investment.details.personalContribution" ng-repeat="investment in production.facility.investments">
-                            {{ investment.details.personalContribution  }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="table-header" colspan="{{production.facility.investments.length}}">Emprunt bancaire (aides et apport déduits)</th>
-                    </tr>
-                    <tr>
-                        <td ng-repeat="investment in production.facility.investments" class="table-number">
-                            <strong>{{ investment.getTotal() | number: 0 }} €</strong>
-                        </td>
+                        <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>
+                        <th ng-if="vm.investmentChoosen != 'none'" class="table-number">{{ production.getAnnualNetMargin(vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest)) | number:0 }} €</th>
+                        <th ng-if="vm.investmentChoosen == 'none'" class="table-number">{{ production.getAnnualNetMargin(0) | number:0 }} €</th>
                     </tr>
                 </table>
+                <p>Temps travail: {{production.facility.workHours * vm.facilityNb | number: 1}}h/jour en moyenne</p>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-12 col-xs-12 col-lg-12">
+                <investments-presentation investments="production.facility.investments"></investments-presentation>
+            </div>
+        </div>
+
     </uib-tab>
 </uib-tabset>

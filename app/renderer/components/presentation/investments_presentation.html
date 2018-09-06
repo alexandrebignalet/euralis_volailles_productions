@@ -1,0 +1,89 @@
+<h1 ng-if="$ctrl.investments.length == 1">Investissement</h1>
+<h1 ng-if="$ctrl.investments.length > 1">Investissements</h1>
+<hr />
+
+<uib-tabset active justified="true" type="pills">
+    <uib-tab index="$index" ng-repeat="investment in $ctrl.investments"
+             heading="{{investment.name | uppercase}}" select="$ctrl.selectInvestment(investment)">
+        <br /> <br />
+        <table class="table table-condensed table-hover table-responsive">
+            <tr>
+                <th>Description</th>
+                <td>{{ $ctrl.selectedInvestment.description }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Designation</th>
+                <td>{{ $ctrl.selectedInvestment.designation | uppercase}}</td>
+                <td>{{ $ctrl.selectedInvestment.details.designation }}</td>
+            </tr>
+            <tr>
+                <th>Documents</th>
+                <td>{{ $ctrl.selectedInvestment.papers | number: 0}} €</td>
+                <td>{{ $ctrl.selectedInvestment.details.papers }}</td>
+            </tr>
+            <tr>
+                <th>Gros oeuvre</th>
+                <td>{{ $ctrl.selectedInvestment.getMasonry() | number: 0}} €</td>
+                <td>{{ $ctrl.selectedInvestment.details.masonry }}</td>
+            </tr>
+            <tr>
+                <th>Livraison et montage du batîment</th>
+                <td>{{ $ctrl.selectedInvestment.getFacilityMountingDeliveryPrice() | number: 0}} €</td>
+                <td>{{ $ctrl.selectedInvestment.details.facilityMoutingDeliveryPrice }}</td>
+            </tr>
+            <tr>
+                <th>Livraison et montage du matériel</th>
+                <td>{{ $ctrl.selectedInvestment.getEquipmentMountingDeliveryPrice() | number: 0}} €</td>
+                <td>{{ $ctrl.selectedInvestment.details.equipmentMountingDeliveryPrice }}</td>
+            </tr>
+            <tr>
+                <th>Diverses options</th>
+                <td>{{ $ctrl.selectedInvestment.diverseOptions | number: 0}} €</td>
+                <td>{{ $ctrl.selectedInvestment.details.diverseOptions }}</td>
+            </tr>
+            <tr>
+                <th>Investissement total</th>
+                <td>
+                    <strong>{{ $ctrl.selectedInvestment.getTotalBeforeSubsidies() | number: 0}} € </strong>
+                </td>
+            </tr>
+            <tr>
+                <th>Subventions AREA PCAE</th>
+                <td>
+                    <div class="input-group">
+                        <input type="number" class="form-control" ng-model="$ctrl.selectedInvestment.subsidies" />
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </td>
+                <td>{{ investment.details.subsidies  }}</td>
+            </tr>
+            <tr>
+                <th>Aides EURALIS Volailles</th>
+                <td>
+                    <div class="input-group">
+                        <input type="number" class="form-control" ng-model="$ctrl.selectedInvestment.helpEuralis" />
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </td>
+                <td>{{ investment.details.helpEuralis  }}</td>
+            </tr>
+            <tr>
+                <th>Apport personnel</th>
+                <td>
+                    <div class="input-group">
+                        <input type="number" class="form-control" ng-model="$ctrl.selectedInvestment.personalContribution" />
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </td>
+                <td>{{ investment.details.personalContribution  }}</td>
+            </tr>
+            <tr>
+                <th>Emprunt bancaire (aides et apport déduits)</th>
+                <td>
+                    <strong>{{ investment.getTotal() | number: 0 }} €</strong>
+                </td>
+            </tr>
+        </table>
+    </uib-tab>
+</uib-tabset>

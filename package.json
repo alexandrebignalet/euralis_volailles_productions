@@ -114,7 +114,7 @@
   "scripts": {
     "release-win": "build -w --x64 --ia32",
     "release": "build",
-    "rebuild": "electron-rebuild -f -w sqlite3 -v 1.7.2",
+    "rebuild": "electron-rebuild -f -w sqlite3 -v 1.8",
     "pre-prod": "electron build/electron/main.js",
     "test": "gulp test",
     "serve": "gulp serve",

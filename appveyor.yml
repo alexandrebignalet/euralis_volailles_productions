@@ -23,11 +23,11 @@ build_script:
 test: off
 
 deploy:
-  provider: GitHub
+  - provider: GitHub
     auth_token:
       secure: 85af0df0cb59650e4591dbbce52439b02faf6a69
-  artifact: dist\*
-  draft: true
-  prerelease: false
-  on:
+  - artifact: dist\*
+  - draft: true
+  - prerelease: false
+  - on:
     appveyor_repo_tag: true

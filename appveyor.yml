@@ -17,6 +17,7 @@ install:
 
 build_script:
   - yarn run rebuild
+  - yarn run webpack
   - yarn run release-win
 
 test: off

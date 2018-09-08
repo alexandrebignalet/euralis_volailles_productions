@@ -23,21 +23,21 @@ build_script:
 test: off
 
 deploy:
-  - provider: GitHub
-    auth_token:
-      secure: 85af0df0cb59650e4591dbbce52439b02faf6a69
-    artifact: dist\*
-    draft: true
-    prerelease: false
-    on:
-      appveyor_repo_tag: true
+  provider: GitHub
+  auth_token:
+    secure: 85af0df0cb59650e4591dbbce52439b02faf6a69
+  artifact: dist\*
+  draft: true
+  prerelease: false
+  on:
+    appveyor_repo_tag: true
 
 
 
 notifications:
-  - provider: Email
-    to:
-      - alexandre.bignalet@gmail.com
-    subject: 'Build {{status}}'
-    message: "{{message}}, {{commitId}}, ..."
-    on_build_status_changed: true
+  provider: Email
+  to:
+    - alexandre.bignalet@gmail.com
+  subject: 'Build {{status}}'
+  message: "{{message}}, {{commitId}}, ..."
+  on_build_status_changed: true

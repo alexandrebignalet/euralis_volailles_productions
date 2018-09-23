@@ -10,9 +10,8 @@ export const PrevisionnelBatimentComponent = {
         constructor($scope, $timeout, PDFGenerator){
             'ngInject';
             this.scope = $scope;
-            this.timeout = $timeout;
             this.facilityNb = 2;
-            this.investmentChoosen = DEFAULT_INVESTMENT_CHOOSEN;
+            this.investmentChosen = DEFAULT_INVESTMENT_CHOOSEN;
             this.annuityDuration = 15;
             this.interest = 2.5;
             this.sliderOptions = {
@@ -38,7 +37,7 @@ export const PrevisionnelBatimentComponent = {
         }
 
         onNewTabSelected() {
-            this.investmentChoosen = DEFAULT_INVESTMENT_CHOOSEN;
+            this.investmentChosen = DEFAULT_INVESTMENT_CHOOSEN;
         }
 
         hasUser() {

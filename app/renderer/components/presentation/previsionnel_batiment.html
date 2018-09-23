@@ -31,8 +31,8 @@
         <div class="row">
             <div class="col-md-1">
                 <button
-                    ng-click="vm.generatePDF(production, vm.investmentChoosen, date, vm.annuityDuration, vm.interest)"
-                    ng-disabled="!production || !vm.investmentChoosen || !date || !vm.annuityDuration || !vm.interest || !vm.hasUser()"
+                    ng-click="vm.generatePDF(production, vm.investmentChosen, date, vm.annuityDuration, vm.interest)"
+                    ng-disabled="!production || !vm.investmentChosen || !date || !vm.annuityDuration || !vm.interest || !vm.hasUser()"
                     class="btn btn-default">
                     <span class="glyphicon glyphicon-print"></span>
                 </button>
@@ -215,7 +215,7 @@
                             <form class="form-inline">
                                 <div class="col-md-1">Annuité</div>
                                 <div class="col-md-4">
-                                    <select class="form-control" id="annuity" ng-model="vm.investmentChoosen" required>
+                                    <select class="form-control" id="annuity" ng-model="vm.investmentChosen" required>
                                         <option ng-value="'none'">Pas d'investissement</option>
                                         <option ng-repeat="investment in production.facility.investments" ng-value="investment">{{investment.name | uppercase}}</option>
                                     </select>
@@ -232,13 +232,13 @@
                                 </div>
                             </form>
                         </th>
-                        <th ng-if="vm.investmentChoosen != 'none'" class="table-number">{{ vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest) | number:0 }} €</th>
-                        <th ng-if="vm.investmentChoosen == 'none'" class="table-number">{{ 0 | number:0 }} €</th>
+                        <th ng-if="vm.investmentChosen != 'none'" class="table-number">{{ vm.investmentChosen.getAnnuity(vm.annuityDuration, vm.interest) | number:0 }} €</th>
+                        <th ng-if="vm.investmentChosen == 'none'" class="table-number">{{ 0 | number:0 }} €</th>
                     </tr>
                     <tr>
                         <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>
-                        <th ng-if="vm.investmentChoosen != 'none'" class="table-number">{{ production.getAnnualNetMargin(vm.investmentChoosen.getAnnuity(vm.annuityDuration, vm.interest)) | number:0 }} €</th>
-                        <th ng-if="vm.investmentChoosen == 'none'" class="table-number">{{ production.getAnnualNetMargin(0) | number:0 }} €</th>
+                        <th ng-if="vm.investmentChosen != 'none'" class="table-number">{{ production.getAnnualNetMargin(vm.investmentChosen.getAnnuity(vm.annuityDuration, vm.interest)) | number:0 }} €</th>
+                        <th ng-if="vm.investmentChosen == 'none'" class="table-number">{{ production.getAnnualNetMargin(0) | number:0 }} €</th>
                     </tr>
                 </table>
                 <p>Temps travail: {{production.facility.workHours * vm.facilityNb | number: 1}}h/jour en moyenne</p>
@@ -247,7 +247,7 @@
 
         <div class="row">
             <div class="col-md-12 col-xs-12 col-lg-12">
-                <investments-presentation investments="production.facility.investments"></investments-presentation>
+                <investments-presentation investments="production.facility.investments" investment-chosen="vm.investmentChosen"></investments-presentation>
             </div>
         </div>
 

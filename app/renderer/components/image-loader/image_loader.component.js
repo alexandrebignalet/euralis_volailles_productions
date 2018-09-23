@@ -7,21 +7,17 @@ export const ImageLoaderComponent = {
     },
     template,
     controller: class ImageLoaderController {
-        constructor($scope) {
-            'ngInject';
+        constructor() {
             this.slides = [];
             this.currentIndex = 0;
-
-            this.scope = $scope;
+            this.active = 0;
             this.myInterval = 5000;
             this.noWrapSlides = false;
-            this.active = 0;
         }
 
         $onInit() {
-            this.model.attachments.forEach((attachment) => {
-                this.slides.push({id: ++this.currentIndex, image: URL.createObjectURL(attachment), text: attachment.name});
-            });
+            this.model.attachments.forEach((attachment) =>
+                this.slides.push({id: ++this.currentIndex, image: URL.createObjectURL(attachment), text: attachment.name}))
         }
     },
     controllerAs: 'vm'

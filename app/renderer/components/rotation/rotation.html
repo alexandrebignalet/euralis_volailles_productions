@@ -19,13 +19,13 @@
 
         </div>
 
-        <div class="col-md-3 pull-right" ng-if="vm.investmentChoosen" ng-init="showDialog = false" style="padding-top: 3%">
+        <div class="col-md-3 pull-right" style="padding-top: 3%">
             <div class="input-group" id="input_options">
                 <button ng-click="showDialog = !showDialog" class="btn btn-info">
                     <span class="glyphicon glyphicon-plus"></span>
                 </button>
-                <button ng-click="vm.generatePDF(vm.facilityNb, vm.productionsChoosen, vm.investmentChoosen, {interest: vm.investment.interest, duration: vm.investment.annuityDuration})"
-                        ng-if="vm.productionsChoosen.length > 0 && vm.investment.interest && vm.investment.annuityDuration"
+                <button ng-click="vm.generatePDF(vm.facilityNb, vm.productionsChosen, vm.investmentChosen, {interest: vm.investment.interest, duration: vm.investment.annuityDuration})"
+                        ng-if="vm.productionsChosen.length > 0 && vm.investment.interest && vm.investment.annuityDuration"
                         class="btn btn-default"
                         ng-disabled="!vm.hasUser()">
                     <span class="glyphicon glyphicon-print"></span>
@@ -35,11 +35,11 @@
             <div ng-if="showDialog">
                 <div class="form-group">
                     <label for="help_euralis" class="control-label">Aides EURALIS</label>
-                    <input class="form-control" type="number" id="help_euralis" name="help_euralis" ng-model="vm.investmentChoosen.helpEuralis" required />
+                    <input class="form-control" type="number" id="help_euralis" name="help_euralis" ng-model="vm.investmentChosen.helpEuralis" required />
                 </div>
                 <div class="form-group">
                     <label for="subsidies" class="control-label">Subventions AREA PCAE</label>
-                    <input class="form-control" type="number" id="subsidies" name="subsidies" ng-model="vm.investmentChoosen.subsidies" required />
+                    <input class="form-control" type="number" id="subsidies" name="subsidies" ng-model="vm.investmentChosen.subsidies" required />
                 </div>
             </div>
         </div>
@@ -48,81 +48,99 @@
         <div class="col-md-12 text-center" ng-if="vm.facilityType" style="padding-top: 10px;">
             <ul class="nav nav-pills">
                 <li ng-repeat="production in vm.productions | facility: vm.facilityType : vm.facilityNb track by production.id"
-                    ng-class="{'active': vm.productionsChoosen.indexOf(production) != -1}">
+                    ng-class="{'active': vm.productionsChosen.indexOf(production) != -1}">
                     <a href ng-click="vm.addProduction(production)">{{production.name}} ({{production.facility.size}})</a>
                 </li>
             </ul>
         </div>
     </div>
     <hr>
-    <table class="table" ng-if="vm.productionsChoosen.length > 0">
+    <table class="table" ng-if="vm.productionsChosen.length > 0">
         <thead>
             <tr>
                 <th>Type de production</th>
                 <th>Surface bâtiment (m²)</th>
                 <th>Surface parcours (ha)</th>
                 <th>Densité (m²)</th>
+                <th>Nbre de bande / an</th>
                 <th>Nbre / bande</th>
                 <th>Nbre vendus / an</th>
-                <th>Marge PAC</th>
                 <th>Marge brute / sujet vendus (€)</th>
                 <th>Marge brute / an (€)</th>
                 <th>Supprimer</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="production in vm.productionsChoosen track by $index">
+            <tr ng-repeat="production in vm.productionsChosen track by $index">
                 <td>{{production.name}}</td>
                 <td>{{production.facility.size * vm.facilityNb | number:0}}</td>
                 <td>{{production.chickBySquare * production.getChickNb() / 10000 | number:0}}</td>
                 <td>{{production.chickNb / production.facility.size | number: 0}}</td>
+                <td>
+                    <input type="number" ng-model="production.breedingPerYear" class="form-control" />
+                </td>
                 <td>{{production.chickNb * vm.facilityNb | number:0}}</td>
                 <td>{{production.getSoldChicks() | number:2}}</td>
-                <td> {{production.getMargePACByChickPIP() * production.getChickNb()| number: 2}}</td>
-                <td>{{production.getBrutMargin() / production.getSoldChicks() | number:2}}</td>
-                <td> {{production.getBrutMargin() | number:2 }}</td>
+                <td>
+                    <input type="number" class="form-control" ng-model="production.brutMarginPerSoldChick" step="0.00001"/>
+                </td>
+                <td>{{production.getAnnualBrutMargin() | number:2 }}</td>
                 <td>
                     <button class="btn btn-danger" type="button" ng-click="vm.removeProduction(production)">
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>
                 </td>
             </tr>
-            <tr ng-if="vm.productionsChoosen.length > 0">
+            <tr ng-if="vm.productionsChosen.length > 0">
                 <td colspan="8"></td>
-                <td>{{ vm.getTotalProductionsChoosen() | number: 0 }}€</td>
+                <td>{{ vm.getTotalProductionsChosen() | number: 0 }}€</td>
             </tr>
-            <tr ng-if="vm.productionsChoosen.length > 0">
+            <tr ng-if="vm.productionsChosen.length > 0">
                 <td colspan="8">
                     <form class="form-inline">
                         <div class="col-md-1"><strong>Annuité</strong></div>
                         <div class="col-md-4">
-                            <select class="form-control" id="annuity" ng-model="vm.investmentChoosen" required>
+                            <select class="form-control" id="annuity" ng-model="vm.investmentChosen" required>
+                                <option disabled selected value>selectionner un investissement</option>
+                                <option ng-value="'none'">PAS D'INVESTISSEMENT</option>
                                 <option ng-repeat="investment in vm.getInvestmentsAvailable()" ng-value="investment">{{investment.name | uppercase}}</option>
                             </select>
                             <strong>(AREA et aides EURALIS déduites)</strong>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3" ng-if="vm.investmentChosen != 'none'">
                             <div class="input-group">
                                 <span class="input-group-addon">/</span>
                                 <input class="form-control" ng-model="vm.investment.annuityDuration" type="number" min="0"/>
                                 <span class="input-group-addon">ans</span>
                             </div>
-                            <strong ng-if="vm.investmentChoosen"> Investissement de {{vm.investmentChoosen.getTotal()|number:0}}€</strong>
+                            <strong ng-if="vm.investmentChosen"> Investissement de
+                                {{vm.investmentChosen.getTotal()|number:0}}€</strong>
                         </div>
-                        <div class="col-md-3 input-group">
+                        <div class="col-md-3 input-group" ng-if="vm.investmentChosen != 'none'">
                             <span class="input-group-addon">à</span>
                             <input class="form-control" ng-model="vm.investment.interest" type="number" min="0"/>
                             <span class="input-group-addon">%</span>
                         </div>
                     </form>
                 </td>
-                <td><strong>{{ vm.investmentChoosen.getAnnuity(vm.investment.annuityDuration, vm.investment.interest) | number:0 }}€</strong></td>
-            </tr><strong>
-            <tr ng-if="vm.productionsChoosen.length > 0">
+                <td>
+                    <strong ng-if="vm.investmentChosen != 'none'">
+                        {{ vm.investmentChosen.getAnnuity(vm.investment.annuityDuration, vm.investment.interest) | number:0 }} €
+                    </strong>
+                </td>
+            </tr>
+            <tr ng-if="vm.productionsChosen.length > 0">
                 <td colspan="8">
                     <strong class="pull-right">Marge Nette avant MSA</strong>
                 </td>
-                <td><strong>{{ vm.getNetMarginForChoosenProductions(vm.investmentChoosen.getAnnuity(vm.investment.annuityDuration, vm.investment.interest)) | number:0 }}€</strong></td>
+                <td>
+                    <strong ng-if="vm.investmentChosen != 'none'">
+                        {{vm.getNetMarginForChosenProductions(vm.investmentChosen.getAnnuity(vm.investment.annuityDuration, vm.investment.interest)) | number:0 }} €
+                    </strong>
+                    <strong ng-if="vm.investmentChosen == 'none'">
+                        {{vm.getNetMarginForChosenProductions(0) | number:0 }} €
+                    </strong>
+                </td>
             </tr>
         </tbody>
     </table>

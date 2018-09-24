@@ -405,8 +405,28 @@ export class PDFGenerator {
                 ]
             });
             docDefinition.content.push('\n');
+        } else {
+            docDefinition.content.push({
+                columns: [
+                    {
+                        width: 300,
+                        text:''
+                    },
+                    {
+                        width: 160,
+                        text: 'Marge nette avant MSA',
+                        bold:true
+                    },
+                    {
+                        width: 100,
+                        text: Math.round(total) + '€',
+                        bold: true,
+                        fontSize: 13
+                    }
+                ]
+            });
+            docDefinition.content.push('\n');
         }
-
         docDefinition.content.push({text: '\n\nMarge brute = Ventes - poussins, aliment, cotis, prophylaxie, gaz, eau, edf, paille, attrapage, chaponnage, assurances', bold:true, fontSize: 9});
         docDefinition.content.push({text: '\n\n\n(document non contractuel)', fontSize: 9});
 

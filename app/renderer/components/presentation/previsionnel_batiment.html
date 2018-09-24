@@ -59,41 +59,53 @@
                         </tr>
                         <tr>
                             <th>Nombre de bandes par année</th>
-                            <td>
+                            <td class="input-group">
                                 <input ng-model="production.breedingPerYear" type="number" class="form-control"/>
+                                <span class="input-group-addon">/ an</span>
                             </td>
                         </tr>
                         <tr>
                             <th>Indice de consommation</th>
-                            <td>{{ production.consumptionIndex }}</td>
+                            <td class="input-group">
+                                <input ng-model="production.consumptionIndex" type="number" class="form-control"/>
+                                <span class="input-group-addon">€</span>
+                            </td>
                         </tr>
                         <tr>
                             <th>Poids moyen</th>
-                            <td>{{ production.avgWeight }} kg</td>
+                            <td class="input-group">
+                                <input ng-model="production.avgWeight" type="number" class="form-control"/>
+                                <span class="input-group-addon">€</span>
+                            </td>
                         </tr>
                         <tr>
-                            <th>Prix poussins vaccinés</th>
+                            <th>Prix poussins vaccinés (€/1000)</th>
                             <td>{{ production.getVaccinesPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Prix aliment producteur (€/t)</th>
+                            <th>Prix aliment producteur (€/t) <span class="pull-right">| indexé </span></th>
                             <td>{{ production.getFoodPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Prix reprise classé (€/t)</th>
+                            <th>Prix reprise classé (€/t) <span class="pull-right">| indexé </span></th>
                             <td>{{ production.getClassedPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Prix reprise déclassé (€)</th>
+                            <th>Prix reprise déclassé (€/t) <span class="pull-right">| indexé </span></th>
                             <td>{{ production.getDeclassedPrice() }} €</td>
                         </tr>
                         <tr>
                             <th>Taux de déclassé</th>
-                            <td>{{ production.breedingDeclassedPercent * 100 }} %</td>
+                            <td>
+                                {{ production.breedingDeclassedPercent * 100 }} %
+                            </td>
                         </tr>
                         <tr>
                             <th>Taux de saisie</th>
-                            <td>{{ production.restraintPercent * 100 }} %</td>
+                            <td class="input-group">
+                                <input ng-model="production.restraintPercent" type="number" class="form-control"/>
+                                <span class="input-group-addon">%</span>                                </div>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -131,7 +143,7 @@
                 </table>
                 <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
                     <tr>
-                        <th>Chauffage</th>
+                        <th>Chauffage <span class="pull-right">| indexé </span></th>
                         <td>{{ production.facility.facilityCharges.warming }} €</td>
                         <td>{{ production.facility.facilityCharges.warming * production.getChickNb() | number:0 }} €</td>
                     </tr>
@@ -171,14 +183,14 @@
                         <td> </td>
                     </tr>
                     <tr>
+                        <th>Total charges par bande</th>
+                        <td></td>
+                        <td> {{ production.getTotalCosts() | number:0 }} €</td>
+                    </tr>
+                    <tr>
                         <td>Marge Brute / poulet MEP</i></td>
                         <td> {{ production.getBrutMarginPerChickPIP() | number: 2}}€</td>
                         <td> </td>
-                    </tr>
-                    <tr>
-                        <th>Total par bande</th>
-                        <td></td>
-                        <td> {{ production.getTotalCosts() | number:0 }} €</td>
                     </tr>
                 </table>
             </div>

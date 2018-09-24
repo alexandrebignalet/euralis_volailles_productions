@@ -20,11 +20,17 @@ export const PresentationModule = angular.module('PresentationModule', [rzModule
                 parent: 'components',
                 url: '/presentation/:department',
                 resolve: {
-                    productions: (PresentationDataService, $stateParams) => PresentationDataService.getProdByDeptAndFacilityType($stateParams.department)
+                    productions: (PresentationDataService, $stateParams) =>
+                        PresentationDataService
+                            .getProdByDeptAndFacilityType($stateParams.department)
+                            .then((p) => {
+                                console.log(p);
+                                return p;
+                            })
                 },
                 views: {
                     'content@': {
-                        template: '<presentation productions="$resolve.productions"></presentation>',
+                        template: '<presentation productions-by-facility-type="$resolve.productions"></presentation>',
                     }
                 }
             });

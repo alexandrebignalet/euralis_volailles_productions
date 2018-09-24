@@ -3,6 +3,6 @@ import './presentation.scss';
 import '../../images/poulet.jpg';
 
 export const PresentationComponent = {
-    bindings: { productions: '<' },
+    bindings: { productionsByFacilityType: '<' },
     template
 };

@@ -18,9 +18,14 @@
                 <td>{{ $ctrl.investmentChosen.details.designation }}</td>
             </tr>
             <tr>
-                <th>Documents</th>
+                <th>Permis de construire</th>
                 <td>{{ $ctrl.investmentChosen.papers | number: 0}} €</td>
                 <td>{{ $ctrl.investmentChosen.details.papers }}</td>
+            </tr>
+            <tr>
+                <th>Coût architecte</th>
+                <td>{{ $ctrl.investmentChosen.architectCost | number: 0}} €</td>
+                <td>{{ $ctrl.investmentChosen.details.architectCost }}</td>
             </tr>
             <tr>
                 <th>Gros oeuvre</th>

@@ -8,6 +8,7 @@ export class Investment {
         this.designation = investment.designation;
         this.description = investment.description;
         this.papers = investment.papers;
+        this.architectCost = investment.architectCost;
         this.masonry = investment.masonry;
         this.facilityMoutingDeliveryPrice = investment.facilityMoutingDeliveryPrice;
         this.equipmentMountingDeliveryPrice = investment.equipmentMountingDeliveryPrice;
@@ -63,7 +64,7 @@ export class Investment {
     }
 
     getTotalBeforeSubsidies() {
-        return this.getMasonry() + this.getFacilityMountingDeliveryPrice() + this.getEquipmentMountingDeliveryPrice() + this.papers + this.diverseOptions;
+        return this.getMasonry() + this.getFacilityMountingDeliveryPrice() + this.getEquipmentMountingDeliveryPrice() + this.papers + this.architectCost + this.diverseOptions;
     }
 }
 
@@ -74,6 +75,7 @@ class InvestmentDescription {
         this.designation = details.designation;
         this.description = details.description;
         this.papers = details.papers;
+        this.architectCost = details.architectCost;
         this.masonry = details.masonry;
         this.facilityMoutingDeliveryPrice = details.facilityMoutingDeliveryPrice;
         this.equipmentMountingDeliveryPrice = details.equipmentMountingDeliveryPrice;

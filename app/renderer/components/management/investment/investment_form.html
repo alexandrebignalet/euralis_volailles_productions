@@ -29,15 +29,28 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="investment_papers" class="control-label">Coût des dossiers</label>
+                    <label for="investment_papers" class="control-label">Coût du permis de construire</label>
                     <div class="input-group">
                         <input type="number" step="any" class="form-control {{ investmentForm.investment_papers.$invalid ? 'wrong' : 'valid'}}_input" id="investment_papers" name="investment_papers" ng-model="vm.investment.papers" min="0" required>
                         <span class="input-group-addon">€</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="investment_detail_papers" class="control-label">Détails dossiers</label>
+                    <label for="investment_detail_papers" class="control-label">Détails permis de construire</label>
                     <textarea class="form-control {{ investmentForm.investment_detail_papers.$invalid ? 'wrong' : 'valid'}}_input" id="investment_detail_papers" name="investment_detail_papers" ng-model="vm.investment.details.papers" minlength="0" required></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="investment_architect_cost" class="control-label">Coût architecte</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ investmentForm.investment_architect_cost.$invalid ? 'wrong' : 'valid'}}_input" id="investment_architect_cost" name="investment_architect_cost" ng-model="vm.investment.architectCost" min="0" required>
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="investment_detail_architect_cost" class="control-label">Détails coût architecte</label>
+                    <textarea class="form-control {{ investmentForm.investment_detail_architect_cost.$invalid ? 'wrong' : 'valid'}}_input" id="investment_detail_architect_cost" name="investment_detail_architect_cost" ng-model="vm.investment.details.architectCost" minlength="0" required></textarea>
                 </div>
             </div>
             <div class="col-md-4">

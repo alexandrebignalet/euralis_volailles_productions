@@ -9,16 +9,16 @@
     <div class="row">
         <div class="col-md-9">
             <video width="100%" controls>
-                <source src type="video/mp4">
+                <source src="" type="video/mp4">
                 Your browser does not support HTML5 video.
             </video>
         </div>
 
         <div class="col-md-3">
-            <a href ui-sref="video.create">
+            <button class="btn btn-block btn-primary" ui-sref="video.create">
                 <span class="glyphicon glyphicon-plus"></span>
                 Ajouter une vidéo
-            </a>
+            </button>
             <div style="height:40%; overflow: auto;" ng-if="vm.videos.length > 0">
                 <table class="table table-hovered">
                 <thead>

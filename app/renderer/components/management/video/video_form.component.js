@@ -7,7 +7,7 @@ export const VideoFormComponent = {
     },
     template,
     controller: class VideoFormController {
-        constructor(PouchDbService, $state, ToastrService, $scope, VideoService){
+        constructor(PouchDbService, $state, ToastrService, $scope, VideoService) {
             'ngInject';
 
             this.PouchDbService = PouchDbService;
@@ -20,16 +20,15 @@ export const VideoFormComponent = {
                 file: null
             };
 
-
-
             $scope.fileNameChanged = (elem) => {
                 this.formData.file = elem.files[0];
-                this.PouchDbService.load(elem.files[0]);
+                this.VideoService.load(elem.files[0]);
             };
         }
 
         $onInit() {
             this.video = this.resolve.video;
+
             if(this.video.id) {
                 this.VideoService.load(this.video.getFile());
                 this.formData.file = this.video.getFile();

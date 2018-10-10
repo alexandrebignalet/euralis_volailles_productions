@@ -25,30 +25,36 @@ export const FacilityModule = angular
             .state('facility.create', {
                 parent: 'facility',
                 url: '/create',
-                onEnter: (PouchDbService, ModalService) => ModalService
+                onEnter: (PouchDbService, ModalService, $state) => ModalService
                     .open('facilityForm', {
                         facility: {},
                         facilitiesCharges: PouchDbService.find('facilityCharges'),
                         investments: PouchDbService.find('investment')
                     })
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
             })
             .state('facility.edit', {
                 parent: 'facility',
                 url: '/:id/edit',
-                onEnter: (ModalService, PouchDbService, $stateParams) => {
+                onEnter: (ModalService, PouchDbService, $stateParams, $state) => {
                     return ModalService.open('facilityForm', {
                         facility: (PouchDbService) => PouchDbService.find(ENTITY_NAME, $stateParams.id),
                         facilitiesCharges: (PouchDbService) => PouchDbService.find('facilityCharges'),
                         investments: (PouchDbService) => PouchDbService.find('investment')
                     })
+                        .then(() => $state.go('^', null, {reload: true}))
+                        .catch(() => $state.go('^'))
                 }
             })
             .state('facility.remove', {
                 parent: 'facility',
                 url: '/:id/remove',
-                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService.open('facilityForm', {
+                onEnter: (ModalService, PouchDbService, $stateParams, $state) => ModalService.open('facilityForm', {
                         facility: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
             });
     })
     .component('facilityForm', FacilityFormComponent)

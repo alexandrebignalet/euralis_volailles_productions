@@ -8,10 +8,11 @@ export const SyncDialogComponent = {
     },
     template,
     controller: class SyncDialogController {
-        constructor($scope, $timeout, PouchDbService, SidebarService) {
+        constructor($scope, $timeout, PouchDbService, SidebarService, $state) {
             'ngInject';
             this.scope = $scope;
             this.timeout = $timeout;
+            this.state = $state;
 
             this.PouchDbService = PouchDbService;
             this.SidebarService = SidebarService;
@@ -25,7 +26,7 @@ export const SyncDialogComponent = {
             this.isSyncing = true;
             let localDataCount = 0;
             this.syncHandler = this.PouchDbService.sync()
-            .on('complete', (res) => {
+            .on('complete', () => {
                 this.SidebarService.closeNav();
                 this.endSync(2000);
             })
@@ -38,7 +39,7 @@ export const SyncDialogComponent = {
                 if(res.direction === 'push')
                     this.log("Envoi des modifications.");
             })
-            .on('paused', (res) => {
+            .on('paused', () => {
                 this.PouchDbService.db.info()
                     .then((data) => {
                         localDataCount = data.doc_count;
@@ -72,7 +73,7 @@ export const SyncDialogComponent = {
         close() {
             this.timeout(() => {
                 if(this.syncHandler) this.syncHandler.cancel();
-                this.modalInstance.close();
+                this.modalInstance.close()
             }, 1000);
         }
     },

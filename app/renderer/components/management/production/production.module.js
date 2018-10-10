@@ -27,26 +27,32 @@ export const ProductionModule = angular
             .state('production.create', {
                 parent: 'production',
                 url: '/create',
-                onEnter: (ModalService, PouchDbService) => ModalService.open('productionForm', {
+                onEnter: (ModalService, PouchDbService, $state) => ModalService.open('productionForm', {
                     production: {},
                     facilities: PouchDbService.find('facility')
                 })
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
             })
             .state('production.edit', {
                 parent: 'production',
                 url: '/:id/edit',
-                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService
+                onEnter: (ModalService, PouchDbService, $stateParams, $state) => ModalService
                     .open('productionForm', {
                         production: PouchDbService.find(ENTITY_NAME, $stateParams.id),
                         facilities: PouchDbService.find('facility')
                     })
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
             })
             .state('production.remove', {
                 parent: 'production',
                 url: '/:id/remove',
-                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService.open('productionForm', {
+                onEnter: (ModalService, PouchDbService, $stateParams, $state) => ModalService.open('productionForm', {
                         production: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
             });
     })
     .component('productionForm', ProductionFormComponent)

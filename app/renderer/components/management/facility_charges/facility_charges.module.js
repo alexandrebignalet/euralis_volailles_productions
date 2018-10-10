@@ -26,25 +26,32 @@ export const FacilityChargesModule = angular
             .state('facility_charges.create', {
                 parent: 'facility_charges',
                 url: '/create',
-                onEnter: ModalService => ModalService.open('facilityChargesForm', {
+                onEnter: (ModalService, $state) => ModalService.open('facilityChargesForm', {
                     facilityCharges: {}
                 })
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
             })
             .state('facility_charges.edit', {
                 parent: 'facility_charges',
                 url: '/:id/edit',
-                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService
+                onEnter: (ModalService, PouchDbService, $stateParams, $state) => ModalService
                     .open('facilityChargesForm', {
                         facilityCharges: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
+
             })
             .state('facility_charges.remove', {
                 parent: 'facility_charges',
                 url: '/:id/remove',
-                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService
+                onEnter: (ModalService, PouchDbService, $stateParams, $state) => ModalService
                     .open('facilityChargesForm', {
                         facilityCharges: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
             });
     })
     .component('facilityChargesForm', FacilityChargesFormComponent)

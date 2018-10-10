@@ -7,10 +7,10 @@ export const InvestmentFormComponent = {
     controller: class InvestmentFormController {
         constructor(PouchDbService, $state, ToastrService){
             'ngInject';
-
+            this.state = $state;
             this.PouchDbService = PouchDbService;
             this.isSaving = false;
-            this.currentState = $state.current.name;
+            this.currentState = this.state.current.name;
             this.ToastrService = ToastrService;
             this.entityName = 'investment';
         }
@@ -52,6 +52,10 @@ export const InvestmentFormComponent = {
                     break;
             }
             this.isSaving = false;
+        }
+
+        cancel() {
+            this.modalInstance.close()
         }
     },
     controllerAs: 'vm'

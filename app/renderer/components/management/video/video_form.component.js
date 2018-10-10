@@ -9,11 +9,11 @@ export const VideoFormComponent = {
     controller: class VideoFormController {
         constructor(PouchDbService, $state, ToastrService, $scope, VideoService) {
             'ngInject';
-
+            this.state = $state;
             this.PouchDbService = PouchDbService;
             this.VideoService = VideoService;
             this.isSaving = false;
-            this.currentState = $state.current.name;
+            this.currentState = this.state.current.name;
             this.ToastrService = ToastrService;
             this.entityName = 'video';
             this.formData = {

@@ -22,10 +22,17 @@ export class PDFGenerator {
         }];
     }
 
-    generatePrevisionnel(production, investment, date, annuity) {
+    generatePrevisionnel(production, investment, date, annuity, prospect) {
+        const nameWithOutSpaces = (someWithName) => someWithName.name.replace(/\s+/g, '');
+        const invesmentName = investment.name ? nameWithOutSpaces(investment) : '';
+        const pdfName = `previsionnel_${nameWithOutSpaces(prospect)}_${production.facilitiesNb}_${production.facility.size}_${invesmentName}_${nameWithOutSpaces(production)}`;
 
         let docDefinition = {
-            content: this.putHeader(`\nPREVISIONNEL ${production.facilitiesNb} * ${production.facility.size} m² \n ${production.name}`),
+            content: this.putHeader(`
+                PREVISIONNEL ${production.facilitiesNb} * ${production.facility.size} m²
+                
+                ${production.name}
+                `),
             styles: {
                 header: {
                     fontSize: 16,
@@ -69,8 +76,26 @@ export class PDFGenerator {
                 ]
             },
             '\n',
-            `Parcours: ${production.chickBySquare} m²/poulet soit ${production.chickBySquare*production.getChickNb()/10000}ha`,
-            `Mis à jour le ` + updateDate.toLocaleDateString("fr-FR"),
+            {
+                columns: [
+                    {
+                        text:  `
+                        
+                                Parcours: ${production.chickBySquare} m²/poulet soit ${production.chickBySquare*production.getChickNb()/10000}ha
+                                Mis à jour le ${updateDate.toLocaleDateString("fr-FR")}`,
+                        alignement: 'right',
+                        bold: true
+                    },
+                    {
+                        text:  `${prospect.company}
+                                ${prospect.name}
+                                ${prospect.email} - ${prospect.phone}
+                                ${prospect.address}`,
+                        alignment: 'left',
+                        bold: true,
+                    }
+                ]
+            },
             {
                 style: 'tableExample',
                 table: {
@@ -99,7 +124,7 @@ export class PDFGenerator {
                     widths: ['*', 75, 75],
                     headerRows: 1,
                     body: [
-                        [{text: `CRITERES ECONOMIQUES`, style: 'tableHeader', alignment: 'left'},
+                        [{text: `CRITERES ECONOMIQUES en € HT`, style: 'tableHeader', alignment: 'left'},
                             {text: `€/tête`, style: 'tableHeader', alignment: 'center'},
                             {text: `Total (€)`, style: 'tableHeader', alignment: 'center'}],
                         [`Poussins`, production.facility.facilityCharges.chickPrice, Math.round(production.getChicksPaid() * production.facility.facilityCharges.chickPrice)],
@@ -238,7 +263,7 @@ export class PDFGenerator {
 
         docDefinition.content = docDefinition.content.concat(contentToConcat);
 
-        pdfMake.createPdf(docDefinition).download('previsionnel.pdf');
+        pdfMake.createPdf(docDefinition).download(`${pdfName}.pdf`);
     }
 
     generateRotations(nbFacilities, productions, investment, annuity) {

@@ -10,9 +10,10 @@ export const FacilityFormComponent = {
     controller: class FacilityFormController {
         constructor(PouchDbService, $state, FACILITIES_TYPES, ToastrService){
             'ngInject';
+            this.state = $state;
             this.PouchDbService = PouchDbService;
             this.isSaving = false;
-            this.currentState = $state.current.name;
+            this.currentState = this.state.current.name;
             this.facilityTypes = FACILITIES_TYPES;
             this.ToastrService = ToastrService;
             this.entityName = 'facility';
@@ -58,9 +59,11 @@ export const FacilityFormComponent = {
                     break;
             }
             this.isSaving = false;
-
         }
 
+        cancel() {
+            this.modalInstance.close()
+        }
     },
     controllerAs: 'vm'
 };

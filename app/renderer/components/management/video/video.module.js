@@ -27,24 +27,30 @@ export const VideoModule = angular
             .state('video.create', {
                 parent: 'video',
                 url: '/create',
-                onEnter: (ModalService) => ModalService.open('videoForm', {
+                onEnter: (ModalService, $state) => ModalService.open('videoForm', {
                     video: {}
                 })
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
             })
             .state('video.edit', {
                 parent: 'video',
                 url: '/:id/edit',
-                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService
+                onEnter: (ModalService, PouchDbService, $stateParams, $state) => ModalService
                     .open('videoForm', {
                         video: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
             })
             .state('video.remove', {
                 parent: 'video',
                 url: '/:id/remove',
-                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService.open('videoForm', {
+                onEnter: (ModalService, PouchDbService, $stateParams, $state) => ModalService.open('videoForm', {
                         video: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
             });
     })
     .component('videoForm', VideoFormComponent)

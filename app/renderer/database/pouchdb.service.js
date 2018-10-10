@@ -9,6 +9,7 @@ import {Facility} from '../components/management/facility/facility'
 import {FacilityCharges} from '../components/management/facility_charges/facility_charges'
 import {Investment} from '../components/management/investment/investment'
 import {Video} from '../components/management/video/video'
+import {Prospect} from '../components/management/prospect/prospect';
 
 import PouchDB from 'pouchdb-browser';
 
@@ -21,6 +22,10 @@ const databaseSchema = [
     {
         singular: 'video',
         plural: 'videos'
+    },
+    {
+        singular: 'prospect',
+        plural: 'prospects'
     },
     {
         singular: 'production',
@@ -52,6 +57,7 @@ function getConstructorFromEntityName(entityName) {
         video: Video,
         facilityCharges: FacilityCharges,
         investment: Investment,
+        prospect: Prospect,
         production: Production,
         facility: Facility
     };

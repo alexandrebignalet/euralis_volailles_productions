@@ -1,0 +1,75 @@
+.search-bar {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 10em;
+  padding-left: 10em;
+  position: relative;
+}
+
+.input {
+  width: 622px;
+  border-radius: 2px;
+  border: 1px solid white;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.30);
+  transition: 0.3s;
+  height: 3em;
+  display: flex;
+  align-items: center;
+}
+
+.input input {
+  flex-grow: 1;
+  padding-left: 1em;
+  border: none;
+}
+
+.input span {
+  width: 5%;
+  color: #009900;
+}
+
+.search-result {
+  padding-left: 0;
+  position: absolute;
+  top: 97%;
+  width: 622px;
+  border-top: 1px solid #e1e1e1;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.30);
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  background-color: white;
+}
+
+.input input:focus {
+  outline: none !important;
+}
+
+.input:hover {
+  transition: 0.3s;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.30);
+}
+
+.list-box {
+  padding: 0;
+  list-style: none;
+}
+
+
+.list-box li {
+  line-height: 3em;
+  vertical-align: middle;
+  padding-left: 1em;
+  transition: 0.3s;
+}
+
+
+.list-box li:hover {
+  box-shadow: 0 0 2px 1px rgba(128, 128, 128, 0.26);
+  transition: 0.3s;
+}
+
+.list-box li:not(:first-child) {
+  border-top: 1px solid rgba(128, 128, 128, 0.26);
+}

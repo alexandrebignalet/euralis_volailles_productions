@@ -24,7 +24,7 @@
 
 <br /><br />
 
-<uib-tabset active="active_production" justified="true" type="pills" class="tab-animation">
+<uib-tabset active="vm.active" justified="true" type="pills" class="tab-animation">
     <uib-tab index="$index" ng-repeat="production in vm.productions"
              heading="{{production.name | uppercase}} ({{production.facility.size}}m²)" select="vm.onNewTabSelected()">
         <br /><br />

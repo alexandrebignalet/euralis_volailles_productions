@@ -5,7 +5,7 @@ import {Prospect} from "../management/prospect/prospect";
 const DEFAULT_INVESTMENT_CHOOSEN = 'none';
 
 export const PrevisionnelBatimentComponent = {
-    bindings: { productions: '<' },
+    bindings: { productions: '<', active: '<' },
     template,
     controller: class PrevisionnelBatimentController {
         constructor($scope, $timeout, PDFGenerator, ModalService){

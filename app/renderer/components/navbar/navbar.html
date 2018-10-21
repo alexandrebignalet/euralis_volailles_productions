@@ -1,13 +1,16 @@
 
 <nav class="navbar navbar-fixed-top">
 
-    <div class="container">
+    <div class="container nav-container">
         <a class="effect_fade" ui-sref="home">
             <img src="{{vm.logo}}" style="height: 80px;" id="logo_euralis"/>
         </a>
 
-        <a class="effect_fade" style="float:right; margin-top:3%; color:green; cursor:pointer;" ng-click="vm.openSidebar()">
-            <span class="glyphicon glyphicon-search"></span>
+        <search-bar></search-bar>
+
+        <a class="effect_fade" style="color:green; cursor:pointer;padding:20px;" ng-click="vm.openSidebar()">
+            <span ng-if="vm.isOpen" class="glyphicon glyphicon-arrow-right" style="font-size: 1.5em;"></span>
+            <span ng-if="!vm.isOpen" class="glyphicon glyphicon-arrow-left" style="font-size: 1.5em;"></span>
         </a>
     </div>
 </nav>

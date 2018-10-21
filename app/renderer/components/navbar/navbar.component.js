@@ -7,11 +7,15 @@ export const NavbarComponent = {
     template,
     restrict: 'E',
     controller: class NavbarController {
-        constructor(StateHandler, SidebarService){
+        constructor(SidebarService, $scope){
             'ngInject';
-            this.stateHandler = StateHandler;
             this.logo = logo;
             this.sidebar = SidebarService;
+            this.isOpen = false;
+
+            $scope.$watch('vm.sidebar.isOpen', (n, o) => {
+                this.isOpen = n;
+            })
         }
 
         openSidebar() {

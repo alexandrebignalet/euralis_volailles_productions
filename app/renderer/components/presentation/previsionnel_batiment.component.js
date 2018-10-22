@@ -1,36 +1,35 @@
 import angular from 'angular';
 import template from './previsionnel_batiment.html';
+import {Prospect} from "../management/prospect/prospect";
 
 const DEFAULT_INVESTMENT_CHOOSEN = 'none';
 
 export const PrevisionnelBatimentComponent = {
-    bindings: { productions: '<' },
+    bindings: { productions: '<', active: '<' },
     template,
     controller: class PrevisionnelBatimentController {
-        constructor($scope, $timeout, PDFGenerator){
+        constructor($scope, $timeout, PDFGenerator, ModalService){
             'ngInject';
             this.scope = $scope;
-            this.timeout = $timeout;
+            this.ModalService = ModalService;
+            this.PDFGenerator = PDFGenerator;
+        }
+
+        $onInit() {
             this.facilityNb = 2;
-            this.investmentChoosen = DEFAULT_INVESTMENT_CHOOSEN;
+            this.investmentChosen = DEFAULT_INVESTMENT_CHOOSEN;
             this.annuityDuration = 15;
             this.interest = 2.5;
             this.sliderOptions = {
                 floor: 1,
                 ceil: 20
             };
-
-            this.PDFGenerator = PDFGenerator;
-
             this.pickerIsOpen = false;
             this.format = 'dd/MM/yyyy';
-            $scope.date = new Date();
+            this.scope.date = new Date();
             this.dateOptions = {
                 showWeeks: true
             };
-        }
-
-        $onInit() {
             if (this.productions[0].facility.type.key === 'movable') { this.facilityNb = 8; }
             this.scope.$watch('vm.facilityNb', () => {
                 this.update();
@@ -38,7 +37,7 @@ export const PrevisionnelBatimentComponent = {
         }
 
         onNewTabSelected() {
-            this.investmentChoosen = DEFAULT_INVESTMENT_CHOOSEN;
+            this.investmentChosen = DEFAULT_INVESTMENT_CHOOSEN;
         }
 
         hasUser() {
@@ -48,10 +47,17 @@ export const PrevisionnelBatimentComponent = {
         openPicker() {
             this.pickerIsOpen = true;
         }
+        
+        startPrint(production) {
+            this.ModalService.open('prospectForm', { prospect: new Prospect({}) })
+                .then((prospect) => {
+                    this.generatePDF(production, prospect)
+                });
+        }
 
-        generatePDF(production, investment, date, duration, interest) {
-            const annuity = { duration, interest };
-            this.PDFGenerator.generatePrevisionnel(production, investment, date, annuity);
+        generatePDF(production, prospect) {
+            const annuity = { duration: this.annuityDuration, interest: this.interest };
+            this.PDFGenerator.generatePrevisionnel(production, this.investmentChosen, this.scope.date, annuity, prospect);
         }
 
         update() {

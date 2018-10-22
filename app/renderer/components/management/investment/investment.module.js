@@ -23,23 +23,27 @@ export const InvestmentModule = angular.module('InvestmentModule', [])
             .state('investment.create', {
                 parent: 'investment',
                 url: '/create',
-                onEnter: ModalService => ModalService.open('investmentForm', {
-                    investment: {diverseOptions: 0}
-                })
+                onEnter: (ModalService, $state) => ModalService.open('investmentForm', {})
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
             })
             .state('investment.edit', {
                 parent: 'investment',
                 url: '/:id/edit',
-                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService.open('investmentForm', {
+                onEnter: (ModalService, PouchDbService, $stateParams, $state) => ModalService.open('investmentForm', {
                         investment: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
             })
             .state('investment.remove', {
                 parent: 'investment',
                 url: '/:id/remove',
-                onEnter: (ModalService, PouchDbService, $stateParams) => ModalService.open('investmentForm', {
+                onEnter: (ModalService, PouchDbService, $stateParams, $state) => ModalService.open('investmentForm', {
                         investment: PouchDbService.find(ENTITY_NAME, $stateParams.id)
                     })
+                    .then(() => $state.go('^', null, {reload: true}))
+                    .catch(() => $state.go('^'))
             });
     })
     .component('investments', InvestmentComponent)

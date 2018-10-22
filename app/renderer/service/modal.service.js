@@ -8,15 +8,12 @@ export class ModalService {
         this.state = $state;
     }
 
-    open(component, resolve) {
+    open(component, resolveInModal) {
         return this.modal.open({
-            size: 'lg',
-            animation: true,
-            component: component,
-            resolve,
-        }).result.then(
-            () => this.state.go('^', null, {reload: true}),
-            () => this.state.go('^')
-        );
+                size: 'lg',
+                animation: true,
+                component: component,
+                resolve: resolveInModal,
+            }).result;
     }
 }

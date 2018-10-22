@@ -1,16 +1,21 @@
 import template  from './investments_presentation.html';
 
 export const InvestmentsPresentationComponent = {
-    bindings: { investments: '<' },
+    bindings: { investments: '<', investmentChosen: '<' },
     template,
     controller: class InvestmentPresentationController {
 
-        $onInit() {
-            this.selectedInvestment = this.investments[0];
+        active() {
+            const index = this.investments.indexOf(this.investmentChosen);
+            return index !== -1 ? index : 0;
+        }
+
+        $onChange(currentValue) {
+            this.investmentChosen = currentValue;
         }
 
         selectInvestment(investment) {
-            this.selectedInvestment = investment;
+            this.investmentChosen = investment;
         }
     }
 };

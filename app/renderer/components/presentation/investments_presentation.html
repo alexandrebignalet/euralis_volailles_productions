@@ -2,57 +2,72 @@
 <h1 ng-if="$ctrl.investments.length > 1">Investissements</h1>
 <hr />
 
-<uib-tabset active justified="true" type="pills">
+<uib-tabset active="$ctrl.active()" justified="true" type="pills">
     <uib-tab index="$index" ng-repeat="investment in $ctrl.investments"
              heading="{{investment.name | uppercase}}" select="$ctrl.selectInvestment(investment)">
         <br /> <br />
         <table class="table table-condensed table-hover table-responsive">
             <tr>
                 <th>Description</th>
-                <td>{{ $ctrl.selectedInvestment.description }}</td>
+                <td>{{ $ctrl.investmentChosen.description }}</td>
                 <td></td>
             </tr>
             <tr>
                 <th>Designation</th>
-                <td>{{ $ctrl.selectedInvestment.designation | uppercase}}</td>
-                <td>{{ $ctrl.selectedInvestment.details.designation }}</td>
+                <td>{{ $ctrl.investmentChosen.designation | uppercase}}</td>
+                <td>{{ $ctrl.investmentChosen.details.designation }}</td>
             </tr>
             <tr>
-                <th>Documents</th>
-                <td>{{ $ctrl.selectedInvestment.papers | number: 0}} €</td>
-                <td>{{ $ctrl.selectedInvestment.details.papers }}</td>
+                <th>Permis de construire</th>
+                <td>{{ $ctrl.investmentChosen.papers | number: 0}} €</td>
+                <td>{{ $ctrl.investmentChosen.details.papers }}</td>
+            </tr>
+            <tr>
+                <th>Coût architecte</th>
+                <td>{{ $ctrl.investmentChosen.architectCost | number: 0}} €</td>
+                <td>{{ $ctrl.investmentChosen.details.architectCost }}</td>
             </tr>
             <tr>
                 <th>Gros oeuvre</th>
-                <td>{{ $ctrl.selectedInvestment.getMasonry() | number: 0}} €</td>
-                <td>{{ $ctrl.selectedInvestment.details.masonry }}</td>
+                <td>{{ $ctrl.investmentChosen.getMasonry() | number: 0}} €</td>
+                <td>{{ $ctrl.investmentChosen.details.masonry }}</td>
             </tr>
             <tr>
                 <th>Livraison et montage du batîment</th>
-                <td>{{ $ctrl.selectedInvestment.getFacilityMountingDeliveryPrice() | number: 0}} €</td>
-                <td>{{ $ctrl.selectedInvestment.details.facilityMoutingDeliveryPrice }}</td>
+                <td>{{ $ctrl.investmentChosen.getFacilityMountingDeliveryPrice() | number: 0}} €</td>
+                <td>{{ $ctrl.investmentChosen.details.facilityMoutingDeliveryPrice }}</td>
             </tr>
             <tr>
                 <th>Livraison et montage du matériel</th>
-                <td>{{ $ctrl.selectedInvestment.getEquipmentMountingDeliveryPrice() | number: 0}} €</td>
-                <td>{{ $ctrl.selectedInvestment.details.equipmentMountingDeliveryPrice }}</td>
+                <td>{{ $ctrl.investmentChosen.getEquipmentMountingDeliveryPrice() | number: 0}} €</td>
+                <td>{{ $ctrl.investmentChosen.details.equipmentMountingDeliveryPrice }}</td>
             </tr>
             <tr>
                 <th>Diverses options</th>
-                <td>{{ $ctrl.selectedInvestment.diverseOptions | number: 0}} €</td>
-                <td>{{ $ctrl.selectedInvestment.details.diverseOptions }}</td>
+                <td>
+                    <p ng-repeat="options in $ctrl.investmentChosen.options track by $index">
+                        <input class="form-check-input" type="checkbox" ng-click="$ctrl.investmentChosen.selectOption($index)">
+
+                        {{options.amount}} €
+                    </p>
+                </td>
+                <td>
+                    <p ng-repeat="options in $ctrl.investmentChosen.options">
+                        {{options.name}}
+                    </p>
+                </td>
             </tr>
             <tr>
                 <th>Investissement total</th>
                 <td>
-                    <strong>{{ $ctrl.selectedInvestment.getTotalBeforeSubsidies() | number: 0}} € </strong>
+                    <strong>{{ $ctrl.investmentChosen.getTotalBeforeSubsidies() | number: 0}} € </strong>
                 </td>
             </tr>
             <tr>
                 <th>Subventions AREA PCAE</th>
                 <td>
                     <div class="input-group">
-                        <input type="number" class="form-control" ng-model="$ctrl.selectedInvestment.subsidies" />
+                        <input type="number" class="form-control" ng-model="$ctrl.investmentChosen.subsidies" />
                         <span class="input-group-addon">€</span>
                     </div>
                 </td>
@@ -62,7 +77,7 @@
                 <th>Aides EURALIS Volailles</th>
                 <td>
                     <div class="input-group">
-                        <input type="number" class="form-control" ng-model="$ctrl.selectedInvestment.helpEuralis" />
+                        <input type="number" class="form-control" ng-model="$ctrl.investmentChosen.helpEuralis" />
                         <span class="input-group-addon">€</span>
                     </div>
                 </td>
@@ -72,7 +87,7 @@
                 <th>Apport personnel</th>
                 <td>
                     <div class="input-group">
-                        <input type="number" class="form-control" ng-model="$ctrl.selectedInvestment.personalContribution" />
+                        <input type="number" class="form-control" ng-model="$ctrl.investmentChosen.personalContribution" />
                         <span class="input-group-addon">€</span>
                     </div>
                 </td>

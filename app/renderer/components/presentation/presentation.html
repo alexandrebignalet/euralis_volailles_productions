@@ -1,16 +1,10 @@
 <br /><br />
 <div class="container">
-    <ul class="nav nav-pills nav-justified" ng-if="productions.length > 0">
-        <li ng-class="[{active: active, disabled: disabled}]" class="nav-item" ng-repeat="productions in $ctrl.productions track by $index" index="$index">
-            <a href="#" ng-click="select($event)" class="nav-link ng-binding">{{ productions[0].facility.type.value | uppercase }}</a>
-        </li>
-    </ul>
-
-    <uib-tabset active="activeJustified" justified="true" type="pills" class="tab-animation">
-        <uib-tab ng-repeat="productions in $ctrl.productions track by $index" index="$index"
+    <uib-tabset active="$ctrl.facilityIndexActive" justified="true" type="pills" class="tab-animation">
+        <uib-tab ng-repeat="productions in $ctrl.productionsByFacilityType track by $index" index="$index"
                  ng-if="productions.length > 0"
                  heading="{{ productions[0].facility.type.value | uppercase }}">
-            <previsionnel-batiment productions="productions"></previsionnel-batiment>
+            <previsionnel-batiment active="$ctrl.active" productions="productions"></previsionnel-batiment>
         </uib-tab>
     </uib-tabset>
 </div>

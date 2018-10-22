@@ -11,8 +11,8 @@
                     <div ng-if="vm.currentState.indexOf('remove') == -1">
                         <label>Vidéo actuelle: </label>
                         <div class="form-group">
-                            <video width="100%" id="modal-viewer" controls>
-                                <source src type="video/mp4">
+                            <video width="100%" id="create" controls>
+                                <source src="" type="video/mp4">
                                 Your browser does not support HTML5 video.
                             </video>
                         </div>
@@ -36,7 +36,7 @@
     </div>
 
     <div class="modal-footer">
-        <button class="btn btn-default" type="button" ng-click="vm.modalInstance.close()">Annuler</button>
+        <button class="btn btn-default" type="button" ng-click="vm.cancel()">Annuler</button>
         <button class="btn btn-primary" type="submit" ng-if="vm.currentState.indexOf('create') != -1" ng-disabled="vm.isSaving || videoForm.$invalid">Créer</button>
         <button class="btn btn-success" type="submit" ng-if="vm.currentState.indexOf('edit') != -1" ng-disabled="vm.isSaving || videoForm.$invalid">Modifier</button>
         <button class="btn btn-danger" type="submit" ng-if="vm.currentState.indexOf('remove') != -1" ng-disabled="vm.isSaving || videoForm.$invalid">Supprimer</button>

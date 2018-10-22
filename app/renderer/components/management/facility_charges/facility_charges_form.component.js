@@ -10,7 +10,7 @@ export const FacilityChargesFormComponent = {
     controller: class FacilityChargesFormController {
         constructor(PouchDbService, $state, ToastrService){
             'ngInject';
-
+            this.state = $state;
             this.PouchDbService = PouchDbService;
             this.isSaving = false;
             this.currentState = $state.current.name;
@@ -58,22 +58,24 @@ export const FacilityChargesFormComponent = {
                 case 'create':
                     this.PouchDbService.save(this.entityName, facilityCharges).then(() => {
                         this.ToastrService[formState](new FacilityCharges(facilityCharges));
-                        this.modalInstance.close();
+                        this.modalInstance.close()
                     });
                     break;
                 case 'remove':
                     this.PouchDbService.remove(this.entityName, facilityCharges).then(() => {
                         this.ToastrService[formState](facilityCharges);
-                        this.modalInstance.close();
+                        this.modalInstance.close()
                     });
                     break;
                 default:
                     break;
             }
             this.isSaving = false;
-
         }
 
+        cancel() {
+            this.modalInstance.close()
+        }
     },
     controllerAs: 'vm'
 };

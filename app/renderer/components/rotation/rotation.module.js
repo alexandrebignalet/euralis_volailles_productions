@@ -1,6 +1,7 @@
 import angular from 'angular';
 import {RotationComponent} from './rotation.component';
 import {facility} from './facility.filter';
+import {ProductionRotation} from "./production.rotation";
 
 export const RotationModule = angular.module('RotationModule', [])
     .config(($stateProvider) => {

@@ -10,10 +10,10 @@ export const ProductionFormComponent = {
     controller: class ProductionFormController {
         constructor(PouchDbService, $state, DEPARTMENTS, ToastrService){
             'ngInject';
-
+            this.state = $state;
             this.PouchDbService = PouchDbService;
             this.isSaving = false;
-            this.currentState = $state.current.name;
+            this.currentState = this.state.current.name;
             this.departments = DEPARTMENTS;
             this.ToastrService = ToastrService;
 
@@ -43,7 +43,7 @@ export const ProductionFormComponent = {
             production.breedingDeclassedPercent *= 100;
             production.mortalityPercent *= 100;
             production.restraintPercent *= 100;
-            production.updateDate = new Date(production.updateDate);
+            production.updateDate = production.updateDate || new Date().toISOString();
             return production;
         }
 
@@ -80,14 +80,12 @@ export const ProductionFormComponent = {
 
                     this.PouchDbService.save(this.entityName, prod).then(() => {
                         this.ToastrService[formState](new Production(prod));
-                        this.modalInstance.close()
-                    });
+                        this.modalInstance.close()                    });
                     break;
                 case 'remove':
                     this.PouchDbService.remove(this.entityName, prod).then(() => {
                         this.ToastrService.remove(this.production);
-                        this.modalInstance.close()
-                    });
+                        this.modalInstance.close()                    });
                     break;
                 default:
                     break;
@@ -95,6 +93,9 @@ export const ProductionFormComponent = {
             this.isSaving = false;
         }
 
+        cancel() {
+            this.modalInstance.close()()
+        }
     },
     controllerAs: 'vm'
 };

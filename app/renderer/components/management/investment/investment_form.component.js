@@ -1,5 +1,5 @@
 import template from './investment_form.html';
-import {Investment} from './investment';
+import {DiverseOption, Investment} from './investment';
 
 export const InvestmentFormComponent = {
     bindings: { resolve: '<', modalInstance: '<' },
@@ -7,18 +7,25 @@ export const InvestmentFormComponent = {
     controller: class InvestmentFormController {
         constructor(PouchDbService, $state, ToastrService){
             'ngInject';
-
+            this.state = $state;
             this.PouchDbService = PouchDbService;
             this.isSaving = false;
-            this.currentState = $state.current.name;
+            this.currentState = this.state.current.name;
             this.ToastrService = ToastrService;
             this.entityName = 'investment';
         }
 
         $onInit() {
             this.investment = this.resolve.investment;
+            if (!this.investment.options || this.investment.options.length === 0) {
+                this.investment.options = [DiverseOption('', 0)];
+            }
         }
-        
+
+        addNewOption() {
+            this.investment.options.push(DiverseOption(null, null));
+        }
+
         removeAttachment(file) {
             let index = this.investment.attachments.indexOf(file);
             this.investment.attachments.splice(index, 1);
@@ -52,6 +59,10 @@ export const InvestmentFormComponent = {
                     break;
             }
             this.isSaving = false;
+        }
+
+        cancel() {
+            this.modalInstance.close()
         }
     },
     controllerAs: 'vm'

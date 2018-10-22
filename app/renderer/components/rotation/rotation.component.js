@@ -1,4 +1,5 @@
 import template from './rotation.html';
+import {PintadesDemareesRotation, ProductionRotation} from "./production.rotation";
 
 export const RotationComponent = {
     bindings: { productions: '<' },
@@ -10,10 +11,11 @@ export const RotationComponent = {
             this.facilityTypes = FACILITIES_TYPES;
             this.facilityType = null;
             this.facilityNb = 2;
-            this.productionsChoosen = [];
+            this.productionsChosen = [];
             this.filter = facilityFilter;
             this.timeout = $timeout;
-            this.investmentChoosen = 0;
+            this.investmentChosen = 'none';
+            this.showDialog = false;
             this.investment = {
                 annuityDuration: 15,
                 interest: 2.5
@@ -29,9 +31,12 @@ export const RotationComponent = {
         }
 
         $onInit() {
+            this.productions = this.productions.map((prod) => new ProductionRotation(prod));
+            this.productions.push(new PintadesDemareesRotation());
+
             this.timeout(() => {
                 $('#production_selector').multiselect({
-                    onChange: (option, checked) => {
+                    onChange: () => {
                         var selectedOptions = $('#production_selector option:selected');
 
                         if (selectedOptions.length >= 3) {
@@ -63,9 +68,9 @@ export const RotationComponent = {
             return !!this.PDFGenerator.UserService.getUser();
         }
 
-        getTotalProductionsChoosen() {
-            return this.productionsChoosen.reduce((acc, production) => {
-                return  acc + production.getBrutMargin();
+        getTotalProductionsChosen() {
+            return this.productionsChosen.reduce((acc, production) => {
+                return  acc + production.getAnnualBrutMargin();
             }, 0);
         }
 
@@ -73,17 +78,16 @@ export const RotationComponent = {
             this.PDFGenerator.generateRotations(nbFacilities, productions, investment, annuity);
         }
 
-        getNetMarginForChoosenProductions(annuity) { return this.getTotalProductionsChoosen() - annuity; }
+        getNetMarginForChosenProductions(annuity) { return this.getTotalProductionsChosen() - annuity; }
 
         addProduction(production) {
-            if(this.productionsChoosen.length >= 3) return;
-            this.productionsChoosen.push(production);
+            this.productionsChosen.push(production);
         }
 
         removeProduction(production) {
-            for(let i = 0; i < this.productionsChoosen.length ; i++) {
-                if(this.productionsChoosen[i].id === production.id) {
-                    this.productionsChoosen.splice(i,1);
+            for(let i = 0; i < this.productionsChosen.length ; i++) {
+                if(this.productionsChosen[i].id === production.id) {
+                    this.productionsChosen.splice(i,1);
                     break;
                 }
             }
@@ -93,7 +97,7 @@ export const RotationComponent = {
             let out = [];
             let tmp = [];
 
-            this.productionsChoosen.forEach((production) => {
+            this.productionsChosen.forEach((production) => {
                 production.facility.investments.forEach((investment) => {
                     if(tmp.indexOf(investment.id) === -1) {
                         tmp.push(investment.id);

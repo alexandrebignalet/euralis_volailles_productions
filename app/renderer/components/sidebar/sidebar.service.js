@@ -3,8 +3,12 @@ export class SidebarService {
         this.isOpen = false;
     }
 
-    toggle(data) {
+    toggle() {
         this.isOpen ? this.closeNav() : this.openNav();
+    }
+
+    isOpen() {
+        return this.isOpen;
     }
 
     openNav() {

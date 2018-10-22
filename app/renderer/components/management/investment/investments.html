@@ -21,13 +21,13 @@
                 <th>Désignation</th>
                 <th>Description</th>
                 <th class="text-center">Gros oeuvre</th>
-                <th class="text-center">Coût des dossiers</th>
+                <th class="text-center">Coût permis de construire</th>
+                <th class="text-center">Coût architecte</th>
                 <th class="text-center">Livraison/Montage Bâtiment</th>
                 <th class="text-center">Livraison/Montage Matériel</th>
                 <th class="text-center">Total (avant subventions)</th>
                 <th class="text-center">Subvention AREA PCAE</th>
                 <th class="text-center">Aide EURALIS Volailles</th>
-                <th class="text-center">Divers options</th>
                 <th class="text-center">Total</th>
 
                 <th class="col-md-3 text-center">Modifier/Supprimer</th>
@@ -41,12 +41,12 @@
                 <td>{{ investment.description}}</td>
                 <td class="col-md-2 text-center">{{ investment.masonry}}€</td>
                 <td class="col-md-2 text-center">{{ investment.papers}}€</td>
+                <td class="col-md-2 text-center">{{ investment.architectCost}}€</td>
                 <td class="col-md-2 text-center">{{ investment.facilityMoutingDeliveryPrice}}€</td>
                 <td class="col-md-2 text-center">{{ investment.equipmentMountingDeliveryPrice}}€</td>
                 <td class="col-md-2 text-center">{{ investment.getTotalBeforeSubsidies()}}€</td>
                 <td class="col-md-2 text-center">{{ investment.subsidies}}€</td>
                 <td class="col-md-2 text-center">{{ investment.helpEuralis}}€</td>
-                <td class="col-md-2 text-center">{{ investment.diverseOptions}}€</td>
                 <td class="col-md-2 text-center">{{ investment.getTotal()}}€</td>
                 <td class="col-md-3 text-center">
                     <button class="btn btn-success" ui-sref="investment.edit({id: investment.id})"><span class="glyphicon glyphicon-pencil"></span></button>

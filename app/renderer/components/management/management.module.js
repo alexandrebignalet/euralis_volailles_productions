@@ -3,6 +3,7 @@ import {ProductionModule} from './production/production.module';
 import {FacilityChargesModule} from './facility_charges/facility_charges.module';
 import {FacilityModule} from './facility/facility.module';
 import {VideoModule} from './video/video.module';
+import {ProspectModule} from './prospect/prospect.module';
 import {MultiselectDirective} from '../../service/multiselect.directive';
 import {CustomOnChangeDirective} from '../../service/on-change.directive';
 import {ToastrService} from './toastr.service';
@@ -19,7 +20,7 @@ departmentNames.push({key: 'Gironde', value:'Gironde'});
 
 
 export const ManagementModule = angular
-    .module('Management', [ProductionModule, FacilityModule, FacilityChargesModule, VideoModule])
+    .module('Management', [ProductionModule, FacilityModule, FacilityChargesModule, VideoModule, ProspectModule])
     .config(($locationProvider, $stateProvider, $compileProvider) => {
         'ngInject';
 

@@ -23,9 +23,7 @@ export const InvestmentModule = angular.module('InvestmentModule', [])
             .state('investment.create', {
                 parent: 'investment',
                 url: '/create',
-                onEnter: (ModalService, $state) => ModalService.open('investmentForm', {
-                    investment: {diverseOptions: 0}
-                })
+                onEnter: (ModalService, $state) => ModalService.open('investmentForm', {})
                     .then(() => $state.go('^', null, {reload: true}))
                     .catch(() => $state.go('^'))
             })

@@ -28,7 +28,6 @@
                 <th class="text-center">Total (avant subventions)</th>
                 <th class="text-center">Subvention AREA PCAE</th>
                 <th class="text-center">Aide EURALIS Volailles</th>
-                <th class="text-center">Divers options</th>
                 <th class="text-center">Total</th>
 
                 <th class="col-md-3 text-center">Modifier/Supprimer</th>
@@ -48,7 +47,6 @@
                 <td class="col-md-2 text-center">{{ investment.getTotalBeforeSubsidies()}}€</td>
                 <td class="col-md-2 text-center">{{ investment.subsidies}}€</td>
                 <td class="col-md-2 text-center">{{ investment.helpEuralis}}€</td>
-                <td class="col-md-2 text-center">{{ investment.diverseOptions}}€</td>
                 <td class="col-md-2 text-center">{{ investment.getTotal()}}€</td>
                 <td class="col-md-3 text-center">
                     <button class="btn btn-success" ui-sref="investment.edit({id: investment.id})"><span class="glyphicon glyphicon-pencil"></span></button>

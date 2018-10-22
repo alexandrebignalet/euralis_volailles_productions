@@ -13,10 +13,24 @@ export const PresentationComponent = {
 
         findProductionIndexByName(name, size) {
             if(!name) return 0;
-            const isFixed = this.productionsByFacilityType[0].map((prod) => prod.name +''+ prod.facility.size).indexOf(name+''+size);
-            const isMovable = this.productionsByFacilityType[1].map((prod) => prod.name +''+ prod.facility.size).indexOf(name+''+size);
+            const isFixed = indexOfByNameAndSize(this.productionsByFacilityType[0]);
+            const isMovable = indexOfByNameAndSize(this.productionsByFacilityType[1]);
             this.facilityIndexActive = isFixed !== -1 ? 0 : 1;
             return this.facilityIndexActive === 0 ? isFixed : isMovable;
+
+            function indexOfByNameAndSize(productions) {
+                if (!productions) return -1;
+                productions.map(concatProdNameAndFacilitySize()).indexOf(concatNameAndSize())
+            }
+
+            function concatProdNameAndFacilitySize() {
+                return (prod) => concatNameAndSize(prod.name, prod.facility.size)
+            }
+
+            function concatNameAndSize() {
+                return name + '' + size
+            }
+
         }
     }
 };

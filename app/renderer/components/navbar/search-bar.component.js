@@ -23,14 +23,19 @@ export const SearchBarComponent = {
         constructor(PouchDbService, $state, $scope){
             'ngInject';
             this.productions = [];
-            PouchDbService.find('production').then((productions) => { this.productions = productions });
+            this.dbService = PouchDbService;
             this.state = $state;
             this.isOpen = false;
             this.searchQuery = null;
+            this.searchProductions();
 
             $scope.$watch('vm.searchQuery', () => {
                 this.isOpen = true;
             })
+        }
+
+        searchProductions() {
+            this.dbService.find('production').then((productions) => { this.productions = productions });
         }
 
         goToProduction(result) {

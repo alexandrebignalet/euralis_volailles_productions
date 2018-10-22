@@ -43,7 +43,7 @@ export const ProductionFormComponent = {
             production.breedingDeclassedPercent *= 100;
             production.mortalityPercent *= 100;
             production.restraintPercent *= 100;
-            production.updateDate = new Date(production.updateDate);
+            production.updateDate = production.updateDate || new Date().toISOString();
             return production;
         }
 

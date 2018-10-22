@@ -44,8 +44,18 @@
             </tr>
             <tr>
                 <th>Diverses options</th>
-                <td>{{ $ctrl.investmentChosen.diverseOptions | number: 0}} €</td>
-                <td>{{ $ctrl.investmentChosen.details.diverseOptions }}</td>
+                <td>
+                    <p ng-repeat="options in $ctrl.investmentChosen.options track by $index">
+                        <input class="form-check-input" type="checkbox" ng-click="$ctrl.investmentChosen.selectOption($index)">
+
+                        {{options.amount}} €
+                    </p>
+                </td>
+                <td>
+                    <p ng-repeat="options in $ctrl.investmentChosen.options">
+                        {{options.name}}
+                    </p>
+                </td>
             </tr>
             <tr>
                 <th>Investissement total</th>

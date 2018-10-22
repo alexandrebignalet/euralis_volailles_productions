@@ -247,7 +247,7 @@ export class PDFGenerator {
                             [`Gros oeuvre`, investment.getMasonry()],
                             ['Livraison et montage bâtiment', investment.getFacilityMountingDeliveryPrice()],
                             ['Livraison et montage du matériel', investment.getEquipmentMountingDeliveryPrice()],
-                            ['Diverses options', investment.diverseOptions],
+                            ['Diverses options', investment.getTotalOptionsSelected()],
                             [`Investissement total`, investment.getTotalBeforeSubsidies()],
                             [`Subventions AREA PCAE`, investment.subsidies],
                             [`Aides EURALIS Volailles`, investment.helpEuralis],

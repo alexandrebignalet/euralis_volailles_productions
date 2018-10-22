@@ -17,3 +17,26 @@ export class ProductionRotation extends Production {
         return this.breedingPerYear * this.brutMarginPerSoldChick * this.getSoldChicks();
     }
 }
+
+export class PintadesDemareesRotation extends ProductionRotation {
+    constructor() {
+        super({
+            name: 'Pintades 6 sem',
+            facility: {
+                size: 400,
+                type: {key: 'fixed'},
+                facilityCharges: {},
+                investments: []
+            },
+            chickBySquare: 20,
+            chickNb: 8000
+        });
+
+        this.breedingPerYear = 1;
+        this.brutMarginPerSoldChick = 0.4;
+    }
+
+    getSoldChicks() {
+        return 15200 * this.facilitiesNb / 2;
+    }
+}

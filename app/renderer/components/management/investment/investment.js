@@ -12,11 +12,11 @@ export class Investment {
         this.masonry = investment.masonry;
         this.facilityMoutingDeliveryPrice = investment.facilityMoutingDeliveryPrice;
         this.equipmentMountingDeliveryPrice = investment.equipmentMountingDeliveryPrice;
-        this.diverseOptions = investment.diverseOptions;
-        this.personalContribution = investment.personalContribution == undefined ? 0 : investment.personalContribution;
+        this.personalContribution = investment.personalContribution ? 0 : investment.personalContribution;
         this.subsidies = investment.subsidies;
         this.helpEuralis = investment.helpEuralis;
         this.details = new InvestmentDescription(investment.details);
+        this.options = investment.options.map(({name, amount}) => DiverseOption(name, amount));
 
         if(investment.attachments) {
             this.attachments = Object.keys(investment.attachments).map(key => {
@@ -59,12 +59,26 @@ export class Investment {
         return this._facilityNb * this.equipmentMountingDeliveryPrice;
     }
 
+    selectOption(index) {
+        this.options[index].selected = !this.options[index].selected;
+    }
+
+
+    getTotalOptionsSelected() {
+        return this.options
+            .filter((opt) => opt.selected)
+            .reduce((sum, opt) => {
+                sum += opt.amount;
+                return sum;
+            }, 0);
+    }
+
     getTotal() {
         return this.getTotalBeforeSubsidies() - this.subsidies - this.helpEuralis - this.personalContribution;
     }
 
     getTotalBeforeSubsidies() {
-        return this.getMasonry() + this.getFacilityMountingDeliveryPrice() + this.getEquipmentMountingDeliveryPrice() + this.papers + this.architectCost + this.diverseOptions;
+        return this.getTotalOptionsSelected() + this.getMasonry() + this.getFacilityMountingDeliveryPrice() + this.getEquipmentMountingDeliveryPrice() + this.papers + this.architectCost;
     }
 }
 
@@ -79,9 +93,16 @@ class InvestmentDescription {
         this.masonry = details.masonry;
         this.facilityMoutingDeliveryPrice = details.facilityMoutingDeliveryPrice;
         this.equipmentMountingDeliveryPrice = details.equipmentMountingDeliveryPrice;
-        this.diverseOptions = details.diverseOptions;
         this.personalContribution = details.personalContribution;
         this.subsidies = details.subsidies;
         this.helpEuralis = details.helpEuralis;
+    }
+}
+
+export function DiverseOption(name, amount) {
+    return {
+        name: name,
+        amount: amount,
+        selected: false
     }
 }

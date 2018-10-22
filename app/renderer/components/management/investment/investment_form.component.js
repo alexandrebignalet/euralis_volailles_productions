@@ -1,5 +1,5 @@
 import template from './investment_form.html';
-import {Investment} from './investment';
+import {DiverseOption, Investment} from './investment';
 
 export const InvestmentFormComponent = {
     bindings: { resolve: '<', modalInstance: '<' },
@@ -17,8 +17,15 @@ export const InvestmentFormComponent = {
 
         $onInit() {
             this.investment = this.resolve.investment;
+            if (!this.investment.options || this.investment.options.length === 0) {
+                this.investment.options = [DiverseOption('', 0)];
+            }
         }
-        
+
+        addNewOption() {
+            this.investment.options.push(DiverseOption(null, null));
+        }
+
         removeAttachment(file) {
             let index = this.investment.attachments.indexOf(file);
             this.investment.attachments.splice(index, 1);

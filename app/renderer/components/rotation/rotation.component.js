@@ -1,5 +1,5 @@
 import template from './rotation.html';
-import {ProductionRotation} from "./production.rotation";
+import {PintadesDemareesRotation, ProductionRotation} from "./production.rotation";
 
 export const RotationComponent = {
     bindings: { productions: '<' },
@@ -32,6 +32,7 @@ export const RotationComponent = {
 
         $onInit() {
             this.productions = this.productions.map((prod) => new ProductionRotation(prod));
+            this.productions.push(new PintadesDemareesRotation());
 
             this.timeout(() => {
                 $('#production_selector').multiselect({

@@ -6,13 +6,13 @@ export const SearchBarComponent = {
     template: `
         <div class="search-bar">
             <div class="input">
-                <input type="text" ng-model="vm.searchQuery" class="field" />
+                <input type="text" ng-model="searchQuery.name" class="field" />
                 <span class="glyphicon glyphicon-remove" ng-if="vm.searchQuery" ng-click="vm.close()" style="cursor: pointer;"></span>
                 <span class="glyphicon glyphicon-search"></span>
             </div>
-            <div class="search-result" ng-if="vm.searchQuery && vm.isOpen">
+            <div class="search-result" ng-if="searchQuery.name && vm.isOpen">
                 <ul class="list-box">
-                    <li ng-repeat="result in vm.productions | filter: vm.searchQuery" ng-click="vm.goToProduction(result)">
+                    <li ng-repeat="result in vm.productions | filter: searchQuery" ng-click="vm.goToProduction(result)">
                         {{ result.name.toUpperCase() }} - {{ result.facility.size }}m
                     </li>
                 </ul>
@@ -20,22 +20,21 @@ export const SearchBarComponent = {
         </div>
     `,
     controller: class SearchBarController {
-        constructor(PouchDbService, $state, $scope){
+        constructor(PouchDbService, $state, $scope) {
             'ngInject';
             this.productions = [];
             this.dbService = PouchDbService;
             this.state = $state;
             this.isOpen = false;
-            this.searchQuery = null;
             this.searchProductions();
 
-            $scope.$watch('vm.searchQuery', () => {
+            $scope.$watch('searchQuery.name', () => {
                 this.isOpen = true;
             })
         }
 
         searchProductions() {
-            this.dbService.find('production').then((productions) => { this.productions = productions });
+            return this.dbService.find('production').then((productions) => { this.productions = productions });
         }
 
         goToProduction(result) {

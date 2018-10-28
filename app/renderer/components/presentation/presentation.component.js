@@ -8,26 +8,26 @@ export const PresentationComponent = {
     controller: class PresentationComponent {
         $onInit() {
             this.facilityIndexActive = 0;
-            this.active = this.findProductionIndexByName(this.production.name, this.production.size);
+            this.active = this.production ? this.findProductionIndexByName(this.production.name, this.production.size) : 0;
         }
 
         findProductionIndexByName(name, size) {
             if(!name) return 0;
-            const isFixed = indexOfByNameAndSize(this.productionsByFacilityType[0]);
-            const isMovable = indexOfByNameAndSize(this.productionsByFacilityType[1]);
+            const isFixed = indexOfByNameAndSize(this.productionsByFacilityType.fixed);
+            const isMovable = indexOfByNameAndSize(this.productionsByFacilityType.movable);
             this.facilityIndexActive = isFixed !== -1 ? 0 : 1;
             return this.facilityIndexActive === 0 ? isFixed : isMovable;
 
             function indexOfByNameAndSize(productions) {
                 if (!productions) return -1;
-                productions.map(concatProdNameAndFacilitySize()).indexOf(concatNameAndSize())
+                return productions.map(concatProdNameAndFacilitySize()).indexOf(concatNameAndSize(name, size))
             }
 
             function concatProdNameAndFacilitySize() {
                 return (prod) => concatNameAndSize(prod.name, prod.facility.size)
             }
 
-            function concatNameAndSize() {
+            function concatNameAndSize(name, size) {
                 return name + '' + size
             }
 

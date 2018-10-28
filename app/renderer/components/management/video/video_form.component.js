@@ -65,6 +65,10 @@ export const VideoFormComponent = {
             this.isSaving = false;
         }
 
+        cancel() {
+            this.modalInstance.close()
+        }
+
     },
     controllerAs: 'vm'
 };

@@ -8,15 +8,19 @@ export class Investment {
         this.designation = investment.designation;
         this.description = investment.description;
         this.papers = investment.papers;
-        this.architectCost = investment.architectCost;
+        this.architectCost = investment.architectCost || 0;
         this.masonry = investment.masonry;
         this.facilityMoutingDeliveryPrice = investment.facilityMoutingDeliveryPrice;
         this.equipmentMountingDeliveryPrice = investment.equipmentMountingDeliveryPrice;
-        this.personalContribution = investment.personalContribution ? 0 : investment.personalContribution;
+        this.personalContribution = investment.personalContribution || 0;
         this.subsidies = investment.subsidies;
         this.helpEuralis = investment.helpEuralis;
         this.details = new InvestmentDescription(investment.details);
-        this.options = investment.options.map(({name, amount}) => DiverseOption(name, amount));
+        if (investment.options && investment.options.length > 0) {
+            this.options = investment.options.map(({name, amount}) => DiverseOption(name, amount));
+        } else {
+            this.options = []
+        }
 
         if(investment.attachments) {
             this.attachments = Object.keys(investment.attachments).map(key => {

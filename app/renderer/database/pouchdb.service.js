@@ -1,4 +1,6 @@
 // Needed for sync between pouch and couch
+import {REMOTE_URL} from "../euralis-volailles.conf";
+
 if (typeof btoa === 'undefined') {
     global.btoa = function (str) {
         return new Buffer(str).toString('base64');
@@ -80,34 +82,15 @@ export class PouchDbService {
         if(this.env === 'dev') PouchDB.debug.enable('*');
 
         this.dbOpts = { auto_compaction: true };
-        this.remoteDbOpts = {
-            ajax: { timeout: 10000 },
-            auth: {
-                username: 'admin',
-                password: 'c907f253966a6676d7c54232e'
-            }
-        };
 
         this.dbName = this.DB_INFO.name + this.env;
         this.db = new PouchDB(this.dbName, this.dbOpts);
-        this.remoteDb = new PouchDB(DB_INFO.remoteUrl + this.dbName, this.remoteDbOpts);
 
         this.db.createIndex({
             index: {fields: ['data.department']}
         });
 
         this.db.setSchema(databaseSchema);
-    }
-
-    init() {
-        this.db = new PouchDB(this.dbName, this.dbOpts);
-        this.remoteDb = new PouchDB(this.DB_INFO.remoteUrl + this.dbName, this.remoteDbOpts);
-
-        this.db.setSchema(databaseSchema);
-
-        return this.db.createIndex({
-            index: {fields: ['data.department']}
-        })
     }
 
     /**
@@ -121,12 +104,10 @@ export class PouchDbService {
         return this.toAttachmentFormat(entityName, object.attachments || {})
             .then((attachments) => {
                 delete object.attachments;
-
                 return this.db.rel.save(entityName, object)
                     .then((objects) => {
 
                         let entity = objects[Object.keys(objects)[0]][0];
-
                         if(attachments.length > 0) {
 
                             return attachments.reduce((p, attachment) => {
@@ -155,7 +136,7 @@ export class PouchDbService {
                 return Promise.all(fullObjectsPromises);
             })
             .then((objects) => {
-        
+
                 const constructor = getConstructorFromEntityName(entityName);
 
                 if(id && objects.length === 1)
@@ -181,32 +162,38 @@ export class PouchDbService {
     // it will empty the db, because we are using WebSql adapter
     destroy() {
         return this.db.info()
-            .then((data) => this.db.destroy())
+            .then(() => this.db.destroy())
             .catch(() => { return {ok: true}; });
     }
 
-    sync() {
-        const syncOptions = { live:true, retry: true };
-        return this.db.sync(this.remoteDb, syncOptions);
-    }
+    sync(username, password) {
+        const auth = { username, password };
+        const remoteDb = new PouchDB(REMOTE_URL + this.dbName, { auth });
+        const syncOptions = { retry: true };
+        return remoteDb.info()
+            .then((info) =>
 
-    replicate(who) {
-
-        let from = this.db;
-        let to = this.remoteDb;
-
-        if(who === 'server') {
-            let aux = from;
-            from = to;
-            to = aux;
-        }
-
-        console.log(`replication from ${from.name} to ${to.name}`);
-
-        return PouchDB.replicate(from, to, {
-            live:true,
-            retry: true
-        });
+                () => this.db.sync(remoteDb, syncOptions)
+                        .on('change', (res) => {
+                            const last_seq = res.change.last_seq;
+                            console.warn('change: ', res);
+                            if(last_seq === info.update_seq) return true;
+                        })
+                        .on('complete', (res) => {
+                            console.warn('complete: ', res);
+                            const last_seq = res.pull.last_seq;
+                            if(last_seq === info.update_seq) return true;
+                        })
+                        .on('denied', (res) => {
+                            console.warn('denied: ', res);
+                        })
+                        .on('active', (res) => {
+                            console.warn('active: ', res);
+                        })
+                        .on('error', (res) => {
+                            console.warn('error: ', res);
+                        })
+        )
     }
 
     assignAttachmentsToObject(entityName, object) {

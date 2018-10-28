@@ -22,44 +22,49 @@ export const SyncDialogComponent = {
             this.isSyncing = false;
         }
 
-        synchronise() {
+        synchronise(username, password) {
             this.isSyncing = true;
-            let localDataCount = 0;
-            this.syncHandler = this.PouchDbService.sync()
-            .on('complete', () => {
-                this.SidebarService.closeNav();
-                this.endSync(2000);
-            })
-            .on('denied', (res) => {
-                this.log("Denied " + JSON.stringify(res));
-            })
-            .on('change', (res) => {
-                if(res.direction === 'pull')
-                    this.log("Récupération des modifications.");
-                if(res.direction === 'push')
-                    this.log("Envoi des modifications.");
-            })
-            .on('paused', () => {
-                this.PouchDbService.db.info()
-                    .then((data) => {
-                        localDataCount = data.doc_count;
-                        return this.PouchDbService.remoteDb.info()
+            this.PouchDbService.sync(username, password).then((syncHandler) => {
+
+                this.syncHandler = syncHandler().on('complete', (res) => {
+                    console.warn('sdh complete: ', res);
+
+                    this.SidebarService.closeNav();
+                    this.endSync(2000);
+                })
+                    .on('denied', (res) => {
+                        console.warn('sdh denied: ', res);
+
+                        return this.stopSync()
+                            .then(() => {
+                                this.scope.username = null;
+                                this.scope.password = null;
+                                this.log("Mauvais identifiants");
+                            })
                     })
-                    .then((data) => {
-                        if(localDataCount === data.doc_count) this.endSync(2000);
-                        this.log("Synchronisation terminée.");
+                    .on('change', (res) => {
+                        console.warn('CHANGE DU BAS ', res);
+                        if(res.direction === 'pull')
+                            this.log("Récupération des modifications.");
+                        if(res.direction === 'push')
+                            this.log("Envoi des modifications.");
                     })
+                    .on('error', (err) => {
+                        this.log("Erreur: ", err);
+                        this.endSync(2000);
+                    }).then((res) => {
+                    console.warn('then: ', res);
+                }).catch((res) => { console.warn('catch: ', res)})
             })
-            .on('active', () => {})
-            .on('error', (err) => {
-                this.log("Erreur: ", err);
-                this.endSync(2000);
-            });
         }
 
         log(info) {
             this.logs.push(info);
             this.scope.$apply();
+        }
+
+        stopSync() {
+            this.syncHandler.cancel().then(() => this.isSyncing = false)
         }
 
         endSync(closeBeforeTime) {
@@ -72,7 +77,6 @@ export const SyncDialogComponent = {
 
         close() {
             this.timeout(() => {
-                if(this.syncHandler) this.syncHandler.cancel();
                 this.modalInstance.close()
             }, 1000);
         }

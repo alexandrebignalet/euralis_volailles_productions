@@ -7,7 +7,6 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import colorsSupported      from 'supports-color';
 import historyApiFallback   from 'connect-history-api-fallback';
 import browserSync          from 'browser-sync';
-import karma                from 'karma';
 import gulpLoadPlugins      from 'gulp-load-plugins';
 import ngConstant           from 'gulp-ng-constant';
 const $ = gulpLoadPlugins();
@@ -37,19 +36,6 @@ gulp.task('ngconstant:dev',  () => {
         .pipe(gulp.dest(config.app));
 });
 
-gulp.task('ngconstant:test',  () => {
-    return ngConstant({
-        name: 'EnvModule',
-        constants: {
-            ENV: 'test'
-        },
-        template: config.constantTemplate,
-        stream: true
-    })
-        .pipe($.rename('app.constants.js'))
-        .pipe(gulp.dest(config.app));
-});
-
 gulp.task('ngconstant:prod', () => {
     return ngConstant({
         name: 'EnvModule',
@@ -62,29 +48,6 @@ gulp.task('ngconstant:prod', () => {
         .pipe($.rename('app.constants.js'))
         .pipe(gulp.dest(config.app));
 });
-
-const Server = karma.Server;
-
-gulp.task('karma', (done) => {
-
-    new Server({
-        configFile: __dirname + '/karma.conf.js'
-    },  () => {
-        done();
-    }).start();
-});
-
-gulp.task('mocha', () => {
-
-    process.env.NODE_ENV = 'test';
-
-    return gulp.src(['app/test/database/**/*.js'], { read: false })
-        .pipe($.mocha({reporter: 'spec', compilers: 'js:babel-core/register'}))
-        .on('error', $.util.log);
-});
-
-gulp.task('test', ['ngconstant:test', 'karma', 'mocha']);
-
 
 
 gulp.task('webpack', ['ngconstant:prod', 'compile']);

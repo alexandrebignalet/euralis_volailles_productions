@@ -28,7 +28,7 @@ export class PintadesDemareesRotation extends ProductionRotation {
                 facilityCharges: {},
                 investments: []
             },
-            chickBySquare: 20,
+            chickBySquare: 0,
             chickNb: 8000
         });
 

@@ -31,8 +31,7 @@ export class PDFGenerator {
             content: this.putHeader(`
                 PREVISIONNEL ${production.facilitiesNb} * ${production.facility.size} m²
                 
-                ${production.name}
-                `),
+                ${production.name}`),
             styles: {
                 header: {
                     fontSize: 16,
@@ -109,10 +108,10 @@ export class PDFGenerator {
                         ['Nombre de bandes par année', `${production.breedingPerYear}`],
                         ['Indice de consommation', `${production.consumptionIndex}`],
                         ['Poids moyen', `${production.avgWeight} kg`],
-                        ['Prix poussins vaccinés', `${production.getVaccinesPrice()} €`],
-                        ['Prix aliment producteur (€/t)', `${production.getFoodPrice()} €`],
-                        ['Prix reprise classé (€/t)', `${production.getClassedPrice()} €`],
-                        ['Prix reprise déclassé (€)', `${production.getDeclassedPrice()} €`],
+                        ['Prix poussins vaccinés (€/1000)', `${production.getVaccinesPrice()} €`],
+                        ['Prix aliment producteur (€/t) indexé', `${production.getFoodPrice()} €`],
+                        ['Prix reprise classé (€/t) indexé', `${production.getClassedPrice()} €`],
+                        ['Prix reprise déclassé (€/t) indexé', `${production.getDeclassedPrice()} €`],
                         ['Taux de déclassé', `${production.breedingDeclassedPercent * 100} %`],
                         ['Taux de saisie', `${production.restraintPercent * 100} %`]
                     ]
@@ -126,21 +125,21 @@ export class PDFGenerator {
                     body: [
                         [{text: `CRITERES ECONOMIQUES en € HT`, style: 'tableHeader', alignment: 'left'},
                             {text: `€/tête`, style: 'tableHeader', alignment: 'center'},
-                            {text: `Total (€)`, style: 'tableHeader', alignment: 'center'}],
+                            {text: `Total (€ HT)`, style: 'tableHeader', alignment: 'center'}],
                         [`Poussins`, production.facility.facilityCharges.chickPrice, Math.round(production.getChicksPaid() * production.facility.facilityCharges.chickPrice)],
                         ['Aliment (€/t)', production.foodPrice, Math.round(production.getTotalFoodCost())],
                         ['Cotisations', production.facility.facilityCharges.contributions , Math.round(production.facility.facilityCharges.contributions * production.getChickNb())],
                         [{text: `Marge PAC / poulet MEP`, italic: true}, {text: Math.round(production.getMargePACByChickPIP()*100)/100, colSpan: 2, alignement: 'left'}, ''],
-                        ['Chauffage', production.facility.facilityCharges.warming , Math.round(production.facility.facilityCharges.warming * production.getChickNb())],
+                        ['Chauffage (conso + loc cuves) indexé', production.facility.facilityCharges.warming , Math.round(production.facility.facilityCharges.warming * production.getChickNb())],
                         ['Frais vétérinaires', production.facility.facilityCharges.vetPrice , Math.round(production.facility.facilityCharges.vetPrice * production.getChickNb())],
                         ['Désinfection', production.facility.facilityCharges.disinfection , Math.round(production.facility.facilityCharges.disinfection * production.getChickNb())],
                         ['Eau - Electricité - Divers', production.facility.facilityCharges.commodities , Math.round(production.facility.facilityCharges.commodities * production.getChickNb())],
                         ['Litière', production.facility.facilityCharges.litter , Math.round(production.facility.facilityCharges.litter * production.getChickNb())],
                         ['Attrapage', production.facility.facilityCharges.catching , Math.round(production.facility.facilityCharges.catching * production.getChickNb())],
-                        ['Assurances', production.facility.facilityCharges.insurances , Math.round(production.facility.facilityCharges.insurances * production.getChickNb())],
+                        ['Assurances (incendie, tempête, dégâts des eaux, étouffements, etc...)', production.facility.facilityCharges.insurances , Math.round(production.facility.facilityCharges.insurances * production.getChickNb())],
                         [{text: `Charges / tête`, italic: true}, {text: production.facility.facilityCharges.getChargesByChick(), colSpan: 2, alignement: 'left'}, ''],
                         [`Marge Brute / poulet MEP`, {text: Math.round(production.getBrutMarginPerChickPIP()*100)/100, colSpan: 2, alignement: 'left'}, ''],
-                        [{text: `TOTAL PAR BANDE`}, {text:`${Math.round(production.getTotalCosts())}`, colSpan: 2, alignement: 'center'}, ''],
+                        [{text: `TOTAL CHARGES PAR BANDE`}, {text:`${Math.round(production.getTotalCosts())}`, colSpan: 2, alignement: 'center'}, ''],
                     ]
                 }
             },
@@ -240,19 +239,20 @@ export class PDFGenerator {
                         widths: ['*', 130],
                         headerRows: 1,
                         body: [
-                            [`INVESTISSEMENT`, `€`],
+                            [`INVESTISSEMENT`, `€ HT`],
                             ['Désignation', investment.designation],
                             [`Description`, investment.description],
-                            [`Documents`, investment.papers],
+                            [`Permis`, investment.papers],
+                            [`Coût architecte`, investment.architectCost],
                             [`Gros oeuvre`, investment.getMasonry()],
                             ['Livraison et montage bâtiment', investment.getFacilityMountingDeliveryPrice()],
-                            ['Livraison et montage du matériel', investment.getEquipmentMountingDeliveryPrice()],
+                            ['Livraison et montage du matériel', Math.round(investment.getEquipmentMountingDeliveryPrice())],
                             ['Diverses options', investment.getTotalOptionsSelected()],
-                            [`Investissement total`, investment.getTotalBeforeSubsidies()],
+                            [`Investissement total`, Math.round(investment.getTotalBeforeSubsidies())],
                             [`Subventions AREA PCAE`, investment.subsidies],
                             [`Aides EURALIS Volailles`, investment.helpEuralis],
                             [`Apport personnel`, investment.personalContribution],
-                            [`Emprunt bancaire (aides et apport déduits)`, investment.getTotal()],
+                            [`Emprunt bancaire (aides et apport déduits)`, Math.round(investment.getTotal())],
                         ]
                     }
                 })
@@ -319,8 +319,8 @@ export class PDFGenerator {
                 width: 'auto',
                 headerRows: 1,
                 body: [
-                    ['Type de production', 'Surface bâtiment (m²)', 'Surface parcour minimum (ha)',
-                        'Densité (m²/poulet)', 'Nombre / bandes', 'Nbre vendus / an', 'Marge PAC', 'Marge brute / sujet vendu (€)', 'Marge brute / an (€)']
+                    ['Type de production', 'Surface bâtiment (m²)', 'Surface parcours minimum (ha)',
+                        'Densité (m²/poulet)', 'Nombre / bandes', 'Nbre vendus / an', 'Marge brute / sujet vendu (€ HT)', 'Marge brute / an (€ HT)']
                 ]
             }
         };
@@ -329,21 +329,20 @@ export class PDFGenerator {
             table.table.body.push([
                 productions[i].name,
                 productions[i].facility.size * nbFacilities,
-                productions[i].chickBySquare*productions[i].getChickNb()/10000,
+                productions[i].chickBySquare * productions[i].getChickNb() / 10000,
                 Math.round(productions[i].chickNb / productions[i].facility.size * 100) / 100,
                 productions[i].chickNb * nbFacilities,
                 Math.round(productions[i].getSoldChicks()),
-                Math.round(productions[i].getMargePACByChickPIP() * productions[i].getChickNb() * 100) / 100,
-                Math.round(productions[i].getBrutMargin() / productions[i].getSoldChicks() * 100) / 100,
-                Math.round(productions[i].getBrutMargin())
+                Math.round(productions[i].brutMarginPerSoldChick),
+                Math.round(productions[i].getAnnualBrutMargin())
             ])
         }
 
         let total = productions.reduce((acc, production) => {
-            return  acc + production.getBrutMargin();
+            return  acc + production.getAnnualBrutMargin();
         }, 0);
 
-        table.table.body.push(['', '', '', '', '', '', '', '', {text: Math.round(total) + '€', fontSize: 13}]);
+        table.table.body.push(['', '', '', '', '', '', '', {text: Math.round(total) + '€', fontSize: 13}]);
 
         docDefinition.content = docDefinition.content.concat(table);
 
@@ -365,7 +364,7 @@ export class PDFGenerator {
                     },
                     {
                         width: 60,
-                        text: investment.getTotal() + '€',
+                        text: Math.round(investment.getTotal()) + '€',
                         bold: true
                     },
                     {

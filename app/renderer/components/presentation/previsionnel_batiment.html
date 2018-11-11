@@ -94,17 +94,20 @@
                             <th>Prix reprise déclassé (€/t) <span class="pull-right">| indexé </span></th>
                             <td>{{ production.getDeclassedPrice() }} €</td>
                         </tr>
-                        <tr>
+                        <tr ng-init="showDeclassedInput = false" ng-dblclick="showDeclassedInput = !showDeclassedInput">
                             <th>Taux de déclassé</th>
-                            <td>
+                            <td class="input-group" ng-show="showDeclassedInput">
+                                <input ng-model="production.breedingDeclassedPercent" type="number" class="form-control"/>
+                                <span class="input-group-addon">%</span>
+                            </td>
+                            <td ng-hide="showDeclassedInput">
                                 {{ production.breedingDeclassedPercent * 100 }} %
                             </td>
                         </tr>
                         <tr>
                             <th>Taux de saisie</th>
                             <td class="input-group">
-                                <input ng-model="production.restraintPercent" type="number" class="form-control"/>
-                                <span class="input-group-addon">%</span>                                </div>
+                                {{ production.restraintPercent * 100 }} %
                             </td>
                         </tr>
                     </table>

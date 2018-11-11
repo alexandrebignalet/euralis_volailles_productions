@@ -135,6 +135,7 @@ export class Production {
     getFoodEaten(){
         return this.getChickNb() * this.consumptionIndex * this.avgWeight;
     }
+
     getAnnualBrutMargin(){
         return this.getBrutMargin() * this.breedingPerYear;
     }

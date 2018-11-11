@@ -84,7 +84,7 @@
                 <td>
                     <input type="number" class="form-control" ng-model="production.brutMarginPerSoldChick" step="0.00001"/>
                 </td>
-                <td>{{production.getAnnualBrutMargin() | number:2 }}</td>
+                <td>{{ production.getAnnualBrutMargin() | number:2 }}</td>
                 <td>
                     <button class="btn btn-danger" type="button" ng-click="vm.removeProduction(production)">
                         <span class="glyphicon glyphicon-remove"></span>

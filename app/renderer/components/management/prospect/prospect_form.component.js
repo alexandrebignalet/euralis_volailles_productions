@@ -29,6 +29,10 @@ export const ProspectFormComponent = {
             });
         }
 
+        cancel() {
+            this.modalInstance.close();
+        }
+
     },
     controllerAs: 'vm'
 };

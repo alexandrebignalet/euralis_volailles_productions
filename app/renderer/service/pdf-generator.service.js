@@ -333,7 +333,7 @@ export class PDFGenerator {
                 Math.round(productions[i].chickNb / productions[i].facility.size * 100) / 100,
                 productions[i].chickNb * nbFacilities,
                 Math.round(productions[i].getSoldChicks()),
-                Math.round(productions[i].brutMarginPerSoldChick),
+                Math.round(productions[i].brutMarginPerSoldChick * 100) / 100,
                 Math.round(productions[i].getAnnualBrutMargin())
             ])
         }

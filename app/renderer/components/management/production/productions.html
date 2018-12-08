@@ -30,7 +30,6 @@
                 <th>Nb. bandes/an</th>
                 <th>I.C.</th>
                 <th>% Mortalité</th>
-                <th>Prix vaccins</th>
                 <th>Prix aliment</th>
                 <th>Prix du classé</th>
                 <th>Prix du déclassé</th>
@@ -58,7 +57,6 @@
                 <td class="aligntd">{{ production.breedingPerYear }}</td>
                 <td class="aligntd">{{ production.consumptionIndex }}</td>
                 <td class="aligntd">{{ production.mortalityPercent * 100}}%</td>
-                <td class="aligntd">{{ production.vaccinesPrice* 1000 | number: 0}}€</td>
                 <td class="aligntd">{{ production.foodPrice * 1000 | number: 0}}€</td>
                 <td class="aligntd">{{ production.classedPrice * 1000 | number: 0}}€</td>
                 <td class="aligntd">{{ production.declassedPrice * 1000 | number: 0}}€</td>

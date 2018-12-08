@@ -68,14 +68,14 @@
                             <th>Indice de consommation</th>
                             <td class="input-group">
                                 <input ng-model="production.consumptionIndex" type="number" class="form-control"/>
-                                <span class="input-group-addon">€</span>
+                                <span class="input-group-addon">kg</span>
                             </td>
                         </tr>
                         <tr>
                             <th>Poids moyen</th>
                             <td class="input-group">
                                 <input ng-model="production.avgWeight" type="number" class="form-control"/>
-                                <span class="input-group-addon">€</span>
+                                <span class="input-group-addon">kg</span>
                             </td>
                         </tr>
                         <tr>
@@ -96,19 +96,17 @@
                         </tr>
                         <tr ng-init="showDeclassedInput = false" ng-dblclick="showDeclassedInput = !showDeclassedInput">
                             <th>Taux de déclassé</th>
-                            <td class="input-group" ng-show="showDeclassedInput">
-                                <input ng-model="production.breedingDeclassedPercent" type="number" class="form-control"/>
-                                <span class="input-group-addon">%</span>
-                            </td>
-                            <td ng-hide="showDeclassedInput">
-                                {{ production.breedingDeclassedPercent * 100 }} %
+                            <td>
+                                <div class="input-group" ng-show="showDeclassedInput">
+                                    <input ng-model="production.breedingDeclassedPercent" type="number" class="form-control"/>
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                                <span ng-hide="showDeclassedInput">{{ production.breedingDeclassedPercent * 100 }} %</span>
                             </td>
                         </tr>
                         <tr>
                             <th>Taux de saisie</th>
-                            <td class="input-group">
-                                {{ production.restraintPercent * 100 }} %
-                            </td>
+                            <td>{{ production.restraintPercent * 100 }} %</td>
                         </tr>
                     </table>
                 </div>

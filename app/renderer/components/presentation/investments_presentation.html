@@ -42,7 +42,7 @@
                 <td>{{ $ctrl.investmentChosen.getEquipmentMountingDeliveryPrice() | number: 0}} €</td>
                 <td>{{ $ctrl.investmentChosen.details.equipmentMountingDeliveryPrice }}</td>
             </tr>
-            <tr>
+            <tr ng-if="$ctrl.investmentChosen.options.length > 0">
                 <th>Diverses options</th>
                 <td>
                     <p ng-repeat="options in $ctrl.investmentChosen.options track by $index">
@@ -62,6 +62,7 @@
                 <td>
                     <strong>{{ $ctrl.investmentChosen.getTotalBeforeSubsidies() | number: 0}} € </strong>
                 </td>
+                <td></td>
             </tr>
             <tr>
                 <th>Subventions AREA PCAE</th>

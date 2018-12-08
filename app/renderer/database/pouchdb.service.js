@@ -152,7 +152,7 @@ export class PouchDbService {
     }
 
     putAttachment({entityName, obj, name, blob, contentType}) {
-        
+
         return this.db.rel.putAttachment(entityName, obj, name, blob, contentType)
             .then(data => data)
             .catch(err => console.log(`Find Central PouchDbService: ${err}`));
@@ -176,22 +176,11 @@ export class PouchDbService {
                 () => this.db.sync(remoteDb, syncOptions)
                         .on('change', (res) => {
                             const last_seq = res.change.last_seq;
-                            console.warn('change: ', res);
                             if(last_seq === info.update_seq) return true;
                         })
                         .on('complete', (res) => {
-                            console.warn('complete: ', res);
                             const last_seq = res.pull.last_seq;
                             if(last_seq === info.update_seq) return true;
-                        })
-                        .on('denied', (res) => {
-                            console.warn('denied: ', res);
-                        })
-                        .on('active', (res) => {
-                            console.warn('active: ', res);
-                        })
-                        .on('error', (res) => {
-                            console.warn('error: ', res);
                         })
         )
     }

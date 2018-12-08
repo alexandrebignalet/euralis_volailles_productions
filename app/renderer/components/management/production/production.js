@@ -54,7 +54,7 @@ export class Production {
     }
 
     getVaccinesPrice() {
-        return this.vaccinesPrice * 1000;
+        return this.facility.facilityCharges.chickPrice * 1000;
     }
 
     getFoodPrice() {

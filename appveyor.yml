@@ -15,8 +15,8 @@ install:
 - yarn
 
 build_script:
-- yarn run webpack
-- yarn run build
+- yarn webpack
+- yarn build
 
 after_build:
 - 7z a euralis_volailles_productions.zip dist\

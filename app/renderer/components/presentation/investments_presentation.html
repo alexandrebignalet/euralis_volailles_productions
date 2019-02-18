@@ -44,17 +44,19 @@
             </tr>
             <tr ng-if="$ctrl.investmentChosen.options.length > 0">
                 <th>Diverses options</th>
-                <td>
-                    <p ng-repeat="options in $ctrl.investmentChosen.options track by $index">
-                        <input class="form-check-input" type="checkbox" ng-click="$ctrl.investmentChosen.selectOption($index)">
+                <td colspan="2">
+                    <table style="width:100%;">
+                        <tbody>
+                            <tr ng-repeat="options in $ctrl.investmentChosen.options track by $index">
+                                <td style="padding-bottom: 10px; width:35%;">
+                                    <input class="form-check-input" type="checkbox" ng-click="$ctrl.investmentChosen.selectOption($index)">
 
-                        {{options.amount}} €
-                    </p>
-                </td>
-                <td>
-                    <p ng-repeat="options in $ctrl.investmentChosen.options">
-                        {{options.name}}
-                    </p>
+                                    {{options.amount}} €
+                                </td>
+                                <td>{{options.name}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </td>
             </tr>
             <tr>

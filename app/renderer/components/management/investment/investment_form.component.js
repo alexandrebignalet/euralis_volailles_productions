@@ -26,6 +26,11 @@ export const InvestmentFormComponent = {
             this.investment.options.push(DiverseOption(null, null));
         }
 
+        removeOption(index) {
+            console.log(index);
+            this.investment.options.splice(index, 1);
+        }
+
         removeAttachment(file) {
             let index = this.investment.attachments.indexOf(file);
             this.investment.attachments.splice(index, 1);

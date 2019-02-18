@@ -384,7 +384,7 @@ export class PDFGenerator {
         headerRows: 1,
         body: [
           ['Type de production', 'Surface bâtiment (m²)', 'Surface parcours minimum (ha)',
-            'Densité (m²/poulet)', 'Nombre / bandes', 'Nbre vendus / an', 'Marge brute / sujet vendu (€ HT)', 'Marge brute / an (€ HT)']
+            'Densité (m²/poulet)', 'Nombre de bandes / an', 'Nombre / bandes', 'Nbre vendus / an', 'Marge brute / sujet vendu (€ HT)', 'Marge brute / an (€ HT)']
         ]
       }
     };
@@ -395,6 +395,7 @@ export class PDFGenerator {
         productions[i].facility.size * nbFacilities,
         productions[i].chickBySquare * productions[i].getChickNb() / 10000,
         Math.round(productions[i].chickNb / productions[i].facility.size * 100) / 100,
+        productions[i].breedingPerYear,
         productions[i].chickNb * nbFacilities,
         Math.round(productions[i].getSoldChicks()),
         Math.round(productions[i].brutMarginPerSoldChick * 100) / 100,
@@ -406,17 +407,13 @@ export class PDFGenerator {
       return acc + production.getAnnualBrutMargin();
     }, 0);
 
-    table.table.body.push(['', '', '', '', '', '', '', {text: Math.round(total) + '€', fontSize: 13}]);
+    table.table.body.push(['', '', '', '', '', '', '', '', {text: Math.round(total) + '€', fontSize: 13}]);
 
     docDefinition.content = docDefinition.content.concat(table);
 
     if (investment !== 'none') {
       docDefinition.content.push({
         columns: [
-          {
-            width: 100,
-            text: ''
-          },
           {
             width: 50,
             text: 'Annuité ',
@@ -450,6 +447,10 @@ export class PDFGenerator {
           },
           {
             width: 100,
+            text: ''
+          },
+          {
+            width: 100,
             text: Math.round(investment.getAnnuity(annuity.duration, annuity.interest)) + '€',
             bold: true,
             fontSize: 13
@@ -458,10 +459,6 @@ export class PDFGenerator {
       });
       docDefinition.content.push({
         columns: [
-          {
-            width: 100,
-            text: ''
-          },
           {
             width: 330,
             text: 'Avec ' + investment.name + ' ' + investment.designation + '\n(AREA et aides EURALIS déduites)',

@@ -4,7 +4,6 @@ import {FacilityChargesModule} from './facility_charges/facility_charges.module'
 import {FacilityModule} from './facility/facility.module';
 import {VideoModule} from './video/video.module';
 import {ProspectModule} from './prospect/prospect.module';
-import {MultiselectDirective} from '../../service/multiselect.directive';
 import {CustomOnChangeDirective} from '../../service/on-change.directive';
 import {ToastrService} from './toastr.service';
 
@@ -32,7 +31,6 @@ export const ManagementModule = angular
                 abstract: true
             });
     })
-    .directive('multiselect', MultiselectDirective)
     .directive('customOnChange', CustomOnChangeDirective)
     .service('ToastrService', ToastrService)
     .constant('DEPARTMENTS', departmentNames)

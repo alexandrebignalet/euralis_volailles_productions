@@ -49,7 +49,12 @@
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-{{ facilityForm.facility_investments.$invalid ? 'remove' : 'ok'}}"></span>
                         </span>
-                        <select class="form-control {{ facilityForm.facility_investments.$invalid ? 'wrong' : 'valid'}}_input" id="facility_investments" name="facility_investments" ng-model="vm.facility.investments" required multiple multiselect
+                        <select class="form-control {{ facilityForm.facility_investments.$invalid ? 'wrong' : 'valid'}}_input"
+                                id="facility_investments"
+                                name="facility_investments"
+                                ng-model="vm.facility.investments"
+                                required
+                                multiple
                                 ng-options="investment as investment.name | uppercase for investment in vm.investments track by investment.id">
                         </select>
                     </div>

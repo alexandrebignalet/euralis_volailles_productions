@@ -12,5 +12,5 @@ docker/config/docker.ini
 !docker/lib/.gitkeep
 app/renderer/app.constants.js
 .tmp/
-
+.DS_Store
 .vs/

@@ -144,8 +144,10 @@ export class Production {
         return this.getAnnualBrutMargin() / this.facility.size;
     }
 
-    getAnnualNetMargin(annuity){
-        return this.getBrutMargin() * this.breedingPerYear - annuity;
+    getAnnualNetMargin(annuity, insuranceCostPercent){
+        const annualNetMarginBeforeInsurance = this.getBrutMargin() * this.breedingPerYear - annuity;
+        if (!insuranceCostPercent) return annualNetMarginBeforeInsurance;
+        return annualNetMarginBeforeInsurance * ((100 - insuranceCostPercent) / 100);
     }
 
     toString() {

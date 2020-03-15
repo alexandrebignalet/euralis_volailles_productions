@@ -79,7 +79,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Prix poussins vaccinés (€/1000)</th>
+                            <th>Prix poussins vaccinés (€/1000) <span class="pull-right">| indexé </span></th>
                             <td>{{ production.getVaccinesPrice() }} €</td>
                         </tr>
                         <tr>
@@ -91,7 +91,7 @@
                             <td>{{ production.getClassedPrice() }} €</td>
                         </tr>
                         <tr>
-                            <th>Prix reprise déclassé (€/t) <span class="pull-right">| indexé </span></th>
+                            <th>Prix reprise déclassé (€/t)</th>
                             <td>{{ production.getDeclassedPrice() }} €</td>
                         </tr>
                         <tr ng-init="showDeclassedInput = false" ng-dblclick="showDeclassedInput = !showDeclassedInput">
@@ -141,10 +141,8 @@
                         <td><i>{{ production.getMargePACByChickPIP() | number: 3 }} €</i></td>
                         <td></td>
                     </tr>
-                </table>
-                <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
                     <tr>
-                        <th>Chauffage <span class="pull-right">| indexé </span></th>
+                        <th>Chauffage <span class="pull-right">| Prime GAZ MEP Hiver </span></th>
                         <td>{{ production.facility.facilityCharges.warming }} €</td>
                         <td>{{ production.facility.facilityCharges.warming * production.getChickNb() | number:0 }} €</td>
                     </tr>
@@ -202,7 +200,7 @@
 
         <div class="row">
             <div class="col-md-12 col-xs-12 col-lg-12">
-                <h1>Produit par bande (ventes)</h1>
+                <h1>Produit Total des ventes par bande</h1>
                 <br />
                 <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
                     <tr>
@@ -245,16 +243,28 @@
                                 </div>
                             </form>
                         </th>
-                        <th ng-if="vm.investmentChosen != 'none'" class="table-number">{{ vm.investmentChosen.getAnnuity(vm.annuityDuration, vm.interest) | number:0 }} €</th>
-                        <th ng-if="vm.investmentChosen == 'none'" class="table-number">{{ 0 | number:0 }} €</th>
+                        <th class="table-number">{{ vm.currentInvestmentAnnuity() | number:0 }} €</th>
                     </tr>
                     <tr>
-                        <th>{{ "marge nette annuelle" | uppercase }} avant MSA</th>
-                        <th ng-if="vm.investmentChosen != 'none'" class="table-number">{{ production.getAnnualNetMargin(vm.investmentChosen.getAnnuity(vm.annuityDuration, vm.interest)) | number:0 }} €</th>
-                        <th ng-if="vm.investmentChosen == 'none'" class="table-number">{{ production.getAnnualNetMargin(0) | number:0 }} €</th>
+                        <th>{{ "Marge de trésorerie annuelle" | uppercase }} avant MSA</th>
+                        <th class="table-number">{{ production.getAnnualNetMargin(vm.currentInvestmentAnnuity()) | number:0 }} €</th>
+                    </tr>
+                    <tr>
+                        <th class="flex align-items-center">
+                            <span>{{ "Marge Nette de trésorerie" | uppercase }}</span>
+                            <div class="input-group insurance-cost-box">
+                                <input class="form-control"
+                                       ng-model="vm.insuranceCostPercent"
+                                       type="number"
+                                       min="0" max="100"
+                                       placeholder="MSA"/>
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </th>
+                        <th class="table-number">{{ production.getAnnualNetMargin(vm.currentInvestmentAnnuity(), vm.insuranceCostPercent) | number:2 }} €</th>
                     </tr>
                 </table>
-                <p>Temps travail: {{production.facility.workHours * vm.facilityNb | number: 1}}h/jour en moyenne</p>
+                <p>Temps travail: {{production.facility.workHours * vm.facilityNb | number: 1}} h/jour en moyenne</p>
             </div>
         </div>
 

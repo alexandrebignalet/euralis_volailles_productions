@@ -3,11 +3,13 @@ import template from './previsionnel_batiment.html';
 import {Prospect} from "../management/prospect/prospect";
 
 const DEFAULT_INVESTMENT_CHOOSEN = 'none';
+const NO_INVESTMENT_ANNUITY = 0;
 
 export const PrevisionnelBatimentComponent = {
     bindings: { productions: '<', active: '<' },
     template,
     controller: class PrevisionnelBatimentController {
+
         constructor($scope, $timeout, PDFGenerator, ModalService){
             'ngInject';
             this.scope = $scope;
@@ -20,6 +22,7 @@ export const PrevisionnelBatimentComponent = {
             this.investmentChosen = DEFAULT_INVESTMENT_CHOOSEN;
             this.annuityDuration = 15;
             this.interest = 2.5;
+            this.insuranceCostPercent = 0;
             this.sliderOptions = {
                 floor: 1,
                 ceil: 20
@@ -47,7 +50,7 @@ export const PrevisionnelBatimentComponent = {
         openPicker() {
             this.pickerIsOpen = true;
         }
-        
+
         startPrint(production) {
             this.ModalService.open('prospectForm', { prospect: new Prospect({}) })
                 .then((prospect) => {
@@ -68,6 +71,16 @@ export const PrevisionnelBatimentComponent = {
                     investment.facilityNb = this.facilityNb;
                 })
             });
+        }
+
+        currentInvestmentAnnuity() {
+            return this.investmentChosen !== DEFAULT_INVESTMENT_CHOOSEN
+              ? this.investmentChosen.getAnnuity(this.annuityDuration, this.interest)
+              : NO_INVESTMENT_ANNUITY;
+        }
+
+        isCurrentInvestmentDefault() {
+            return this.investmentChosen === DEFAULT_INVESTMENT_CHOOSEN;
         }
     },
     controllerAs: 'vm'

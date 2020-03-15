@@ -7,7 +7,6 @@ export class VideoService {
             let myVideo = document.getElementsByTagName('video')[0];
             myVideo.src = URL.createObjectURL(file);
             myVideo.load();
-            myVideo.play();
         });
     }
 }

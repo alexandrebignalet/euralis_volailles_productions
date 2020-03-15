@@ -82,7 +82,7 @@
                     <div class="col-md-6 col-xs-6 col-lg-6">
                         <img src="{{vm.imagesFiliere['elev']}}" style="width: 50%;"/>
                         <p  style="font-size: 14pt;color: #399528;">
-                            {{250 | number: 0}}
+                            {{200 | number: 0}}
                         </p>
                         <span style="font-size: 1%;color: #a6ce39;">ELEVEURS</span>
                     </div>
@@ -143,12 +143,9 @@
             <div class="col-md-1 col-xs-1 col-lg-1">
                 <span class="arrow arrow-left vmid"></span>
             </div>
-            <div class="col-md-3 col-xs-3 col-lg-3" ng-class="{ 'slide-left': groupProdVisible }">
+            <div class="col-md-3 col-xs-3 col-lg-3 qualisud-centered" ng-class="{ 'slide-left': groupProdVisible }">
                 <figure>
                     <img src="{{vm.imagesFiliere['qualisud']}}" style="width:50%;"/>
-                </figure>
-                <figure>
-                    <img src="{{vm.imagesFiliere['agrocert']}}" style="width:50%;"/>
                 </figure>
                 <strong>Contrôle des normes Label à tous les niveaux de la filière</strong>
             </div>
@@ -160,11 +157,10 @@
     <div class="row text-center">
         <h3 class="pull-right" style="color: #309f41"><strong>AVAL</strong></h3>
         <div class="col-md-4 col-md-offset-4 col-xs-4 col-xs-offset-4 col-lg-4 col-lg-offset-4" in-view="abattoirsVisible = $inview" ng-class="{ 'fade-in': abattoirsVisible }">
-            <h3 style="color: #399528;"><strong>5 abattoirs</strong></h3>
+            <h3 style="color: #399528;"><strong>4 abattoirs</strong></h3>
             <ul class="list-unstyled">
                 <li><strong>FSO</strong>(Fermiers du Sud-Ouest) à CONDOM, SAINT SEVER, SARAMON.</li>
                 <li><strong>RONSARD</strong> à LOSSE 40.</li>
-                <li><strong>LDC</strong> à BAZAS 33.</li>
             </ul>
         </div>
     </div>

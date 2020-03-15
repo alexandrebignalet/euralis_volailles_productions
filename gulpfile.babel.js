@@ -11,8 +11,6 @@ import gulpLoadPlugins      from 'gulp-load-plugins';
 import ngConstant           from 'gulp-ng-constant';
 const $ = gulpLoadPlugins();
 
-
-
 const config = {
     app: 'app/renderer',
     tmp: '.tmp',

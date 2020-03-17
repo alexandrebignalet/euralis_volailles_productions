@@ -6,10 +6,10 @@ import {ImageLoaderModule} from '../image-loader/image_loader.module';
 
 import {PresentationDataService} from './presentation_data.service';
 import {PresentationComponent} from './presentation.component';
-import {PrevisionnelBatimentComponent} from './previsionnel_batiment.component';
+import {PrevisionnelBatimentComponent} from './previsionnel/previsionnel_batiment.component';
 import {FileInputDirective} from '../../service/file_input.directive';
 import {HighlighterDirective} from './highlighter.directive';
-import {InvestmentsPresentationComponent} from "./investments_presentation.component";
+import {InvestmentsPresentationComponent} from "./previsionnel/investment/investments_presentation.component";
 
 export const PresentationModule = angular.module('PresentationModule', [rzModule, ImageLoaderModule, animate])
     .config(($stateProvider) => {

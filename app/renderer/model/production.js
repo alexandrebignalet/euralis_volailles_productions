@@ -1,4 +1,4 @@
-import {Facility} from '../facility/facility';
+import {Facility} from './facility';
 
 export class Production {
     constructor(production) {

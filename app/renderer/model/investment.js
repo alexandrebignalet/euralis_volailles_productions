@@ -69,12 +69,16 @@ export class Investment {
 
 
     getTotalOptionsSelected() {
-        return this.options
-            .filter((opt) => opt.selected)
+        return this.optionsSelected
             .reduce((sum, opt) => {
                 sum += opt.amount;
                 return sum;
             }, 0);
+    }
+
+    get optionsSelected() {
+        return this.options
+          .filter((opt) => opt.selected);
     }
 
     getTotal() {

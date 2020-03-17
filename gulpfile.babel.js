@@ -63,6 +63,15 @@ gulp.task('serve', ['ngconstant:dev'], () => {
 
     const compiler = webpack(config);
 
+    /**
+     * to avoid console logging
+     * comment pouchdb debug logger in pouchdb.service.js
+     * and print in console browser
+     *
+     * > localStorage.debug = ''
+     *
+     * then reload browser
+     */
     browserSync({
         port: process.env.PORT || 3000,
         open: true,

@@ -1,9 +1,7 @@
 import angular from 'angular';
 import template from './previsionnel_batiment.html';
-import {Prospect} from "../management/prospect/prospect";
-
-const DEFAULT_INVESTMENT_CHOOSEN = 'none';
-const NO_INVESTMENT_ANNUITY = 0;
+import {Prospect} from "../../../model/prospect";
+import {DEFAULT_INVESTMENT_CHOOSEN, processInvestmentAnnuity} from "./functions";
 
 export const PrevisionnelBatimentComponent = {
     bindings: { productions: '<', active: '<' },
@@ -19,10 +17,12 @@ export const PrevisionnelBatimentComponent = {
 
         $onInit() {
             this.facilityNb = 2;
+
             this.investmentChosen = DEFAULT_INVESTMENT_CHOOSEN;
             this.annuityDuration = 15;
             this.interest = 2.5;
             this.insuranceCostPercent = 0;
+
             this.sliderOptions = {
                 floor: 1,
                 ceil: 20
@@ -60,27 +60,25 @@ export const PrevisionnelBatimentComponent = {
 
         generatePDF(production, prospect) {
             const annuity = { duration: this.annuityDuration, interest: this.interest };
-            this.PDFGenerator.generatePrevisionnel(production, this.investmentChosen, this.scope.date, annuity, prospect);
+            this.PDFGenerator.generatePrevisionnel(
+              production,
+              this.insuranceCostPercent,
+              this.investmentChosen,
+              this.scope.date,
+              annuity,
+              prospect);
         }
 
         update() {
             angular.forEach(this.productions, (production) => {
                 production.setFacilitiesNb(this.facilityNb);
-
-                angular.forEach(production.facility.investments, (investment) => {
-                    investment.facilityNb = this.facilityNb;
-                })
             });
         }
 
         currentInvestmentAnnuity() {
-            return this.investmentChosen !== DEFAULT_INVESTMENT_CHOOSEN
-              ? this.investmentChosen.getAnnuity(this.annuityDuration, this.interest)
-              : NO_INVESTMENT_ANNUITY;
-        }
-
-        isCurrentInvestmentDefault() {
-            return this.investmentChosen === DEFAULT_INVESTMENT_CHOOSEN;
+            return processInvestmentAnnuity(
+              this.investmentChosen, { duration: this.annuityDuration, interest: this.interest }
+            )
         }
     },
     controllerAs: 'vm'

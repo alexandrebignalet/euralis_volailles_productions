@@ -1,5 +1,5 @@
 import template from './facility_charges_form.html';
-import {FacilityCharges} from './facility_charges';
+import {FacilityCharges} from '../../../model/facility_charges';
 
 export const FacilityChargesFormComponent = {
     bindings: {
@@ -52,7 +52,7 @@ export const FacilityChargesFormComponent = {
             this.isSaving = true;
             let facilityCharges = this.convertToSave(this.facilityCharges);
             const formState = this.currentState.replace("facility_charges.", "");
-            
+
             switch(formState) {
                 case 'edit':
                 case 'create':

@@ -6,12 +6,12 @@ if (typeof btoa === 'undefined') {
         return new Buffer(str).toString('base64');
     };
 }
-import {Production} from '../components/management/production/production'
-import {Facility} from '../components/management/facility/facility'
-import {FacilityCharges} from '../components/management/facility_charges/facility_charges'
-import {Investment} from '../components/management/investment/investment'
-import {Video} from '../components/management/video/video'
-import {Prospect} from '../components/management/prospect/prospect';
+import {Production} from '../model/production'
+import {Facility} from '../model/facility'
+import {FacilityCharges} from '../model/facility_charges'
+import {Investment} from '../model/investment'
+import {Video} from '../model/video'
+import {Prospect} from '../model/prospect';
 
 import PouchDB from 'pouchdb-browser';
 PouchDB.plugin(require('pouchdb-adapter-node-websql'));
@@ -78,7 +78,9 @@ export class PouchDbService {
         this.DB_INFO = DB_INFO;
 
         if(this.env === undefined) this.env = 'prod';
-        if(this.env === 'dev') PouchDB.debug.enable('*');
+        if(this.env === 'dev') {
+            // PouchDB.debug.enable('*');
+        }
 
         this.dbOpts = { auto_compaction: true };
 

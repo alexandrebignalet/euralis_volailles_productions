@@ -1,5 +1,5 @@
 import template from './investment_form.html';
-import {DiverseOption, Investment} from './investment';
+import {DiverseOption, Investment} from '../../../model/investment';
 
 export const InvestmentFormComponent = {
     bindings: { resolve: '<', modalInstance: '<' },

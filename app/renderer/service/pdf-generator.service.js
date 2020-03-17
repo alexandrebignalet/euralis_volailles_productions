@@ -1,12 +1,14 @@
 import pdfMake from 'pdfmake/build/pdfmake.min';
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import {DEFAULT_INVESTMENT_CHOOSEN, processInvestmentAnnuity} from "../components/presentation/previsionnel/functions";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export class PDFGenerator {
-  constructor(UserService) {
+  constructor(UserService, $filter) {
     'ngInject';
     this.UserService = UserService;
+    this.numberFilter = $filter('number')
   }
 
   static getLogoAsBase64() {
@@ -38,10 +40,10 @@ export class PDFGenerator {
     }];
   }
 
-  generatePrevisionnel(production, investment, date, annuity, prospect) {
+  generatePrevisionnel(production, insuranceCostPercent, investment, date, annuity, prospect) {
     const nameWithOutSpaces = (someWithName) => someWithName.name.replace(/\s+/g, '');
-    const invesmentName = investment.name ? nameWithOutSpaces(investment) : '';
-    const pdfName = `previsionnel_${nameWithOutSpaces(prospect)}_${production.facilitiesNb}_${production.facility.size}_${invesmentName}_${nameWithOutSpaces(production)}`;
+    const investmentName = investment.name ? nameWithOutSpaces(investment) : '';
+    const pdfName = `previsionnel_${nameWithOutSpaces(prospect)}_${production.facilitiesNb}_${production.facility.size}_${investmentName}_${nameWithOutSpaces(production)}`;
 
     let docDefinition = {
       content: this.putHeader(`
@@ -123,7 +125,7 @@ export class PDFGenerator {
               colSpan: 2,
               alignment: 'center'
             }, ''],
-            [`Poussins mis en places        facturés: ${Math.round(production.getChicksPaid())}`, production.getChickNb()],
+            [`Poussins mis en places        facturés: ${this.numberFilter(Math.round(production.getChicksPaid()))}`, this.numberFilter(production.getChickNb())],
             ['Mortalité', `${production.mortalityPercent * 100} %`],
             ['Age', `${production.age} j.`],
             ['Nombre de bandes par année', `${production.breedingPerYear}`],
@@ -131,8 +133,8 @@ export class PDFGenerator {
             ['Poids moyen', `${production.avgWeight} kg`],
             ['Prix poussins vaccinés (€/1000)', `${production.getVaccinesPrice()} €`],
             ['Prix aliment producteur (€/t) indexé', `${production.getFoodPrice()} €`],
-            ['Prix reprise classé (€/t) indexé', `${production.getClassedPrice()} €`],
-            ['Prix reprise déclassé (€/t) indexé', `${production.getDeclassedPrice()} €`],
+            ['Prix reprise classé (€/t) indexé', `${this.numberFilter(production.getClassedPrice())} €`],
+            ['Prix reprise déclassé (€/t) indexé', `${this.numberFilter(production.getDeclassedPrice())} €`],
             ['Taux de déclassé', `${production.breedingDeclassedPercent * 100} %`],
             ['Taux de saisie', `${production.restraintPercent * 100} %`]
           ]
@@ -144,44 +146,99 @@ export class PDFGenerator {
           widths: ['*', 75, 75],
           headerRows: 1,
           body: [
-            [{text: `CRITERES ECONOMIQUES en € HT`, style: 'tableHeader', alignment: 'left'},
-              {text: `€/tête`, style: 'tableHeader', alignment: 'center'},
-              {text: `Total (€ HT)`, style: 'tableHeader', alignment: 'center'}],
-            [`Poussins`, production.facility.facilityCharges.chickPrice, Math.round(production.getChicksPaid() * production.facility.facilityCharges.chickPrice)],
-            ['Aliment (€/t)', production.foodPrice, Math.round(production.getTotalFoodCost())],
-            ['Cotisations', production.facility.facilityCharges.contributions, Math.round(production.facility.facilityCharges.contributions * production.getChickNb())],
-            [{
-              text: `Marge PAC / poulet MEP`,
-              italic: true
-            }, {text: Math.round(production.getMargePACByChickPIP() * 100) / 100, colSpan: 2, alignement: 'left'}, ''],
-            ['Chauffage (conso + loc cuves) indexé', production.facility.facilityCharges.warming, Math.round(production.facility.facilityCharges.warming * production.getChickNb())],
-            ['Frais vétérinaires', production.facility.facilityCharges.vetPrice, Math.round(production.facility.facilityCharges.vetPrice * production.getChickNb())],
-            ['Désinfection', production.facility.facilityCharges.disinfection, Math.round(production.facility.facilityCharges.disinfection * production.getChickNb())],
-            ['Eau - Electricité - Divers', production.facility.facilityCharges.commodities, Math.round(production.facility.facilityCharges.commodities * production.getChickNb())],
-            ['Litière', production.facility.facilityCharges.litter, Math.round(production.facility.facilityCharges.litter * production.getChickNb())],
-            ['Attrapage', production.facility.facilityCharges.catching, Math.round(production.facility.facilityCharges.catching * production.getChickNb())],
-            ['Assurances (incendie, tempête, dégâts des eaux, étouffements, etc...)', production.facility.facilityCharges.insurances, Math.round(production.facility.facilityCharges.insurances * production.getChickNb())],
-            [{text: `Charges / tête`, italic: true}, {
-              text: production.facility.facilityCharges.getChargesByChick(),
-              colSpan: 2,
-              alignement: 'left'
-            }, ''],
-            [`Marge Brute / poulet MEP`, {
-              text: Math.round(production.getBrutMarginPerChickPIP() * 100) / 100,
-              colSpan: 2,
-              alignement: 'left'
-            }, ''],
-            [{text: `TOTAL CHARGES PAR BANDE`}, {
-              text: `${Math.round(production.getTotalCosts())}`,
-              colSpan: 2,
-              alignement: 'center'
-            }, ''],
+            [
+              { text: `CRITERES ECONOMIQUES en € HT`, style: 'tableHeader', alignment: 'left' },
+              { text: `€/tête`, style: 'tableHeader', alignment: 'center' },
+              { text: `Total (€ HT)`, style: 'tableHeader', alignment: 'center' }
+            ],
+            [
+              `Poussins`,
+              production.facility.facilityCharges.chickPrice,
+              this.numberFilter(Math.round(production.getChicksPaid() * production.facility.facilityCharges.chickPrice))
+            ],
+            [
+              'Aliment (€/t)',
+              production.foodPrice,
+              this.numberFilter(Math.round(production.getTotalFoodCost()))
+            ],
+            [
+              'Cotisations',
+              production.facility.facilityCharges.contributions,
+              this.numberFilter(Math.round(production.facility.facilityCharges.contributions * production.getChickNb()))
+            ],
+            [
+              { text: `Marge PAC / poulet MEP`, italic: true },
+              { text: Math.round(production.getMargePACByChickPIP() * 100) / 100, colSpan: 2, alignement: 'left' },
+              ''
+            ],
+            [
+              'Chauffage (conso + loc cuves) indexé',
+              production.facility.facilityCharges.warming,
+              this.numberFilter(Math.round(production.facility.facilityCharges.warming * production.getChickNb()))
+            ],
+            [
+              'Frais vétérinaires',
+              production.facility.facilityCharges.vetPrice,
+              this.numberFilter(Math.round(production.facility.facilityCharges.vetPrice * production.getChickNb()))
+            ],
+            [
+              'Désinfection',
+              production.facility.facilityCharges.disinfection,
+              this.numberFilter(Math.round(production.facility.facilityCharges.disinfection * production.getChickNb()))
+            ],
+            [
+              'Eau - Electricité - Divers',
+              production.facility.facilityCharges.commodities,
+              this.numberFilter(Math.round(production.facility.facilityCharges.commodities * production.getChickNb()))
+            ],
+            [
+              'Litière',
+              production.facility.facilityCharges.litter,
+              this.numberFilter(Math.round(production.facility.facilityCharges.litter * production.getChickNb()))
+            ],
+            [
+              'Attrapage',
+              production.facility.facilityCharges.catching,
+              this.numberFilter(Math.round(production.facility.facilityCharges.catching * production.getChickNb()))
+            ],
+            [
+              'Assurances (incendie, tempête, dégâts des eaux, étouffements, etc...)',
+              production.facility.facilityCharges.insurances,
+              this.numberFilter(Math.round(production.facility.facilityCharges.insurances * production.getChickNb()))
+            ],
+            [
+              { text: `Charges / tête`, italic: true },
+              {
+                text: production.facility.facilityCharges.getChargesByChick(),
+                colSpan: 2,
+                alignement: 'left'
+              },
+              ''
+            ],
+            [
+              `Marge Brute / poulet MEP`,
+              {
+                text: Math.round(production.getBrutMarginPerChickPIP() * 100) / 100,
+                colSpan: 2,
+                alignement: 'left'
+              },
+              ''
+            ],
+            [
+              { text: `TOTAL CHARGES PAR BANDE` },
+              {
+                text: `${this.numberFilter(Math.round(production.getTotalCosts()))}`,
+                colSpan: 2,
+                alignement: 'center'
+              },
+              ''
+            ],
           ]
         }
       },
     ];
 
-    contentToConcat.push({text: '', pageBreak: 'before'});
+    contentToConcat.push({ text: '', pageBreak: 'before' });
     contentToConcat.push(this.putHeader(''));
 
     contentToConcat.push({
@@ -190,144 +247,72 @@ export class PDFGenerator {
         widths: ['*', 130],
         headerRows: 1,
         body: [
-          [`PRODUIT TOTAL PAR BANDE (Ventes)`, Math.round(production.getTotalWages()) + ' €'],
-          [`MARGE BRUTE PAR BANDE`, Math.round(production.getBrutMargin()) + ' €'],
-          [`MARGE BRUTE ANNUELLE avec ${production.breedingPerYear} bandes par année`, Math.round(production.getAnnualBrutMargin()) + ' €'],
-          [{
-            text: `Marge par m²`,
-            fontSize: 10
-          }, {
-            text: Math.round(production.getAnnualBrutMargin() / (production.facilitiesNb * production.facility.size)) + ' €',
-            fontSize: 10
-          }],
+          [
+            `PRODUIT TOTAL PAR BANDE (Ventes)`,
+            `${this.numberFilter(Math.round(production.getTotalWages()))} €`
+          ],
+          [
+            `MARGE BRUTE PAR BANDE`,
+            `${this.numberFilter(Math.round(production.getBrutMargin()))} €`
+          ],
+          [
+            `MARGE BRUTE ANNUELLE avec ${production.breedingPerYear} bandes par année`,
+            `${this.numberFilter(Math.round(production.getAnnualBrutMargin()))} €`
+          ],
+          [
+            { text: `Marge par m²`, fontSize: 10 },
+            {
+              text: `${this.numberFilter(Math.round(production.getAnnualBrutMargin() / (production.facilitiesNb * production.facility.size)))} €`,
+              fontSize: 10
+            }
+          ],
         ]
       }
     });
 
-    if (investment !== 'none') {
-      contentToConcat.push({
-        columns: [
-          {
-            width: 50,
-            text: 'Annuité ',
-            bold: true
-          },
-          {
-            width: 150,
-            text: ' pour un investissement de '
-          },
-          {
-            width: 50,
-            text: investment.getTotal() + '€',
-            bold: true
-          },
-          {
-            width: 20,
-            text: ' sur '
-          },
-          {
-            width: 50,
-            text: annuity.duration + ' ans ',
-            bold: true
-          },
-          {
-            width: 10,
-            text: ' à'
-          },
-          {
-            width: 50,
-            text: annuity.interest + '%'
-          },
-          {
-            width: 'auto',
-            text: Math.round(investment.getAnnuity(annuity.duration, annuity.interest)) + '€',
-            bold: true
-          }
-        ]
-      });
-      contentToConcat.push(
-        {
-          style: 'tableExample',
-          table: {
-            widths: ['*', 130],
-            headerRows: 1,
-            body: [
-              [`MARGE NETTE ANNUELLE avant MSA`, Math.round(production.getAnnualNetMargin(investment.getAnnuity(annuity.duration, annuity.interest))) + '€']
-            ]
-          }
-        }
-      );
-    } else {
-      contentToConcat.push(
-        {
-          style: 'tableExample',
-          table: {
-            widths: ['*', 75],
-            headerRows: 1,
-            body: [
-              [`MARGE NETTE ANNUELLE avant MSA`, Math.round(production.getAnnualNetMargin(0)) + '€']
-            ]
-          }
-        }
-      );
+    contentToConcat.push(this.generateLastTotalLine(investment, annuity, production, insuranceCostPercent));
+    contentToConcat.push('Temps de travail ' + production.facility.workHours * production.facilitiesNb + ' h/j en moyenne');
+
+    if (investment !== DEFAULT_INVESTMENT_CHOOSEN) {
+      contentToConcat.push(...this.generateInvestmentTable(investment));
     }
-
-    contentToConcat.push('Temps de travail ' + production.facility.workHours * production.facilitiesNb + 'h / j en moyenne');
-
-    if (investment !== 'none') {
-      contentToConcat.push(...generateInvestmentTable(investment));
-    }
-
-    function generateInvestmentTable(invesment) {
-      const createTableInvestment = (body) => ({
-        style: 'tableExample',
-        table: {
-          widths: ['*', 130],
-          headerRows: 1,
-          body
-        }
-      });
-
-      const baseBody = [
-        [`INVESTISSEMENT`, `€ HT`],
-        ['Désignation', investment.designation],
-        [`Description`, investment.description],
-        [`Permis`, investment.papers],
-        [`Coût architecte`, investment.architectCost],
-        [`Gros oeuvre`, investment.getMasonry()],
-        ['Livraison et montage bâtiment', investment.getFacilityMountingDeliveryPrice()],
-        ['Livraison et montage du matériel', Math.round(investment.getEquipmentMountingDeliveryPrice())],
-        ['Diverses options', investment.getTotalOptionsSelected()],
-        [`Investissement total`, Math.round(investment.getTotalBeforeSubsidies())],
-        [`Subventions AREA PCAE`, investment.subsidies],
-        [`Aides EURALIS Volailles`, investment.helpEuralis],
-        [`Apport personnel`, investment.personalContribution],
-        [`Emprunt bancaire (aides et apport déduits)`, Math.round(investment.getTotal())],
-      ];
-
-      const diversesOptionsBody = (invesment) => [['Diverses options', '€ HT'], ...invesment.options.map(({name, amount}) => [name, amount])];
-
-      const totalBody = [
-        [`Investissement total`, Math.round(investment.getTotalBeforeSubsidies())],
-        [`Subventions AREA PCAE`, investment.subsidies],
-        [`Aides EURALIS Volailles`, investment.helpEuralis],
-        [`Apport personnel`, investment.personalContribution],
-        [`Emprunt bancaire (aides et apport déduits)`, Math.round(investment.getTotal())],
-      ];
-
-      const hasOptions = invesment.options.length > 0;
-      const endTable = hasOptions ? [diversesOptionsBody(invesment), totalBody] : totalBody;
-      const tableBodies = [baseBody].concat(endTable);
-
-      return tableBodies.map(createTableInvestment);
-    }
-
 
     contentToConcat.push('Document non contractuel');
 
     docDefinition.content = docDefinition.content.concat(contentToConcat);
 
     pdfMake.createPdf(docDefinition).download(`${pdfName}.pdf`);
+  }
+
+  generateLastTotalLine(investment, annuity, production, insuranceCostPercent) {
+    const investmentAnnuity = processInvestmentAnnuity(investment, annuity);
+    const annualNetMarginBeforeInsuranceCost = production.getAnnualNetMargin(investmentAnnuity);
+    const annualNetMargin = production.getAnnualNetMargin(investmentAnnuity, insuranceCostPercent);
+
+    const annualNetMarginBlock = {
+      style: 'tableExample',
+      table: {
+        widths: ['*', 130],
+        headerRows: 1,
+        body: [
+          [
+            `MARGE DE TRESORERIE ANNUELLE avant MSA (${insuranceCostPercent}%)`,
+            `${this.numberFilter(Math.round(annualNetMarginBeforeInsuranceCost))} €`
+          ],
+          [
+            `MARGE NETTE DE TRESORERIE`,
+            `${this.numberFilter(Math.round(annualNetMargin))} €`
+          ]
+        ]
+      }
+    };
+
+    if (investment === DEFAULT_INVESTMENT_CHOOSEN) return [annualNetMarginBlock];
+
+    return [
+      this.createAnnuityLine(investment, annuity),
+      annualNetMarginBlock
+    ];
   }
 
   generateRotations(nbFacilities, productions, investment, annuity) {
@@ -520,5 +505,72 @@ export class PDFGenerator {
     docDefinition.content.push({text: '\n\n\n(document non contractuel)', fontSize: 9});
 
     pdfMake.createPdf(docDefinition).download('rotations.pdf');
+  }
+
+  generateInvestmentTable(investment) {
+    const baseBody = [
+      [`INVESTISSEMENT`, `€ HT`],
+      ['Désignation', investment.designation],
+      [`Description`, investment.description],
+      [`Permis`, this.numberFilter(investment.papers)],
+      [`Coût architecte`, this.numberFilter(investment.architectCost)],
+      [`Gros oeuvre`, this.numberFilter(investment.getMasonry())],
+      ['Livraison et montage bâtiment', this.numberFilter(investment.getFacilityMountingDeliveryPrice())],
+      ['Livraison et montage du matériel', this.numberFilter(Math.round(investment.getEquipmentMountingDeliveryPrice()))],
+      ['Diverses options', this.numberFilter(investment.getTotalOptionsSelected())],
+      [`Investissement total`, this.numberFilter(Math.round(investment.getTotalBeforeSubsidies()))],
+      [`Subventions AREA PCAE`, this.numberFilter(investment.subsidies)],
+      [`Aides EURALIS Volailles`, this.numberFilter(investment.helpEuralis)],
+      [`Apport personnel`, this.numberFilter(investment.personalContribution)],
+      [`Emprunt bancaire (aides et apport déduits)`, this.numberFilter(Math.round(investment.getTotal()))],
+    ];
+
+    const diversesOptionsBody = [
+      ['Diverses options', '€ HT'],
+      ...investment.optionsSelected.map(({name, amount}) => [name, this.numberFilter(amount)])
+    ];
+
+    const totalBody = [
+      [`Investissement total`, this.numberFilter(Math.round(investment.getTotalBeforeSubsidies()))],
+      [`Subventions AREA PCAE`, this.numberFilter(investment.subsidies)],
+      [`Aides EURALIS Volailles`, this.numberFilter(investment.helpEuralis)],
+      [`Apport personnel`, this.numberFilter(investment.personalContribution)],
+      [`Emprunt bancaire (aides et apport déduits)`, this.numberFilter(Math.round(investment.getTotal()))],
+    ];
+
+    const hasOptions = investment.optionsSelected.length > 0;
+    const endTable = hasOptions ? [diversesOptionsBody, totalBody] : [totalBody];
+    const tableBodies = [baseBody].concat(endTable);
+
+    return tableBodies.map((body) => ({
+      style: 'tableExample',
+      table: {
+        widths: ['*', 130],
+        headerRows: 1,
+        body
+      }
+    }));
+  }
+
+  createAnnuityLine(investment, annuity) {
+    return {
+      columns: [
+        {
+          width: '*',
+          text: [
+            { text: 'Annuité', bold: true },
+            ' pour un investissement de',
+            { text: ` ${this.numberFilter(investment.getTotal())} €`, bold: true },
+            { text: ` sur ${annuity.duration} ans`, bold: true },
+            ` à ${annuity.interest}%`
+          ]
+        },
+        {
+          width: 135,
+          text: `${this.numberFilter(Math.round(investment.getAnnuity(annuity.duration, annuity.interest)))} €`,
+          bold: true
+        }
+      ]
+    };
   }
 }

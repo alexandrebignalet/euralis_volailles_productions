@@ -1,5 +1,5 @@
-import {Investment} from '../investment/investment';
-import {FacilityCharges} from '../facility_charges/facility_charges';
+import {Investment} from './investment';
+import {FacilityCharges} from './facility_charges';
 
 export class Facility {
     constructor(facility) {

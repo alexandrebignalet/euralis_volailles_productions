@@ -1,5 +1,5 @@
 import template from './facility_form.html';
-import {Facility} from './facility';
+import {Facility} from '../../../model/facility';
 
 export const FacilityFormComponent = {
     bindings: {

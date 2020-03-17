@@ -1,4 +1,4 @@
-import {Production} from "../management/production/production";
+import {Production} from "../../model/production";
 
 Number.prototype.toFixedDown = function(digits) {
     var re = new RegExp("(\\d+\\.\\d{" + digits + "})(\\d)"),

@@ -1,5 +1,5 @@
 import template from './production_form.html';
-import {Production} from './production';
+import {Production} from '../../../model/production';
 
 export const ProductionFormComponent = {
     bindings: {

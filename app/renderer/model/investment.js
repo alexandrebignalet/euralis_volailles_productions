@@ -10,6 +10,7 @@ export class Investment {
         this.papers = investment.papers;
         this.architectCost = investment.architectCost || 0;
         this.masonry = investment.masonry;
+        this.customMasonry = null; // user custom definition of masonry price
         this.facilityMoutingDeliveryPrice = investment.facilityMoutingDeliveryPrice;
         this.equipmentMountingDeliveryPrice = investment.equipmentMountingDeliveryPrice;
         this.personalContribution = investment.personalContribution || 0;
@@ -44,6 +45,8 @@ export class Investment {
 
     set facilityNb(nb) {
         this._facilityNb = nb;
+        // reset custom masonry in order to not fool user
+        this.customMasonry = null;
     }
 
     getAnnuity(duration, interest) {
@@ -52,7 +55,7 @@ export class Investment {
 
 
     getMasonry() {
-        return this._facilityNb * this.masonry;
+        return this.customMasonry || this._facilityNb * this.masonry;
     }
 
     getFacilityMountingDeliveryPrice() {

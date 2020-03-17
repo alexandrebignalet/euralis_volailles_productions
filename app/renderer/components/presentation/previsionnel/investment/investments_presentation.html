@@ -19,17 +19,26 @@
             </tr>
             <tr>
                 <th>Permis de construire</th>
-                <td>{{ $ctrl.investmentChosen.papers | number: 0}} €</td>
+                <td class="input-group">
+                    <input ng-model="$ctrl.investmentChosen.papers" type="number" class="form-control"/>
+                    <span class="input-group-addon">€</span>
+                </td>
                 <td>{{ $ctrl.investmentChosen.details.papers }}</td>
             </tr>
             <tr>
                 <th>Coût architecte</th>
-                <td>{{ $ctrl.investmentChosen.architectCost | number: 0}} €</td>
+                <td class="input-group">
+                    <input ng-model="$ctrl.investmentChosen.architectCost" type="number" class="form-control"/>
+                    <span class="input-group-addon">€</span>
+                </td>
                 <td>{{ $ctrl.investmentChosen.details.architectCost }}</td>
             </tr>
             <tr>
                 <th>Gros oeuvre</th>
-                <td>{{ $ctrl.investmentChosen.getMasonry() | number: 0}} €</td>
+                <td class="input-group">
+                    <input ng-value="$ctrl.investmentChosen.getMasonry()" ng-model="$ctrl.investmentChosen.customMasonry" ng-model-options="{ getterSetter: true }" type="number" class="form-control"/>
+                    <span class="input-group-addon">€</span>
+                </td>
                 <td>{{ $ctrl.investmentChosen.details.masonry }}</td>
             </tr>
             <tr>

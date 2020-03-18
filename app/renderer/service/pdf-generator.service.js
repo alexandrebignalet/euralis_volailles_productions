@@ -530,11 +530,11 @@ export class PDFGenerator {
     };
 
     let totalBody = [
-      [`Investissement total`, this.numberFilter(Math.round(investment.getTotalBeforeSubsidies()))],
-      [`Subventions AREA PCAE`, this.numberFilter(investment.subsidies)],
-      [`Aides EURALIS Volailles`, this.numberFilter(investment.helpEuralis)],
-      [`Apport personnel`, this.numberFilter(investment.personalContribution)],
-      [`Emprunt bancaire (aides et apport déduits)`, this.numberFilter(Math.round(investment.getTotal()))],
+      [`Investissement total`, `${this.numberFilter(Math.round(investment.getTotalBeforeSubsidies()))} €`],
+      [`Subventions AREA PCAE`, `${this.numberFilter(investment.subsidies)} €`],
+      [`Aides EURALIS Volailles`, `${this.numberFilter(investment.helpEuralis)} €`],
+      [`Apport personnel`, `${this.numberFilter(investment.personalContribution)} €`],
+      [`Emprunt bancaire (aides et apport déduits)`, `${this.numberFilter(Math.round(investment.getTotal()))} €`]
     ];
 
 
@@ -545,7 +545,7 @@ export class PDFGenerator {
         widths: ['*', 130],
         headerRows: 1,
         body: [
-          ['Total des investissements supplémentaires', `${investment.getTotalAdditionalInvestmentsSelected()} €`],
+          ['Total des investissements supplémentaires', `${this.numberFilter(investment.getTotalAdditionalInvestmentsSelected())} €`],
           ...totalBody
         ]
       }

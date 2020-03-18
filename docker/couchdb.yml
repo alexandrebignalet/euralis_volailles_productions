@@ -1,9 +1,9 @@
 version: '2'
 services:
     euralisvolaillesproductions-couchdb:
-        image: couchdb:1.6.1
+        image: couchdb:3.0.0
         volumes:
-            - /home/euralis_volailles_productions_couch_db/docker/config:/usr/local/etc/couchdb/local.d
-            - /home/euralis_volailles_productions_couch_db/docker/lib:/usr/local/var/lib/couchdb
+            - ./config:/opt/couchdb/etc/local.d
+            - ./lib:/opt/couchdb/data
         ports:
             - 5984:5984

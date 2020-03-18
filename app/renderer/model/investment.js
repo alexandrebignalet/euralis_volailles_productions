@@ -18,7 +18,7 @@ export class Investment {
         this.helpEuralis = investment.helpEuralis;
         this.details = new InvestmentDescription(investment.details);
         if (investment.options && investment.options.length > 0) {
-            this.options = investment.options.map(({name, amount}) => DiverseOption(name, amount));
+            this.options = investment.options.map(({name, amount}) => new AdditionalInvestment(name, amount));
         } else {
             this.options = []
         }
@@ -66,22 +66,30 @@ export class Investment {
         return this._facilityNb * this.equipmentMountingDeliveryPrice;
     }
 
-    selectOption(index) {
-        this.options[index].selected = !this.options[index].selected;
+    addAdditionalInvestment({ name, amount}) {
+        const additionalInvestment = new AdditionalInvestment(name, amount);
+        additionalInvestment.count = 1;
+        this.options.push(additionalInvestment);
     }
 
+    selectOneAdditionalInvestment(addedOption) {
+        const option = this.options.find(o => o.name === addedOption.name);
+        if (!option) return;
 
-    getTotalOptionsSelected() {
-        return this.optionsSelected
+        option.count = addedOption.isSelected ? addedOption.count + 1 : 1;
+    }
+
+    getTotalAdditionalInvestmentsSelected() {
+        return this.additionalInvestmentsSelected
             .reduce((sum, opt) => {
-                sum += opt.amount;
+                sum += opt.amount * opt.count;
                 return sum;
             }, 0);
     }
 
-    get optionsSelected() {
+    get additionalInvestmentsSelected() {
         return this.options
-          .filter((opt) => opt.selected);
+          .filter((opt) => opt.isSelected);
     }
 
     getTotal() {
@@ -89,7 +97,7 @@ export class Investment {
     }
 
     getTotalBeforeSubsidies() {
-        return this.getTotalOptionsSelected() + this.getMasonry() + this.getFacilityMountingDeliveryPrice() + this.getEquipmentMountingDeliveryPrice() + this.papers + this.architectCost;
+        return this.getTotalAdditionalInvestmentsSelected() + this.getMasonry() + this.getFacilityMountingDeliveryPrice() + this.getEquipmentMountingDeliveryPrice() + this.papers + this.architectCost;
     }
 }
 
@@ -110,10 +118,16 @@ class InvestmentDescription {
     }
 }
 
-export function DiverseOption(name, amount) {
-    return {
-        name: name,
-        amount: amount,
-        selected: false
+export class AdditionalInvestment {
+    static DEFAULT_COUNT() { return 0; }
+
+    constructor(name, amount) {
+        this.name = name;
+        this.amount = amount;
+        this.count = AdditionalInvestment.DEFAULT_COUNT();
+    }
+
+    get isSelected() {
+        return this.count > AdditionalInvestment.DEFAULT_COUNT();
     }
 }

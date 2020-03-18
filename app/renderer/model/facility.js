@@ -2,6 +2,10 @@ import {Investment} from './investment';
 import {FacilityCharges} from './facility_charges';
 
 export class Facility {
+    static isMovable(facilityType) {
+        return facilityType.key === "movable";
+    }
+
     constructor(facility) {
         this.id = facility.id;
         this.rev = facility.rev;

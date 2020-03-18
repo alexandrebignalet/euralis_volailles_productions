@@ -1,6 +1,7 @@
 import pdfMake from 'pdfmake/build/pdfmake.min';
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import {DEFAULT_INVESTMENT_CHOOSEN, processInvestmentAnnuity} from "../components/presentation/previsionnel/functions";
+import {Facility} from "../model/facility";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -274,7 +275,7 @@ export class PDFGenerator {
     contentToConcat.push('Temps de travail ' + production.facility.workHours * production.facilitiesNb + ' h/j en moyenne');
 
     if (investment !== DEFAULT_INVESTMENT_CHOOSEN) {
-      contentToConcat.push(...this.generateInvestmentTable(investment));
+      contentToConcat.push(...this.generateInvestmentTable(investment, production.facility.type));
     }
 
     contentToConcat.push('Document non contractuel');
@@ -507,7 +508,8 @@ export class PDFGenerator {
     pdfMake.createPdf(docDefinition).download('rotations.pdf');
   }
 
-  generateInvestmentTable(investment) {
+  generateInvestmentTable(investment, facilityType) {
+    const mountingDeliveryLabel = suffix => (Facility.isMovable(facilityType) ? 'Livraison' : 'Livraison et montage') + suffix;
     const baseBody = [
       [`INVESTISSEMENT`, `€ HT`],
       ['Désignation', investment.designation],
@@ -515,41 +517,60 @@ export class PDFGenerator {
       [`Permis`, this.numberFilter(investment.papers)],
       [`Coût architecte`, this.numberFilter(investment.architectCost)],
       [`Gros oeuvre`, this.numberFilter(investment.getMasonry())],
-      ['Livraison et montage bâtiment', this.numberFilter(investment.getFacilityMountingDeliveryPrice())],
-      ['Livraison et montage du matériel', this.numberFilter(Math.round(investment.getEquipmentMountingDeliveryPrice()))],
-      ['Diverses options', this.numberFilter(investment.getTotalOptionsSelected())],
-      [`Investissement total`, this.numberFilter(Math.round(investment.getTotalBeforeSubsidies()))],
-      [`Subventions AREA PCAE`, this.numberFilter(investment.subsidies)],
-      [`Aides EURALIS Volailles`, this.numberFilter(investment.helpEuralis)],
-      [`Apport personnel`, this.numberFilter(investment.personalContribution)],
-      [`Emprunt bancaire (aides et apport déduits)`, this.numberFilter(Math.round(investment.getTotal()))],
+      [mountingDeliveryLabel(' du bâtiment'), this.numberFilter(investment.getFacilityMountingDeliveryPrice())],
+      [mountingDeliveryLabel(' du matériel'), this.numberFilter(Math.round(investment.getEquipmentMountingDeliveryPrice()))]
     ];
-
-    const diversesOptionsBody = [
-      ['Diverses options', '€ HT'],
-      ...investment.optionsSelected.map(({name, amount}) => [name, this.numberFilter(amount)])
-    ];
-
-    const totalBody = [
-      [`Investissement total`, this.numberFilter(Math.round(investment.getTotalBeforeSubsidies()))],
-      [`Subventions AREA PCAE`, this.numberFilter(investment.subsidies)],
-      [`Aides EURALIS Volailles`, this.numberFilter(investment.helpEuralis)],
-      [`Apport personnel`, this.numberFilter(investment.personalContribution)],
-      [`Emprunt bancaire (aides et apport déduits)`, this.numberFilter(Math.round(investment.getTotal()))],
-    ];
-
-    const hasOptions = investment.optionsSelected.length > 0;
-    const endTable = hasOptions ? [diversesOptionsBody, totalBody] : [totalBody];
-    const tableBodies = [baseBody].concat(endTable);
-
-    return tableBodies.map((body) => ({
+    const baseBodyTable = {
       style: 'tableExample',
       table: {
         widths: ['*', 130],
         headerRows: 1,
-        body
+        body: baseBody
       }
-    }));
+    };
+
+    let totalBody = [
+      [`Investissement total`, this.numberFilter(Math.round(investment.getTotalBeforeSubsidies()))],
+      [`Subventions AREA PCAE`, this.numberFilter(investment.subsidies)],
+      [`Aides EURALIS Volailles`, this.numberFilter(investment.helpEuralis)],
+      [`Apport personnel`, this.numberFilter(investment.personalContribution)],
+      [`Emprunt bancaire (aides et apport déduits)`, this.numberFilter(Math.round(investment.getTotal()))],
+    ];
+
+
+    const hasOptions = investment.additionalInvestmentsSelected.length > 0;
+    const totalTable = {
+      style: 'tableExample',
+      table: {
+        widths: ['*', 130],
+        headerRows: 1,
+        body: [
+          ['Total des investissements supplémentaires', `${investment.getTotalAdditionalInvestmentsSelected()} €`],
+          ...totalBody
+        ]
+      }
+    };
+
+    return hasOptions
+      ? [baseBodyTable, this.createAdditionalInvestmentTable(investment), totalTable]
+      : [baseBodyTable, totalTable];
+  }
+
+  createAdditionalInvestmentTable(investment) {
+    const additionalInvestmentsBody = [
+      ['INVESTISSEMENT SUPPLEMENTAIRES', '€/u.', 'u.', '€ HT'],
+      ...investment.additionalInvestmentsSelected.map(({name, amount, count}) =>
+        [name, this.numberFilter(amount), count, this.numberFilter(amount * count)])
+    ];
+
+    return {
+      style: 'tableExample',
+      table: {
+        widths: ['*', 50, 50, 130],
+        headerRows: 1,
+        body: additionalInvestmentsBody
+      }
+    };
   }
 
   createAnnuityLine(investment, annuity) {

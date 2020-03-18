@@ -1,5 +1,5 @@
 import template from './investment_form.html';
-import {DiverseOption, Investment} from '../../../model/investment';
+import {AdditionalInvestment, Investment} from '../../../model/investment';
 
 export const InvestmentFormComponent = {
     bindings: { resolve: '<', modalInstance: '<' },
@@ -17,13 +17,10 @@ export const InvestmentFormComponent = {
 
         $onInit() {
             this.investment = this.resolve.investment;
-            if (!this.investment.options || this.investment.options.length === 0) {
-                this.investment.options = [DiverseOption('', 0)];
-            }
         }
 
         addNewOption() {
-            this.investment.options.push(DiverseOption(null, null));
+            this.investment.options.push(new AdditionalInvestment(null, null));
         }
 
         removeOption(index) {

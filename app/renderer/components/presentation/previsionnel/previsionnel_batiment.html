@@ -1,0 +1,282 @@
+<div class="row" id="sliderBatiment">
+    <div class="col-md-2" style="padding-top: 20px;">
+        <button type="button" class="btn btn-block btn-default" ng-click="vm.openPicker()"
+                uib-datepicker-popup="{{vm.format}}" ng-model="date" is-open="vm.pickerIsOpen" datepicker-options="vm.dateOptions" ng-required="true"
+                close-text="Close" style="border-color:#309f41; color:#309f41;">
+            <span class="glyphicon glyphicon-calendar" style="color:#309f41;"></span>&nbsp;&nbsp;{{date | date }}
+        </button>
+    </div>
+    <div class="col-md-7">
+        <rzslider rz-slider-model="vm.facilityNb" rz-slider-options="vm.sliderOptions"></rzslider>
+    </div>
+    <div class="col-md-1 text-center">
+            <a href style="color:#309f41;" ng-click="vm.facilityNb = vm.facilityNb + 1">
+                <span class="glyphicon glyphicon-plus" style="padding-top: 29px;"></span>
+            </a>
+    </div>
+    <div class="col-md-2" style="padding-top: 20px;">
+        <button type="button" style="border-color:#309f41; color:#309f41;" ui-sref="rotation" class="btn btn-default btn-block">
+            Rotations
+            <i class="glyphicon glyphicon-chevron-right"></i>
+        </button>
+    </div>
+</div>
+
+<br /><br />
+
+<uib-tabset active="vm.active" justified="true" type="pills" class="tab-animation">
+    <uib-tab index="$index" ng-repeat="production in vm.productions"
+             heading="{{production.name | uppercase}} ({{production.facility.size}}m²)" select="vm.onNewTabSelected()">
+        <br /><br />
+        <div class="row">
+            <div class="col-md-1">
+                <button
+                    ng-click="vm.startPrint(production)"
+                    ng-disabled="!production || !vm.investmentChosen || !date || !vm.annuityDuration || !vm.interest || !vm.hasUser()"
+                    class="btn btn-default">
+                    <span class="glyphicon glyphicon-print"></span>
+                </button>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-xs-12">
+                <image-loader model="production" height="350"></image-loader>
+            </div>
+            <div class="col-lg-6 col-md-6 col-xs-12">
+                    <table class="table table-condensed table-hover table-responsive">
+                        <tr highlighter="production.getChickNb()">
+                            <th>Poussins mis en places</th>
+                            <td>{{ production.getChickNb() }}</td>
+                        </tr>
+                        <tr>
+                            <th>Mortalité</th>
+                            <td>{{ production.mortalityPercent * 100 }} %</td>
+                        </tr>
+                        <tr>
+                            <th>Age</th>
+                            <td>{{ production.age }} j.</td>
+                        </tr>
+                        <tr>
+                            <th>Nombre de bandes par année</th>
+                            <td class="input-group">
+                                <input ng-model="production.breedingPerYear" type="number" class="form-control"/>
+                                <span class="input-group-addon">/ an</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Indice de consommation</th>
+                            <td class="input-group">
+                                <input ng-model="production.consumptionIndex" type="number" class="form-control"/>
+                                <span class="input-group-addon">kg</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Poids moyen</th>
+                            <td class="input-group">
+                                <input ng-model="production.avgWeight" type="number" class="form-control"/>
+                                <span class="input-group-addon">kg</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Prix poussins vaccinés (€/1000) <span class="pull-right">| indexé </span></th>
+                            <td>{{ production.getVaccinesPrice() }} €</td>
+                        </tr>
+                        <tr>
+                            <th>Prix aliment producteur (€/t) <span class="pull-right">| indexé </span></th>
+                            <td>{{ production.getFoodPrice() }} €</td>
+                        </tr>
+                        <tr>
+                            <th>Prix reprise classé (€/t) <span class="pull-right">| indexé </span></th>
+                            <td>{{ production.getClassedPrice() }} €</td>
+                        </tr>
+                        <tr>
+                            <th>Prix reprise déclassé (€/t)</th>
+                            <td>{{ production.getDeclassedPrice() }} €</td>
+                        </tr>
+                        <tr ng-init="showDeclassedInput = false" ng-dblclick="showDeclassedInput = !showDeclassedInput">
+                            <th>Taux de déclassé</th>
+                            <td>
+                                <div class="input-group" ng-show="showDeclassedInput">
+                                    <input ng-model="production.breedingDeclassedPercent" type="number" class="form-control"/>
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                                <span ng-hide="showDeclassedInput">{{ production.breedingDeclassedPercent * 100 }} %</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Taux de saisie</th>
+                            <td>{{ production.restraintPercent * 100 }} %</td>
+                        </tr>
+                    </table>
+                </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-xs-12">
+                <h1>Critères économiques</h1>
+                <br />
+                <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
+                    <tr>
+                        <th></th>
+                        <th>Prix (/tête)</th>
+                        <th>Total (pour {{production.getChickNb()}})</th>
+                    </tr>
+                    <tr>
+                        <th>Poussins</th>
+                        <td>{{ production.facility.facilityCharges.chickPrice | number:3 }} €</td>
+                        <td>{{ production.getChicksPaid() * production.facility.facilityCharges.chickPrice | number:0 }} €</td>
+                    </tr>
+                    <tr>
+                        <th>Aliment (€)</th>
+                        <td>{{ production.foodPrice | number:3 }} €</td>
+                        <td>{{ production.getTotalFoodCost() | number:0 }} €</td>
+                    </tr>
+                    <tr>
+                        <th>Cotisations</th>
+                        <td>{{ production.facility.facilityCharges.contributions | number:3 }} €</td>
+                        <td>{{ production.facility.facilityCharges.contributions * production.getChickNb() | number:0 }} €</td>
+                    </tr>
+                    <tr>
+                        <td><i>Marge PAC / poulet MEP</i></td>
+                        <td><i>{{ production.getMargePACByChickPIP() | number: 3 }} €</i></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>Chauffage <span class="pull-right">| Prime GAZ MEP Hiver </span></th>
+                        <td>{{ production.facility.facilityCharges.warming }} €</td>
+                        <td>{{ production.facility.facilityCharges.warming * production.getChickNb() | number:0 }} €</td>
+                    </tr>
+                    <tr>
+                        <th>Frais vétérinaires</th>
+                        <td>{{ production.facility.facilityCharges.vetPrice }} €</td>
+                        <td>{{ production.facility.facilityCharges.vetPrice * production.getChickNb() | number:0 }} €</td>
+                    </tr>
+                    <tr>
+                        <th>Désinfection</th>
+                        <td>{{ production.facility.facilityCharges.disinfection }} €</td>
+                        <td>{{ production.facility.facilityCharges.disinfection * production.getChickNb() | number:0 }} €</td>
+                    </tr>
+                    <tr>
+                        <th>Eau - Electricité - Divers</th>
+                        <td>{{ production.facility.facilityCharges.commodities }} €</td>
+                        <td>{{ production.facility.facilityCharges.commodities * production.getChickNb() | number:0 }} €</td>
+                    </tr>
+                    <tr>
+                        <th>Litière</th>
+                        <td>{{ production.facility.facilityCharges.litter }} €</td>
+                        <td>{{ production.facility.facilityCharges.litter * production.getChickNb() | number:0 }} €</td>
+                    </tr>
+                    <tr>
+                        <th>Attrapage</th>
+                        <td>{{ production.facility.facilityCharges.catching }} €</td>
+                        <td>{{ production.facility.facilityCharges.catching * production.getChickNb() | number:0 }} €</td>
+                    </tr>
+                    <tr>
+                        <th>Assurances</th>
+                        <td>{{ production.facility.facilityCharges.insurances }} €</td>
+                        <td>{{ production.facility.facilityCharges.insurances * production.getChickNb() | number:0 }} €</td>
+                    </tr>
+                    <tr>
+                        <td><i>Charges / tête</i></td>
+                        <td> <i>{{ production.facility.facilityCharges.getChargesByChick() | number: 2 }}€</i> </td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <th>Total charges par bande</th>
+                        <td></td>
+                        <td> {{ production.getTotalCosts() | number:0 }} €</td>
+                    </tr>
+                    <tr>
+                        <td>Marge Brute / poulet MEP</i></td>
+                        <td> {{ production.getBrutMarginPerChickPIP() | number: 2}}€</td>
+                        <td> </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-lg-6 col-md-6 col-xs-12" style="margin-top:5%;">
+                <image-loader model="production.facility" height="350"></image-loader>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-xs-12 col-lg-12">
+                <h1>Produit Total des ventes par bande</h1>
+                <br />
+                <table class="table table-condensed table-hover table-responsive" highlighter="production.getChickNb()">
+                    <tr>
+                        <th>{{ "produit total par bande" | uppercase }}</th>
+                        <th class="table-number">{{ production.getTotalWages() | number:0 }} €</th>
+                    </tr>
+
+                    <tr>
+                        <th>{{ "marge brute par bande" | uppercase }}</th>
+                        <th class="table-number"> {{ production.getBrutMargin() | number:0 }} €</th>
+                    </tr>
+
+                    <tr>
+                        <th>{{ "marge brute annuelle" | uppercase }} avec {{ production.breedingPerYear }} bandes par année</th>
+                        <th class="table-number"> {{ production.getAnnualBrutMargin() | number:0 }} €</th>
+                    </tr>
+                    <tr>
+                        <td><i>Marge par m²</i></td>
+                        <td class="table-number"><i>{{ production.getAnnualBrutMargin() / ( production.facilitiesNb * production.facility.size ) | number:0 }} €</i></td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <form class="form-inline">
+                                <div class="col-md-1">Annuité</div>
+                                <div class="col-md-4">
+                                    <select class="form-control" id="annuity" ng-model="vm.investmentChosen" required>
+                                        <option ng-value="'none'">Pas d'investissement</option>
+                                        <option ng-repeat="investment in production.facility.investments" ng-value="investment">{{investment.name | uppercase}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 input-group">
+                                    <span class="input-group-addon">/</span>
+                                    <input class="form-control" ng-model="vm.annuityDuration" type="number" min="0"/>
+                                    <span class="input-group-addon">ans</span>
+                                </div>
+                                <div class="col-md-3 input-group">
+                                    <span class="input-group-addon">à</span>
+                                    <input class="form-control" ng-model="vm.interest" type="number" min="0"/>
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </form>
+                        </th>
+                        <th class="table-number">{{ vm.currentInvestmentAnnuity() | number:0 }} €</th>
+                    </tr>
+                    <tr>
+                        <th>{{ "Marge de trésorerie annuelle" | uppercase }} avant MSA</th>
+                        <th class="table-number">{{ production.getAnnualNetMargin(vm.currentInvestmentAnnuity()) | number:0 }} €</th>
+                    </tr>
+                    <tr>
+                        <th class="flex align-items-center">
+                            <span>{{ "Marge Nette de trésorerie" | uppercase }}</span>
+                            <div class="input-group insurance-cost-box">
+                                <input class="form-control"
+                                       ng-model="vm.insuranceCostPercent"
+                                       type="number"
+                                       min="0" max="100"
+                                       placeholder="MSA"/>
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </th>
+                        <th class="table-number">{{ production.getAnnualNetMargin(vm.currentInvestmentAnnuity(), vm.insuranceCostPercent) | number:2 }} €</th>
+                    </tr>
+                </table>
+                <p>Temps travail: {{production.facility.workHours * vm.facilityNb | number: 1}} h/jour en moyenne</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-xs-12 col-lg-12">
+                <investments-presentation
+                        investments="production.facility.investments"
+                        investment-chosen="vm.investmentChosen"
+                        facility-type="production.facility.type"
+                ></investments-presentation>
+            </div>
+        </div>
+
+    </uib-tab>
+</uib-tabset>

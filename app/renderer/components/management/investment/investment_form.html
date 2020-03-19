@@ -1,0 +1,175 @@
+<form name="investmentForm" ng-submit="vm.onSubmit()">
+    <div class="modal-header">
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('create') != -1">Création d'un nouveau type d'investissement.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('edit') != -1">Modification d'un investissement existant.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('remove') != -1">Suppression d'un investissement.</h3>
+    </div>
+    <div class="modal-body" ng-if="vm.currentState.indexOf('remove') == -1">
+        <div class="row">
+            <h2 class="text-center">Investissement</h2><hr>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="investment_name" class="control-label">Nom</label>
+                    <input type="text" class="form-control {{ investmentForm.investment_name.$invalid ? 'wrong' : 'valid'}}_input" id="investment_name" name="investment_name" ng-model="vm.investment.name" required minlength="0">
+                </div>
+                <div class="form-group">
+                    <label for="investment_description" class="control-label">Description</label>
+                    <textarea class="form-control {{ investmentForm.investment_description.$invalid ? 'wrong' : 'valid'}}_input" id="investment_description" name="investment_description" ng-model="vm.investment.description" required minlength="0"></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="investment_designation" class="control-label">Désignation</label>
+                    <input type="text" class="form-control {{ investmentForm.investment_designation.$invalid ? 'wrong' : 'valid'}}_input" id="investment_designation" name="investment_designation" ng-model="vm.investment.designation" required minlength="0">
+                </div>
+                <div class="form-group">
+                    <label for="investment_detail_designation" class="control-label">Détails désignation</label>
+                    <textarea class="form-control {{ investmentForm.investment_detail_designation.$invalid ? 'wrong' : 'valid'}}_input" id="investment_detail_designation" name="investment_detail_designation" ng-model="vm.investment.details.designation" required minlength="0"></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="investment_papers" class="control-label">Coût du permis de construire</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ investmentForm.investment_papers.$invalid ? 'wrong' : 'valid'}}_input" id="investment_papers" name="investment_papers" ng-model="vm.investment.papers" min="0" required>
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="investment_detail_papers" class="control-label">Détails permis de construire</label>
+                    <textarea class="form-control {{ investmentForm.investment_detail_papers.$invalid ? 'wrong' : 'valid'}}_input" id="investment_detail_papers" name="investment_detail_papers" ng-model="vm.investment.details.papers" minlength="0" required></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="investment_architect_cost" class="control-label">Coût architecte</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ investmentForm.investment_architect_cost.$invalid ? 'wrong' : 'valid'}}_input" id="investment_architect_cost" name="investment_architect_cost" ng-model="vm.investment.architectCost" min="0" required>
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="investment_detail_architect_cost" class="control-label">Détails coût architecte</label>
+                    <textarea class="form-control {{ investmentForm.investment_detail_architect_cost.$invalid ? 'wrong' : 'valid'}}_input" id="investment_detail_architect_cost" name="investment_detail_architect_cost" ng-model="vm.investment.details.architectCost" minlength="0" required></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="investment_personal_contribution" class="control-label">Apport personnel</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control {{ investmentForm.investment_personal_contribution.$invalid ? 'wrong' : 'valid'}}_input" id="investment_personal_contribution" name="investment_personal_contribution" ng-model="vm.investment.personalContribution" min="0" required>
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="investment_detail_personal_contribution" class="control-label">Détails Apport personnel</label>
+                    <textarea class="form-control {{ investmentForm.investment_detail_personal_contribution.$invalid ? 'wrong' : 'valid'}}_input" id="investment_detail_personal_contribution" name="investment_detail_personal_contribution" ng-model="vm.investment.details.personalContribution" minlength="0" required></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="investment_masonry" class="control-label">Gros oeuvre</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ investmentForm.investment_masonry.$invalid ? 'wrong' : 'valid'}}_input" id="investment_masonry" name="investment_masonry" ng-model="vm.investment.masonry" min="0" required>
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="investment_detail_masonry" class="control-label">Détails gros oeuvre</label>
+                    <textarea class="form-control {{ investmentForm.investment_detail_masonry.$invalid ? 'wrong' : 'valid'}}_input" id="investment_detail_masonry" name="investment_detail_masonry" ng-model="vm.investment.details.masonry" minlength="0" required></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="investment_facilityMoutingDeliveryPrice" class="control-label">Livraison et Montage du bâtiment</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ investmentForm.investment_facilityMoutingDeliveryPrice.$invalid ? 'wrong' : 'valid'}}_input" id="investment_facilityMoutingDeliveryPrice" name="investment_facilityMoutingDeliveryPrice" ng-model="vm.investment.facilityMoutingDeliveryPrice" min="0" required>
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="investment_detail_facilityMoutingDeliveryPrice" class="control-label">Détails livraison/montage bâtiment</label>
+                    <textarea class="form-control {{ investmentForm.investment_detail_masonry.$invalid ? 'wrong' : 'valid'}}_input" id="investment_detail_facilityMoutingDeliveryPrice" name="investment_detail_facilityMoutingDeliveryPrice" ng-model="vm.investment.details.facilityMoutingDeliveryPrice" minlength="0" required></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="investment_equipmentMountingDeliveryPrice" class="control-label">Livraison et Montage du matériel</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ investmentForm.investment_equipmentMountingDeliveryPrice.$invalid ? 'wrong' : 'valid'}}_input" id="investment_equipmentMountingDeliveryPrice" name="investment_equipmentMountingDeliveryPrice" ng-model="vm.investment.equipmentMountingDeliveryPrice" min="0" required>
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="investment_details_equipmentMountingDeliveryPrice" class="control-label">Détails livraison/montage matériel</label>
+                    <textarea class="form-control {{ investmentForm.investment_details_equipmentMountingDeliveryPrice.$invalid ? 'wrong' : 'valid'}}_input" id="investment_details_equipmentMountingDeliveryPrice" name="investment_details_equipmentMountingDeliveryPrice" ng-model="vm.investment.details.equipmentMountingDeliveryPrice" minlength="0" required></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="investment_subsidies" class="control-label">Subventions AREA PCAE</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ investmentForm.investment_subsidies.$invalid ? 'wrong' : 'valid'}}_input" id="investment_subsidies" name="investment_subsidies" ng-model="vm.investment.subsidies" min="0" required>
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="investment_details_subsidies" class="control-label">Détails subventions</label>
+                    <textarea class="form-control {{ investmentForm.investment_details_subsidies.$invalid ? 'wrong' : 'valid'}}_input" id="investment_details_subsidies" name="investment_details_subsidies" ng-model="vm.investment.details.subsidies" minlength="0" required></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="investment_helpEuralis" class="control-label">Aide EURALIS Volailles</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ investmentForm.investment_helpEuralis.$invalid ? 'wrong' : 'valid'}}_input" id="investment_helpEuralis" name="investment_helpEuralis" ng-model="vm.investment.helpEuralis" min="0" required>
+                        <span class="input-group-addon">€</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="investment_details_helpEuralis" class="control-label">Détails aides EURALIS Volailles</label>
+                    <textarea class="form-control {{ investmentForm.investment_details_helpEuralis.$invalid ? 'wrong' : 'valid'}}_input" id="investment_details_helpEuralis" name="investment_details_helpEuralis" ng-model="vm.investment.details.helpEuralis" minlength="0" required></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-primary" type="button" ng-click="vm.addNewOption()">
+                    Ajouter une option diverse
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </div>
+            <div ng-repeat="option in vm.investment.options track by $index">
+                <div class="form-group col-md-5">
+                    <label for="diverse_option_{{$index}}_name" class="control-label">Nom</label>
+                    <input id="diverse_option_{{$index}}_name" name="diverse_option_{{$index}}_name" class="form-control {{ investmentForm['diverse_option_'+$index+'_name'].$invalid ? 'wrong' : 'valid'}}_input" type="text" required ng-model="option.name"/>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="diverse_option_{{$index}}_amount" class="control-label">Montant</label>
+                    <input id="diverse_option_{{$index}}_amount" name="diverse_option_{{$index}}_amount" class="form-control {{ investmentForm['diverse_option_'+$index+'_amount'].$invalid ? 'wrong' : 'valid'}}_input" type="number" required ng-model="option.amount"/>
+                </div>
+                <div class="form-group col-md-2" style="padding-top: 26px;">
+                    <button class="btn btn-danger" type="button" ng-click="vm.removeOption($index)">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3" ng-repeat="attachment in vm.investment.attachments track by attachment.name">
+                <button type="button" class="btn btn-default btn-block" ng-click="vm.removeAttachment(attachment)"><span class="glyphicon glyphicon-remove"></span> </button>
+                <p thumb-images="{ file: attachment, height: 100 }"></p>
+            </div>
+        </div>
+        <file-uploader model="vm.investment.attachments"></file-uploader>
+    </div>
+    <div class="modal-body" ng-if="vm.currentState.indexOf('remove') != -1">
+        Confirmer la suppression du {{vm.investment.toString() }}
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="vm.cancel()">Annuler</button>
+        <button class="btn btn-primary" type="submit" ng-if="vm.currentState.indexOf('create') != -1" ng-disabled="vm.isSaving || investmentForm.$invalid">Créer</button>
+        <button class="btn btn-success" type="submit" ng-if="vm.currentState.indexOf('edit') != -1" ng-disabled="vm.isSaving || investmentForm.$invalid">Modifier</button>
+        <button class="btn btn-danger" type="submit" ng-if="vm.currentState.indexOf('remove') != -1" ng-disabled="vm.isSaving || investmentForm.$invalid">Supprimer</button>
+    </div>
+</form>

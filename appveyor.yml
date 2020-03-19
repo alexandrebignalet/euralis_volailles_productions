@@ -1,0 +1,44 @@
+image: Visual Studio 2017
+
+platform:
+- x64
+
+cache:
+- node_modules
+- '%USERPROFILE%\.electron'
+
+init:
+- git config --global core.autocrlf input
+
+install:
+- ps: Install-Product node 8 x64
+- yarn
+
+build_script:
+- yarn webpack
+- yarn build
+
+after_build:
+- 7z a euralis_volailles_productions.zip dist\
+
+
+test: off
+
+artifacts:
+- path: euralis_volailles_productions.zip
+  name: euralis_volailles_productions
+
+deploy:
+- release: euralis_volailles_productions-v$(appveyor_build_version)
+  description: 'Release description'     # deploy on tag push only
+  provider: GitHub
+  artifact: /.*\.zip/
+  auth_token:
+    secure: 608d343489808fe3e2ad6d5751a09b3a50108bed
+  draft: false # your encrypted token from GitHub
+  prerelease: false     # upload all NuGet packages to release assets
+  on:
+   branch: master                # release from master branch only
+   appveyor_repo_tag: true
+   # release from master branch only
+# deploy on tag push only

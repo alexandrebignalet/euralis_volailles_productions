@@ -1,0 +1,49 @@
+<form name="prospectForm" ng-submit="vm.onSubmit()">
+    <div class="modal-header">
+        <h3 class="modal-title">Saisies des informations prospect.</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <h2 class="text-center">Prospect</h2><hr>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="name" class="control-label">Nom</label>
+                    <input type="text" class="form-control {{ prospectForm.name.$invalid ? 'wrong' : 'valid'}}_input" id="name" name="name" ng-model="vm.prospect.name" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="address" class="control-label">Adresse</label>
+                    <input type="text" class="form-control" id="address" name="address" ng-model="vm.prospect.address">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="company" class="control-label">Société</label>
+                    <input type="text" class="form-control" id="company" name="company" ng-model="vm.prospect.company">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="email" class="control-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" ng-model="vm.prospect.email">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="phone" class="control-label">Téléphone</label>
+                    <input type="text" class="form-control" id="phone" name="phone" ng-model="vm.prospect.phone">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="vm.cancel()">Annuler</button>
+        <button class="btn btn-primary" type="submit" ng-disabled="vm.isSaving || prospectForm.$invalid">Imprimer</button>
+    </div>
+</form>

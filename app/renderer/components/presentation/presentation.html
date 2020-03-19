@@ -1,0 +1,12 @@
+<br /><br />
+<div class="container">
+    <uib-tabset active="$ctrl.facilityIndexActive" justified="true" type="pills" class="tab-animation">
+        <uib-tab ng-repeat="productions in $ctrl.productionsByFacilityType track by $index" index="$index"
+                 ng-if="productions.length > 0"
+                 heading="{{ productions[0].facility.type.value | uppercase }}">
+            <previsionnel-batiment active="$ctrl.active" productions="productions"></previsionnel-batiment>
+        </uib-tab>
+    </uib-tabset>
+</div>
+
+<div class="parallax"></div>

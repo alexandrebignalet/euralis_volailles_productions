@@ -1,0 +1,82 @@
+<form name="facilityForm" ng-submit="vm.onSubmit()">
+    <div class="modal-header">
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('create') != -1">Création d'un nouveau bâtiment.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('edit') != -1">Modification d'un bâtiment existant.</h3>
+        <h3 class="modal-title" ng-if="vm.currentState.indexOf('remove') != -1">Suppression d'un bâtiment.</h3>
+    </div>
+    <div class="modal-body" ng-if="vm.currentState.indexOf('remove') == -1">
+        <div class="row">
+            <h2 class="text-center">Bâtiment</h2><hr>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="facility_type" class="control-label">Type de bâtiment</label>
+                    <select class="form-control {{ facilityForm.facility_type.$invalid ? 'wrong' : 'valid'}}_input"
+                            id="facility_type" name="facility_type" ng-model="vm.facility.type" required
+                            ng-options="facilityType as facilityType.value for facilityType in vm.facilityTypes track by facilityType.key">
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="facility_size" class="control-label">Taille des bâtiments</label>
+                    <div class="input-group">
+                        <input type="number" step="any" class="form-control {{ facilityForm.facility_size.$invalid ? 'wrong' : 'valid'}}_input" id="facility_size" name="facility_size" ng-model="vm.facility.size" min="0" required>
+                        <span class="input-group-addon">m²</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="facility_charges" class="control-label">Grille de critères</label>
+                    <select class="form-control {{ facilityForm.facility_charges.$invalid ? 'wrong' : 'valid'}}_input" id="facility_charges" name="facility_charges" ng-model="vm.facility.facilityCharges" required
+                            ng-options="charges as charges.name | uppercase for charges in vm.facilitiesCharges track by charges.id">
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="facility_work_hours" class="control-label">Travail horaire</label>
+                    <div class="input-group">
+                        <input type="number" min="0" step="any" required ng-model="vm.facility.workHours" class="form-control {{ facilityForm.facility_work_hours.$invalid ? 'wrong' : 'valid'}}_input" id="facility_work_hours" name="facility_work_hours">
+                        <span class="input-group-addon">h</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="facility_investments" class="control-label">Investissements</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-{{ facilityForm.facility_investments.$invalid ? 'remove' : 'ok'}}"></span>
+                        </span>
+                        <select class="form-control {{ facilityForm.facility_investments.$invalid ? 'wrong' : 'valid'}}_input"
+                                id="facility_investments"
+                                name="facility_investments"
+                                ng-model="vm.facility.investments"
+                                required
+                                multiple
+                                ng-options="investment as investment.name | uppercase for investment in vm.investments track by investment.id">
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3" ng-repeat="attachment in vm.facility.attachments track by attachment.name">
+                <button type="button" class="btn btn-default btn-block" ng-click="vm.removeAttachment(attachment)"><span class="glyphicon glyphicon-remove"></span> </button>
+                <p thumb-images="{ file: attachment, height: 100 }"></p>
+            </div>
+        </div>
+        <file-uploader model="vm.facility.attachments"></file-uploader>
+    </div>
+    <div class="modal-body" ng-if="vm.currentState.indexOf('remove') != -1">
+        Confirmer la suppression du {{vm.facility.toString()}}
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="vm.cancel()">Annuler</button>
+        <button class="btn btn-primary" type="submit" ng-if="vm.currentState.indexOf('create') != -1" ng-disabled="vm.isSaving || facilityForm.$invalid">Créer</button>
+        <button class="btn btn-success" type="submit" ng-if="vm.currentState.indexOf('edit') != -1" ng-disabled="vm.isSaving || facilityForm.$invalid">Modifier</button>
+        <button class="btn btn-danger" type="submit" ng-if="vm.currentState.indexOf('remove') != -1" ng-disabled="vm.isSaving || facilityForm.$invalid">Supprimer</button>
+    </div>
+</form>

@@ -7,6 +7,8 @@ euralis_volailles_db-dev*
 euralis_volailles_db-test*
 euralis_volailles_db-prod*
 build/electron/
+build/electron-dev/
+build/web/
 docker/lib/
 !docker/lib/.gitkeep
 app/renderer/app.constants.js

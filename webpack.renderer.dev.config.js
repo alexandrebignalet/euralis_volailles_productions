@@ -6,8 +6,8 @@ function createRendererDevConfig() {
     electronDevConfig.target = 'electron-renderer';
     electronDevConfig.output = {
       path: path.resolve(__dirname, 'build/electron-dev'),
-      publicPath : '',
-      filename: `renderer.bundle.js`
+      filename: `renderer.bundle.js`,
+      publicPath: './'
     };
     return electronDevConfig;
 }

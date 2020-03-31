@@ -3,6 +3,7 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const applicationName = "Euralis Volailles Productions";
 
@@ -20,12 +21,14 @@ module.exports = function(env = {}) {
                 },
                 { test: /\.(html|txt)$/, loader: 'raw-loader' },
                 {
-                    test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
+                    test: /\.(woff|woff2|eot|ttf|otf)$/,
                     use: [
                         {
                             loader: 'file-loader',
                             options: {
-                                name: 'fonts/[name].[ext]'
+                                name: '[name].[ext]',
+                                outputPath: 'fonts/',
+                                esModule: false
                             }
                         }
                     ]
@@ -34,7 +37,7 @@ module.exports = function(env = {}) {
                 {
                     test: /\.(scss|sass)$/,
                     use: [
-                        { loader: 'style-loader' },
+                        { loader: MiniCssExtractPlugin.loader },
                         { loader: 'css-loader', options: { url: false } },
                         { loader: 'sass-loader' }
                     ]
@@ -52,7 +55,7 @@ module.exports = function(env = {}) {
                 {
                     test: /\.css$/,
                     use: [
-                        { loader: 'style-loader' },
+                        { loader: MiniCssExtractPlugin.loader },
                         { loader: 'css-loader', options: { url: false } }
                     ]
                 }
@@ -85,6 +88,7 @@ module.exports = function(env = {}) {
             }
         },
         plugins: [
+            new MiniCssExtractPlugin(),
             new LodashModuleReplacementPlugin(),
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({

@@ -6,10 +6,10 @@ module.exports = function (env = {}) {
   const devConfig = createBaseConfig(env);
   devConfig.mode = "development";
   devConfig.devtool = "source-map";
-  devConfig.output.path = path.resolve(__dirname, './dev');
+  devConfig.output.path = path.resolve(__dirname, 'dev');
 
   if (env.bundleAnalyzer) {
-    devConfig.plugins.psuh(new BundleAnalyzerPlugin());
+    devConfig.plugins.push(new BundleAnalyzerPlugin());
   }
 
   if (env.devServer) {

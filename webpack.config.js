@@ -20,6 +20,18 @@ module.exports = function(env = {}) {
                 },
                 { test: /\.(html|txt)$/, loader: 'raw-loader' },
                 {
+                    test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: 'fonts/[name].[ext]'
+                            }
+                        }
+                    ]
+                },
+
+                {
                     test: /\.(scss|sass)$/,
                     use: [
                         { loader: 'style-loader' },
@@ -43,53 +55,11 @@ module.exports = function(env = {}) {
                         { loader: 'style-loader' },
                         { loader: 'css-loader', options: { url: false } }
                     ]
-                },
-                {
-                    test: /\.woff(2)?(\?v=\d+\.\d+\.\d+)?$/,
-                    use: [{
-                        loader: 'url-loader',
-                        options: {
-                            limit: 100000,
-                            mimetype: 'image/application/font-woff',
-                            name: '/fonts/[name].[ext]'
-                        }
-                    }]
-                },
-                {
-                    test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                    use: [{
-                        loader: 'url-loader',
-                        options: {
-                            limit: 100000,
-                            mimetype: 'image/application/octet-stream',
-                            name: 'fonts/[name].[ext]'
-                        }
-                    }]
-                },
-                {
-                    test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                    use: [{
-                        loader: 'file-loader',
-                        options: {
-                            name: 'fonts/[name].[ext]'
-                        }
-                    }]
-                },
-                {
-                    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                    use: [{
-                        loader: 'url-loader',
-                        options: {
-                            limit: 100000,
-                            mimetype: 'image/svg+xml',
-                            name: 'fonts/[name].[ext]'
-                        }
-                    }]
                 }
             ]
         },
         output: {
-            filename: 'js/[name].bundle.js',
+            filename: '[name].bundle.js',
             publicPath: '/'
         },
         optimization: {

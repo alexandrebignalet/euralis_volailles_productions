@@ -135,7 +135,7 @@ export class PDFGenerator {
             ['Prix poussins vaccinés (€/1000)', `${production.getVaccinesPrice()} €`],
             ['Prix aliment producteur (€/t) indexé', `${production.getFoodPrice()} €`],
             ['Prix reprise classé (€/t) indexé', `${this.numberFilter(production.getClassedPrice())} €`],
-            ['Prix reprise déclassé (€/t) indexé', `${this.numberFilter(production.getDeclassedPrice())} €`],
+            ['Prix reprise déclassé (€/t)', `${this.numberFilter(production.getDeclassedPrice())} €`],
             ['Taux de déclassé', `${production.breedingDeclassedPercent * 100} %`],
             ['Taux de saisie', `${production.restraintPercent * 100} %`]
           ]
@@ -173,7 +173,7 @@ export class PDFGenerator {
               ''
             ],
             [
-              'Chauffage (conso + loc cuves) indexé',
+              'Chauffage',
               production.facility.facilityCharges.warming,
               this.numberFilter(Math.round(production.facility.facilityCharges.warming * production.getChickNb()))
             ],

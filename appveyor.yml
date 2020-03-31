@@ -1,5 +1,8 @@
 image: Visual Studio 2017
 
+environment:
+  nodejs_version: "9.11.1"
+
 platform:
 - x64
 

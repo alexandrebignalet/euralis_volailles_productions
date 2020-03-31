@@ -3,7 +3,6 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const applicationName = "Euralis Volailles Productions";
 
@@ -37,7 +36,7 @@ module.exports = function(env = {}) {
                 {
                     test: /\.(scss|sass)$/,
                     use: [
-                        { loader: MiniCssExtractPlugin.loader },
+                        { loader: 'style-loader' },
                         { loader: 'css-loader', options: { url: false } },
                         { loader: 'sass-loader' }
                     ]
@@ -55,7 +54,7 @@ module.exports = function(env = {}) {
                 {
                     test: /\.css$/,
                     use: [
-                        { loader: MiniCssExtractPlugin.loader },
+                        { loader: 'style-loader' },
                         { loader: 'css-loader', options: { url: false } }
                     ]
                 }
@@ -88,7 +87,6 @@ module.exports = function(env = {}) {
             }
         },
         plugins: [
-            new MiniCssExtractPlugin(),
             new LodashModuleReplacementPlugin(),
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({

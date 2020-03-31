@@ -25,9 +25,9 @@ function createWindow () {
     mainWindow.maximize();
 
     // Open the DevTools.
-    //  if(process.env.NODE_ENV === 'development') {
+    if(process.env.NODE_ENV === 'development') {
         mainWindow.openDevTools({detach: true});
-     // }
+    }
 
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {

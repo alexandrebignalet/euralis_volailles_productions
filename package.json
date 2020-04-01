@@ -6,6 +6,10 @@
   "main": "build/electron/main.bundle.js",
   "author": "Alexandre BIGNALET",
   "license": "ISC",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/alexandrebignalet/euralis_volailles_productions.git"
+  },
   "build": {
     "appId": "com.euralis_volailles.productions",
     "files": [
@@ -13,7 +17,9 @@
       "node_modules/**/*",
       "package.json"
     ],
-    "publish": null
+    "publish": [
+      "github"
+    ]
   },
   "dependencies": {
     "angular": "^1.6.4",

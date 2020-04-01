@@ -1,7 +1,12 @@
 import path from 'path';
 import url from 'url';
 
+const log = require('electron-log');
 const electron = require('electron');
+const { autoUpdater } = require('electron-updater');
+
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -9,6 +14,14 @@ const BrowserWindow = electron.BrowserWindow;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow = null;
+
+app.on('ready', function()  {
+    autoUpdater.checkForUpdatesAndNotify().then(
+      (...a) => {
+          console.log(a);
+      }
+    )
+});
 
 function createWindow () {
 

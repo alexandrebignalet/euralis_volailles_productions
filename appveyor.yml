@@ -2,8 +2,6 @@ image: Visual Studio 2017
 
 environment:
   nodejs_version: "9.11.1"
-  github_auth_token:
-    secure: HGp3GpN0SfgFXZP4GfgAG6xh3uen4maytIe2H1lkhsrQ78wMv+GlFPz1nszmAKLb
 
 platform:
   - x64
@@ -40,5 +38,7 @@ deploy:
     draft: false
     prerelease: false
     tag: $(APPVEYOR_REPO_TAG_NAME)
+    auth_token:
+      secure: HGp3GpN0SfgFXZP4GfgAG6xh3uen4maytIe2H1lkhsrQ78wMv+GlFPz1nszmAKLb
     on:
       appveyor_repo_tag: true

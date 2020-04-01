@@ -316,7 +316,7 @@ export class PDFGenerator {
     ];
   }
 
-  generateRotations(nbFacilities, productions, investment, annuity) {
+  generateRotations(nbFacilities, productions, investment, annuity, insuranceCostPercent) {
     let docDefinition = {
       content: this.putHeader('\n ROTATIONS REALISABLES \n  POUR UNE SURFACE DE ' + productions[0].facility.size * nbFacilities + 'm²'),
       styles: {
@@ -369,8 +369,14 @@ export class PDFGenerator {
         width: 'auto',
         headerRows: 1,
         body: [
-          ['Type de production', 'Surface bâtiment (m²)', 'Surface parcours minimum (ha)',
-            'Densité (m²/poulet)', 'Nombre de bandes / an', 'Nombre / bandes', 'Nbre vendus / an', 'Marge brute / sujet vendu (€ HT)', 'Marge brute / an (€ HT)']
+          ['Type de production',
+            'Surface bâtiment (m²)',
+            'Surface parcours minimum (ha)',
+            'Densité (m²/poulet)',
+            'Nombre de bandes / an',
+            'Nombre / bandes',
+            'Marge brute / sujet vendu (€ HT)',
+            'Marge brute / an (€ HT)']
         ]
       }
     };
@@ -380,12 +386,11 @@ export class PDFGenerator {
         productions[i].name,
         productions[i].facility.size * nbFacilities,
         productions[i].chickBySquare * productions[i].getChickNb() / 10000,
-        Math.round(productions[i].chickNb / productions[i].facility.size * 100) / 100,
+        this.numberFilter(Math.round(productions[i].chickNb / productions[i].facility.size * 100) / 100),
         productions[i].breedingPerYear,
         productions[i].chickNb * nbFacilities,
-        Math.round(productions[i].getSoldChicks()),
-        Math.round(productions[i].brutMarginPerSoldChick * 100) / 100,
-        Math.round(productions[i].getAnnualBrutMargin())
+        this.numberFilter(Math.round(productions[i].brutMarginPerSoldChick * 100) / 100),
+        this.numberFilter(Math.round(productions[i].getAnnualBrutMargin()))
       ])
     }
 
@@ -393,51 +398,49 @@ export class PDFGenerator {
       return acc + production.getAnnualBrutMargin();
     }, 0);
 
-    table.table.body.push(['', '', '', '', '', '', '', '', {text: Math.round(total) + '€', fontSize: 13}]);
-
     docDefinition.content = docDefinition.content.concat(table);
+    docDefinition.content.push({
+      columns: [
+        {
+          width: 280,
+          text: ''
+        },
+        {
+          width: 180,
+          text: 'Marge brute annuelle',
+          bold: true
+        },
+        {
+          width: 100,
+          text: `${this.numberFilter(Math.round(total))} €`,
+          bold: true,
+          fontSize: 13
+        }
+      ]
+    });
 
-    if (investment !== 'none') {
+    const totalBeforeInsurance = investment !== DEFAULT_INVESTMENT_CHOOSEN
+      ? total
+      : total - investment.getAnnuity(annuity.duration, annuity.interest);
+
+    if (investment !== DEFAULT_INVESTMENT_CHOOSEN) {
+      const annuityTotal = investment.getAnnuity(annuity.duration, annuity.interest);
+
+      docDefinition.content.push('\n');
       docDefinition.content.push({
         columns: [
           {
-            width: 50,
-            text: 'Annuité ',
-            bold: true
-          },
-          {
-            width: 110,
-            text: ' (Investissement de '
-          },
-          {
-            width: 60,
-            text: Math.round(investment.getTotal()) + '€',
-            bold: true
-          },
-          {
-            width: 30,
-            text: ' sur '
-          },
-          {
-            width: 40,
-            text: annuity.duration + ' ans ',
-            bold: true
-          },
-          {
-            width: 10,
-            text: ' à'
-          },
-          {
-            width: 60,
-            text: annuity.interest + '%)'
-          },
-          {
-            width: 100,
+            width: 280,
             text: ''
           },
           {
+            width: 180,
+            text: 'Annuité',
+            bold: true
+          },
+          {
             width: 100,
-            text: Math.round(investment.getAnnuity(annuity.duration, annuity.interest)) + '€',
+            text: `${this.numberFilter(Math.round(annuityTotal))} €`,
             bold: true,
             fontSize: 13
           }
@@ -446,30 +449,36 @@ export class PDFGenerator {
       docDefinition.content.push({
         columns: [
           {
-            width: 330,
-            text: 'Avec ' + investment.name + ' ' + investment.designation + '\n(AREA et aides EURALIS déduites)',
+            width: '*',
+            text: [
+              'Investissement de',
+              {text: ` ${this.numberFilter(Math.round(investment.getTotal()))} €`, bold: true},
+              {text: ` sur ${annuity.duration} ans`, bold: true},
+              ` à ${annuity.interest}%
+              Avec ${investment.name} ${investment.designation}
+              (AREA et aides EURALIS déduites)`
+            ]
           },
           {
-            width: 100,
+            width: 260,
             text: ''
           }
         ]
       });
-      docDefinition.content.push('\n');
       docDefinition.content.push({
         columns: [
           {
-            width: 300,
+            width: 280,
             text: ''
           },
           {
-            width: 160,
+            width: 180,
             text: 'Marge nette avant MSA',
             bold: true
           },
           {
             width: 100,
-            text: Math.round(total - investment.getAnnuity(annuity.duration, annuity.interest)) + '€',
+            text: `${this.numberFilter(Math.round(totalBeforeInsurance))} €`,
             bold: true,
             fontSize: 13
           }
@@ -480,17 +489,17 @@ export class PDFGenerator {
       docDefinition.content.push({
         columns: [
           {
-            width: 300,
+            width: 280,
             text: ''
           },
           {
-            width: 160,
+            width: 180,
             text: 'Marge nette avant MSA',
             bold: true
           },
           {
             width: 100,
-            text: Math.round(total) + '€',
+            text: `${this.numberFilter(Math.round(totalBeforeInsurance))} €`,
             bold: true,
             fontSize: 13
           }
@@ -498,6 +507,27 @@ export class PDFGenerator {
       });
       docDefinition.content.push('\n');
     }
+
+    const insuranceCost = totalBeforeInsurance * insuranceCostPercent / 100;
+    docDefinition.content.push({
+      columns: [
+        {
+          width: 280,
+          text: ''
+        },
+        {
+          width: 180,
+          text: `Marge nette de trésorerie (${insuranceCostPercent}%)`,
+          bold: true
+        },
+        {
+          width: 100,
+          text: `${this.numberFilter(Math.round(totalBeforeInsurance - insuranceCost), 2)} €`,
+          bold: true,
+          fontSize: 13
+        }
+      ]
+    });
     docDefinition.content.push({
       text: '\n\nMarge brute = Ventes - poussins, aliment, cotis, prophylaxie, gaz, eau, edf, paille, attrapage, chaponnage, assurances',
       bold: true,

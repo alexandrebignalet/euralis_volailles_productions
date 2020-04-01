@@ -68,7 +68,9 @@ export const RotationComponent = {
               {
                 interest: this.investment.interest,
                 duration: this.investment.annuityDuration
-            });
+              },
+              this.insuranceCostPercent
+            );
         }
 
         getNetMarginForChosenProductionsBeforeInsurance() {

@@ -32,12 +32,13 @@ artifacts:
 
 deploy:
 - release: euralis_volailles_productions-v$(appveyor_build_version)
-  description: 'Release description'     # deploy on tag push only
+  description: 'Release description'
   provider: GitHub
   artifact: /.*\.zip/
   auth_token:
     secure: a5f1f178b8e92cdb86797e0dea35b943d622ba62
-  draft: false # your encrypted token from GitHub
-  prerelease: false     # upload all NuGet packages to release assets
+  draft: false
+  prerelease: false
   on:
-   appveyor_repo_tag: true # deploy on tag push only
+    branch: master
+    APPVEYOR_REPO_TAG: true

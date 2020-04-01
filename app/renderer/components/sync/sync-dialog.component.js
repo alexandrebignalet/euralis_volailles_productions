@@ -1,4 +1,4 @@
-import './google_loader.scss';
+import './sync-dialog.scss';
 import template from './sync-dialog.html';
 
 export const SyncDialogComponent = {
@@ -15,19 +15,27 @@ export const SyncDialogComponent = {
       this.state = $state;
 
       this.PouchDbService = PouchDbService;
-      this.SidebarService = SidebarService;
+      this.sidebarService = SidebarService;
       this.syncHandler = null;
+      this.isSyncing = false;
 
       this.logs = [];
-      this.isSyncing = false;
+    }
+
+    isSyncButtonDisabled() {
+      return !this.password && !this.username;
     }
 
     synchronise() {
       this.PouchDbService.sync(this.username, this.password).then((syncHandler) => {
         this.isSyncing = true;
 
-        this.syncHandler = syncHandler().on('complete', (res) => {
-          this.SidebarService.closeNav();
+        this.syncHandler = syncHandler().on('complete', () => {
+          this.sidebarService.closeNav();
+
+          this.log("Aucune modification à récupérer.");
+          this.log("Synchronisation terminée.");
+
           this.endSync(2000);
         })
           .on('change', (res) => {
@@ -65,7 +73,7 @@ export const SyncDialogComponent = {
       this.syncHandler.cancel().then(() => this.isSyncing = false)
     }
 
-    endSync(closeBeforeTime) {
+    endSync(closeBeforeTime = 0) {
       this.timeout(() => {
         this.isSyncing = false;
         this.scope.$apply();
@@ -74,9 +82,7 @@ export const SyncDialogComponent = {
     }
 
     close() {
-      this.timeout(() => {
-        this.modalInstance.close()
-      }, 1000);
+      this.modalInstance.close()
     }
   },
   controllerAs: 'vm'

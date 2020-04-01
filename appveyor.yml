@@ -39,8 +39,8 @@ deploy:
     artifact: /.*\.zip/
     draft: false
     prerelease: false
+    tag: $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
       secure: $env:github_auth_token
     on:
-      branch: master
-      APPVEYOR_REPO_TAG: true
+      appveyor_repo_tag: true

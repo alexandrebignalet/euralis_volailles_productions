@@ -1,14 +1,14 @@
 {
   "name": "euralis_volailles_production",
   "applicationName": "Euralis Volailles Productions",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Euralis Volailles Desktop App",
   "main": "build/electron/main.bundle.js",
   "author": "Alexandre BIGNALET",
   "license": "ISC",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/alexandrebignalet/euralis_volailles_productions.git"
+    "type": "git",
+    "url": "https://github.com/alexandrebignalet/euralis_volailles_productions.git"
   },
   "build": {
     "appId": "com.euralis_volailles.productions",

@@ -15,10 +15,10 @@ init:
 
 install:
   - ps: Install-Product node $env:nodejs_version
+  - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%'
   - npm i
 
 build_script:
-  - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%'
   - npm run release
 
 after_build:

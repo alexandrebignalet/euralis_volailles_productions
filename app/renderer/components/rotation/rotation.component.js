@@ -9,13 +9,12 @@ export const RotationComponent = {
             'ngInject';
 
             this.facilityTypes = FACILITIES_TYPES;
-            this.facilityType = null;
+            this.facilityType = FACILITIES_TYPES[0];
             this.facilityNb = 2;
             this.productionsChosen = [];
             this.filter = facilityFilter;
 
             this.investmentChosen = 'none';
-            this.showDialog = false;
             this.investment = {
                 annuityDuration: 15,
                 interest: 2.5
@@ -38,14 +37,32 @@ export const RotationComponent = {
             return !!this.PDFGenerator.UserService.getUser();
         }
 
+        anyProductionChosen() {
+            return this.productionsChosen.length > 0;
+        }
+
+        canGeneratePDF() {
+            return this.anyProductionChosen()
+            && this.investment.interest
+            && this.investment.annuityDuration
+            && this.hasUser();
+        }
+
         getTotalProductionsChosen() {
             return this.productionsChosen.reduce((acc, production) => {
                 return  acc + production.getAnnualBrutMargin();
             }, 0);
         }
 
-        generatePDF(nbFacilities, productions, investment, annuity) {
-            this.PDFGenerator.generateRotations(nbFacilities, productions, investment, annuity);
+        generatePDF() {
+            this.PDFGenerator.generateRotations(
+              this.facilityNb,
+              this.productionsChosen,
+              this.investmentChosen,
+              {
+                interest: this.investment.interest,
+                duration: this.investment.annuityDuration
+            });
         }
 
         getNetMarginForChosenProductions(annuity) { return this.getTotalProductionsChosen() - annuity; }

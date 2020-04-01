@@ -5,48 +5,22 @@
         <span style="color: #a6ce39;">des productions</span>
     </h1><hr>
 
-    <div class="row text-center">
-        <div class="col-md-3">
+    <div class="row flex">
+        <div class="col-md-2">
             <label for="facility_nb" class="control-label">Nombre de bâtiment</label>
             <input class="form-control" type="number" id="facility_nb" name="facility_nb" ng-model="vm.facilityNb" required />
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="facility_type" class="control-label">Type de bâtiment</label>
             <select class="form-control" id="facility_type" name="facility_type" ng-model="vm.facilityType" required>
                 <option ng-repeat="facilityType in vm.facilityTypes"
                         ng-value="facilityType">{{facilityType.value | uppercase}}</option>
             </select>
-
-        </div>
-
-        <div class="col-md-3 pull-right" style="padding-top: 3%">
-            <div class="input-group" id="input_options">
-                <button ng-click="showDialog = !showDialog" class="btn btn-info">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button>
-                <button ng-click="vm.generatePDF(vm.facilityNb, vm.productionsChosen, vm.investmentChosen, {interest: vm.investment.interest, duration: vm.investment.annuityDuration})"
-                        ng-if="vm.productionsChosen.length > 0 && vm.investment.interest && vm.investment.annuityDuration"
-                        class="btn btn-default"
-                        ng-disabled="!vm.hasUser()">
-                    <span class="glyphicon glyphicon-print"></span>
-                </button>
-            </div>
-
-            <div ng-if="showDialog">
-                <div class="form-group">
-                    <label for="help_euralis" class="control-label">Aides EURALIS</label>
-                    <input class="form-control" type="number" id="help_euralis" name="help_euralis" ng-model="vm.investmentChosen.helpEuralis" required />
-                </div>
-                <div class="form-group">
-                    <label for="subsidies" class="control-label">Subventions AREA PCAE</label>
-                    <input class="form-control" type="number" id="subsidies" name="subsidies" ng-model="vm.investmentChosen.subsidies" required />
-                </div>
-            </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12 text-center" ng-if="vm.facilityType" style="padding-top: 10px;">
-            <ul class="nav nav-pills">
+            <ul class="nav nav-pills" style="min-width: 230px;">
                 <li ng-repeat="production in vm.productions | facility: vm.facilityType : vm.facilityNb track by production.id"
                     ng-class="{'active': vm.productionsChosen.indexOf(production) != -1}">
                     <a href ng-click="vm.addProduction(production)">{{production.name}} ({{production.facility.size}})</a>
@@ -54,8 +28,17 @@
             </ul>
         </div>
     </div>
-    <hr>
-    <table class="table" ng-if="vm.productionsChosen.length > 0">
+    <br>
+    <button ng-click="vm.generatePDF()"
+            ng-if="vm.canGeneratePDF()"
+            class="btn btn-default"
+            ng-disabled="!vm.hasUser()">
+        <span class="glyphicon glyphicon-print"></span>
+        Imprimer
+    </button>
+    <br>
+    <br>
+    <table class="table" ng-if="vm.anyProductionChosen()">
         <thead>
             <tr>
                 <th>Type de production</th>
@@ -64,7 +47,6 @@
                 <th>Densité (m²)</th>
                 <th>Nbre de bande / an</th>
                 <th>Nbre / bande</th>
-                <th>Nbre vendus / an</th>
                 <th>Marge brute / sujet vendus (€)</th>
                 <th>Marge brute / an (€)</th>
                 <th>Supprimer</th>
@@ -80,7 +62,6 @@
                     <input type="number" ng-model="production.breedingPerYear" class="form-control" />
                 </td>
                 <td>{{production.chickNb * vm.facilityNb | number:0}}</td>
-                <td>{{production.getSoldChicks() | number:2}}</td>
                 <td>
                     <input type="number" class="form-control" ng-model="production.brutMarginPerSoldChick" step="0.00001"/>
                 </td>
@@ -101,6 +82,7 @@
                 investment-chosen="vm.investmentChosen"
                 duration="vm.investment.annuityDuration"
                 interest="vm.investment.interest">
+                <td>toto</td>
             </tr>
             <tr>
                 <td colspan="8">
@@ -117,4 +99,15 @@
             </tr>
         </tbody>
     </table>
+
+
+    <div class="row" ng-if="vm.anyProductionChosen()">
+        <div class="col-md-12 col-xs-12 col-lg-12">
+            <investments-presentation
+                    investments="vm.investmentsAvailable"
+                    investment-chosen="vm.investmentChosen"
+                    facility-type="vm.facilityType"
+            ></investments-presentation>
+        </div>
+    </div>
 </div>

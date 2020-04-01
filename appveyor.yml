@@ -33,6 +33,7 @@ artifacts:
 deploy:
 
   - provider: GitHub
+    description: 'Release description'
     artifact: /.*\.zip/
     draft: false
     prerelease: false

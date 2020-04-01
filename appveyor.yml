@@ -2,6 +2,8 @@ image: Visual Studio 2017
 
 environment:
   nodejs_version: "9.11.1"
+  github_auth_token:
+    secure: HGp3GpN0SfgFXZP4GfgAG6xh3uen4maytIe2H1lkhsrQ78wMv+GlFPz1nszmAKLb
 
 platform:
   - x64
@@ -37,6 +39,8 @@ deploy:
     artifact: /.*\.zip/
     draft: false
     prerelease: false
+    auth_token:
+      secure: $env:github_auth_token
     on:
       branch: master
-      appveyor_repo_tag: true
+      APPVEYOR_REPO_TAG: true

@@ -18,7 +18,6 @@ install:
   - npm i
 
 build_script:
-  - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%'
   - npm run release
 
 after_build:

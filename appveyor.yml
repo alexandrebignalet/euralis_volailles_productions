@@ -15,10 +15,10 @@ init:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%'
   - npm i
 
 build_script:
+  - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%'
   - npm run release
 
 after_build:
@@ -29,3 +29,16 @@ test: off
 artifacts:
   - path: euralis_volailles_productions.zip
     name: euralis_volailles_productions
+
+deploy:
+
+  - provider: GitHub
+    description: 'Release description'
+    artifact: /.*\.zip/
+    draft: false
+    prerelease: false
+    tag: $(APPVEYOR_REPO_TAG_NAME)
+    auth_token:
+      secure: 2G0j7P9PHKTHMf7p8b3/Hc0QlqKI4WoMTrTwtUpZ71VKSnREQUP6oe8LkoK8a4Uh
+    on:
+      appveyor_repo_tag: true

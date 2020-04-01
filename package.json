@@ -1,7 +1,6 @@
 {
   "name": "euralis_volailles_production",
   "applicationName": "Euralis Volailles Productions",
-  "version": "1.2.0",
   "description": "Euralis Volailles Desktop App",
   "main": "build/electron/main.bundle.js",
   "author": "Alexandre BIGNALET",

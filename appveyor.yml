@@ -36,7 +36,7 @@ deploy:
   provider: GitHub
   artifact: /.*\.zip/
   auth_token:
-    secure: 608d343489808fe3e2ad6d5751a09b3a50108bed
+    secure: a5f1f178b8e92cdb86797e0dea35b943d622ba62
   draft: false # your encrypted token from GitHub
   prerelease: false     # upload all NuGet packages to release assets
   on:

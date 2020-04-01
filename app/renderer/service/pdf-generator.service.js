@@ -249,7 +249,7 @@ export class PDFGenerator {
         headerRows: 1,
         body: [
           [
-            `PRODUIT TOTAL PAR BANDE (Ventes)`,
+            `PRODUIT TOTAL DES VENTES PAR BANDE`,
             `${this.numberFilter(Math.round(production.getTotalWages()))} €`
           ],
           [

@@ -91,45 +91,18 @@
                     </button>
                 </td>
             </tr>
-            <tr ng-if="vm.productionsChosen.length > 0">
+            <tr>
                 <td colspan="8"></td>
                 <td>{{ vm.getTotalProductionsChosen() | number: 0 }}€</td>
             </tr>
-            <tr ng-if="vm.productionsChosen.length > 0">
-                <td colspan="8">
-                    <form class="form-inline">
-                        <div class="col-md-1"><strong>Annuité</strong></div>
-                        <div class="col-md-4">
-                            <select class="form-control" id="annuity" ng-model="vm.investmentChosen" required>
-                                <option disabled selected value>selectionner un investissement</option>
-                                <option ng-value="'none'">PAS D'INVESTISSEMENT</option>
-                                <option ng-repeat="investment in vm.getInvestmentsAvailable()" ng-value="investment">{{investment.name | uppercase}}</option>
-                            </select>
-                            <strong>(AREA et aides EURALIS déduites)</strong>
-                        </div>
-                        <div class="col-md-3" ng-if="vm.investmentChosen != 'none'">
-                            <div class="input-group">
-                                <span class="input-group-addon">/</span>
-                                <input class="form-control" ng-model="vm.investment.annuityDuration" type="number" min="0"/>
-                                <span class="input-group-addon">ans</span>
-                            </div>
-                            <strong ng-if="vm.investmentChosen"> Investissement de
-                                {{vm.investmentChosen.getTotal()|number:0}}€</strong>
-                        </div>
-                        <div class="col-md-3 input-group" ng-if="vm.investmentChosen != 'none'">
-                            <span class="input-group-addon">à</span>
-                            <input class="form-control" ng-model="vm.investment.interest" type="number" min="0"/>
-                            <span class="input-group-addon">%</span>
-                        </div>
-                    </form>
-                </td>
-                <td>
-                    <strong ng-if="vm.investmentChosen != 'none'">
-                        {{ vm.investmentChosen.getAnnuity(vm.investment.annuityDuration, vm.investment.interest) | number:0 }} €
-                    </strong>
-                </td>
+            <tr annuity-line
+                colspan="8"
+                investments="vm.investmentsAvailable"
+                investment-chosen="vm.investmentChosen"
+                duration="vm.investment.annuityDuration"
+                interest="vm.investment.interest">
             </tr>
-            <tr ng-if="vm.productionsChosen.length > 0">
+            <tr>
                 <td colspan="8">
                     <strong class="pull-right">Marge Nette avant MSA</strong>
                 </td>

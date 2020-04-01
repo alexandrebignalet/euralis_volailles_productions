@@ -13,7 +13,7 @@ export const RotationComponent = {
             this.facilityNb = 2;
             this.productionsChosen = [];
             this.filter = facilityFilter;
-            this.timeout = $timeout;
+
             this.investmentChosen = 'none';
             this.showDialog = false;
             this.investment = {
@@ -23,45 +23,15 @@ export const RotationComponent = {
 
             this.PDFGenerator = PDFGenerator;
 
-            $scope.$watch('vm.facilityType', () => {
-                this.timeout(() => {
-                    $('#production_selector').multiselect('rebuild');
-                });
-            });
+            this.investmentsAvailable = [];
+            $scope.$watchCollection('vm.productionsChosen', (productions) => {
+                this.investmentsAvailable = this.retrieveInvestmentsAvailable(productions);
+            })
         }
 
         $onInit() {
             this.productions = this.productions.map((prod) => new ProductionRotation(prod));
             this.productions.push(new PintadesDemareesRotation());
-
-            this.timeout(() => {
-                $('#production_selector').multiselect({
-                    onChange: () => {
-                        var selectedOptions = $('#production_selector option:selected');
-
-                        if (selectedOptions.length >= 3) {
-                            // Disable all other checkboxes.
-                            var nonSelectedOptions = $('#production_selector option').filter(function() {
-                                return !$(this).is(':selected');
-                            });
-
-                            nonSelectedOptions.each(function() {
-                                var input = $('input[value="' + $(this).val() + '"]');
-                                input.prop('disabled', true);
-                                input.parent('li').addClass('disabled');
-                            });
-                        }
-                        else {
-                            // Enable all checkboxes.
-                            $('#production_selector option').each(function() {
-                                var input = $('input[value="' + $(this).val() + '"]');
-                                input.prop('disabled', false);
-                                input.parent('li').addClass('disabled');
-                            });
-                        }
-                    }
-                });
-            });
         }
 
         hasUser() {
@@ -93,21 +63,13 @@ export const RotationComponent = {
             }
         }
 
-        getInvestmentsAvailable() {
-            let out = [];
-            let tmp = [];
-
-            this.productionsChosen.forEach((production) => {
-                production.facility.investments.forEach((investment) => {
-                    if(tmp.indexOf(investment.id) === -1) {
-                        tmp.push(investment.id);
-                        out.push(investment);
-                    }
-                })
-            });
-
-            tmp = null;
-            return out;
+        retrieveInvestmentsAvailable(productions) {
+            return productions
+              .reduce((acc, prod) => {
+                  const ids = acc.map(({ id }) => id);
+                  const notIn = prod.facility.investments.filter(({ id }) => ids.indexOf(id) === -1);
+                  return acc.concat(notIn)
+              }, []);
         }
     },
     controllerAs: 'vm'

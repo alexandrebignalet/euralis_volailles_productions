@@ -1,0 +1,19 @@
+<form class="form-inline flex justify-content-space-between align-items-center m-0">
+    <div>Annuité</div>
+    <div>
+        <select class="form-control" id="annuity" ng-model="$ctrl.investmentChosen" required>
+            <option ng-value="'none'">Pas d'investissement</option>
+            <option ng-repeat="investment in $ctrl.investments" ng-value="investment">{{investment.name | uppercase}}</option>
+        </select>
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon">/</span>
+        <input class="form-control" ng-model="$ctrl.duration" type="number" min="0"/>
+        <span class="input-group-addon">ans</span>
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon">à</span>
+        <input class="form-control" ng-model="$ctrl.interest" type="number" min="0"/>
+        <span class="input-group-addon">%</span>
+    </div>
+</form>

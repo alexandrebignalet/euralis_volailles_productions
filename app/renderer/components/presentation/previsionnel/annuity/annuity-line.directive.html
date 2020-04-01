@@ -1,0 +1,8 @@
+<th colspan="{{vm.colspan}}">
+    <annuity investments="vm.investments"
+             investment-chosen="vm.investmentChosen"
+             duration="vm.duration"
+             interest="vm.interest">
+    </annuity>
+</th>
+<th class="table-number">{{ vm.currentInvestmentAnnuity() | number:0 }} €</th>

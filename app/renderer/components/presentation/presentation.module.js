@@ -10,8 +10,9 @@ import {PrevisionnelBatimentComponent} from './previsionnel/previsionnel_batimen
 import {FileInputDirective} from '../../service/file_input.directive';
 import {HighlighterDirective} from './highlighter.directive';
 import {InvestmentsPresentationComponent} from "./previsionnel/investment/investments_presentation.component";
+import {AnnuityModule} from "./previsionnel/annuity/annuity.module";
 
-export const PresentationModule = angular.module('PresentationModule', [rzModule, ImageLoaderModule, animate])
+export const PresentationModule = angular.module('PresentationModule', [rzModule, ImageLoaderModule, animate, AnnuityModule])
     .config(($stateProvider) => {
         'ngInject';
 

@@ -136,15 +136,11 @@ export class Production {
         return this.getChickNb() * this.consumptionIndex * this.avgWeight;
     }
 
-    getAnnualBrutMargin(){
+    getAnnualBrutMargin() {
         return this.getBrutMargin() * this.breedingPerYear;
     }
 
-    getAnnualBrutMarginPerSquareMeter() {
-        return this.getAnnualBrutMargin() / this.facility.size;
-    }
-
-    getAnnualNetMargin(annuity, insuranceCostPercent){
+    getAnnualNetMargin(annuity, insuranceCostPercent) {
         const annualNetMarginBeforeInsurance = this.getBrutMargin() * this.breedingPerYear - annuity;
         if (!insuranceCostPercent) return annualNetMarginBeforeInsurance;
         return annualNetMarginBeforeInsurance * ((100 - insuranceCostPercent) / 100);

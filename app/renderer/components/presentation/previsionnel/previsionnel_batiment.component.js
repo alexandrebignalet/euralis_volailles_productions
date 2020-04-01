@@ -74,6 +74,12 @@ export const PrevisionnelBatimentComponent = {
                 production.setFacilitiesNb(this.facilityNb);
             });
         }
+
+        currentInvestmentAnnuity() {
+            return processInvestmentAnnuity(
+              this.investmentChosen, { duration: this.annuityDuration, interest: this.interest }
+            )
+        }
     },
     controllerAs: 'vm'
 };

@@ -72,9 +72,14 @@
                     </button>
                 </td>
             </tr>
+        </tbody>
+    </table>
+    <br>
+    <table class="table" ng-if="vm.anyProductionChosen()">
+        <tbody>
             <tr>
-                <td colspan="8"></td>
-                <td>{{ vm.getTotalProductionsChosen() | number: 0 }}€</td>
+                <th colspan="8" class="no-border-top">Marge brute annuelle avec {{vm.breedingPerYear()}} bandes par année</th>
+                <th>{{ vm.getTotalProductionsChosen() | number: 0 }}€</th>
             </tr>
             <tr annuity-line
                 colspan="8"
@@ -82,20 +87,29 @@
                 investment-chosen="vm.investmentChosen"
                 duration="vm.investment.annuityDuration"
                 interest="vm.investment.interest">
-                <td>toto</td>
             </tr>
             <tr>
-                <td colspan="8">
-                    <strong class="pull-right">Marge Nette avant MSA</strong>
-                </td>
-                <td>
-                    <strong ng-if="vm.investmentChosen != 'none'">
-                        {{vm.getNetMarginForChosenProductions(vm.investmentChosen.getAnnuity(vm.investment.annuityDuration, vm.investment.interest)) | number:0 }} €
-                    </strong>
-                    <strong ng-if="vm.investmentChosen == 'none'">
-                        {{vm.getNetMarginForChosenProductions(0) | number:0 }} €
-                    </strong>
-                </td>
+                <th colspan="8">Marge Nette avant MSA</th>
+                <th>{{vm.getNetMarginForChosenProductionsBeforeInsurance() | number:0 }} €</th>
+            </tr>
+            <tr>
+                <th colspan="8">
+                    <div class="flex align-items-center">
+                        <span>Marge Nette de trésorerie</span>
+                        <div class="input-group insurance-cost-box">
+                            <input class="form-control"
+                                   ng-model="vm.insuranceCostPercent"
+                                   type="number"
+                                   min="0" max="100"
+                                   placeholder="MSA"/>
+                            <span class="input-group-addon">%</span>
+                        </div>
+                    </div>
+
+                </th>
+                <th class="vertical-align-middle">
+                    {{ vm.getNetMarginForChosenProductions() | number:2 }} €
+                </th>
             </tr>
         </tbody>
     </table>

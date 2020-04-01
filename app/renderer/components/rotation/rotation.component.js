@@ -1,5 +1,6 @@
 import template from './rotation.html';
 import {PintadesDemareesRotation, ProductionRotation} from "./production.rotation";
+import {DEFAULT_INVESTMENT_CHOOSEN} from "../presentation/previsionnel/functions";
 
 export const RotationComponent = {
     bindings: { productions: '<' },
@@ -14,6 +15,7 @@ export const RotationComponent = {
             this.productionsChosen = [];
             this.filter = facilityFilter;
 
+            this.insuranceCostPercent = 0;
             this.investmentChosen = 'none';
             this.investment = {
                 annuityDuration: 15,
@@ -48,6 +50,10 @@ export const RotationComponent = {
             && this.hasUser();
         }
 
+        breedingPerYear() {
+            return this.productionsChosen.reduce((sum, rot) => sum + rot.breedingPerYear, 0)
+        }
+
         getTotalProductionsChosen() {
             return this.productionsChosen.reduce((acc, production) => {
                 return  acc + production.getAnnualBrutMargin();
@@ -65,7 +71,18 @@ export const RotationComponent = {
             });
         }
 
-        getNetMarginForChosenProductions(annuity) { return this.getTotalProductionsChosen() - annuity; }
+        getNetMarginForChosenProductionsBeforeInsurance() {
+            const annuity = this.investmentChosen !== DEFAULT_INVESTMENT_CHOOSEN
+              ? this.investmentChosen.getAnnuity(this.investment.annuityDuration, this.investment.interest)
+              : 0;
+            return this.getTotalProductionsChosen() - annuity;
+        }
+
+        getNetMarginForChosenProductions() {
+            const beforeInsurance = this.getNetMarginForChosenProductionsBeforeInsurance();
+            const insuranceCost = beforeInsurance * this.insuranceCostPercent / 100;
+            return beforeInsurance - insuranceCost;
+        }
 
         addProduction(production) {
             this.productionsChosen.push(production);

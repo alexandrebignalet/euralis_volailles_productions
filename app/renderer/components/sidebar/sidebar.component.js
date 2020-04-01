@@ -3,7 +3,7 @@ import productionLogo from '../../images/production_logo.png';
 import facilityChargesLogo from '../../images/facility_charges_logo.png';
 import facilityLogo from '../../images/facility_logo.png';
 import investmentLogo from '../../images/investment_logo.png';
-import syncImage from '../../../../images/cloud_refresh.png';
+import syncImage from '../../images/cloud_refresh.png';
 
 export const SidebarComponent = {
     template,

@@ -53,7 +53,6 @@ export const SyncDialogComponent = {
             console.warn('catch: ', res)
           })
       })
-        .then((e) => console.log('then ', e))
         .catch((e) => {
           if (e.error && e.error === "unauthorized") {
             this.password = "";

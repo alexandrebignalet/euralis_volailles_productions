@@ -24,7 +24,6 @@ export const InvestmentFormComponent = {
         }
 
         removeOption(index) {
-            console.log(index);
             this.investment.options.splice(index, 1);
         }
 

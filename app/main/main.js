@@ -16,11 +16,7 @@ const BrowserWindow = electron.BrowserWindow;
 let mainWindow = null;
 
 app.on('ready', function()  {
-    autoUpdater.checkForUpdatesAndNotify().then(
-      (...a) => {
-          console.log(a);
-      }
-    )
+    autoUpdater.checkForUpdatesAndNotify();
 });
 
 function createWindow () {

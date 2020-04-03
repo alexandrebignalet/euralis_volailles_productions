@@ -80,7 +80,7 @@
   },
   "scripts": {
     "release-win": "build -w --x64 --ia32",
-    "release": "yarn build:electron:prod && yarn version && GH_TOKEN=6e60b6ff1a22171e684cd4b8bd7a5c2a5a25d2b5 electron-builder build",
+    "release": "yarn build:electron:prod && GH_TOKEN=6e60b6ff1a22171e684cd4b8bd7a5c2a5a25d2b5 electron-builder build",
     "rebuild": "electron-rebuild -f -w sqlite3 -v 1.8",
     "electron": "electron ./build/electron-dev/main.bundle.js",
     "build:electron:prod": "webpack --config webpack.renderer.prod.config.js && webpack --config webpack.main.prod.config.js",

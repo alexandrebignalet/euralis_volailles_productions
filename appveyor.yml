@@ -2,6 +2,8 @@ image: Visual Studio 2017
 
 environment:
   nodejs_version: "10.19.0"
+  gh_token:
+    secure: B5wrOIKyl1/IwzTVfh5g5XQuUrGqQwGsEvX/QNfq2d9ITh1KunMqQC07AIjWBY6K
 
 platform:
   - x64
@@ -18,7 +20,7 @@ install:
   - yarn
 
 build_script:
-  - yarn release
+  - GH_TOKEN=$env:gh_token yarn release
 
 after_build:
   - 7z a euralis_volailles_productions.zip dist\
@@ -38,6 +40,6 @@ deploy:
     prerelease: false
     tag: $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
-      secure: B5wrOIKyl1/IwzTVfh5g5XQuUrGqQwGsEvX/QNfq2d9ITh1KunMqQC07AIjWBY6K
+      secure: $env:gh_token
     on:
       branch: master

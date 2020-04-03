@@ -1,7 +1,7 @@
 image: Visual Studio 2017
 
 environment:
-  nodejs_version: "9.11.1"
+  nodejs_version: "10.19.0"
 
 platform:
   - x64
@@ -15,11 +15,11 @@ init:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm i
+  - yarn
 
 build_script:
-  - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%' --no-git-tag-version
-  - npm run release
+  - yarn version --no-git-tag-version --new-version %APPVEYOR_BUILD_VERSION%
+  - yarn release
 
 after_build:
   - 7z a euralis_volailles_productions.zip dist\

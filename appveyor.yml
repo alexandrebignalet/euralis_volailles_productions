@@ -2,7 +2,7 @@ image: Visual Studio 2017
 
 environment:
   nodejs_version: "10.19.0"
-  gh_token:
+  GH_TOKEN:
     secure: B5wrOIKyl1/IwzTVfh5g5XQuUrGqQwGsEvX/QNfq2d9ITh1KunMqQC07AIjWBY6K
 
 platform:
@@ -20,26 +20,6 @@ install:
   - yarn
 
 build_script:
-  - GH_TOKEN=$env:gh_token yarn release
-
-after_build:
-  - 7z a euralis_volailles_productions.zip dist\
+  - yarn release
 
 test: off
-
-artifacts:
-  - path: euralis_volailles_productions.zip
-    name: euralis_volailles_productions
-
-deploy:
-
-  - provider: GitHub
-    description: 'Release description'
-    artifact: /.*\.zip/
-    draft: false
-    prerelease: false
-    tag: $(APPVEYOR_REPO_TAG_NAME)
-    auth_token:
-      secure: $env:gh_token
-    on:
-      branch: master

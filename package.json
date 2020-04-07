@@ -79,6 +79,7 @@
     "webpack-node-externals": "^1.6.0"
   },
   "scripts": {
+    "postinstall": "install-app-deps",
     "release-win": "build -w --x64 --ia32",
     "release": "yarn build:electron:prod && electron-builder build",
     "rebuild": "electron-rebuild -f -w sqlite3 -v 1.8",

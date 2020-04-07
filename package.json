@@ -2,7 +2,7 @@
   "name": "euralis_volailles_production",
   "applicationName": "Euralis Volailles Productions",
   "description": "Euralis Volailles Desktop App",
-  "version": "2.3.20",
+  "version": "2.3.21",
   "main": "build/electron/main.bundle.js",
   "author": "Alexandre BIGNALET",
   "license": "ISC",
@@ -17,7 +17,9 @@
       "node_modules/**/*",
       "package.json"
     ],
-    "publish": ["github"]
+    "publish": [
+      "github"
+    ]
   },
   "engines": {
     "node": ">=10"

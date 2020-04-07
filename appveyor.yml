@@ -19,7 +19,7 @@ init:
 install:
   - ps: Install-Product node $env:nodejs_version
   - yarn
-  - ps: Get-Variable
+  - echo 'HELLO GITHUB %GH_TOKEN%'
 
 build_script:
   - yarn release

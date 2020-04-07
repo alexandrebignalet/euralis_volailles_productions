@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/kytyusi3d0sr9l8u/branch/master?svg=true)](https://ci.appveyor.com/project/alexandrebignalet/euralis-volailles-productions-ighwp/branch/master)
+
 # Publish an update using electron-builder
 
 Increment package.json version.

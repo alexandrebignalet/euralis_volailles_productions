@@ -90,6 +90,7 @@
     "build:web:analyzer": "webpack --config webpack.prod.config.js --env.bundle-analyzer",
     "serve:built:web": "node prod-server.js",
     "serve": "node dev-server.js",
-    "clean": "rm -rf ./build/web ./build/electron ./build/electron-dev ./dist"
+    "clean": "rm -rf ./build/web ./build/electron ./build/electron-dev ./dist",
+    "deploy": "yarn version && git push origin --tags"
   }
 }

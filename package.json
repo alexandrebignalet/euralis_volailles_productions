@@ -2,7 +2,7 @@
   "name": "euralis_volailles_production",
   "applicationName": "Euralis Volailles Productions",
   "description": "Euralis Volailles Desktop App",
-  "version": "2.3.19",
+  "version": "2.3.20",
   "main": "build/electron/main.bundle.js",
   "author": "Alexandre BIGNALET",
   "license": "ISC",
@@ -91,6 +91,6 @@
     "serve:built:web": "node prod-server.js",
     "serve": "node dev-server.js",
     "clean": "rm -rf ./build/web ./build/electron ./build/electron-dev ./dist",
-    "deploy": "yarn version && git push origin --tags"
+    "deploy-patch": "yarn version --patch && git push origin --tags"
   }
 }

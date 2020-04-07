@@ -4,7 +4,8 @@ image: Visual Studio 2017
 
 environment:
   nodejs_version: "10.19.0"
-  GH_TOKEN: B5wrOIKyl1/IwzTVfh5g5XQuUrGqQwGsEvX/QNfq2d9ITh1KunMqQC07AIjWBY6K
+  GH_TOKEN:
+    secure: bs06vMr1u4OI6a1bRDDKoYz6rcmeirN9i9afjfGZxO/sGd4+33yytYiLkhsnU9CA
 
 platform:
   - x64
@@ -19,7 +20,6 @@ init:
 install:
   - ps: Install-Product node $env:nodejs_version
   - yarn
-  - echo 'HELLO GITHUB %GH_TOKEN%'
 
 build_script:
   - yarn release

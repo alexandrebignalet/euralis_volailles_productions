@@ -16,7 +16,6 @@ import {Video} from '../model/video'
 import {Prospect} from '../model/prospect';
 
 import PouchDB from 'pouchdb-browser';
-PouchDB.plugin(require('pouchdb-adapter-node-websql'));
 PouchDB.plugin(find);
 PouchDB.plugin(rel);
 

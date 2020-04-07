@@ -1,7 +1,11 @@
+version: 1.0.{build}
+
 image: Visual Studio 2017
 
 environment:
-  nodejs_version: "9.11.1"
+  nodejs_version: "10.19.0"
+  GH_TOKEN:
+    secure: v/vMjewDvp+qnq0z3RaGeEZNYcdb92gVEmG3Kimwm/WMeu2Zw5fucTQqNjiKWlYc
 
 platform:
   - x64
@@ -15,30 +19,9 @@ init:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm i
+  - yarn
 
 build_script:
-  - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%' --no-git-tag-version
-  - npm run release
-
-after_build:
-  - 7z a euralis_volailles_productions.zip dist\
+  - yarn release
 
 test: off
-
-artifacts:
-  - path: euralis_volailles_productions.zip
-    name: euralis_volailles_productions
-
-deploy:
-
-  - provider: GitHub
-    description: 'Release description'
-    artifact: /.*\.zip/
-    draft: false
-    prerelease: false
-    tag: $(APPVEYOR_REPO_TAG_NAME)
-    auth_token:
-      secure: 2G0j7P9PHKTHMf7p8b3/Hc0QlqKI4WoMTrTwtUpZ71VKSnREQUP6oe8LkoK8a4Uh
-    on:
-      branch: master

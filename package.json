@@ -17,9 +17,11 @@
       "node_modules/**/*",
       "package.json"
     ],
-    "publish": [
-      "github"
-    ]
+    "publish": {
+      "provider": "github",
+      "owner": "alexandre.bignalet@gmail.com",
+      "publishAutoUpdate": true
+    }
   },
   "engines": {
     "node": ">=10"

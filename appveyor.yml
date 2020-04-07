@@ -4,7 +4,8 @@ image: Visual Studio 2017
 
 environment:
   nodejs_version: "10.19.0"
-  GH_TOKEN: bs06vMr1u4OI6a1bRDDKoYz6rcmeirN9i9afjfGZxO/sGd4+33yytYiLkhsnU9CA
+  GH_TOKEN:
+    secure: bs06vMr1u4OI6a1bRDDKoYz6rcmeirN9i9afjfGZxO/sGd4+33yytYiLkhsnU9CA
 
 platform:
   - x64

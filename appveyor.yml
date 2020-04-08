@@ -22,6 +22,6 @@ install:
   - yarn
 
 build_script:
-  - yarn release
+  - yarn release --publish onTagOrDraft
 
 test: off

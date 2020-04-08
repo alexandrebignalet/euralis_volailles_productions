@@ -20,8 +20,6 @@ init:
 install:
   - ps: Install-Product node $env:nodejs_version
   - yarn
-
-build_script:
   - yarn build:electron:prod
 
 for:

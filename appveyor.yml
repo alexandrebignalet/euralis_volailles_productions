@@ -25,6 +25,8 @@ build_script:
   - yarn build:electron:prod
 
 for:
+
+-
   branches:
     only:
       - master

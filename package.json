@@ -2,7 +2,7 @@
   "name": "euralis_volailles_production",
   "applicationName": "Euralis Volailles Productions",
   "description": "Euralis Volailles Desktop App",
-  "version": "2.3.23",
+  "version": "2.3.24",
   "main": "build/electron/main.bundle.js",
   "author": "Alexandre BIGNALET",
   "license": "ISC",

@@ -24,7 +24,17 @@ install:
 build_script:
   - yarn build:electron:prod
 
-deploy_script:
-  - IF DEFINED APPVEYOR_REPO_TAG_NAME (yarn release --publish onTagOrDraft)
+for:
+
+-
+  branches:
+    only:
+      - master
+
+  configuration: Release
+
+  build_script:
+    - yarn build:electron:prod
+    - yarn release
 
 test: off

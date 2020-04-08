@@ -81,7 +81,7 @@
   "scripts": {
     "postinstall": "install-app-deps",
     "release-win": "build -w --x64 --ia32",
-    "release": "yarn build:electron:prod && electron-builder build",
+    "release": "electron-builder build",
     "rebuild": "electron-rebuild -f -w sqlite3 -v 1.8",
     "electron": "electron ./build/electron-dev/main.bundle.js",
     "build:electron:prod": "webpack --config webpack.renderer.prod.config.js && webpack --config webpack.main.prod.config.js",

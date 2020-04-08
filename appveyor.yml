@@ -22,6 +22,15 @@ install:
   - yarn
 
 build_script:
-  - yarn release --publish onTagOrDraft
+  - yarn build:electron:prod
+
+for:
+  branches:
+    only: master
+
+  configuration: Release
+
+  build_script:
+    - yarn release --publish onTagOrDraft
 
 test: off

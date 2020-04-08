@@ -28,4 +28,3 @@ deploy_script:
   - IF DEFINED APPVEYOR_REPO_TAG_NAME (yarn release --publish onTagOrDraft)
 
 test: off
-build: off

@@ -37,7 +37,7 @@ module.exports = function(env = {}) {
                     test: /\.(scss|sass)$/,
                     use: [
                         { loader: 'style-loader' },
-                        { loader: 'css-loader', options: { url: false } },
+                        { loader: 'css-loader' },
                         { loader: 'sass-loader' }
                     ]
                 },
@@ -55,7 +55,7 @@ module.exports = function(env = {}) {
                     test: /\.css$/,
                     use: [
                         { loader: 'style-loader' },
-                        { loader: 'css-loader', options: { url: false } }
+                        { loader: 'css-loader' }
                     ]
                 }
             ]

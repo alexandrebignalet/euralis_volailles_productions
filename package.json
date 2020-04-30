@@ -37,7 +37,7 @@
     "bootstrap": "^3.4.1",
     "electron-log": "^4.1.1",
     "electron-updater": "^4.3.0",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "ngstorage": "^0.3.11",
     "pdfmake": "^0.1.33",
     "pouchdb": "^7.2.1",

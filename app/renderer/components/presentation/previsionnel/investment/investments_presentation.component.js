@@ -10,6 +10,7 @@ export const InvestmentsPresentationComponent = {
     template,
     controller: class InvestmentPresentationController {
         constructor($scope) {
+            'ngInject';
             this.scope = $scope;
         }
 

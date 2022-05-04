@@ -25,7 +25,7 @@
     "node": ">=10"
   },
   "dependencies": {
-    "angular": "^1.6.4",
+    "angular": "^1.8.3",
     "angular-animate": "^1.6.4",
     "angular-file-upload": "^2.5.0",
     "angular-i18n": "^1.6.4",
